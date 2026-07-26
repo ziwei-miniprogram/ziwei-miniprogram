@@ -1,0 +1,28 @@
+# ===== 微信小程序 =====
+project.private.config.json
+miniprogram_npm/
+node_modules/
+*.zip
+
+# ===== Python（carousel 内容增长管线） =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.env.local
+
+# ===== 系统 / 编辑器 =====
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ===== 助手本地状态（WorkBuddy） =====
+.workbuddy/
+
+# ===== 构建 / 临时产物 =====
+dist/
+build/
+*.log
