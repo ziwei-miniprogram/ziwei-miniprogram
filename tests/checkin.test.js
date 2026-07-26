@@ -11,8 +11,7 @@ function makeStorage() {
 const checkin = require('../utils/checkin.js');
 
 describe('checkin 文旅打卡数据层', () => {
-  let store;
-  beforeEach(() => { store = makeStorage(); });
+  beforeEach(() => { makeStorage(); });
 
   test('首次打卡：点亮 + 发 9 折券 + 优先购资格', () => {
     const r = checkin.checkIn('hangzhou');

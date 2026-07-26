@@ -2,7 +2,7 @@
 // 目标：拦截未声明变量（如 F1 whimsy 漏 require）、TDZ 隐患、未使用变量、死代码。
 module.exports = {
   root: true,
-  env: { es2021: true },
+  env: { es2021: true, jest: true },
   parserOptions: { ecmaVersion: 2021, sourceType: 'script' },
   extends: ['eslint:recommended'],
   globals: {
@@ -24,7 +24,8 @@ module.exports = {
     clearTimeout: 'readonly',
     console: 'readonly',
     encodeURIComponent: 'readonly',
-    decodeURIComponent: 'readonly'
+    decodeURIComponent: 'readonly',
+    global: 'writable'
   },
   rules: {
     // 致命门禁：未声明变量直接报错（抓 F1 / TDZ 类崩溃）

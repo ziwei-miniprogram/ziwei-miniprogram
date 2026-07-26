@@ -22,6 +22,15 @@ page, .page {
   --shadow-md: 0 8rpx 22rpx rgba(200,163,90,.18);
   --nav-bg: #f7f5f0;
   --nav-fg: black;
+  --radius: 32rpx;
+  --radius-lg: 40rpx;
+  --radius-sm: 24rpx;
+  --gold-grad: linear-gradient(135deg, #d8b876, #b98e44 62%, #caa45c);
+  --shadow-1: 0 2rpx 8rpx rgba(40,33,20,.05);
+  --shadow-2: 0 12rpx 32rpx rgba(40,33,20,.08);
+  --night-1: #0B1426;
+  --night-2: #16233f;
+  --night-grad: linear-gradient(160deg, #16233f, #0B1426);
 }
 
 /* —— 深色（夜灯）令牌 —— */
@@ -43,6 +52,15 @@ page, .page {
   --shadow-md: 0 10rpx 26rpx rgba(0,0,0,.5);
   --nav-bg: #0B1426;
   --nav-fg: white;
+  --radius: 32rpx;
+  --radius-lg: 40rpx;
+  --radius-sm: 24rpx;
+  --gold-grad: linear-gradient(135deg, #e6c789, #c79a4e 62%, #d8b66a);
+  --shadow-1: 0 2rpx 8rpx rgba(0,0,0,.4);
+  --shadow-2: 0 14rpx 36rpx rgba(0,0,0,.5);
+  --night-1: #0B1426;
+  --night-2: #16233f;
+  --night-grad: linear-gradient(160deg, #16233f, #0B1426);
 }
 
 .page {
@@ -80,8 +98,8 @@ page, .page {
 
 /* 主按钮：星辉金渐变，仅用于关键行动 */
 .btn {
-  background: linear-gradient(135deg, var(--gold), #e0c489);
-  color: #fff;
+  background: var(--gold-grad);
+  color: #3a2c10;
   border-radius: 999rpx;
   text-align: center;
   padding: 22rpx;
@@ -317,6 +335,47 @@ page, .page {
   .fx-item { opacity: 1; }
   .hero .stars { opacity: 1; }
   .hero-burst { display: none !important; }
+}
+
+/* ===== 视觉叙事 · 美化令牌（可渐进采用；标杆见 components/story-card）=====
+   顶层令牌已在 .page / .page.dark 定义：--radius* / --gold-grad / 分层 --shadow-* / --night-grad。
+   以下为可选工具类，团队可逐步采用，不改现有页面即可获得统一高级感。 */
+.u-card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 32rpx;
+  margin: 20rpx 24rpx;
+  box-shadow: var(--shadow-1), var(--shadow-2);
+  border: 1rpx solid var(--border);
+  color: var(--fg);
+}
+.u-btn {
+  background: var(--gold-grad);
+  color: #3a2c10;
+  border-radius: 999rpx;
+  text-align: center;
+  padding: 22rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+}
+.u-btn:active { filter: brightness(.96); }
+.u-title { font-size: 34rpx; font-weight: 700; color: var(--fg); }
+/* 夜空叙事卡：星夜物语 / 节气来信等「夜」母题内容统一用此基底 */
+.u-hero-night {
+  border-radius: var(--radius-lg);
+  padding: 32rpx;
+  margin: 20rpx 24rpx;
+  background: var(--night-grad);
+  color: #f3ead4;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-1), var(--shadow-2);
+}
+.u-hero-night .u-glow {
+  position: absolute; top: -60rpx; right: -50rpx;
+  width: 280rpx; height: 280rpx; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,163,90,.4), transparent 70%);
 }
 
 /* ===== 行为干预（P0）新增样式：令牌驱动，明暗自适应 ===== */
