@@ -73,9 +73,13 @@
     <view class="p-btn" bindtap="goSpace">进入星野工具箱 ›</view>
   </view>
 
-  <!-- 快捷入口（双 Hub 收敛：工具唯一归口为星野） -->
+  <!-- 快捷入口：消息移入（消息已移出底 tab）；记一笔补位原居中发布入口 -->
   <view class="entries">
-    <view class="entry" bindtap="goSpace"><view class="e-i">✦</view><view>星野工具箱</view></view>
+    <view class="entry" bindtap="goMessage">
+      <view class="e-i">✉</view><view>消息</view>
+      <view wx:if="{{unread>0}}" style="min-width:28rpx;height:28rpx;padding:0 6rpx;border-radius:999rpx;background:#e0796f;color:#fff;font-size:18rpx;line-height:28rpx;text-align:center;margin-left:auto;">{{unread>99?'99+':unread}}</view>
+    </view>
+    <view class="entry" bindtap="goPublish"><view class="e-i">✍</view><view>记一笔</view></view>
     <view class="entry" bindtap="goMerit"><view class="e-i">🪔</view><view>功德林</view></view>
     <view class="entry" bindtap="goMall"><view class="e-i">🛍</view><view>星野好物</view></view>
   </view>

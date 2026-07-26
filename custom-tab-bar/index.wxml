@@ -7,16 +7,16 @@
     bindtap="switchTab"
   >
     <block wx:if="{{item.center}}">
-      <view class="plus">✚</view>
+      <image class="plus-icon" src="{{item.iconCenter}}" mode="aspectFit" />
+      <view class="label center-label">{{item.text}}</view>
     </block>
     <block wx:else>
       <view class="icon-wrap">
-        <view class="icon">{{item.icon}}</view>
-        <view class="badge" wx:if="{{item.text==='消息' && unread>0}}">{{unread>99?'99+':unread}}</view>
+        <image class="tab-icon" src="{{selected === item.tabIndex ? item.iconActive : item.icon}}" mode="aspectFit" />
       </view>
       <view class="label" style="color: {{selected === item.tabIndex ? selectedColor : color}}">{{item.text}}</view>
     </block>
   </view>
 </view>
-<!-- 常驻心灯浮标：自动覆盖四个 tab 页 -->
+<!-- 常驻心灯浮标：自动覆盖 tab 页 -->
 <heart-lamp theme="{{theme}}" />

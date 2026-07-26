@@ -6,7 +6,7 @@
 
   <view class="grid">
     <view class="cell" wx:for="{{tools}}" wx:key="key" data-url="{{item.url}}" bindtap="go">
-      <view class="ic">{{item.icon}}</view>
+      <image class="ic" src="{{item.icon}}" mode="aspectFit" />
       <view class="nm">{{item.name}}</view>
       <view class="ds">{{item.desc}}</view>
     </view>

@@ -62,6 +62,7 @@ Page({
     statCollect: 0,
     statLike: 0,
     theme: 'light',
+    unread: 0,
     starSign: null,
     starSignedToday: false,
     badges: [],
@@ -90,6 +91,7 @@ Page({
       statLike: c.likes,
       myWish: wx.getStorageSync('my_wish') || '',
       theme: app.getTheme(),
+      unread: app.globalData.unread || 0,
       badges,
       badgeCount: badges.filter(b => b.unlocked).length,
       starSign,
@@ -113,7 +115,6 @@ Page({
 
   // 每日星签：每日一签，次日可再抽
   drawStarSign() {
-    const app = getApp();
     const today = this.todayStr();
     let saved = null;
     try { saved = wx.getStorageSync('star_sign'); } catch (e) {}
@@ -138,9 +139,11 @@ Page({
     if (ptab === this.data.ptab) return;
     this.setData({ ptab, notes: renderNotes(ptab, this.pool) });
   },
-  goSpace() { wx.navigateTo({ url: '/pages/space/space' }); },
+  goSpace() { wx.switchTab({ url: '/pages/space/space' }); },
   goMerit() { wx.navigateTo({ url: '/pages/merit/merit' }); },
-  goMall() { wx.navigateTo({ url: '/pages/mall/mall' }); },
+  goMall() { wx.switchTab({ url: '/pages/mall/mall' }); },
+  goMessage() { wx.navigateTo({ url: '/pages/message/message' }); },
+  goPublish() { wx.navigateTo({ url: '/pages/publish/publish' }); },
   openNote(e) { wx.navigateTo({ url: '/pages/note/note?id=' + e.currentTarget.dataset.id }); },
   editProfile() { wx.showToast({ title: '编辑资料（演示）', icon: 'none' }); }
 });

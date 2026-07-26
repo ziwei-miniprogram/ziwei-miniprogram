@@ -1,0 +1,15 @@
+{
+  "name": "ziwei-miniprogram",
+  "version": "1.0.0",
+  "private": true,
+  "description": "星野漫游小程序 — 代码质量门禁（ESLint 静态检查 + Jest 单元测试 + 静态编译校验）",
+  "scripts": {
+    "lint": "eslint \"pages/**/*.js\" \"utils/**/*.js\" \"custom-tab-bar/**/*.js\" \"components/**/*.js\"",
+    "test": "jest",
+    "validate": "node scripts/validate-mp.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0"
+  }
+}

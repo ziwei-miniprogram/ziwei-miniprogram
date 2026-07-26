@@ -1,0 +1,13 @@
+# 小程序 npm 构建产物
+node_modules
+miniprogram_npm
+dist
+
+# 云函数使用 Node 运行环境，单独 lint（全局/约定不同）
+cloudfunctions
+
+# Python 轮播管线，非小程序 JS
+carousel
+
+# 第三方 / 压缩
+**/*.min.js

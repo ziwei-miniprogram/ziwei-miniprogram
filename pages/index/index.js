@@ -339,7 +339,7 @@ Page({
   goHealing() { wx.navigateTo({ url: '/pages/healing/healing' }); },
   goWish() { wx.navigateTo({ url: '/pages/merit/merit?tab=wish' }); },
   goMerit() { wx.navigateTo({ url: '/pages/merit/merit' }); },
-  goSpace() { wx.navigateTo({ url: '/pages/space/space' }); },
+  goSpace() { wx.switchTab({ url: '/pages/space/space' }); },
   goSearch() { wx.navigateTo({ url: '/pages/search/search' }); },
   onWish(e) {
     this.setData({ myWish: e.currentTarget.dataset.k });
@@ -355,7 +355,7 @@ Page({
     if (this.data.myWish) wx.setStorageSync('my_wish', this.data.myWish);
     this.setData({ showGuide: false });
   },
-  goGuideSpace() { wx.navigateTo({ url: '/pages/space/space' }); },
+  goGuideSpace() { wx.switchTab({ url: '/pages/space/space' }); },
 
   // P1-6 快捷发布：首页直接「记一笔」，降低发布摩擦
   quickInput(e) { this.setData({ quickText: e.detail.value }); },

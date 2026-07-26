@@ -28,7 +28,8 @@
     "list": [
       { "pagePath": "pages/index/index", "text": "发现" },
       { "pagePath": "pages/tourism/tourism", "text": "文旅" },
-      { "pagePath": "pages/message/message", "text": "消息" },
+      { "pagePath": "pages/space/space", "text": "星野" },
+      { "pagePath": "pages/mall/mall", "text": "商城" },
       { "pagePath": "pages/profile/profile", "text": "我的" }
     ]
   },

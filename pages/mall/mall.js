@@ -1,6 +1,7 @@
 const { products } = require('../../utils/mock.js');
 const social = require('../../utils/social.js');
 const checkin = require('../../utils/checkin.js');
+const whimsy = require('../../utils/whimsy.js');
 
 // P0：首批限定款（与文旅城市呼应，优先购资格可抢）。后续接后端后可按标记返回。
 const LIMITED_IDS = [1, 4]; // ① 紫微星象紫水晶簇 ② 敦煌星图游学线路

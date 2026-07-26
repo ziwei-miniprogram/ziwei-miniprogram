@@ -14,8 +14,7 @@
   box-shadow: 0 -4rpx 20rpx rgba(0,0,0,.5);
 }
 .tab-bar.dark .label { color: #9da9bd; }
-.tab-bar.dark .tab-bar-item.center .plus { box-shadow: 0 10rpx 24rpx rgba(0,0,0,.5); }
-.tab-bar.dark .badge { box-shadow: 0 2rpx 6rpx rgba(0,0,0,.4); }
+.tab-bar.dark .tab-bar-item.center .plus-icon { box-shadow: 0 10rpx 24rpx rgba(0,0,0,.5); }
 .tab-bar-item {
   flex: 1;
   display: flex;
@@ -24,23 +23,14 @@
   justify-content: center;
   font-size: 22rpx;
 }
-.tab-bar-item .icon { font-size: 40rpx; line-height: 1; }
+.tab-bar-item .tab-icon { width: 44rpx; height: 44rpx; }
 .tab-bar-item .icon-wrap { position: relative; display: flex; align-items: center; justify-content: center; }
-.tab-bar-item .badge {
-  position: absolute; top: -10rpx; right: -14rpx;
-  min-width: 30rpx; height: 30rpx; padding: 0 6rpx;
-  border-radius: 999rpx; background: #e0796f; color: #fff;
-  font-size: 18rpx; line-height: 30rpx; text-align: center;
-  box-shadow: 0 2rpx 6rpx rgba(224,121,111,.5);
-}
 .tab-bar-item .label { margin-top: 6rpx; }
 .tab-bar-item.center { position: relative; }
-.tab-bar-item.center .plus {
-  width: 96rpx; height: 96rpx; border-radius: 50%;
-  margin-top: -46rpx;
-  background: linear-gradient(140deg, #c8a35a, #e0c489);
-  color: #fff; font-size: 52rpx; font-weight: 300;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 10rpx 24rpx rgba(200,163,90,.45);
+.tab-bar-item.center .plus-icon {
+  width: 92rpx; height: 92rpx; border-radius: 50%;
+  margin-top: -44rpx;
   border: 6rpx solid #fff;
+  box-shadow: 0 10rpx 24rpx rgba(200,163,90,.45);
 }
+.tab-bar-item.center .center-label { color: #c8a35a; font-weight: 600; margin-top: 4rpx; }
