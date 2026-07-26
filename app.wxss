@@ -414,3 +414,10 @@ page, .page {
 .deed .de-name { flex: 1; font-size: 26rpx; color: var(--fg-3); }
 .de-btn { flex: none; min-width: 96rpx; text-align: center; padding: 12rpx 18rpx; border-radius: 30rpx; background: linear-gradient(135deg,var(--gold),#e0c489); color: #3a2c10; font-size: 24rpx; font-weight: 600; }
 .de-btn.de-done { background: rgba(120,160,120,.18); color: var(--success); }
+
+/* ===== 命理测试页通用表单基元（双主题，单一真相源）===== */
+.d-form { display: block; }
+.fld { display: flex; align-items: center; gap: 20rpx; padding: 18rpx 0; border-bottom: 1rpx solid var(--border); }
+.fld .lab { width: 150rpx; font-size: 26rpx; color: var(--fg-3); flex: none; }
+.fi { flex: 1; font-size: 28rpx; color: var(--fg); background: transparent; min-height: 48rpx; }
+.fi-txt { font-size: 28rpx; color: var(--fg); }

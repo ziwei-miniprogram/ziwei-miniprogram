@@ -13,6 +13,9 @@
     "pages/profile/profile",
     "pages/publish/publish",
     "pages/space/space",
+    "pages/ziwei/ziwei",
+    "pages/bazi/bazi",
+    "pages/xingzuo/xingzuo",
     "pages/search/search"
   ],
   "window": {

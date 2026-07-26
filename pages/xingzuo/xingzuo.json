@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "heart-lamp": "/components/heart-lamp/heart-lamp"
+  },
+  "navigationBarTitleText": "星座测试"
+}

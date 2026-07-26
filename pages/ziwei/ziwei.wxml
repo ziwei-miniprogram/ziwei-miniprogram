@@ -1,0 +1,30 @@
+<view class="page {{theme}} container">
+  <view class="hd">
+    <view class="h-t serif">紫微斗数</view>
+    <view class="h-s">命宫主星 · 本命宿 · 传统文化娱乐参考</view>
+  </view>
+
+  <view class="card">
+    <view class="d-form">
+      <view class="fld"><text class="lab">出生年份</text><input class="fi" type="number" placeholder="如 1995" value="{{y}}" bindinput="onY" /></view>
+      <view class="fld"><text class="lab">出生月份</text><input class="fi" type="number" placeholder="1 - 12" value="{{m}}" bindinput="onM" /></view>
+      <view class="fld"><text class="lab">出生日</text><input class="fi" type="number" placeholder="1 - 31" value="{{d}}" bindinput="onD" /></view>
+      <view class="btn" bindtap="run">排盘 · 看我的命宫主星</view>
+    </view>
+  </view>
+
+  <block wx:if="{{result}}">
+    <view class="card">
+      <view class="star-hero">
+        <view class="sh-t serif">{{result.star}}</view>
+        <view class="sh-s">命宫主星</view>
+      </view>
+      <view class="z-desc">{{result.line}}</view>
+      <view class="z-desc text-gold">本命宿「{{result.sushe}}」微微发亮，宜静心观想</view>
+      <view class="btn-ghost" bindtap="goChart">去星图看二十八宿 ›</view>
+    </view>
+  </block>
+
+  <view class="disclaimer">紫微斗数内容由简化模型生成，为传统文化娱乐参考，非真实命理推算，不预示吉凶、不构成专业建议。</view>
+</view>
+<heart-lamp />
