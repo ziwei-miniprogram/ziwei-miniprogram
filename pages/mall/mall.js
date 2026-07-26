@@ -5,6 +5,13 @@ const checkin = require('../../utils/checkin.js');
 // P0：首批限定款（与文旅城市呼应，优先购资格可抢）。后续接后端后可按标记返回。
 const LIMITED_IDS = [1, 4]; // ① 紫微星象紫水晶簇 ② 敦煌星图游学线路
 
+// P1：限定款开售时间（演示：相对当前时间的未来时刻，真机应取自后端）
+// 库存稀缺框架：未到开售显示倒计时，到点自动转为「优先购」角标
+function buildSaleMap() {
+  const now = Date.now();
+  return { 1: now + 60 * 1000, 4: now + 5 * 60 * 1000 };
+}
+
 Page({
   data: {
     cats: ['全部', '水晶', '香薰', '书籍', '线路', '文创', '课程'],
@@ -12,10 +19,21 @@ Page({
     list: [],
     allList: [],
     theme: 'light',
-    // —— 文旅打卡 P0 ——
+    // —— 文旅打卡 P0/P1 ——
     couponCount: 0,
     hasPriority: false,
-    priorityText: '0:00:00'
+    priorityText: '0:00:00',
+    saleMap: {}
+  },
+  onLoad() {
+    const saleMap = buildSaleMap();
+    const all = products.map(p => Object.assign({}, p, {
+      cost: p.meritCost || p.price,
+      limited: LIMITED_IDS.indexOf(p.id) >= 0,
+      onSaleAt: saleMap[p.id] || 0
+    }));
+    this.setData({ allList: all, saleMap });
+    this.buildList();
   },
   onShow() {
     const app = getApp();
@@ -23,40 +41,66 @@ Page({
     this.setData({ theme: app.getTheme() });
     this.refreshCheckin();
   },
-  onLoad() {
-    // 商品以「功德」计价（零金钱交易）；meritCost 缺省时用 price 当功德价。
-    const all = products.map(p => Object.assign({}, p, {
-      cost: p.meritCost || p.price,
-      limited: LIMITED_IDS.indexOf(p.id) >= 0
-    }));
-    this.setData({ allList: all, list: all });
-  },
-  // 顶部折扣/优先购状态刷新；优先购资格倒计时每秒走动（onHide 清除，省电）
+  // 顶部折扣/优先购状态 + 每款角标（开售倒计时 / 优先购 / 原 badge）每秒刷新
   refreshCheckin() {
+    this.buildList();
     this.setData({
       couponCount: checkin.couponCount(),
       hasPriority: checkin.hasPriority(),
       priorityText: checkin.priorityRemainText()
     });
     if (this._timer) clearInterval(this._timer);
-    if (checkin.hasPriority()) {
+    // 任一限定款未开售，或优先购资格有效 → 持续走秒
+    const hasPending = this.data.allList.some(p => p.limited && p.onSaleAt > Date.now());
+    if (hasPending || checkin.hasPriority()) {
       this._timer = setInterval(() => {
+        this.buildList();
         this.setData({ priorityText: checkin.priorityRemainText(), hasPriority: checkin.hasPriority() });
-        if (!checkin.hasPriority()) clearInterval(this._timer);
+        const stillPending = this.data.allList.some(p => p.limited && p.onSaleAt > Date.now());
+        if (!stillPending && !checkin.hasPriority()) clearInterval(this._timer);
       }, 1000);
     }
   },
   onHide() { if (this._timer) { clearInterval(this._timer); this._timer = null; } },
   onUnload() { if (this._timer) { clearInterval(this._timer); this._timer = null; } },
+  // 组装列表：计算每款角标文本与样式（开售倒计时 > 优先购 > 原 badge）
+  buildList() {
+    const cat = this.data.cat;
+    const hasPriority = checkin.hasPriority();
+    const now = Date.now();
+    const list = this.data.allList
+      .filter(p => cat === '全部' || p.tag === cat)
+      .map(p => {
+        const np = Object.assign({}, p);
+        if (p.limited && p.onSaleAt > now) {
+          np.onSaleText = saleCountdown(p.onSaleAt - now); // 开售倒计时
+          np.badgeText = np.onSaleText;
+          np.badgeCls = 'badge-sale';
+        } else if (p.limited && hasPriority) {
+          np.onSaleText = '';
+          np.badgeText = '优先购';
+          np.badgeCls = 'badge-prio';
+        } else {
+          np.onSaleText = '';
+          np.badgeText = p.badge || '';
+          np.badgeCls = '';
+        }
+        return np;
+      });
+    this.setData({ list });
+  },
   switchCat(e) {
-    const cat = e.currentTarget.dataset.c;
-    const all = this.data.allList;
-    this.setData({ cat, list: cat === '全部' ? all : all.filter(p => p.tag === cat) });
+    this.setData({ cat: e.currentTarget.dataset.c });
+    this.buildList();
   },
   // 用功德兑换（替代原微信支付）；拥有城市折扣券时自动 9 折抵扣
   exchange(e) {
     const i = e.currentTarget.dataset.index;
     const p = this.data.list[i];
+    if (p.limited && p.onSaleAt > Date.now()) {
+      wx.showToast({ title: '限定款未到开售时间', icon: 'none' });
+      return;
+    }
     const app = getApp();
     const d = checkin.discountCost(p.cost); // 城市守护折扣
     const finalCost = d.cost;
@@ -83,3 +127,15 @@ Page({
     });
   }
 });
+
+// 开售倒计时友好文本（时:分:秒）
+function saleCountdown(ms) {
+  if (ms <= 0) return '';
+  const h = Math.floor(ms / 3600000);
+  ms -= h * 3600000;
+  const m = Math.floor(ms / 60000);
+  ms -= m * 60000;
+  const s = Math.floor(ms / 1000);
+  const pad = (n) => String(n).padStart(2, '0');
+  return (h > 0 ? h + ':' : '') + `${pad(m)}:${pad(s)} 后开售`;
+}

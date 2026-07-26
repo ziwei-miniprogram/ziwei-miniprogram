@@ -12,7 +12,7 @@
   <view class="feed">
     <view class="col">
       <view class="pd" wx:for="{{list}}" wx:key="id" wx:if="{{index % 2 === 0}}" data-index="{{index}}" bindtap="exchange">
-        <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.limited && hasPriority ? 'badge-prio' : ''}}" wx:if="{{item.limited && hasPriority || item.badge}}">{{item.limited && hasPriority ? '优先购' : item.badge}}</view></view>
+        <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.badgeCls}}" wx:if="{{item.badgeText}}">{{item.badgeText}}</view></view>
         <view class="body">
           <view class="tt">{{item.title}}</view>
           <view class="pr"><text class="price">{{item.cost}} 功德</text><text class="mtag" wx:if="{{item.meritTag}}">{{item.meritTag}}</text></view>
@@ -23,7 +23,7 @@
     </view>
     <view class="col">
       <view class="pd" wx:for="{{list}}" wx:key="id" wx:if="{{index % 2 === 1}}" data-index="{{index}}" bindtap="exchange">
-        <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.limited && hasPriority ? 'badge-prio' : ''}}" wx:if="{{item.limited && hasPriority || item.badge}}">{{item.limited && hasPriority ? '优先购' : item.badge}}</view></view>
+        <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.badgeCls}}" wx:if="{{item.badgeText}}">{{item.badgeText}}</view></view>
         <view class="body">
           <view class="tt">{{item.title}}</view>
           <view class="pr"><text class="price">{{item.cost}} 功德</text><text class="mtag" wx:if="{{item.meritTag}}">{{item.meritTag}}</text></view>
