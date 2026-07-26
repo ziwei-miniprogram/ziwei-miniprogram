@@ -10,7 +10,22 @@ bash scripts/init-miniprogram-repo.sh
 
 # 在指定目录初始化
 bash scripts/init-miniprogram-repo.sh /path/to/new-miniprogram
+
+# 一步连上 GitHub（gh 接法优先：自动建仓+推送；无 gh 则退到 git remote）
+bash scripts/init-miniprogram-repo.sh . --remote github --repo xingye-manyou
+
+# 一步连上 Gitee（git remote 接法；可选 GITEE_TOKEN 经 API 自动建仓）
+GITEE_TOKEN=xxxx bash scripts/init-miniprogram-repo.sh . --remote gitee --public
 ```
+
+## 远程托管选项（--remote）
+| 托管   | 接法                                                         | 行为                                                                 |
+|--------|--------------------------------------------------------------|----------------------------------------------------------------------|
+| github | `gh` 接法优先 → `git remote` 兜底                            | 装了 `gh` 且已登录：自动 `gh repo create --remote origin --push`；否则提示用户名后用 `git@github.com:<用户>/<repo>.git` |
+| gitee  | `git remote` 接法（Gitee 无官方 gh 类 CLI）                  | 有 `GITEE_TOKEN` 时先经开放 API 建仓；再 `git@gitee.com:<用户>/<repo>.git` |
+| 不传   | —                                                            | 交互终端会询问；非交互（如 CI）则跳过，留待手动 `git remote add`       |
+
+附加选项：`--repo <name>`（仓库名，默认取目录名）、`--public`/`--private`（可见性，默认 private）。
 
 ## 生成内容
 - `.gitignore`（微信小程序 + Python + macOS + 密钥 + .workbuddy）

@@ -1,12 +1,50 @@
 #!/usr/bin/env bash
-# init-miniprogram-repo.sh —— 微信小程序仓库「从零建仓 + Trunk-Based 规范 + CI」一键初始化
+# init-miniprogram-repo.sh —— 微信小程序仓库「从零建仓 + Trunk-Based 规范 + CI + 远程托管」一键初始化
 # 用法：
-#   ./init-miniprogram-repo.sh [目标目录]      # 默认当前目录
-# 效果：git init -b main + .gitignore + 协作规范 + PR 模板 + 提交模板 + GitHub Actions CI
+#   ./init-miniprogram-repo.sh [目标目录] [选项]
+# 选项：
+#   --remote <host>   远程托管：github | gitee（不传则交互询问，非交互则跳过）
+#   --repo <name>     仓库名（默认取目标目录名）
+#   --public          远程仓库公开（默认 private）
+#   --private         远程仓库私有（默认）
+#   -h, --help        显示帮助
+# 效果：git init -b main + 规范 + CI +（可选）连接 GitHub/Gitee 远程
 # 说明：自包含，不依赖外部文件；生成的仓库结构与本项目一致。
 set -euo pipefail
 
-TARGET="${1:-.}"
+# ---------- 参数解析 ----------
+TARGET="."
+REMOTE_HOST=""
+REPO_NAME=""
+REMOTE_VISIBILITY="private"
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --remote)  REMOTE_HOST="$2"; shift 2 ;;
+    --repo)    REPO_NAME="$2";   shift 2 ;;
+    --public)  REMOTE_VISIBILITY="public";  shift ;;
+    --private) REMOTE_VISIBILITY="private"; shift ;;
+    -h|--help)
+      cat <<'USAGE'
+用法：
+  ./init-miniprogram-repo.sh [目标目录] [选项]
+
+选项：
+  --remote <host>   远程托管：github | gitee（不传则交互询问，非交互则跳过）
+  --repo <name>     仓库名（默认取目标目录名）
+  --public          远程仓库公开（默认 private）
+  --private         远程仓库私有（默认）
+  -h, --help        显示本帮助
+
+示例：
+  ./init-miniprogram-repo.sh . --remote github --repo xingye-manyou
+  ./init-miniprogram-repo.sh ../new-app --remote gitee --public
+USAGE
+      exit 0 ;;
+    *) TARGET="$1"; shift ;;
+  esac
+done
+
 if [ ! -d "$TARGET" ]; then mkdir -p "$TARGET"; fi
 cd "$TARGET"
 ABSPATH="$(pwd)"
@@ -226,13 +264,98 @@ fi
 git add -A
 git commit -q -m "chore: 初始化小程序仓库（.gitignore + 协作规范 + CI）" || echo "（无文件可提交，跳过）"
 
+# ---------- 远程托管（GitHub / Gitee 分支） ----------
+connect_remote() {
+  local host="$1"
+  local repo="${REPO_NAME:-$(basename "$ABSPATH")}"
+  local owner=""
+
+  case "$host" in
+    github|GitHub|gh|GH)
+      echo "🌐 连接 GitHub（gh 接法优先，git remote 兜底）..."
+      if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+        owner="$(gh api user --jq .login 2>/dev/null || true)"
+        if [ -n "$owner" ]; then
+          echo "   gh 已登录（$owner），创建并推送仓库..."
+          if gh repo create "$repo" --"$REMOTE_VISIBILITY" --source . --remote origin --push 2>/dev/null; then
+            echo "✅ GitHub 仓库已创建并推送（$(git remote get-url origin)）。"
+            return 0
+          fi
+          echo "   ⚠️  gh 建仓/推送失败（可能已存在或权限不足），转 git remote 兜底。"
+        fi
+      elif command -v gh >/dev/null 2>&1; then
+        echo "   ⚠️  检测到 gh 但未登录；请先 'gh auth login'，下面用 git remote 兜底。"
+      else
+        echo "   ℹ️  未检测到 gh CLI，使用 git remote 接法（SSH）。"
+      fi
+      # 兜底：git remote add origin（若尚不存在）
+      if git remote get-url origin >/dev/null 2>&1; then
+        echo "   ℹ️  origin 已存在：$(git remote get-url origin)"
+      else
+        read -r -p "   请输入 GitHub 用户名（用于 git@github.com:<用户>/$repo.git）: " owner
+        git remote add origin "git@github.com:$owner/$repo.git"
+        echo "✅ 已添加 origin（SSH）。推送：git push -u origin main"
+      fi
+      ;;
+
+    gitee|Gitee|gt|GT)
+      echo "🌐 连接 Gitee（git remote 接法；Gitee 无官方 gh 类 CLI）..."
+      # 若提供 GITEE_TOKEN（开放 API），尝试自动建仓
+      if [ -n "${GITEE_TOKEN:-}" ]; then
+        echo "   检测到 GITEE_TOKEN，尝试通过 API 创建仓库..."
+        if curl -s -X POST "https://gitee.com/api/v5/user/repos" \
+            -H "Content-Type: application/json" \
+            -d "{\"access_token\":\"$GITEE_TOKEN\",\"name\":\"$repo\",\"private\":$([ "$REMOTE_VISIBILITY" = private ] && echo true || echo false)}" \
+            >/dev/null 2>&1; then
+          echo "✅ Gitee 仓库已通过 API 创建。"
+        else
+          echo "   ⚠️  API 建仓失败（可能重名/无权限），请在网页端手动建仓。"
+        fi
+      fi
+      if git remote get-url origin >/dev/null 2>&1; then
+        echo "   ℹ️  origin 已存在：$(git remote get-url origin)"
+      else
+        read -r -p "   请输入 Gitee 用户名（用于 git@gitee.com:<用户>/$repo.git）: " owner
+        git remote add origin "git@gitee.com:$owner/$repo.git"
+        echo "✅ 已添加 origin（SSH）。推送：git push -u origin main"
+      fi
+      ;;
+
+    skip|none|"")
+      echo "⏭️  跳过远程连接。"
+      ;;
+    *)
+      echo "⚠️  未知托管类型：$host，跳过。"
+      ;;
+  esac
+}
+
+# 连接方式：显式 --remote 优先；交互终端询问；非交互且无 --remote 则跳过
+if [ -n "$REMOTE_HOST" ]; then
+  connect_remote "$REMOTE_HOST"
+elif [ -t 0 ]; then
+  echo
+  read -r -p "🌐 连接远程托管？输入 github / gitee / 直接回车跳过: " REMOTE_HOST_INPUT
+  connect_remote "$REMOTE_HOST_INPUT"
+else
+  echo "ℹ️  非交互环境且未指定 --remote，跳过远程连接（可后续手动 git remote add）。"
+fi
+
 echo
 echo "✅ 初始化完成。已生成："
 echo "   .gitignore  .gitmessage  CONTRIBUTING.md"
 echo "   .github/PULL_REQUEST_TEMPLATE.md  .github/workflows/ci.yml"
 echo
-echo "📌 下一步："
-echo "   1) 改真实提交身份（若仍是占位符）"
-echo "   2) 连远程：git remote add origin <url> && git push -u origin main"
-echo "   3) 分支保护勾选 status check：validate（+ miniprogram-build 若启用）"
-echo "   4) 启用小程序编译校验：仓库 Settings → Secrets 添加 WX_APPID / WX_PRIVATE_KEY"
+if git remote get-url origin >/dev/null 2>&1; then
+  echo "🔗 远程已连接：$(git remote get-url origin)"
+  echo "📌 下一步："
+  echo "   1) 改真实提交身份（若仍是占位符）"
+  echo "   2) 分支保护勾选 status check：validate（+ miniprogram-build 若启用）"
+  echo "   3) 启用小程序编译校验：仓库 Settings → Secrets 添加 WX_APPID / WX_PRIVATE_KEY"
+else
+  echo "📌 下一步："
+  echo "   1) 改真实提交身份（若仍是占位符）"
+  echo "   2) 连远程（--remote github/gitee 或手动）：git remote add origin <url> && git push -u origin main"
+  echo "   3) 分支保护勾选 status check：validate（+ miniprogram-build 若启用）"
+  echo "   4) 启用小程序编译校验：仓库 Settings → Secrets 添加 WX_APPID / WX_PRIVATE_KEY"
+fi
