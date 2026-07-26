@@ -1,7 +1,8 @@
 {
   "usingComponents": {
     "star-map": "/components/star-map/star-map",
-    "heart-lamp": "/components/heart-lamp/heart-lamp"
+    "heart-lamp": "/components/heart-lamp/heart-lamp",
+    "contextual-reco": "/components/contextual-reco/contextual-reco"
   },
   "navigationBarTitleText": "星图详情"
 }

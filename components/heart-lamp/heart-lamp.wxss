@@ -85,7 +85,40 @@
 }
 @keyframes hlDeed { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
+/* ===== 星野快捷 BottomSheet（P0-a，解 B2）===== */
+.hl-root { position: relative; }
+.qs-mask {
+  position: fixed; inset: 0; z-index: 900;
+  background: rgba(11, 20, 38, .42);
+  display: flex; align-items: flex-end; justify-content: center;
+  animation: qsFade .25s ease;
+}
+@keyframes qsFade { from { opacity: 0; } to { opacity: 1; } }
+.qs-sheet {
+  width: 100%; background: var(--card, #fff);
+  border-radius: 32rpx 32rpx 0 0; padding: 32rpx 32rpx 48rpx;
+  box-shadow: 0 -10rpx 40rpx rgba(0,0,0,.18);
+  animation: qsUp .32s cubic-bezier(.23,1,.32,1);
+}
+@keyframes qsUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.qs-title { font-size: 26rpx; color: var(--fg-2); text-align: center; margin-bottom: 24rpx; letter-spacing: 2rpx; }
+.qs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22rpx; }
+.qs-item {
+  display: flex; flex-direction: column; align-items: center; gap: 12rpx;
+  padding: 26rpx 10rpx; background: var(--bg-elev, #fffdf8);
+  border: 1rpx solid var(--border, rgba(138,127,109,.18)); border-radius: 24rpx;
+}
+.qs-item:active { background: var(--gold-soft, rgba(200,163,90,.12)); }
+.qs-ic { font-size: 48rpx; }
+.qs-tx { font-size: 24rpx; color: var(--fg); font-weight: 600; }
+.qs-close {
+  margin-top: 28rpx; text-align: center; font-size: 26rpx; color: var(--fg-2);
+  background: var(--bg-elev, #fffdf8); border-radius: 999rpx; padding: 20rpx;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hl-ring { animation: none !important; }
   .hl-deed { animation: none !important; }
+  .qs-mask { animation: none !important; }
+  .qs-sheet { animation: none !important; }
 }

@@ -1,9 +1,25 @@
-<!-- 常驻心灯浮标：底部右侧悬浮，快捷点灯/签到/记一笔。不挡操作，44px+ 触控区 -->
-<view class="hl {{theme}} {{deedDoneAll ? 'all-done' : ''}}" bindtap="onTap" hover-class="hl-hover" role="button" aria-label="心灯快捷入口">
-  <view class="hl-ring"></view>
-  <text class="hl-emoji">{{checkedIn ? '🪔' : '🕯'}}</text>
-  <text class="hl-num">{{merit}}</text>
-  <view wx:if="{{streak>=3}}" class="hl-streak">🔥{{streak}}</view>
-  <!-- 本日三善已成：金色呼吸小标，强化日常仪式感 -->
-  <view wx:if="{{deedDoneAll}}" class="hl-deed">三善成</view>
+<!-- 常驻心灯浮标 + 星野快捷 BottomSheet（UX 架构 P0-a，解 B2：高频 6 项 1 跳） -->
+<view class="hl-root">
+  <view class="hl {{theme}} {{deedDoneAll ? 'all-done' : ''}}" bindtap="onTap" hover-class="hl-hover" role="button" aria-label="心灯快捷入口">
+    <view class="hl-ring"></view>
+    <text class="hl-emoji">{{checkedIn ? '🪔' : '🕯'}}</text>
+    <text class="hl-num">{{merit}}</text>
+    <view wx:if="{{streak>=3}}" class="hl-streak">🔥{{streak}}</view>
+    <!-- 本日三善已成：金色呼吸小标，强化日常仪式感 -->
+    <view wx:if="{{deedDoneAll}}" class="hl-deed">三善成</view>
+  </view>
+
+  <!-- 星野快捷 BottomSheet：任何页面一键直达高频动作 -->
+  <view class="qs-mask" wx:if="{{quickOpen}}" bindtap="closeQuick">
+    <view class="qs-sheet" catchtap="noop" role="dialog" aria-label="星野快捷">
+      <view class="qs-title">星野快捷</view>
+      <view class="qs-grid">
+        <view class="qs-item" wx:for="{{quickItems}}" wx:key="label" data-item="{{item}}" bindtap="quickGo">
+          <text class="qs-ic">{{item.icon}}</text>
+          <text class="qs-tx">{{item.label}}</text>
+        </view>
+      </view>
+      <view class="qs-close" bindtap="closeQuick">收起</view>
+    </view>
+  </view>
 </view>

@@ -1,0 +1,24 @@
+/* contextual-reco：峰值单件结缘推荐卡，令牌驱动，明暗自适应（解 B5） */
+.reco {
+  display: flex; align-items: center; gap: 18rpx;
+  margin: 20rpx 24rpx 0;
+  padding: 22rpx 24rpx;
+  background: var(--reco-card-bg, var(--card));
+  border: 1rpx solid var(--reco-card-border, rgba(200,163,90,.28));
+  border-radius: 24rpx;
+  box-shadow: var(--shadow-1);
+}
+.reco-hover { background: var(--gold-soft); }
+.reco-ic { font-size: 48rpx; flex: none; }
+.reco-body { flex: 1; min-width: 0; }
+.reco-tag {
+  display: inline-block; font-size: 20rpx; color: var(--gold-deep);
+  background: var(--gold-soft); border-radius: 999rpx; padding: 2rpx 14rpx; margin-bottom: 8rpx;
+}
+.reco-name { font-size: 28rpx; font-weight: 700; color: var(--fg); }
+.reco-desc { font-size: 23rpx; color: var(--fg-3); margin-top: 4rpx; line-height: 1.6; }
+.reco-cta {
+  flex: none; font-size: 26rpx; font-weight: 700; color: var(--gold-deep);
+  background: var(--flow-cta-bg, var(--gold-grad)); color: #3a2c10;
+  border-radius: 999rpx; padding: 14rpx 24rpx;
+}

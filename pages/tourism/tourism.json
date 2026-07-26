@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "contextual-reco": "/components/contextual-reco/contextual-reco"
+  },
   "navigationBarTitleText": "文旅研学"
 }

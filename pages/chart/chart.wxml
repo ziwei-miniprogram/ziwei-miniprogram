@@ -48,6 +48,9 @@
 
   <!-- 二十八宿星图：修行进度可视化 -->
   <star-map lit="{{starLit}}" glow="{{starGlow}}" theme="{{theme}}"/>
+
+  <!-- 峰值 ContextualCta（UX 架构 P0-d，L4）：星图点亮后顺手结缘 -->
+  <contextual-reco emoji="🔭" tag="星图点亮后 · 顺手结缘" name="星图系列 · 夜灯 / 丝巾" desc="把今日的星图，化作床头的一盏温柔夜灯" url="/pages/mall/mall" cta="去结缘" />
 </view>
 <heart-lamp/>
 <template is="whimsyFx"/>

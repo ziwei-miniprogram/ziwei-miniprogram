@@ -29,7 +29,7 @@ function load() {
     const s = wx.getStorageSync(KEY);
     if (s && typeof s === 'object') return s;
   } catch (e) {}
-  return { checked: [], coupons: {}, priorityPass: null, shares: { date: '', count: 0, items: [] } };
+  return { checked: [], remote: {}, coupons: {}, priorityPass: null, shares: { date: '', count: 0, items: [] } };
 }
 function save(s) {
   try { wx.setStorageSync(KEY, s); } catch (e) {}
@@ -40,12 +40,15 @@ function isChecked(cityId) {
 }
 
 // 到访打卡：点亮城市 + 发折扣券（默认偏置，免领取）+ 给优先购资格（损失框架）
-function checkIn(cityId) {
+// opts.remote=true 表示「遥寄祝福」（不在当地也能守护，与远程祈福定位一致，解 B6 GPS 硬门槛）
+function checkIn(cityId, opts) {
   const s = load();
   if (s.checked.indexOf(cityId) >= 0) {
     return { ok: false, reason: 'already' };
   }
+  const remote = !!(opts && opts.remote);
   s.checked.push(cityId);
+  s.remote[cityId] = remote;
   const now = Date.now();
   const city = CITIES.find(c => c.id === cityId) || {};
   const coupon = {
@@ -65,6 +68,16 @@ function checkIn(cityId) {
     coupon: coupon,
     priorityPass: s.priorityPass
   };
+}
+
+// 遥寄祝福打卡（UX 架构 P0-c，解 B6）：不在城市 1500m 内也能远程点亮，与远程祈福定位一致
+function remoteCheckIn(cityId) {
+  if (isChecked(cityId)) return { ok: false, reason: 'already' };
+  return checkIn(cityId, { remote: true });
+}
+// 某城是否以「遥寄」方式点亮（用于 UI 标记 🏮）
+function isRemote(cityId) {
+  return !!(load().remote[cityId]);
 }
 
 function progress() {
@@ -232,7 +245,7 @@ function autoCheckInByLocation(lat, lng) {
 
 module.exports = {
   CITIES, TOTAL, PRIORITY_MS, NEAR_RADIUS, SHARE_DAILY_LIMIT, SHARE_RETURN,
-  isChecked, checkIn, progress, activeCoupons, couponCount,
+  isChecked, checkIn, remoteCheckIn, isRemote, progress, activeCoupons, couponCount,
   hasPriority, priorityRemainMs, priorityRemainText, hasCoupon,
   discountCost, redeemCoupon, canPriorityBuy,
   distance, nearbyCity, autoCheckInByLocation,

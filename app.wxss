@@ -480,3 +480,22 @@ page, .page {
 .fld .lab { width: 150rpx; font-size: 26rpx; color: var(--fg-3); flex: none; }
 .fi { flex: 1; font-size: 28rpx; color: var(--fg); background: transparent; min-height: 48rpx; }
 .fi-txt { font-size: 28rpx; color: var(--fg); }
+
+/* ============================================================
+   流程组件令牌（UX 架构 P0，解 B4/B5：LoopChip / ContextualReco / BottomSheet）
+   在已有 --gold-grad / --bg-elev / --card 之上扩展，沿用双主题单一真相源。
+   ============================================================ */
+.page {
+  --flow-cta-bg: var(--gold-grad);
+  --flow-cta-fg: #2a1d05;
+  --loop-chip-bg: var(--bg-elev);
+  --loop-chip-border: rgba(200,163,90,.4);
+  --loop-chip-fg: var(--fg);
+  --reco-card-bg: var(--card);
+  --reco-card-border: rgba(200,163,90,.28);
+  --hr-space: 16rpx;
+}
+.page.dark {
+  --loop-chip-border: rgba(217,182,106,.45);
+  --reco-card-border: rgba(217,182,106,.32);
+}

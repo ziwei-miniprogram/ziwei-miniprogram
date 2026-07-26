@@ -1,0 +1,9 @@
+<view class="reco" bindtap="go" hover-class="reco-hover" role="button" aria-label="情境推荐：{{name}}">
+  <view class="reco-ic">{{emoji}}</view>
+  <view class="reco-body">
+    <view class="reco-tag" wx:if="{{tag}}">{{tag}}</view>
+    <view class="reco-name">{{name}}</view>
+    <view class="reco-desc">{{desc}}</view>
+  </view>
+  <view class="reco-cta">{{cta}} ›</view>
+</view>

@@ -30,3 +30,26 @@
   margin-top: 36rpx; font-size: 21rpx; color: var(--fg-2);
   line-height: 1.6; text-align: center;
 }
+
+/* P0-a：高频常驻（Top3 动作 1 跳直达，解 B2） */
+.pinned {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18rpx;
+  padding: 8rpx 0 12rpx;
+}
+.pin {
+  background: var(--card); border: 1rpx solid var(--border);
+  border-radius: 28rpx; padding: 30rpx 18rpx;
+  display: flex; flex-direction: column; align-items: center;
+  box-shadow: var(--shadow-md); transition: transform .15s ease;
+}
+.pin:active { transform: scale(.97); }
+.pic { width: 60rpx; height: 60rpx; margin-bottom: 14rpx; }
+.pnm { font-size: 28rpx; font-weight: 700; color: var(--fg); }
+.pds { font-size: 20rpx; color: var(--fg-2); margin-top: 4rpx; }
+
+/* P0-a：分簇 */
+.cluster { margin-top: 18rpx; }
+.cl-h {
+  font-size: 26rpx; font-weight: 700; color: var(--gold-deep);
+  margin: 18rpx 6rpx 12rpx; letter-spacing: 1rpx;
+}

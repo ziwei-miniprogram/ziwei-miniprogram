@@ -23,6 +23,7 @@ Page({
     // —— 文旅打卡 P0 ——
     cities: [],
     checkedMap: {},
+    remoteMap: {},
     checkedCount: 0,
     total: checkin.TOTAL,
     progressPct: 16,            // 虚高起点：即使 0 城也显示 16% 进度，给即时成就感
@@ -63,13 +64,15 @@ Page({
   refreshCheckin() {
     const p = checkin.progress();
     const checkedMap = {};
-    p.checked.forEach(id => { checkedMap[id] = true; });
+    const remoteMap = {};
+    p.checked.forEach(id => { checkedMap[id] = true; remoteMap[id] = checkin.isRemote(id); });
     const checkedCount = p.checkedCount;
     const shown = Math.max(1, checkedCount); // 虚高起点
     this.setData({
       cities: checkin.CITIES,
       total: checkin.TOTAL,
       checkedMap: checkedMap,
+      remoteMap: remoteMap,
       checkedCount: checkedCount,
       progressPct: Math.round(shown / checkin.TOTAL * 100),
       remain: Math.max(0, checkin.TOTAL - checkedCount),
@@ -160,6 +163,30 @@ Page({
   },
   onFilter(e) {
     this.setData({ filter: e.currentTarget.dataset.f });
+  },
+  // P0-c 遥寄祝福：不在城市 1500m 内也能远程点亮（解 B6 GPS 硬门槛），与远程祈福定位一致
+  remoteCheckInCity() {
+    const self = this;
+    const unchecked = checkin.CITIES.filter(c => !checkin.isChecked(c.id));
+    if (!unchecked.length) { wx.showToast({ title: '6 城皆已守护 ✨', icon: 'none' }); return; }
+    wx.showActionSheet({
+      itemList: unchecked.map(c => '🏮 遥寄 · ' + c.name),
+      success(r) {
+        const city = unchecked[r.tapIndex];
+        const res = checkin.remoteCheckIn(city.id);
+        if (!res.ok) { wx.showToast({ title: '这座城已点亮过', icon: 'none' }); return; }
+        self.refreshCheckin();
+        self.buildMarkers();
+        whimsy.burst(self, { text: '遥寄祝福 · 星图已点亮', emoji: '🏮' });
+        wx.showModal({
+          title: '遥寄已送达 ✨',
+          content: `你为「${city.name}」遥寄了一盏祝福灯，星图已点亮，解锁城市守护折扣 + 限定优先购资格（24h）。带这份守护，去星野好物挑一件伴手礼吧～`,
+          confirmText: '去商城',
+          cancelText: '再逛逛',
+          success: (m) => { if (m.confirm) wx.switchTab({ url: '/pages/mall/mall' }); }
+        });
+      }
+    });
   },
   book(e) {
     const t = this.data.tours[e.currentTarget.dataset.index];

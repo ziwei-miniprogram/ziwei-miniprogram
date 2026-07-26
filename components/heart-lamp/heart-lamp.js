@@ -11,7 +11,19 @@ Component({
       observer(t) { this.setData({ theme: t || 'light' }); }
     }
   },
-  data: { merit: 0, streak: 0, checkedIn: false, theme: 'light', deedDoneAll: false },
+  data: {
+    merit: 0, streak: 0, checkedIn: false, theme: 'light', deedDoneAll: false,
+    // 星野快捷 BottomSheet（UX 架构 P0-a，解 B2：高频 6 项 1 跳）
+    quickOpen: false,
+    quickItems: [
+      { icon: '🔭', label: '星图', url: '/pages/chart/chart' },
+      { icon: '🪔', label: '寄愿', url: '/pages/merit/merit?tab=wish' },
+      { icon: '🌿', label: '三善', url: '/pages/merit/merit' },
+      { icon: '🪔', label: '点灯', action: 'lamp' },
+      { icon: '🛎', label: '签到', action: 'checkin' },
+      { icon: '✍️', label: '记一笔', action: 'publish' }
+    ]
+  },
 
   pageLifetimes: {
     show() { this.sync(); }
@@ -40,18 +52,24 @@ Component({
     },
 
     onTap() {
-      const app = getApp();
-      if (!app) return;
-      const self = this;
-      wx.showActionSheet({
-        itemList: ['🪔 点亮心灯 +1 功德', '🛎 签到 +功德', '✍️ 记一笔 +8 功德'],
-        success(r) {
-          if (r.tapIndex === 0) self.doLamp(app);
-          else if (r.tapIndex === 1) self.doCheckin(app);
-          else self.goPublish();
-        }
-      });
+      // 打开「星野快捷」BottomSheet（高频 6 项 1 跳）；再次点击由 mask 收起
+      this.setData({ quickOpen: true });
     },
+
+    // BottomSheet 内单点直达
+    quickGo(e) {
+      const item = e.currentTarget.dataset.item;
+      const app = getApp();
+      if (!app) { this.setData({ quickOpen: false }); return; }
+      if (item.action === 'lamp') this.doLamp(app);
+      else if (item.action === 'checkin') this.doCheckin(app);
+      else if (item.action === 'publish') this.goPublish();
+      else if (item.url) wx.navigateTo({ url: item.url });
+      this.setData({ quickOpen: false });
+    },
+
+    closeQuick() { this.setData({ quickOpen: false }); },
+    noop() {},
 
     // 在当前页面实例上触发愉悦反馈（fx 浮层由页面渲染）
     _page() {

@@ -40,4 +40,7 @@
   </view>
 
   <view class="disclaimer">温馨提示：本平台星象、节气、抽签等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>
+
+  <!-- LoopChip：读完星语，送回主循环（解 B4） -->
+  <loop-chip items="{{loopItems}}" title="看完星语，顺手做一件" />
 </view>

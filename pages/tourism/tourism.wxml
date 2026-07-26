@@ -17,6 +17,7 @@
       <map class="cg-map" latitude="{{mapLat}}" longitude="{{mapLng}}" scale="4" markers="{{markers}}" show-location></map>
       <view class="cg-detect" bindtap="detectNearby">📍 检测附近城市（自动点亮）</view>
       <view class="cg-map-tip">授权定位后，到访城市星图将自动点亮</view>
+      <view class="cg-remote" bindtap="remoteCheckInCity">🏮 遥寄祝福（不在当地也能守护）</view>
     </view>
 
     <!-- 城市星图：已点亮高亮（虚高起点由进度条体现）-->
@@ -24,7 +25,7 @@
       <view class="cg-city {{checkedMap[item.id] ? 'on' : ''}}" wx:for="{{cities}}" wx:key="id">
         <text class="cg-star">{{item.star}}</text>
         <text class="cg-name">{{item.name}}</text>
-        <view class="cg-done" wx:if="{{checkedMap[item.id]}}">已点亮</view>
+        <view class="cg-done" wx:if="{{checkedMap[item.id]}}">{{remoteMap[item.id] ? '🏮 遥寄点亮' : '已点亮'}}</view>
       </view>
     </view>
 
@@ -53,6 +54,9 @@
     <!-- 默认偏置解锁的奖励提示 -->
     <view class="cg-reward" wx:if="{{hasReward}}">🎁 已解锁城市守护折扣 + 限定优先购资格（24h）</view>
   </view>
+
+  <!-- 峰值 ContextualCta（UX 架构 P0-d，解 B5）：点亮城市后顺手结缘 -->
+  <contextual-reco emoji="🧊" tag="点亮城市后 · 顺手结缘" name="城市守护 · 星空冰箱贴" desc="把点亮的城市星图，贴在冰箱上日日相伴" url="/pages/mall/mall" cta="去结缘" />
 
   <!-- P2：城市守护榜（本地社会证明，从众驱动复访打卡）-->
   <view class="guard-board">

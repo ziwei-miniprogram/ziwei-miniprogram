@@ -1,0 +1,10 @@
+<view class="loop-wrap" wx:if="{{items.length}}">
+  <view class="loop-title" wx:if="{{title}}">{{title}}</view>
+  <view class="loop-row">
+    <button class="loop-chip" wx:for="{{items}}" wx:key="url"
+      data-url="{{item.url}}" bindtap="onTap" hover-class="lc-hover">
+      <text class="lc-ic">{{item.icon}}</text>
+      <text class="lc-tx">{{item.label}}</text>
+    </button>
+  </view>
+</view>

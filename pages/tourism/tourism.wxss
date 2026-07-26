@@ -104,6 +104,11 @@
   font-size: 24rpx; background: linear-gradient(135deg, var(--gold), #e0c489); color: #3a2c10; font-weight: 600; }
 .cg-detect:active { filter: brightness(.96); }
 .cg-map-tip { font-size: 20rpx; color: var(--fg-2); margin-top: 10rpx; text-align: center; }
+/* P0-c 遥寄祝福：与 detect 并排的温柔入口（解 B6 GPS 硬门槛） */
+.cg-remote { margin-top: 12rpx; text-align: center; padding: 18rpx 0; border-radius: 999rpx;
+  font-size: 24rpx; background: var(--gold-soft); color: var(--gold-deep); font-weight: 600;
+  border: 1rpx solid rgba(200,163,90,.4); }
+.cg-remote:active { background: var(--gold-tint); }
 
 /* 尊重系统「减少动态效果」偏好 */
 @media (prefers-reduced-motion: reduce) {

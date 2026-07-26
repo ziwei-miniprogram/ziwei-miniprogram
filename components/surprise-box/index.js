@@ -4,6 +4,26 @@
 // 合规：星礼为虚拟功德（非金钱、不可提现）；内容均为传统文化与心理慰藉的娱乐参考。
 const daily = require('../../utils/daily-content.js');
 
+// 盲盒揭晓峰值情境推荐（UX 架构 P0-d，解 B5）：按当日节气映射一件顺时结缘物
+const TERM_RECO = {
+  '夏至': { emoji: '☀️', name: '节气香 · 夏至长明', desc: '白昼最长，心灯亦长明' },
+  '小暑': { emoji: '🌿', name: '节气香 · 小暑静气', desc: '暑气渐盛，先静一口气' },
+  '大暑': { emoji: '🌿', name: '节气香 · 大暑清宁', desc: '一味线香，安住当下燥热' },
+  '立秋': { emoji: '🍂', name: '节气香 · 立秋收心', desc: '把夏日的喧闹，收进一支香里' },
+  '处暑': { emoji: '🍂', name: '节气香 · 处暑清凉', desc: '暑气止息，心亦清凉' },
+  '白露': { emoji: '🌼', name: '节气香 · 白露润心', desc: '露从今夜白，香自静中生' }
+};
+function buildReco(box) {
+  const m = TERM_RECO[box.term];
+  const base = { tag: '星礼结缘', url: '/pages/mall/mall', cta: '去结缘' };
+  if (m) return Object.assign(base, m);
+  return Object.assign(base, {
+    emoji: '🪔',
+    name: box.term + ' · 顺时结缘物',
+    desc: '把今日星礼的祝福，带一件回家'
+  });
+}
+
 Component({
   properties: {
     visible: { type: Boolean, value: false }
@@ -12,12 +32,13 @@ Component({
     phase: 'closed',   // closed → opening → revealed
     box: null,
     burst: [],
-    reduce: false
+    reduce: false,
+    reco: null
   },
   observers: {
     visible(v) {
       if (v) this.prep();
-      else this.setData({ phase: 'closed', box: null });
+      else this.setData({ phase: 'closed', box: null, reco: null });
     }
   },
   methods: {
@@ -29,6 +50,7 @@ Component({
         if (setting && setting.reduceMotion === 'reduce') reduce = true;
       } catch (e) {}
       const box = daily.getSurprise();
+      const reco = buildReco(box);
       const burst = [];
       for (let i = 0; i < 16; i++) {
         const ang = (Math.PI * 2 * i) / 16;
@@ -39,7 +61,7 @@ Component({
           d: (Math.random() * 0.35).toFixed(2)
         });
       }
-      this.setData({ phase: reduce ? 'revealed' : 'closed', box, burst, reduce });
+      this.setData({ phase: reduce ? 'revealed' : 'closed', box, burst, reduce, reco });
     },
     onTapBox() {
       if (this.data.phase !== 'closed') return;
