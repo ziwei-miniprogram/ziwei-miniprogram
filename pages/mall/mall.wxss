@@ -16,3 +16,11 @@
 .pd .mtag { font-size: 20rpx; color: var(--gold-deep); background: var(--gold-tint); padding: 2rpx 12rpx; border-radius: 8rpx; }
 .pd .sl { font-size: 22rpx; color: var(--fg-2); margin-top: 10rpx; }
 .pd .buy { margin-top: 16rpx; background: var(--gold); color: #fff; text-align: center; border-radius: 999rpx; padding: 18rpx; font-size: 26rpx; }
+
+/* ===== 文旅打卡 P0：折扣券 / 优先购提示条（令牌驱动，明暗自适应）===== */
+.coupon-strip { margin: 12rpx 24rpx 4rpx; font-size: 22rpx; color: var(--gold-deep);
+  background: var(--gold-soft); border: 1rpx solid rgba(200, 163, 90, .22);
+  border-radius: 14rpx; padding: 14rpx 20rpx; line-height: 1.6; }
+.priority-strip { margin: 4rpx 24rpx 0; font-size: 22rpx; color: #fff;
+  background: linear-gradient(135deg, #c8a35a, #8a6a2a); border-radius: 14rpx; padding: 14rpx 20rpx; }
+.pd .badge-prio { background: linear-gradient(135deg, #c8a35a, #8a6a2a); color: #fff; font-weight: 700; }
