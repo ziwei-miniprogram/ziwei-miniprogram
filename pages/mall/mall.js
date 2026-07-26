@@ -13,6 +13,41 @@ function buildSaleMap() {
   return { 1: now + 60 * 1000, 4: now + 5 * 60 * 1000 };
 }
 
+// P2：用行为信号驱动「为你结缘」推荐区（解 B5 商城内容驱动）
+// 信号：星图点亮数(由 merit 推导) / 寄愿(my_wish) / 三善(getDailyDeeds) / 连签(streak)
+// 返回一个最多 3 张、按类目去重的个性化推荐（命中优先、其次默认回退）
+function buildReco(app) {
+  const merit = app.globalData.merit || 0;
+  const starLit = Math.max(0, Math.min(28, Math.floor(merit / 2000 * 28)));
+  let wish = '';
+  try { wish = wx.getStorageSync('my_wish') || ''; } catch (e) {}
+  const deeds = app.getDailyDeeds() || {};
+  const didDeed = Object.keys(deeds).length > 0;
+  const streak = app.globalData.streak || 0;
+
+  const ALL = [
+    { emoji: '🏮', tag: '寄愿结缘', name: '寄愿·暖月香薰', desc: '为你许下的星愿，配一盏静心灯', cat: '香薰', hit: !!wish },
+    { emoji: '📿', tag: '疗愈三善', name: '静心好书 · 抄经', desc: '今日善行已落，配一笔静好', cat: '书籍', hit: didDeed },
+    { emoji: '💎', tag: '星图系列', name: '二十八宿夜灯', desc: '星图已亮，结缘星夜同款', cat: '水晶', hit: starLit > 0 },
+    { emoji: '🪷', tag: '城市守护', name: '星辉结缘 · 念珠', desc: '连签守护，带一份陪伴回家', cat: '文创', hit: streak > 0 },
+    { emoji: '🌙', tag: '节气疗愈', name: '睡前冥想 21 天', desc: '顺时而养，静心陪伴', cat: '课程', hit: true }
+  ];
+  const hits = ALL.filter(r => r.hit);
+  const rest = ALL.filter(r => !r.hit);
+  const picked = [];
+  const seen = {};
+  hits.concat(rest).forEach((r) => {
+    if (picked.length >= 3) return;
+    if (seen[r.cat]) return;
+    seen[r.cat] = true;
+    picked.push(r);
+  });
+  return picked;
+}
+
+// P2：功德 sink 多样 —— 用功德点亮虚拟「长明祈福灯」（纪念结缘，非商品）
+const MERIT_LAMP_COST = 30;
+
 Page({
   behaviors: [require('../../behaviors/themeable.js')],
   data: {
@@ -29,7 +64,12 @@ Page({
     // —— P2：晒单返星屑 ——
     shareReturn: checkin.SHARE_RETURN,
     sharedTitles: [],
-    shareRemain: checkin.SHARE_DAILY_LIMIT
+    shareRemain: checkin.SHARE_DAILY_LIMIT,
+    // —— P2：内容驱动推荐区 + 功德结缘 sink ——
+    reco: [],
+    meritBalance: 0,
+    meritLampCost: MERIT_LAMP_COST,
+    meritLampLit: false
   },
   onLoad() {
     const saleMap = buildSaleMap();
@@ -44,6 +84,14 @@ Page({
   onShow() {
     this.refreshShared();
     this.refreshCheckin();
+    const app = getApp();
+    let lit = false;
+    try { lit = !!wx.getStorageSync('merit_lamp_lit'); } catch (e) {}
+    this.setData({
+      reco: buildReco(app),
+      meritBalance: app.globalData.merit,
+      meritLampLit: lit
+    });
   },
   // P2：同步已晒单集合 + 今日剩余晒单额度
   refreshShared() {
@@ -169,6 +217,40 @@ Page({
       confirmText: '去星图',
       cancelText: '留在本页',
       success: (m) => { if (m.confirm) wx.switchTab({ url: '/pages/tourism/tourism' }); }
+    });
+  },
+  // P2：内容驱动推荐区 —— 点击推荐卡片按类目筛选并滚动到商品流
+  onRecoTap(e) {
+    const cat = e.currentTarget.dataset.cat;
+    this.setData({ cat });
+    this.buildList();
+    wx.pageScrollTo({ selector: '.feed', duration: 300 });
+  },
+  // P2：功德 sink 多样 —— 用功德点亮虚拟「长明祈福灯」（纪念结缘，零金钱）
+  lightLamp() {
+    const app = getApp();
+    if (app.globalData.merit < MERIT_LAMP_COST) {
+      wx.showModal({
+        title: '功德还差一点',
+        content: `点亮长明祈福灯需 ${MERIT_LAMP_COST} 功德，当前 ${app.globalData.merit}。去星野做几件「日行一善」就能攒够，无需花钱～`,
+        confirmText: '去积功德',
+        success: (r) => { if (r.confirm) wx.navigateTo({ url: '/pages/merit/merit' }); }
+      });
+      return;
+    }
+    wx.showModal({
+      title: '点亮长明祈福灯',
+      content: `用 ${MERIT_LAMP_COST} 功德点亮一盏虚拟祈福灯（纪念结缘，零金钱交易）。愿被你点亮的，也被世界温柔以待。`,
+      confirmText: '点亮',
+      success: (r) => {
+        if (r.confirm && app.spendMerit(MERIT_LAMP_COST)) {
+          wx.showToast({ title: `已点亮 · -${MERIT_LAMP_COST} 功德`, icon: 'none' });
+          social.log(`用 ${MERIT_LAMP_COST} 功德点亮了长明祈福灯`, '/pages/mall/mall');
+          whimsy.burst(this, { text: '祈福灯长明 ✨', emoji: '🪔' });
+          try { wx.setStorageSync('merit_lamp_lit', true); } catch (e) {}
+          this.setData({ meritBalance: app.globalData.merit, meritLampLit: true });
+        }
+      }
     });
   }
 });

@@ -32,3 +32,33 @@
   border: 1rpx solid rgba(200, 163, 90, .3); border-radius: 999rpx; padding: 14rpx; }
 .pd .share-btn:active { filter: brightness(.97); }
 .pd .share-btn.done { color: var(--fg-2); background: var(--bg-elev); border-color: var(--border); font-weight: 500; }
+
+/* ===== P2：内容驱动推荐区「为你结缘」（复用 contextual-reco 令牌视觉，令牌驱动）===== */
+.reco-zone { margin: 18rpx 24rpx 0; }
+.reco-z-h { font-size: 26rpx; font-weight: 700; color: var(--fg); margin: 8rpx 0 12rpx; }
+.mj-reco { display: flex; align-items: center; gap: 18rpx; margin-bottom: 14rpx;
+  padding: 22rpx 24rpx; background: var(--reco-card-bg, var(--card));
+  border: 1rpx solid var(--reco-card-border, rgba(200, 163, 90, .28));
+  border-radius: 24rpx; box-shadow: var(--shadow-1); }
+.mj-reco-hover { background: var(--gold-soft); }
+.mj-reco-ic { font-size: 48rpx; flex: none; }
+.mj-reco-body { flex: 1; min-width: 0; }
+.mj-reco-tag { display: inline-block; font-size: 20rpx; color: var(--gold-deep);
+  background: var(--gold-soft); border-radius: 999rpx; padding: 2rpx 14rpx; margin-bottom: 8rpx; }
+.mj-reco-name { font-size: 28rpx; font-weight: 700; color: var(--fg); }
+.mj-reco-desc { font-size: 23rpx; color: var(--fg-3); margin-top: 4rpx; line-height: 1.6; }
+.mj-reco-go { flex: none; font-size: 26rpx; font-weight: 700; color: var(--gold-deep);
+  background: var(--flow-cta-bg, var(--gold-grad)); color: #3a2c10;
+  border-radius: 999rpx; padding: 14rpx 24rpx; }
+
+/* ===== P2：功德 sink 多样 —— 长明祈福灯（令牌驱动，明暗自适应）===== */
+.merit-lamp { margin: 18rpx 24rpx 0; display: flex; align-items: center; gap: 18rpx;
+  padding: 20rpx 24rpx; background: var(--bg-elev); border: 1rpx solid var(--border);
+  border-radius: 24rpx; box-shadow: var(--shadow-sm); }
+.merit-lamp:active { filter: brightness(.98); }
+.ml-ic { font-size: 44rpx; flex: none; }
+.ml-body { flex: 1; min-width: 0; }
+.ml-t { font-size: 27rpx; font-weight: 700; color: var(--fg); }
+.ml-s { font-size: 22rpx; color: var(--fg-3); margin-top: 4rpx; line-height: 1.6; }
+.ml-btn { flex: none; font-size: 26rpx; font-weight: 700; color: #3a2c10;
+  background: var(--flow-cta-bg, var(--gold-grad)); border-radius: 999rpx; padding: 14rpx 28rpx; }

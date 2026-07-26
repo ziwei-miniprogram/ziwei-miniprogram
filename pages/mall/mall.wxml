@@ -5,6 +5,30 @@
   <view class="coupon-strip" wx:if="{{couponCount > 0}}">🎁 已点亮 {{couponCount}} 座城市守护 · 全场兑换 9 折自动抵扣</view>
   <view class="priority-strip" wx:if="{{hasPriority}}">⏳ 限定优先购生效中 · 剩 {{priorityText}}（到点失效）</view>
 
+  <!-- P2：内容驱动推荐区（依星图/寄愿/三善/连签行为信号） -->
+  <view class="reco-zone">
+    <view class="reco-z-h">为你结缘 · 依你的星野足迹</view>
+    <view class="mj-reco" wx:for="{{reco}}" wx:key="cat" data-cat="{{item.cat}}" bindtap="onRecoTap" hover-class="mj-reco-hover">
+      <view class="mj-reco-ic">{{item.emoji}}</view>
+      <view class="mj-reco-body">
+        <view class="mj-reco-tag">{{item.tag}}</view>
+        <view class="mj-reco-name">{{item.name}}</view>
+        <view class="mj-reco-desc">{{item.desc}}</view>
+      </view>
+      <view class="mj-reco-go">去看看 ›</view>
+    </view>
+  </view>
+
+  <!-- P2：功德 sink 多样 —— 用功德点亮虚拟长明祈福灯 -->
+  <view class="merit-lamp" bindtap="lightLamp">
+    <view class="ml-ic">🪔</view>
+    <view class="ml-body">
+      <view class="ml-t">{{meritLampLit ? '长明祈福灯已点亮 · 可再点' : '用功德点亮长明祈福灯'}}</view>
+      <view class="ml-s">当前 {{meritBalance}} 功德 · 点亮一盏虚拟结缘灯（纪念），- {{meritLampCost}} 功德</view>
+    </view>
+    <view class="ml-btn">点亮</view>
+  </view>
+
   <scroll-view class="cats" scroll-x>
     <view class="cat {{cat===item?'on':''}}" wx:for="{{cats}}" wx:key="*this" data-c="{{item}}" bindtap="switchCat">{{item}}</view>
   </scroll-view>
