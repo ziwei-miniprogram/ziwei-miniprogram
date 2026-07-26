@@ -33,7 +33,7 @@ git push -u origin feat/my-feature
 - 至少 1 人评审通过；CI（见 §7）必须通过。
 - `main` 分支保护（GitHub → Settings → Branches）：
   - ✅ Require a pull request before merging
-  - ✅ Require status checks to pass → 勾选 **validate**（即 CI 的「语法与安全校验」job）
+  - ✅ Require status checks to pass → 勾选 **validate**（CI 的 `语法与安全校验` job），若启用小程序编译则再勾 **miniprogram-build**
   - ❌ 取消 "Allow force pushes" / "Allow deletions"
 
 ## 5. 回滚与恢复
@@ -49,17 +49,30 @@ git switch -c feat/x origin/main        # 新建特性分支
 ```
 
 ## 7. CI（持续集成）
-
-配置文件：`.github/workflows/ci.yml`，在 **push 到 `main`** 与 **PR 到 `main`** 时自动运行，单 job `validate`，步骤：
-
-1. **JS 语法校验** —— 对所有已跟踪 `.js` 跑 `node --check`（含 `pages/`、`components/`、`utils/`、`carousel/`、`cloudfunctions/`）。
-2. **JSON 合法性校验** —— 所有 `.json` 配置 `JSON.parse` 校验（页面/组件配置、`project.config.json`、`sitemap.json`、`carousel/*.json`）。
-3. **Python 编译校验** —— `carousel/*.py` 跑 `python3 -m py_compile`。
-4. **密钥扫描** —— 对源码扩展名（`.js/.json/.wxml/.wxss/.py`）正则扫描疑似硬编码密钥（`api_key`/`secret`/`token`/`password` 且值为 ≥12 字符引号串），命中即失败。
-- 校验范围基于 `git ls-files`（已跟踪文件），不碰 `.gitignore` 忽略项。
-- 任一环节失败，PR 的 status check **validate** 即标红，阻断合并。
-- 本地预演（等价 CI 逻辑）：
+配置文件：`.github/workflows/ci.yml`，在 **push 到 `main`** 与 **PR 到 `main`** 时自动运行。
+- **`validate` job（必跑）**，基于 `git ls-files`（已跟踪文件）：
+  1. **JS 语法校验** —— 对所有已跟踪 `.js` 跑 `node --check`（含 `pages/`、`components/`、`utils/`、`carousel/`、`cloudfunctions/`）。
+  2. **JSON 合法性校验** —— 所有 `.json` 配置 `JSON.parse` 校验。
+  3. **Python 编译校验** —— `carousel/*.py` 跑 `python3 -m py_compile`。
+  4. **密钥扫描** —— 对源码扩展名（`.js/.json/.wxml/.wxss/.py`）正则扫描疑似硬编码密钥（`api_key`/`secret`/`token`/`password` 且值为 ≥12 字符引号串），命中即失败。
+- **`miniprogram-build` job（可选）**：见 §8，需配置微信小程序 Secret 才运行。
+- 任一环节失败，PR 的 status check 即标红，阻断合并。
+- 本地预演（等价 `validate` 逻辑）：
   ```bash
-  node -e 'const cp=require("child_process");const out=cp.execSync("git ls-files -- '*.js' '*.json'").toString();for(const f of out.trim().split("\n")){require("fs").existsSync(f)&&cp.spawnSync("node",["--check",f])}'
+  node -e 'const cp=require("child_process");for(const f of cp.execSync("git ls-files -- \*.js \*.json").toString().trim().split("\n")){cp.spawnSync("node",["--check",f])}'
   ```
 
+## 8. 小程序编译校验（可选）
+`miniprogram-build` job 用官方 `miniprogram-ci` 对工程做真实编译预览校验，比单纯语法检查更权威。它通过 **GitHub Secrets** 驱动，不把敏感信息入库：
+1. 微信公众平台 → 开发管理 → 开发设置 → 生成「上传代码密钥」（private key 文件）。
+2. 仓库 **Settings → Secrets and variables → Actions → New repository secret**：
+   - `WX_APPID` = 小程序 appid
+   - `WX_PRIVATE_KEY` = private key 文件全文
+3. 配置后，PR / 推送会自动跑 `miniprogram-ci preview`；**未配置则 job 自动跳过**，不影响合并。
+4. 私钥仅存在于 Secrets 与 runner 临时文件（`chmod 600`，job 结束即销毁），仓库内 `.gitignore` 已忽略 `*.key` / `private.key`。
+
+## 9. 新项目一键初始化
+`scripts/init-miniprogram-repo.sh` 把本仓库的整套流程（git init + .gitignore + 规范 + PR 模板 + CI）Self-contained 封装，新小程序项目一行命令即可套用，保证团队流程一致。详见 `scripts/README.md`。
+```bash
+bash scripts/init-miniprogram-repo.sh /path/to/new-miniprogram
+```
