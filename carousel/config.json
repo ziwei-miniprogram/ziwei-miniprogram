@@ -1,0 +1,22 @@
+{
+  "project": "星野漫游",
+  "target_url": "",
+  "use_seed": true,
+  "seed_file": "seed-content.json",
+  "brand": {
+    "paper": "#f7f5f0",
+    "gold": "#c8a35a",
+    "gold_light": "#e0c489",
+    "night1": "#0B1426",
+    "night2": "#16243f",
+    "ink": "#5a4a2e",
+    "ink_soft": "#9a7b3e"
+  },
+  "slide": { "width": 768, "height": 1376, "format": "jpg" },
+  "platforms": ["tiktok", "instagram"],
+  "cadence": "daily",
+  "auto_music": true,
+  "privacy": "PUBLIC_TO_EVERYONE",
+  "gemini_model": "gemini-3.1-flash-image-preview",
+  "disclaimer": "温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。"
+}

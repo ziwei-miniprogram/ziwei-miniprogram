@@ -1,0 +1,44 @@
+[
+  {
+    "index": 1,
+    "role": "HOOK",
+    "headline": "你有没有过那种，说不清但就是丧的晚上？",
+    "visual_direction": "深蓝星空 + 一盏暖灯，大字左对齐",
+    "gemini_prompt": "Vertical 9:16 social-media carousel illustration, Chinese traditional-culture healing aesthetic, calm and poetic. Palette: warm paper #f7f5f0, star-gold #c8a35a, light gold #e0c489, deep night blue #0B1426 to #16243f. Scene: 深蓝星空 + 一盏暖灯，大字左对齐. Mood for slide role 'HOOK': serene, mystical, hopeful, starry-night with a single warm lantern. Composition: clean negative space at bottom 20% (leave empty, no text there), main subject upper-center, soft golden glow, ink-wash meets modern minimal. High detail, no text, no letters, no watermarks, no human faces in close-up. The headline to overlay later (do NOT draw it): 「你有没有过那种，说不清但就是丧的晚上？」"
+  },
+  {
+    "index": 2,
+    "role": "PROBLEM",
+    "headline": "不是矫情。是情绪没有出口，白天撑着，深夜反扑。",
+    "visual_direction": "一个人坐在窗边的剪影，星点漂浮",
+    "gemini_prompt": "Vertical 9:16 social-media carousel illustration, Chinese traditional-culture healing aesthetic, calm and poetic. Palette: warm paper #f7f5f0, star-gold #c8a35a, light gold #e0c489, deep night blue #0B1426 to #16243f. Scene: 一个人坐在窗边的剪影，星点漂浮. Mood for slide role 'PROBLEM': serene, mystical, hopeful, starry-night with a single warm lantern. Composition: clean negative space at bottom 20% (leave empty, no text there), main subject upper-center, soft golden glow, ink-wash meets modern minimal. High detail, no text, no letters, no watermarks, no human faces in close-up. The headline to overlay later (do NOT draw it): 「不是矫情。是情绪没有出口，白天撑着，深夜反扑。」"
+  },
+  {
+    "index": 3,
+    "role": "AGITATION",
+    "headline": "越刷手机越空——信息填不满心里的洞。",
+    "visual_direction": "手机屏幕里漏出星沙流走，隐喻空虚",
+    "gemini_prompt": "Vertical 9:16 social-media carousel illustration, Chinese traditional-culture healing aesthetic, calm and poetic. Palette: warm paper #f7f5f0, star-gold #c8a35a, light gold #e0c489, deep night blue #0B1426 to #16243f. Scene: 手机屏幕里漏出星沙流走，隐喻空虚. Mood for slide role 'AGITATION': serene, mystical, hopeful, starry-night with a single warm lantern. Composition: clean negative space at bottom 20% (leave empty, no text there), main subject upper-center, soft golden glow, ink-wash meets modern minimal. High detail, no text, no letters, no watermarks, no human faces in close-up. The headline to overlay later (do NOT draw it): 「越刷手机越空——信息填不满心里的洞。」"
+  },
+  {
+    "index": 4,
+    "role": "SOLUTION",
+    "headline": "古人不硬扛。他们用「每日一件小事」安顿自己。",
+    "visual_direction": "卷轴展开，三件小事如星点列开",
+    "gemini_prompt": "Vertical 9:16 social-media carousel illustration, Chinese traditional-culture healing aesthetic, calm and poetic. Palette: warm paper #f7f5f0, star-gold #c8a35a, light gold #e0c489, deep night blue #0B1426 to #16243f. Scene: 卷轴展开，三件小事如星点列开. Mood for slide role 'SOLUTION': serene, mystical, hopeful, starry-night with a single warm lantern. Composition: clean negative space at bottom 20% (leave empty, no text there), main subject upper-center, soft golden glow, ink-wash meets modern minimal. High detail, no text, no letters, no watermarks, no human faces in close-up. The headline to overlay later (do NOT draw it): 「古人不硬扛。他们用「每日一件小事」安顿自己。」"
+  },
+  {
+    "index": 5,
+    "role": "FEATURE",
+    "headline": "星野的「每日三善」：点灯 · 随喜 · 静心，3 分钟清零情绪。",
+    "visual_direction": "三善卡片式展示（灯/手/月）",
+    "gemini_prompt": "Vertical 9:16 social-media carousel illustration, Chinese traditional-culture healing aesthetic, calm and poetic. Palette: warm paper #f7f5f0, star-gold #c8a35a, light gold #e0c489, deep night blue #0B1426 to #16243f. Scene: 三善卡片式展示（灯/手/月）. Mood for slide role 'FEATURE': serene, mystical, hopeful, starry-night with a single warm lantern. Composition: clean negative space at bottom 20% (leave empty, no text there), main subject upper-center, soft golden glow, ink-wash meets modern minimal. High detail, no text, no letters, no watermarks, no human faces in close-up. The headline to overlay later (do NOT draw it): 「星野的「每日三善」：点灯 · 随喜 · 静心，3 分钟清零情绪。」"
+  },
+  {
+    "index": 6,
+    "role": "CTA",
+    "headline": "今晚，点你今年的第一盏心灯 🪔 进小程序，从一件小事开始。",
+    "visual_direction": "暖灯特写 + 小程序入口隐喻",
+    "gemini_prompt": "Vertical 9:16 social-media carousel illustration, Chinese traditional-culture healing aesthetic, calm and poetic. Palette: warm paper #f7f5f0, star-gold #c8a35a, light gold #e0c489, deep night blue #0B1426 to #16243f. Scene: 暖灯特写 + 小程序入口隐喻. Mood for slide role 'CTA': serene, mystical, hopeful, starry-night with a single warm lantern. Composition: clean negative space at bottom 20% (leave empty, no text there), main subject upper-center, soft golden glow, ink-wash meets modern minimal. High detail, no text, no letters, no watermarks, no human faces in close-up. The headline to overlay later (do NOT draw it): 「今晚，点你今年的第一盏心灯 🪔 进小程序，从一件小事开始。」"
+  }
+]
