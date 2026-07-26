@@ -10,28 +10,30 @@
   </scroll-view>
 
   <view class="feed">
-    <view class="col">
-      <view class="pd" wx:for="{{list}}" wx:key="id" wx:if="{{index % 2 === 0}}" data-index="{{index}}" bindtap="exchange">
-        <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.badgeCls}}" wx:if="{{item.badgeText}}">{{item.badgeText}}</view></view>
-        <view class="body">
-          <view class="tt">{{item.title}}</view>
-          <view class="pr"><text class="price">{{item.cost}} 功德</text><text class="mtag" wx:if="{{item.meritTag}}">{{item.meritTag}}</text></view>
-          <view class="sl">{{item.sales}}</view>
-          <view class="buy">立即购买</view>
+      <view class="col">
+        <view class="pd" wx:for="{{list}}" wx:key="id" wx:if="{{index % 2 === 0}}" data-index="{{index}}" bindtap="exchange">
+          <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.badgeCls}}" wx:if="{{item.badgeText}}">{{item.badgeText}}</view></view>
+          <view class="body">
+            <view class="tt">{{item.title}}</view>
+            <view class="pr"><text class="price">{{item.cost}} 功德</text><text class="mtag" wx:if="{{item.meritTag}}">{{item.meritTag}}</text></view>
+            <view class="sl">{{item.sales}}</view>
+            <view class="buy">立即购买</view>
+            <view class="share-btn {{item.shared ? 'done' : ''}}" wx:if="{{item.shareable}}" data-index="{{index}}" catchtap="doShare">{{item.shared ? '已晒单' : '晒单 +' + shareReturn + ' 功德'}}</view>
+          </view>
         </view>
       </view>
-    </view>
-    <view class="col">
-      <view class="pd" wx:for="{{list}}" wx:key="id" wx:if="{{index % 2 === 1}}" data-index="{{index}}" bindtap="exchange">
-        <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.badgeCls}}" wx:if="{{item.badgeText}}">{{item.badgeText}}</view></view>
-        <view class="body">
-          <view class="tt">{{item.title}}</view>
-          <view class="pr"><text class="price">{{item.cost}} 功德</text><text class="mtag" wx:if="{{item.meritTag}}">{{item.meritTag}}</text></view>
-          <view class="sl">{{item.sales}}</view>
-          <view class="buy">立即购买</view>
+      <view class="col">
+        <view class="pd" wx:for="{{list}}" wx:key="id" wx:if="{{index % 2 === 1}}" data-index="{{index}}" bindtap="exchange">
+          <view class="img" style="background:{{item.bg}}">{{item.cover}}<view class="badge {{item.badgeCls}}" wx:if="{{item.badgeText}}">{{item.badgeText}}</view></view>
+          <view class="body">
+            <view class="tt">{{item.title}}</view>
+            <view class="pr"><text class="price">{{item.cost}} 功德</text><text class="mtag" wx:if="{{item.meritTag}}">{{item.meritTag}}</text></view>
+            <view class="sl">{{item.sales}}</view>
+            <view class="buy">立即购买</view>
+            <view class="share-btn {{item.shared ? 'done' : ''}}" wx:if="{{item.shareable}}" data-index="{{index}}" catchtap="doShare">{{item.shared ? '已晒单' : '晒单 +' + shareReturn + ' 功德'}}</view>
+          </view>
         </view>
       </view>
-    </view>
   </view>
   <view class="disclaimer">商城好物以功德兑换，零金钱交易；功德不可购、不可提现、不可兑。本平台内容仅供娱乐参考，请勿迷信。</view>
 </view>

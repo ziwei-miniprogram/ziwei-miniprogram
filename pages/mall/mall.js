@@ -23,7 +23,11 @@ Page({
     couponCount: 0,
     hasPriority: false,
     priorityText: '0:00:00',
-    saleMap: {}
+    saleMap: {},
+    // —— P2：晒单返星屑 ——
+    shareReturn: checkin.SHARE_RETURN,
+    sharedTitles: [],
+    shareRemain: checkin.SHARE_DAILY_LIMIT
   },
   onLoad() {
     const saleMap = buildSaleMap();
@@ -39,7 +43,14 @@ Page({
     const app = getApp();
     app.applyTheme();
     this.setData({ theme: app.getTheme() });
+    this.refreshShared();
     this.refreshCheckin();
+  },
+  // P2：同步已晒单集合 + 今日剩余晒单额度
+  refreshShared() {
+    const shared = checkin.sharesSnapshot();
+    const can = checkin.canShare();
+    this.setData({ sharedTitles: shared, shareRemain: can.remain });
   },
   // 顶部折扣/优先购状态 + 每款角标（开售倒计时 / 优先购 / 原 badge）每秒刷新
   refreshCheckin() {
@@ -68,6 +79,7 @@ Page({
     const cat = this.data.cat;
     const hasPriority = checkin.hasPriority();
     const now = Date.now();
+    const shared = this.data.sharedTitles || [];
     const list = this.data.allList
       .filter(p => cat === '全部' || p.tag === cat)
       .map(p => {
@@ -85,6 +97,9 @@ Page({
           np.badgeText = p.badge || '';
           np.badgeCls = '';
         }
+        // P2：已兑换商品可晒单（防重复）
+        np.shared = shared.indexOf(p.title) >= 0;
+        np.shareable = true;
         return np;
       });
     this.setData({ list });
@@ -122,8 +137,39 @@ Page({
         if (r.confirm && app.spendMerit(finalCost)) {
           wx.showToast({ title: `已兑换 · -${finalCost} 功德`, icon: 'none' });
           social.log(`用 ${finalCost} 功德兑换了「${p.title}」`, '/pages/mall/mall');
+          this.refreshShared();
+          this.buildList();
         }
       }
+    });
+  },
+  // P2：晒单返星屑 —— 购买后分享，返功德 + 引导回星图复访打卡（闭环）
+  doShare(e) {
+    const i = e.currentTarget.dataset.index;
+    const p = this.data.list[i];
+    if (!p) return;
+    if (this.data.sharedTitles.indexOf(p.title) >= 0) {
+      wx.showToast({ title: '这件已晒过单啦', icon: 'none' });
+      return;
+    }
+    const can = checkin.canShare();
+    if (!can.ok) {
+      wx.showToast({ title: '今日晒单返利已达上限', icon: 'none' });
+      return;
+    }
+    const r = checkin.recordShare(p.title);
+    if (!r.ok) return;
+    const app = getApp();
+    if (app.addMerit) app.addMerit(r.returned);
+    whimsy.burst(this, { text: '星屑已归位 +' + r.returned + ' 功德', emoji: '✨' });
+    this.refreshShared();
+    this.buildList();
+    wx.showModal({
+      title: '晒单完成 ✨',
+      content: `你分享的「${p.title}」已点亮更多星友的守护。星屑回馈 +${r.returned} 功德已到账。\n回到星图继续打卡，集齐 6 城解锁全国守护礼～`,
+      confirmText: '去星图',
+      cancelText: '留在本页',
+      success: (m) => { if (m.confirm) wx.switchTab({ url: '/pages/tourism/tourism' }); }
     });
   }
 });
