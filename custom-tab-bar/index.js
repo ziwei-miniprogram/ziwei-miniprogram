@@ -30,6 +30,7 @@ Component({
     color: '#9a9286',
     selectedColor: '#c8a35a',
     theme: 'light',
+    surprise: false,
     list: [
       { pagePath: '/pages/index/index', text: '发现', tabIndex: 0,
         icon: svg(ICON.compass, G), iconActive: svg(ICON.compass, GOLD) },
@@ -48,6 +49,12 @@ Component({
       if (app && app.globalData) {
         this.setData({ unread: app.globalData.unread || 0, theme: app.getTheme() });
       }
+      // 惊喜盲盒：进入页面时消费一次「待展示」标记（仅冷启动/前台返回触发）；
+      // 延后至开窗动画之后，形成「开窗 → 拆礼」的连续惊喜序列。
+      if (app && app.consumeSurprise && app.consumeSurprise()) {
+        const self = this;
+        setTimeout(() => self.setData({ surprise: true }), 1300);
+      }
     }
   },
   methods: {
@@ -55,6 +62,29 @@ Component({
       const item = e.currentTarget.dataset.item;
       // 全部为 tabBar 页（含居中星野），统一 switchTab
       wx.switchTab({ url: item.pagePath });
+    },
+    // —— 惊喜盲盒回调 ——
+    onSurpriseClaim(e) {
+      const app = getApp();
+      const r = e.detail.reward;
+      const today = app.todayStr();
+      let claimed = false;
+      try { claimed = wx.getStorageSync('surprise_claim_date') === today; } catch (err) {}
+      if (!claimed) {
+        app.addMerit(r, '星礼');
+        try { wx.setStorageSync('surprise_claim_date', today); } catch (err) {}
+        wx.showToast({ title: `星礼 +${r} 功德 · 已收下`, icon: 'none' });
+      } else {
+        wx.showToast({ title: '今日星礼已收下啦', icon: 'none' });
+      }
+      this.setData({ surprise: false });
+    },
+    onSurpriseView() {
+      wx.navigateTo({ url: '/pages/daily/daily' });
+      this.setData({ surprise: false });
+    },
+    onSurpriseClose() {
+      this.setData({ surprise: false });
     }
   }
 });

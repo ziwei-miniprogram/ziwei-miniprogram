@@ -1,6 +1,7 @@
 {
   "component": true,
   "usingComponents": {
-    "heart-lamp": "/components/heart-lamp/heart-lamp"
+    "heart-lamp": "/components/heart-lamp/heart-lamp",
+    "surprise-box": "/components/surprise-box/surprise-box"
   }
 }

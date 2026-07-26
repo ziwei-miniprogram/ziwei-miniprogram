@@ -1,0 +1,37 @@
+<view class="sb-mask" wx:if="{{visible}}">
+  <view class="sb-card phase-{{phase}}">
+    <!-- 开启时星辉迸发粒子 -->
+    <view class="sb-burst" wx:if="{{phase !== 'closed'}}">
+      <view class="sb-sp" wx:for="{{burst}}" wx:key="id"
+        style="--dx:{{item.dx}};--dy:{{item.dy}};animation-delay:{{item.d}}s;"></view>
+    </view>
+
+    <!-- 闭合礼盒 -->
+    <view class="sb-closed" wx:if="{{phase === 'closed'}}" bindtap="onTapBox">
+      <view class="sb-box">
+        <view class="sb-lid"></view>
+        <view class="sb-lid-bow"></view>
+        <view class="sb-rib-v"></view>
+        <view class="sb-body"></view>
+      </view>
+      <view class="sb-hint">今日星礼 · 轻触开启</view>
+      <view class="sb-sub">每一次打开，都有星野的陪伴</view>
+    </view>
+
+    <!-- 揭晓：今日星礼 -->
+    <view class="sb-reveal" wx:else>
+      <view class="sb-glow"></view>
+      <view class="sb-kicker">今日星礼 · {{box.term}} · 第 {{box.termDay}} 日</view>
+      <view class="sb-mansion serif">{{box.mansion}} 当值</view>
+      <view class="sb-line">{{box.mansionLine}}</view>
+      <view class="sb-season">{{box.seasonLine}}</view>
+      <view class="sb-lucky"><text class="sb-lucky-t">今日幸运签</text> · {{box.lucky}}</view>
+      <view class="sb-reward">收下星礼得 <text class="sb-reward-n">+{{box.reward}} 功德</text></view>
+      <view class="sb-acts">
+        <view class="sb-btn ghost" bindtap="onView">查看今日星夜物语</view>
+        <view class="sb-btn" bindtap="onClaim">收下星礼</view>
+      </view>
+      <view class="sb-close" bindtap="onClose">先收着，稍后再拆</view>
+    </view>
+  </view>
+</view>

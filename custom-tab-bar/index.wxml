@@ -20,3 +20,12 @@
 </view>
 <!-- 常驻心灯浮标：自动覆盖 tab 页 -->
 <heart-lamp theme="{{theme}}" />
+
+<!-- 惊喜盲盒：每次打开小程序时的礼物开启动画 -->
+<surprise-box
+  wx:if="{{surprise}}"
+  visible="{{surprise}}"
+  bind:claim="onSurpriseClaim"
+  bind:view="onSurpriseView"
+  bind:close="onSurpriseClose"
+/>

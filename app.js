@@ -16,7 +16,11 @@ App({
     lastCheckin: '',      // 上次签到日期 YYYY-MM-DD
     level: levelOf(0),
     unread: 0,            // 消息中心未读数（红点驱动）
-    theme: 'light'        // 主题：light（暖纸）/ dark（夜灯）
+    theme: 'light',       // 主题：light（暖纸）/ dark（夜灯）
+    // —— 惊喜盲盒门控 ——
+    _hidden: false,       // 是否曾退到后台
+    _hiddenAt: 0,         // 退后台时间戳
+    _surprisePending: false // 待展示惊喜（仅冷启动 / 前台返回>30min 触发）
   },
 
   onLaunch() {
@@ -32,6 +36,33 @@ App({
       this.addMerit(10, '星辉初光');
       this.globalData.welcomeGift = true;
     }
+  },
+
+  // 每次打开小程序：冷启动 / 从后台返回，触发「惊喜盲盒」门控
+  onShow() {
+    const g = this.globalData;
+    const wasHidden = g._hidden;
+    g._hidden = false;
+    if (!wasHidden) {
+      // 冷启动首次打开
+      g._surprisePending = true;
+    } else {
+      // 从后台返回：间隔 > 30 分钟再给一次惊喜，避免频繁打断
+      const gap = Date.now() - (g._hiddenAt || 0);
+      if (gap > 30 * 60 * 1000) g._surprisePending = true;
+    }
+  },
+
+  onHide() {
+    this.globalData._hidden = true;
+    this.globalData._hiddenAt = Date.now();
+  },
+
+  // 消费一次惊喜（被 custom-tab-bar 在页面展示时调用，仅触发一次）
+  consumeSurprise() {
+    const p = this.globalData._surprisePending;
+    this.globalData._surprisePending = false;
+    return p;
   },
 
   // ===== 主题（暗色夜灯）控制 =====
