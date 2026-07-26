@@ -70,3 +70,27 @@ jobs:
             code = (jsErr || jsonBad || pyErr || hit) ? 1 : 0;
             process.exit(code);
           '
+
+  miniprogram-build:
+    name: 小程序编译校验（可选）
+    runs-on: ubuntu-latest
+    needs: validate
+    # 仅当仓库配置了微信小程序 Secret 时运行；未配置则整 job 跳过，不阻塞合并
+    if: ${{ secrets.WX_APPID != '' && secrets.WX_PRIVATE_KEY != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 写入上传私钥
+        run: printf '%s' "${{ secrets.WX_PRIVATE_KEY }}" > ./private.key && chmod 600 ./private.key
+
+      - name: 安装 miniprogram-ci
+        run: npm install miniprogram-ci --no-save
+
+      - name: 编译预览校验
+        run: npx miniprogram-ci preview --appid ${{ secrets.WX_APPID }} --pkp ./private.key -p . -o preview.jpg
