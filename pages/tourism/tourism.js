@@ -26,7 +26,11 @@ Page({
     total: checkin.TOTAL,
     progressPct: 16,            // 虚高起点：即使 0 城也显示 16% 进度，给即时成就感
     remain: checkin.TOTAL,
-    hasReward: false
+    hasReward: false,
+    // —— 文旅打卡 P1：GPS 地图 ——
+    markers: [],
+    mapLat: checkin.CITIES[0].lat,
+    mapLng: checkin.CITIES[0].lng
   },
   onShow() {
     const app = getApp();
@@ -36,6 +40,7 @@ Page({
       this.getTabBar().setData({ selected: 1 });
     }
     this.refreshCheckin();
+    this.buildMarkers();
   },
   // 文旅打卡 P0：从 checkin 层同步点亮状态、进度、奖励提示
   refreshCheckin() {
@@ -54,7 +59,68 @@ Page({
       hasReward: checkin.couponCount() > 0
     });
   },
-  // 到访打卡：点亮城市 + 解折扣券 + 优先购资格，飘星后引导去商城
+  // P1：根据点亮状态生成地图 marker（点亮城市金色高亮）
+  buildMarkers() {
+    const p = checkin.progress();
+    const checkedSet = {};
+    p.checked.forEach(id => { checkedSet[id] = true; });
+    const markers = checkin.CITIES.map((c, i) => ({
+      id: i,
+      latitude: c.lat,
+      longitude: c.lng,
+      width: 28,
+      height: 28,
+      callout: {
+        content: checkedSet[c.id] ? '★ ' + c.name : c.name,
+        color: checkedSet[c.id] ? '#8a6a2a' : '#998f80',
+        fontSize: 11,
+        borderRadius: 8,
+        padding: 6,
+        bgColor: '#ffffff',
+        display: 'ALWAYS'
+      }
+    }));
+    this.setData({
+      markers,
+      mapLat: checkin.CITIES[0].lat,
+      mapLng: checkin.CITIES[0].lng
+    });
+  },
+  // P1：GPS 自动打卡——授权定位后，到访 1.5km 内城市即自动点亮
+  detectNearby() {
+    const self = this;
+    wx.getLocation({
+      type: 'gcj02',
+      success(res) {
+        const r = checkin.autoCheckInByLocation(res.latitude, res.longitude);
+        if (r.status === 'none') {
+          wx.showToast({ title: '附近暂无可点亮城市', icon: 'none' });
+          return;
+        }
+        if (r.status === 'already') {
+          wx.showToast({ title: '「' + r.city.name + '」已点亮过', icon: 'none' });
+          self.refreshCheckin();
+          self.buildMarkers();
+          return;
+        }
+        // status === 'checked'
+        self.refreshCheckin();
+        self.buildMarkers();
+        whimsy.burst(self, { text: '定位到访 · 星图自动点亮', emoji: '📍' });
+        wx.showModal({
+          title: '到访已记录 ✨',
+          content: '系统定位到你在「' + r.city.name + '」附近（约 ' + r.meters + 'm），星图已自动点亮，解锁城市守护折扣 + 限定优先购资格（24h）。\n带这份守护，去星野好物挑一件伴手礼吧～',
+          confirmText: '去商城',
+          cancelText: '再逛逛',
+          success: (m) => { if (m.confirm) wx.switchTab({ url: '/pages/mall/mall' }); }
+        });
+      },
+      fail() {
+        wx.showToast({ title: '未授权定位，可手动点亮', icon: 'none' });
+      }
+    });
+  },
+  // P0 手动到访打卡：点亮城市 + 解折扣券 + 优先购资格，飘星后引导去商城
   checkInCity(e) {
     const cityId = e.currentTarget.dataset.city;
     const city = checkin.CITIES.find(c => c.id === cityId) || {};
@@ -64,6 +130,7 @@ Page({
       return;
     }
     this.refreshCheckin();
+    this.buildMarkers();
     whimsy.burst(this, { text: '星图已点亮 · 城市守护折扣到手', emoji: '🌟' });
     wx.showModal({
       title: '城已点亮 ✨',

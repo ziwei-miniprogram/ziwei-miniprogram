@@ -12,6 +12,13 @@
       <view class="cg-s">到访一座城，点亮一颗星</view>
     </view>
 
+    <!-- P1 GPS 自动打卡：地图 + 附近检测 -->
+    <view class="cg-map-wrap">
+      <map class="cg-map" latitude="{{mapLat}}" longitude="{{mapLng}}" scale="4" markers="{{markers}}" show-location></map>
+      <view class="cg-detect" bindtap="detectNearby">📍 检测附近城市（自动点亮）</view>
+      <view class="cg-map-tip">授权定位后，到访城市星图将自动点亮</view>
+    </view>
+
     <!-- 城市星图：已点亮高亮（虚高起点由进度条体现）-->
     <view class="cg-cities">
       <view class="cg-city {{checkedMap[item.id] ? 'on' : ''}}" wx:for="{{cities}}" wx:key="id">
