@@ -44,3 +44,35 @@
 .book { flex-shrink: 0; margin-left: 20rpx; background: transparent; color: var(--gold);
   border: 1rpx solid rgba(200, 163, 90, .5); border-radius: 999rpx; padding: 18rpx 28rpx; font-size: 26rpx; }
 .book:active { background: rgba(200, 163, 90, .1); }
+
+/* ===== 文旅打卡 P0：城市守护 · 星图点亮（令牌驱动，明暗自适应）===== */
+.city-guard { margin: 24rpx 28rpx 0; border-radius: 32rpx; padding: 32rpx;
+  background: var(--card); border: 1rpx solid var(--border); box-shadow: var(--shadow-sm); }
+.cg-head { display: flex; align-items: baseline; gap: 16rpx; }
+.cg-t { font-family: "Source Han Serif SC", "Songti SC", serif; font-size: 32rpx; font-weight: 700; color: var(--fg); }
+.cg-s { font-size: 22rpx; color: var(--fg-2); }
+.cg-cities { display: flex; flex-wrap: wrap; gap: 14rpx; margin-top: 22rpx; }
+.cg-city { position: relative; width: calc((100% - 42rpx) / 4); box-sizing: border-box;
+  background: var(--bg-elev); border: 1rpx solid var(--border); border-radius: 18rpx; padding: 18rpx 0; text-align: center; }
+.cg-city.on { border-color: var(--gold); background: var(--gold-soft); }
+.cg-star { font-size: 40rpx; display: block; }
+.cg-name { font-size: 22rpx; color: var(--fg-3); margin-top: 6rpx; display: block; }
+.cg-city.on .cg-name { color: var(--gold-deep); font-weight: 700; }
+.cg-done { position: absolute; top: -10rpx; right: -6rpx; font-size: 18rpx; color: #fff;
+  background: var(--gold); border-radius: 999rpx; padding: 2rpx 12rpx; }
+.cg-bar { height: 14rpx; background: rgba(138, 127, 109, .22); border-radius: 10rpx; overflow: hidden; margin-top: 24rpx; }
+.cg-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-deep)); border-radius: 10rpx;
+  transition: width .8s cubic-bezier(.2, .8, .2, 1); }
+.cg-tip { font-size: 22rpx; color: var(--fg-2); margin-top: 14rpx; }
+.cg-actions { display: flex; flex-wrap: wrap; gap: 14rpx; margin-top: 18rpx; }
+.cg-btn { flex: 1 1 calc((100% - 28rpx) / 3); text-align: center; padding: 18rpx 0; border-radius: 999rpx;
+  font-size: 24rpx; background: linear-gradient(135deg, var(--gold), #e0c489); color: #3a2c10; font-weight: 600; }
+.cg-btn:active { filter: brightness(.96); }
+.cg-reward { margin-top: 18rpx; font-size: 22rpx; color: var(--gold-deep); background: var(--gold-soft);
+  border: 1rpx solid rgba(200, 163, 90, .22); border-radius: 14rpx; padding: 14rpx 20rpx; }
+.page.dark .city-guard { box-shadow: var(--shadow-md); }
+
+/* 尊重系统「减少动态效果」偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .cg-fill { transition: none; }
+}

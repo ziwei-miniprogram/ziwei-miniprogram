@@ -5,6 +5,39 @@
     <view class="h-s">把星图里的「迁移宫 / 福德宫」<br>变成真实的山水旅程</view>
   </view>
 
+  <!-- 城市守护 · 星图点亮（文旅打卡 P0）-->
+  <view class="city-guard">
+    <view class="cg-head">
+      <view class="cg-t">城市守护 · 星图点亮</view>
+      <view class="cg-s">到访一座城，点亮一颗星</view>
+    </view>
+
+    <!-- 城市星图：已点亮高亮（虚高起点由进度条体现）-->
+    <view class="cg-cities">
+      <view class="cg-city {{checkedMap[item.id] ? 'on' : ''}}" wx:for="{{cities}}" wx:key="id">
+        <text class="cg-star">{{item.star}}</text>
+        <text class="cg-name">{{item.name}}</text>
+        <view class="cg-done" wx:if="{{checkedMap[item.id]}}">已点亮</view>
+      </view>
+    </view>
+
+    <!-- 目标梯度进度条 + 文案 -->
+    <view class="cg-bar"><view class="cg-fill" style="width:{{progressPct}}%"></view></view>
+    <view class="cg-tip" wx:if="{{checkedCount === 0}}">点亮第 1 城，开启你的星图守护</view>
+    <view class="cg-tip" wx:else>已点亮 {{checkedCount}} / {{total}} 城 · 差 {{remain}} 城解锁限定礼</view>
+
+    <!-- 到访打卡：每城一个点亮按钮 -->
+    <view class="cg-actions">
+      <view class="cg-btn" wx:for="{{cities}}" wx:key="id"
+        data-city="{{item.id}}" bindtap="checkInCity">
+        {{checkedMap[item.id] ? '✓ ' + item.name : '✨ 点亮' + item.name}}
+      </view>
+    </view>
+
+    <!-- 默认偏置解锁的奖励提示 -->
+    <view class="cg-reward" wx:if="{{hasReward}}">🎁 已解锁城市守护折扣 + 限定优先购资格（24h）</view>
+  </view>
+
   <view class="filters">
     <view class="chip {{filter===item?'on':''}}" wx:for="{{filters}}" wx:key="*this"
       data-f="{{item}}" bindtap="onFilter">{{item}}</view>
