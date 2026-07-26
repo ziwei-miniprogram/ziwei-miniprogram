@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>拾光驿·星野漫游 — 小红书风格 UI 设计方案</title>
+<style>
+  :root{
+    --ink:#1f1c17; --ink-2:#6b6457; --ink-3:#9a9286;
+    --paper:#ffffff; --bg:#f6f4ef; --line:#ece8df;
+    --gold:#c8a35a; --gold-soft:#f3e8cf; --moon:#f6eccb;
+    --jade:#7fb7a3; --star:#7a6fb0; --rose:#e0796f;
+    --shadow:0 8px 28px rgba(40,33,20,.10);
+    --shadow-sm:0 2px 10px rgba(40,33,20,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  .wrap{display:flex;min-height:100vh}
+  /* 左侧导航 */
+  .side{width:236px;background:var(--paper);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;overflow:auto}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .brand .logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(140deg,#2a2740,#3c3a5e);display:flex;align-items:center;justify-content:center;color:var(--moon);font-size:15px}
+  .brand b{font-size:15px;letter-spacing:.5px}
+  .brand small{display:block;color:var(--ink-3);font-size:11px;font-weight:400}
+  .side .label{font-size:11px;color:var(--ink-3);margin:18px 6px 8px;letter-spacing:1px}
+  .nav{display:flex;flex-direction:column;gap:2px}
+  .nav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;padding:11px 12px;border-radius:11px;color:var(--ink-2);font-size:14px;cursor:pointer;transition:.15s}
+  .nav button .ic{width:22px;text-align:center}
+  .nav button:hover{background:var(--bg)}
+  .nav button.on{background:linear-gradient(135deg,#f7f0df,#f3e8cf);color:var(--ink);font-weight:600}
+  .nav button.on .ic{color:var(--gold)}
+  .side .foot{margin-top:22px;font-size:11px;color:var(--ink-3);line-height:1.7;border-top:1px solid var(--line);padding-top:14px}
+
+  /* 中间舞台 */
+  .stage{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:34px 20px;overflow:auto}
+  .phone{width:390px;height:844px;background:var(--paper);border-radius:44px;border:10px solid #1c1a16;box-shadow:var(--shadow);position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;background:#1c1a16;border-radius:0 0 16px 16px;z-index:30}
+  .screen{flex:1;overflow-y:auto;overflow-x:hidden;background:var(--paper)}
+  .screen::-webkit-scrollbar{width:0}
+  .statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:600;color:var(--ink)}
+  .statusbar .dots{display:flex;gap:4px;font-size:11px;color:var(--ink-3)}
+
+  /* 通用组件 */
+  .search{margin:6px 16px 10px;background:var(--bg);border-radius:20px;height:38px;display:flex;align-items:center;gap:7px;padding:0 14px;color:var(--ink-3);font-size:13px}
+  .tabs{display:flex;gap:18px;padding:4px 16px 12px;position:sticky;top:0;background:var(--paper);z-index:5}
+  .tabs .t{font-size:16px;color:var(--ink-3);position:relative;padding-bottom:6px}
+  .tabs .t.on{color:var(--ink);font-weight:700}
+  .tabs .t.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:18px;height:3px;border-radius:3px;background:var(--gold)}
+  .hero{margin:4px 14px 14px;border-radius:20px;padding:22px 18px;color:#f6eccb;background:linear-gradient(150deg,#232038,#3a3660 60%,#4a3f6b);position:relative;overflow:hidden}
+  .hero .stars{position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 20% 30%,rgba(255,255,255,.8),transparent),radial-gradient(1.5px 1.5px at 70% 20%,rgba(255,255,255,.7),transparent),radial-gradient(1.5px 1.5px at 85% 60%,rgba(255,255,255,.6),transparent),radial-gradient(1.5px 1.5px at 40% 75%,rgba(255,255,255,.7),transparent);opacity:.7}
+  .hero h3{font-size:19px;font-weight:700;letter-spacing:1px;position:relative;font-family:"Songti SC",serif}
+  .hero p{font-size:12.5px;opacity:.85;margin-top:7px;line-height:1.6;position:relative}
+  .hero .lamp{margin-top:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(246,236,203,.16);border:1px solid rgba(246,236,203,.4);padding:9px 16px;border-radius:999px;font-size:13px;position:relative}
+
+  .feed{column-count:2;column-gap:9px;padding:0 9px 24px}
+  .card{break-inside:avoid;background:var(--paper);border-radius:14px;margin-bottom:9px;box-shadow:var(--shadow-sm);overflow:hidden;border:1px solid var(--line)}
+  .card .img{width:100%;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff}
+  .card .body{padding:9px 10px 11px}
+  .card .tt{font-size:13px;line-height:1.45;color:var(--ink);font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .meta{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11.5px;color:var(--ink-3)}
+  .card .meta .av{width:18px;height:18px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold)}
+  .card .meta .nm{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .card .meta .lk{display:flex;align-items:center;gap:3px}
+  .tag{display:inline-block;font-size:10.5px;color:var(--star);background:#efecf8;border-radius:6px;padding:1px 6px;margin-right:4px}
+
+  /* 笔记详情 */
+  .nb-top{height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:5}
+  .nb-top .back{font-size:22px}
+  .nb-top .share{font-size:18px;color:var(--ink-3)}
+  .nb-hero{height:300px;display:flex;align-items:center;justify-content:center;font-size:60px;color:#fff;position:relative}
+  .nb-hero .dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:5px}
+  .nb-hero .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5)}
+  .nb-hero .dots i.on{background:#fff;width:14px;border-radius:4px}
+  .nb-body{padding:16px 16px 90px}
+  .nb-body h2{font-size:18px;font-weight:700;line-height:1.4}
+  .nb-body .txt{font-size:14px;line-height:1.85;color:#36322b;margin-top:12px}
+  .nb-body .txt .ht{color:var(--star);font-weight:600}
+  .nb-author{display:flex;align-items:center;gap:10px;margin:18px 0;padding:12px;background:var(--bg);border-radius:14px}
+  .nb-author .av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e0c489);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+  .nb-author .nm{font-size:14px;font-weight:600;flex:1}
+  .nb-author .follow{background:var(--gold);color:#fff;border:0;border-radius:999px;padding:7px 18px;font-size:13px}
+  .nb-rel{margin-top:8px}
+  .nb-rel .rh{font-size:13px;color:var(--ink-3);margin:10px 0}
+  .nb-bar{position:absolute;left:0;right:0;bottom:0;height:58px;background:var(--paper);border-top:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px;z-index:6}
+  .nb-bar .cmt{flex:1;background:var(--bg);border-radius:999px;height:36px;display:flex;align-items:center;padding:0 14px;color:var(--ink-3);font-size:13px}
+  .nb-bar .act{font-size:20px;display:flex;align-items:center;gap:4px;color:var(--ink-2);font-size:13px}
+
+  /* 商城 */
+  .shop-tabs{display:flex;gap:8px;padding:6px 14px 12px;overflow-x:auto}
+  .shop-tabs .s{white-space:nowrap;font-size:13px;padding:7px 14px;border-radius:999px;background:var(--bg);color:var(--ink-2)}
+  .shop-tabs .s.on{background:var(--ink);color:#fff}
+  .pd{break-inside:avoid;background:var(--paper);border-radius:14px;margin-bottom:9px;box-shadow:var(--shadow-sm);overflow:hidden;border:1px solid var(--line)}
+  .pd .img{height:150px;display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;position:relative}
+  .pd .badge{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.45);color:#fff;font-size:10.5px;padding:2px 8px;border-radius:999px}
+  .pd .body{padding:9px 10px 11px}
+  .pd .tt{font-size:13px;font-weight:500;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pd .pr{display:flex;align-items:baseline;gap:6px;margin-top:8px}
+  .pd .pr b{color:var(--rose);font-size:16px}
+  .pd .pr span{font-size:11px;color:var(--gold);background:var(--gold-soft);padding:1px 7px;border-radius:6px}
+  .pd .sl{font-size:11px;color:var(--ink-3);margin-top:5px}
+
+  /* 我的 */
+  .pf-cover{height:130px;background:linear-gradient(140deg,#2a2740,#45406e);position:relative}
+  .pf-head{display:flex;align-items:flex-end;gap:14px;padding:0 18px;margin-top:-34px;position:relative}
+  .pf-head .av{width:68px;height:68px;border-radius:50%;border:3px solid #fff;background:linear-gradient(135deg,var(--gold),#e7c98f);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px}
+  .pf-head .nm{font-size:19px;font-weight:700;padding-bottom:6px}
+  .pf-head .edit{margin-left:auto;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;color:var(--ink-2)}
+  .pf-bio{padding:10px 18px 0;font-size:12.5px;color:var(--ink-2);line-height:1.6}
+  .pf-merit{margin:14px 18px;background:linear-gradient(135deg,#f7f0df,#f3e8cf);border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px}
+  .pf-merit .lv{background:var(--ink);color:var(--moon);font-size:12px;padding:5px 11px;border-radius:999px;font-weight:600}
+  .pf-merit .mt{flex:1}
+  .pf-merit .mt b{font-size:15px}
+  .pf-merit .mt div{font-size:11px;color:var(--ink-3);margin-top:2px}
+  .pf-merit .go{font-size:12px;color:var(--gold);font-weight:600}
+  .pf-stat{display:flex;padding:6px 18px 14px;border-bottom:1px solid var(--line)}
+  .pf-stat div{flex:1;text-align:center}
+  .pf-stat b{font-size:17px;display:block}
+  .pf-stat span{font-size:11.5px;color:var(--ink-3)}
+  .pf-pt{display:flex;gap:22px;padding:12px 18px;border-bottom:1px solid var(--line)}
+  .pf-pt .t{font-size:14px;color:var(--ink-3);padding-bottom:8px}
+  .pf-pt .t.on{color:var(--ink);font-weight:700;border-bottom:2px solid var(--gold)}
+  .pf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:8px}
+  .pf-grid .g{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;position:relative}
+  .pf-grid .g span{position:absolute;bottom:5px;left:6px;font-size:10px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+
+  /* 发布 */
+  .pub{padding:14px 16px 30px}
+  .uploads{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .uploads .u{aspect-ratio:1;border-radius:12px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--ink-3);border:1px dashed var(--line)}
+  .uploads .u.f{background:linear-gradient(140deg,#3a3660,#5a4f86);color:#fff;border:0}
+  .pub input,.pub textarea{width:100%;border:0;outline:0;font-size:15px;font-family:inherit;color:var(--ink)}
+  .pub .ti{font-weight:700;margin:16px 0 8px}
+  .pub textarea{height:110px;line-height:1.7;resize:none}
+  .pub .sec{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+  .pub .sec .h{font-size:12px;color:var(--ink-3);margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips .c{font-size:13px;padding:7px 14px;border-radius:999px;background:var(--bg);color:var(--ink-2)}
+  .chips .c.on{background:#efecf8;color:var(--star);font-weight:600}
+  .row{display:flex;align-items:center;gap:8px;padding:11px 0;font-size:14px;color:var(--ink-2);border-bottom:1px solid var(--line)}
+  .row .r{margin-left:auto;color:var(--ink-3)}
+  .publish-btn{margin-top:24px;background:var(--gold);color:#fff;border:0;border-radius:999px;height:48px;width:100%;font-size:16px;font-weight:600}
+
+  /* 组件规范 */
+  .spec{padding:18px}
+  .spec h2{font-size:18px;margin-bottom:4px}
+  .spec .sub{font-size:12.5px;color:var(--ink-3);margin-bottom:18px;line-height:1.6}
+  .spec .blk{margin-bottom:22px}
+  .spec .blk .bt{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--star)}
+  .swatch{display:flex;gap:10px;flex-wrap:wrap}
+  .swatch .s{width:60px}
+  .swatch .s i{display:block;height:50px;border-radius:10px;border:1px solid var(--line)}
+  .swatch .s span{font-size:10.5px;color:var(--ink-3);display:block;margin-top:5px;text-align:center}
+  .btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .btns .b1{background:var(--gold);color:#fff;border:0;border-radius:999px;padding:10px 22px;font-size:14px}
+  .btns .b2{background:var(--ink);color:#fff;border:0;border-radius:999px;padding:10px 22px;font-size:14px}
+  .btns .b3{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 22px;font-size:14px}
+
+  /* 右侧说明 */
+  .notes{width:330px;background:var(--paper);border-left:1px solid var(--line);padding:26px 22px;position:sticky;top:0;height:100vh;overflow:auto}
+  .notes h1{font-size:20px;letter-spacing:.5px}
+  .notes .kicker{font-size:11px;color:var(--gold);letter-spacing:2px;font-weight:700;margin-bottom:6px}
+  .notes p{font-size:13.5px;line-height:1.8;color:#36322b;margin:10px 0}
+  .notes .box{background:var(--bg);border-radius:12px;padding:13px 15px;margin:12px 0;font-size:12.5px;line-height:1.75;color:var(--ink-2)}
+  .notes .box b{color:var(--ink)}
+  .notes ul{list-style:none;margin:8px 0}
+  .notes li{font-size:13px;line-height:1.7;color:#36322b;padding-left:16px;position:relative;margin:7px 0}
+  .notes li::before{content:"◆";position:absolute;left:0;color:var(--gold);font-size:9px;top:5px}
+  .notes .pill{display:inline-block;font-size:11px;background:#efecf8;color:var(--star);border-radius:6px;padding:2px 8px;margin:2px 4px 2px 0}
+  .notes hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">✦</div>
+      <div><b>拾光驿</b><small>星野漫游 · UI 方案</small></div>
+    </div>
+    <div class="label">设计方案</div>
+    <nav class="nav" id="nav">
+      <button data-s="concept" class="on"><span class="ic">◎</span>设计理念</button>
+      <button data-s="discover"><span class="ic">⌂</span>发现流</button>
+      <button data-s="note"><span class="ic">❏</span>笔记详情</button>
+      <button data-s="shop"><span class="ic">▦</span>星野好物</button>
+      <button data-s="profile"><span class="ic">☻</span>我的</button>
+      <button data-s="publish"><span class="ic">✎</span>发布页</button>
+      <button data-s="components"><span class="ic">▤</span>组件规范</button>
+    </nav>
+    <div class="foot">
+      参考：小红书信息架构<br/>
+      融合：拾光驿·星野漫游品牌<br/>
+      状态：高保真交互预览 v1<br/>
+      <span style="color:var(--gold)">点击左侧切换各屏</span>
+    </div>
+  </aside>
+
+  <main class="stage">
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen" id="screen"></div>
+    </div>
+  </main>
+
+  <aside class="notes" id="notes"></aside>
+</div>
+
+<script>
+const SCREENS = {
+  concept:`
+    <div class="statusbar"><span>9:41</span><span class="dots">●●● ▮ 100%</span></div>
+    <div class="spec">
+      <h2>为什么是「小红书式」？</h2>
+      <div class="sub">把"星图/文旅/疗愈/寄愿/功德"从工具型转变为内容社区型——让用户在浏览与分享中自然沉淀。</div>
+      <div class="card" style="margin-bottom:14px"><div class="img" style="height:120px;background:linear-gradient(140deg,#3a3660,#6a5f96);font-size:40px">✦ 星野漫游</div>
+        <div class="body"><div class="tt">我们相信：最好的"星象陪伴"不是算给你听，而是陪你记录。</div></div></div>
+      <div class="blk"><div class="bt">三大迁移</div>
+        <ul>
+          <li><b>双列瀑布流</b>替代功能九宫格——首页即内容，降低使用门槛</li>
+          <li><b>沉浸笔记</b>替代结果页——解读/游记/疗愈都变成可收藏的"笔记"</li>
+          <li><b>+ 发布</b>替代会员中心——UGC 是功德与社交的发动机</li>
+        </ul>
+      </div>
+      <div class="box"><b>品牌融合：</b>小红书是白底红点缀；我们保留<b>星夜祝福 Hero</b>作顶部沉浸卡，主体用浅暖纸色，点缀色取<b>星辉金 / 星紫</b>，疗愈场景保留<b>玉色</b>。既符合用户习惯，又不丢灵魂。</div>
+    </div>`,
+
+  discover:`
+    <div class="statusbar"><span>9:41</span><span class="dots">●●● ▮ 100%</span></div>
+    <div class="search">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+    <div class="tabs"><div class="t">关注</div><div class="t on">发现</div><div class="t">视频</div></div>
+    <div class="hero">
+      <div class="stars"></div>
+      <h3>愿你所行皆坦途</h3>
+      <p>今夜星图已更新 · 点亮一盏心灯，为彼此寄一份愿</p>
+      <div class="lamp">🪔 点亮今日心灯 · +1 功德</div>
+    </div>
+    <div class="feed">
+      ${card('🌌','linear-gradient(140deg,#2b2b4e,#4a4a7a)','在苍山脚下看银河，那一刻我懂了"命宫"','山野','1.2w')}
+      ${card('🔮','linear-gradient(140deg,#3a3660,#6a5f96)','我的紫微星图：事业宫太阳旺，但迁移宫…','星图笔记','3621')}
+      ${card('🍃','linear-gradient(140deg,#7fb7a3,#a9d4c5)','焦虑时我会做的 4-7-8 呼吸法，亲测有效','疗愈所','8033')}
+      ${card('🏮','linear-gradient(140deg,#b9544a,#e0796f)','普陀山寄愿墙，为妈妈点了一盏灯','寄愿','5210')}
+      ${card('🏜️','linear-gradient(140deg,#c8a35a,#e0c489)','十二宫游学·第③站 敦煌星图与壁画','文旅','2880')}
+      ${card('🌙','linear-gradient(140deg,#3b3a5c,#5b5a82)','睡前冥想 10 分钟，这周终于睡好了','疗愈所','6742')}
+      ${card('🏆','linear-gradient(140deg,#c8a35a,#b8945a)','功德林周榜第一的姐妹，每天做了什么？','功德林','9910')}
+      ${card('♌','linear-gradient(140deg,#d99a4e,#e8b96b)','狮子座本周状态：宜专注，忌内耗','星座','4155')}
+    </div>`,
+
+  note:`
+    <div class="statusbar" style="display:none"></div>
+    <div class="nb-top"><span class="back">‹</span><span style="font-size:14px;font-weight:600">笔记详情</span><span class="share">⤴</span></div>
+    <div class="nb-hero" style="background:linear-gradient(140deg,#2b2b4e,#4a4a7a)">🌌
+      <div class="dots"><i class="on"></i><i></i><i></i></div>
+    </div>
+    <div class="nb-body">
+      <h2>在苍山脚下看银河，那一刻我懂了"命宫"</h2>
+      <div class="txt">一直觉得星图是"算命"，直到这趟旅行。向导说："你命宫在寅，喜动中求静。"我在山顶躺了半小时，看银河斜过苍山——原来所谓命宫，是提醒我<b>该去哪里安放自己</b>。<span class="ht">#星图旅行</span> <span class="ht">#苍山</span> <span class="ht">#心灵之旅</span></div>
+      <div class="nb-author"><div class="av">野</div><div class="nm">野山星野</div><button class="follow">关注</button></div>
+      <div class="nb-rel"><div class="rh">相关星野笔记</div>
+        <div class="feed" style="column-count:2;padding:0">
+          ${card('🌿','linear-gradient(140deg,#7fb7a3,#a9d4c5)','4-7-8 呼吸法跟练','疗愈所','8033')}
+          ${card('🔮','linear-gradient(140deg,#3a3660,#6a5f96)','事业宫太阳旺意味着什么','星图笔记','3621')}
+        </div>
+      </div>
+    </div>
+    <div class="nb-bar"><div class="cmt">说点什么…</div><div class="act">♡ 1.2w</div><div class="act">⭐ 收藏</div><div class="act">🪔 +1</div></div>`,
+
+  shop:`
+    <div class="statusbar"><span>9:41</span><span class="dots">●●● ▮ 100%</span></div>
+    <div class="search">🔍 搜索 星野好物</div>
+    <div class="shop-tabs"><div class="s on">全部</div><div class="s">水晶</div><div class="s">香薰</div><div class="s">书籍</div><div class="s">线路</div><div class="s">文创</div></div>
+    <div class="feed">
+      ${pd('💎','linear-gradient(140deg,#6a8fc0,#9bb8e0)','紫微星象主题·天然紫水晶簇','¥168','功德Lv.3 享9折','月销 320','星图同款')}
+      ${pd('🕯️','linear-gradient(140deg,#c8a35a,#e0c489)','寄愿·暖月香薰蜡烛 静心','¥89','功德 +1/单','月销 540','')}
+      ${pd('📿','linear-gradient(140deg,#7fb7a3,#a9d4c5)','108 颗星辉檀木念珠','¥128','功德Lv.2 享95折','月销 210','')}
+      ${pd('🏔️','linear-gradient(140deg,#3a3660,#6a5f96)','十二宫游学·敦煌星图 3 日','¥1980','赠寄愿灯','已报名 86','星图同款')}
+      ${pd('📖','linear-gradient(140deg,#b9544a,#e0796f)','《紫微星象文化入门》签名版','¥59','功德 +1/单','月销 430','')}
+      ${pd('🌙','linear-gradient(140deg,#3b3a5c,#5b5a82)','睡前冥想引导卡牌 21 天','¥79','功德Lv.1 享9折','月销 360','')}
+    </div>`,
+
+  profile:`
+    <div class="statusbar"><span>9:41</span><span class="dots">●●● ▮ 100%</span></div>
+    <div class="pf-cover"></div>
+    <div class="pf-head"><div class="av">拾</div><div class="nm">拾光的小野</div><div class="edit">编辑资料</div></div>
+    <div class="pf-bio">记录每一次抬头看星的时刻 · 已点亮 186 盏心灯 🪔</div>
+    <div class="pf-merit"><div class="lv">修士 · Lv.4</div><div class="mt"><b>326 功德</b><div>距下一级还需 74 · 今日已行一善 ✦</div></div><div class="go">功德中心 ›</div></div>
+    <div class="pf-stat"><div><b>12</b><span>笔记</span></div><div><b>48</b><span>收藏</span></div><div><b>326</b><span>功德</span></div></div>
+    <div class="pf-pt"><div class="t on">笔记</div><div class="t">收藏</div><div class="t">赞</div></div>
+    <div class="pf-grid">
+      <div class="g" style="background:linear-gradient(140deg,#2b2b4e,#4a4a7a)">🌌<span>苍山银河</span></div>
+      <div class="g" style="background:linear-gradient(140deg,#7fb7a3,#a9d4c5)">🍃<span>呼吸法</span></div>
+      <div class="g" style="background:linear-gradient(140deg,#c8a35a,#e0c489)">🏜️<span>敦煌</span></div>
+      <div class="g" style="background:linear-gradient(140deg,#3a3660,#6a5f96)">🔮<span>事业宫</span></div>
+      <div class="g" style="background:linear-gradient(140deg,#b9544a,#e0796f)">🏮<span>寄愿墙</span></div>
+      <div class="g" style="background:linear-gradient(140deg,#3b3a5c,#5b5a82)">🌙<span>冥想</span></div>
+    </div>`,
+
+  publish:`
+    <div class="statusbar"><span>9:41</span><span class="dots">●●● ▮ 100%</span></div>
+    <div class="nb-top"><span class="back">✕</span><span style="font-size:15px;font-weight:600">记一笔</span><span class="share" style="color:var(--gold);font-weight:600">发布</span></div>
+    <div class="pub">
+      <div class="uploads">
+        <div class="u f" style="font-size:30px">🌌</div>
+        <div class="u f" style="font-size:30px">🏔️</div>
+        <div class="u">＋</div>
+        <div class="u">＋</div>
+        <div class="u">＋</div>
+        <div class="u">＋</div>
+      </div>
+      <input class="ti" value="在苍山脚下看银河，那一刻我懂了" placeholder="填标题会有更多赞哦~" />
+      <textarea placeholder="这一刻的星野、心情或愿想……">一直觉得星图是算命，直到这趟旅行。向导说命宫在寅，喜动中求静。</textarea>
+      <div class="sec"><div class="h">添加话题</div><div class="chips">
+        <div class="c on">#星图旅行</div><div class="c on">#苍山</div><div class="c">#心灵之旅</div><div class="c">#疗愈</div><div class="c">#寄愿</div><div class="c">#共修</div>
+      </div></div>
+      <div class="sec">
+        <div class="row">📍 地点<span class="r">苍山 · 大理 ›</span></div>
+        <div class="row">🔮 关联我的星图<span class="r">事业宫 ▾</span></div>
+        <div class="row">🪔 关联今日寄愿<span class="r">为妈妈 ›</span></div>
+      </div>
+      <button class="publish-btn">发布并 +2 功德</button>
+    </div>`,
+
+  components:`
+    <div class="statusbar"><span>9:41</span><span class="dots">●●● ▮ 100%</span></div>
+    <div class="spec">
+      <h2>组件规范</h2>
+      <div class="sub">沉淀进 DESIGN.md，保证前端实现一致。</div>
+      <div class="blk"><div class="bt">色彩</div><div class="swatch">
+        <div class="s"><i style="background:#ffffff"></i><span>纸白</span></div>
+        <div class="s"><i style="background:#f6f4ef"></i><span>背景</span></div>
+        <div class="s"><i style="background:#c8a35a"></i><span>星辉金</span></div>
+        <div class="s"><i style="background:#7a6fb0"></i><span>星紫</span></div>
+        <div class="s"><i style="background:#7fb7a3"></i><span>玉色</span></div>
+        <div class="s"><i style="background:#e0796f"></i><span>暖玫</span></div>
+      </div></div>
+      <div class="blk"><div class="bt">按钮</div><div class="btns">
+        <button class="b1">主操作</button><button class="b2">次操作</button><button class="b3">描边</button>
+      </div></div>
+      <div class="blk"><div class="bt">标签 / 卡片</div>
+        <div class="chips"><div class="c on">#星图旅行</div><div class="c on">#疗愈</div><div class="c">#寄愿</div></div>
+        <div style="height:10px"></div>
+        <div class="card"><div class="img" style="height:90px;background:linear-gradient(140deg,#3a3660,#6a5f96);font-size:30px">🔮</div><div class="body"><div class="tt">瀑布流卡片：图 + 两行标题 + 作者 + 赞</div></div></div>
+      </div>
+      <div class="blk"><div class="bt">间距与圆角</div>
+        <div class="box">卡片圆角 <b>14px</b> · 按钮圆角 <b>999px（胶囊）</b> · 栅格间距 <b>9px</b> · 页面边距 <b>16px</b> · 主字号 <b>13–15px</b></div>
+      </div>
+    </div>`
+};
+
+const NOTES = {
+  concept:`<div class="kicker">DESIGN CONCEPT</div><h1>设计理念</h1>
+    <p>用户要的不是一个"算命工具"，而是一个<strong>能陪自己记录与变好的社区</strong>。小红书的成功在于：<b>内容即界面、分享即留存</b>。</p>
+    <div class="box"><b>本案策略：</b>把"星图解读 / 文旅游记 / 疗愈打卡 / 寄愿 / 功德"全部封装成可浏览、可收藏、可发布的<strong>星野笔记</strong>。首页不再堆功能，而是呈现双列瀑布流。</div>
+    <p><span class="pill">双列瀑布流</span><span class="pill">沉浸笔记</span><span class="pill">+ 发布</span><span class="pill">个人主页</span><span class="pill">星夜 Hero</span></p>
+    <hr/>
+    <p>保留品牌灵魂：顶部<strong>星夜祝福 Hero</strong>（渐变夜空 + 点亮心灯 +1 功德），让"祝福画面"仍然是用户进来第一眼看到的，其余内容走浅色小红书风，信息密度高、阅读轻松。</p>`,
+
+  discover:`<div class="kicker">HOME · FEED</div><h1>发现流（首页）</h1>
+    <p>仿小红书双列瀑布，是用户最高频的界面。<b>顶部搜索胶囊 + 关注/发现/视频 三 Tab</b> 符合肌肉记忆。</p>
+    <ul>
+      <li><b>星夜祝福 Hero</b>：品牌第一屏，点亮心灯 +1 功德，承接"客户最想要的祝福画面"</li>
+      <li><b>瀑布卡片</b>：图（渐变占位）+ 两行标题 + 作者头像/昵称 + ❤ 数</li>
+      <li>内容来自：星图笔记、文旅游记、疗愈打卡、寄愿、功德林、星座</li>
+    </ul>
+    <div class="box"><b>易用性：</b>一屏可见 4–6 条，下滑无限加载；点击卡片进<strong>笔记详情</strong>。无需学习成本，上来就会刷。</div>`,
+
+  note:`<div class="kicker">NOTE DETAIL</div><h1>笔记详情</h1>
+    <p>替代原来的"结果页/解读页"。大图轮播 + 标题 + 正文（带 #话题）+ 作者行 + 底部固定操作栏。</p>
+    <ul>
+      <li>底部栏：评论输入框 / ♡ 赞 / ⭐ 收藏 / 🪔 +1 功德</li>
+      <li><b>功德即互动</b>：点赞收藏之外，"添灯 +1"把社交与功德系统自然融合</li>
+      <li>相关推荐：双列小卡，延长停留</li>
+    </ul>
+    <div class="box"><b>合规：</b>正文与评论发布前走内容安全 API；星象表述保留"娱乐参考"语境，不出现改运承诺。</div>`,
+
+  shop:`<div class="kicker">MALL · WATERFALL</div><h1>星野好物（商城）</h1>
+    <p>沿用瀑布流呈现实物商品，与内容流视觉统一，降低切换认知。</p>
+    <ul>
+      <li>顶部类目：全部 / 水晶 / 香薰 / 书籍 / 线路 / 文创</li>
+      <li>商品卡：图 + 两行标题 + 价格 + <b>功德权益标签</b>（如"功德Lv.3 享9折"）</li>
+      <li>"星图同款"角标：把内容流量导到商品，形成<strong>内容→电商</strong>闭环</li>
+    </ul>
+    <div class="box"><b>边界：</b>商城只卖实物/文旅产品，与"内容付费解锁"解耦（前文已取消付费解锁，改功德）。功德<strong>不可购、不可兑</strong>。</div>`,
+
+  profile:`<div class="kicker">PROFILE</div><h1>我的（个人主页）</h1>
+    <p>小红书式个人页：封面 + 头像 + 统计 + 笔记网格。把"功德"作为核心资产前置展示。</p>
+    <ul>
+      <li><b>功德卡</b>：等级（修士·Lv.4）+ 功德值 + 进度，入口直达功德中心</li>
+      <li>统计：笔记 / 收藏 / 功德 三栏</li>
+      <li>笔记网格：3 列，点开即自己的星野笔记</li>
+    </ul>
+    <div class="box"><b>留存钩子：</b>功德进度条 + 周榜（在发现流露出）驱动每日回访；"我的星图""寄愿墙"沉淀个人资产。</div>`,
+
+  publish:`<div class="kicker">CREATE</div><h1>发布页（记一笔）</h1>
+    <p>底部 <b>+ 发布</b> 是小红书最具标志性的入口。我们把发布命名为"记一笔"——记录星野瞬间，并奖励功德。</p>
+    <ul>
+      <li>九宫格图片上传 + 标题 + 正文</li>
+      <li><b>#话题</b>芯片：星图旅行 / 疗愈 / 寄愿 / 共修…</li>
+      <li>关联：我的星图（命宫）、今日寄愿——让 UGC 反哺内容与功德生态</li>
+      <li>发布即 <b>+2 功德</b>，形成"发布→功德→解锁/上榜"正循环</li>
+    </ul>
+    <div class="box"><b>增长引擎：</b>UGC 是功德与社交的发动机；发布页必须 3 步内完成，降低创作门槛。</div>`,
+
+  components:`<div class="kicker">SYSTEM</div><h1>组件规范</h1>
+    <p>以上界面已沉淀为可复用组件，写入 <code>DESIGN.md</code>，保证设计与实现一致。</p>
+    <ul>
+      <li><b>配色</b>：纸白底 + 星辉金/星紫点缀 + 玉色（疗愈）/ 暖玫（寄愿）</li>
+      <li><b>圆角</b>：卡片 14px，按钮胶囊 999px</li>
+      <li><b>栅格</b>：双列间距 9px，边距 16px</li>
+      <li><b>字号</b>：正文 13–15px，标题 18–19px</li>
+    </ul>
+    <div class="box"><b>无障碍：</b>点赞/添灯等图标均配文字；对比度达 WCAG AA；动效克制（仅心灯呼吸、卡片轻浮）。</div>`
+};
+
+function card(emoji,bg,title,author,likes){
+  return `<div class="card"><div class="img" style="height:${[120,150,170,140,160][Math.floor(Math.random()*5)]}px;background:${bg}">${emoji}</div>
+    <div class="body"><div class="tt">${title}</div><div class="meta"><span class="av">${author[0]}</span><span class="nm">${author}</span><span class="lk">♡ ${likes}</span></div></div></div>`;
+}
+function pd(emoji,bg,title,price,tag,sales,badge){
+  return `<div class="pd"><div class="img" style="background:${bg}">${emoji}${badge?`<div class="badge">${badge}</div>`:''}</div>
+    <div class="body"><div class="tt">${title}</div><div class="pr"><b>${price}</b><span>${tag}</span></div><div class="sl">${sales}</div></div></div>`;
+}
+
+const screenEl=document.getElementById('screen');
+const notesEl=document.getElementById('notes');
+function render(s){
+  screenEl.scrollTop=0;
+  screenEl.innerHTML=SCREENS[s];
+  notesEl.innerHTML=NOTES[s];
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+}
+document.getElementById('nav').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(b) render(b.dataset.s);
+});
+render('concept');
+</script>
+</body>
+</html>

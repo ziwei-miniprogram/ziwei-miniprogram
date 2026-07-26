@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拾光驿 · 统一浅色界面预览</title>
+<style>
+  :root{
+    --paper:#f7f5f0; --ink:#2b2622; --muted:#998f80; --gold:#c8a35a; --gold-l:#e0c489;
+    --jade:#5e9788; --line:#f0ece3; --white:#fff;
+    --shadow:0 4rpx 18rpx rgba(40,33,20,.05);
+    --shadow-soft:0 2px 12px rgba(40,33,20,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{background:#e9e6df;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);padding:28px 12px 60px;display:flex;flex-direction:column;align-items:center;gap:18px;}
+  .topbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .topbar button{border:none;background:#fff;color:var(--muted);font-size:15px;padding:9px 20px;border-radius:999px;cursor:pointer;box-shadow:var(--shadow-soft);transition:.2s;}
+  .topbar button.on{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#fff;font-weight:700;}
+  .phone{width:390px;max-width:100%;background:var(--paper);border-radius:42px;box-shadow:0 30px 70px rgba(40,33,20,.22);overflow:hidden;position:relative;border:10px solid #1c1a17;}
+  .screen{height:760px;overflow-y:auto;padding-bottom:90px;}
+  .screen::-webkit-scrollbar{width:0;}
+  .serif{font-family:"Source Han Serif SC","Songti SC",serif;}
+  .disclaimer{margin:18px 22px 8px;padding:12px 14px;font-size:11px;line-height:1.7;color:#9a8f7d;background:rgba(255,255,255,.6);border:1px solid rgba(138,127,109,.22);border-radius:12px;}
+
+  /* 首页 Hero（唯一深色区）*/
+  .hero{margin:10px 16px 14px;border-radius:28px;padding:22px 20px;color:#f6eccb;background:linear-gradient(150deg,#0B1426,#16243f 60%,#1f2d4a);position:relative;overflow:hidden;}
+  .hero .stars{position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 18% 22%,rgba(255,255,255,.85),transparent),radial-gradient(1.5px 1.5px at 68% 16%,rgba(255,255,255,.7),transparent),radial-gradient(1.5px 1.5px at 86% 56%,rgba(255,255,255,.6),transparent),radial-gradient(1.5px 1.5px at 40% 78%,rgba(255,255,255,.7),transparent);opacity:.75;}
+  .hero-top{display:flex;justify-content:space-between;position:relative;}
+  .bless{font-family:"Songti SC",serif;font-size:24px;font-weight:700;letter-spacing:2px;line-height:1.5;}
+  .weather{text-align:right;}
+  .weather .ic{font-size:26px;}
+  .weather .t{font-size:26px;font-weight:700;line-height:1;}
+  .weather .c{font-size:13px;opacity:.8;}
+  .hero-mid{display:flex;justify-content:space-between;align-items:center;margin-top:14px;position:relative;}
+  .lunar .s{font-size:15px;} .lunar .l{font-size:13px;opacity:.8;margin-top:2px;}
+  .tip{font-size:12px;opacity:.9;background:rgba(246,236,203,.12);padding:5px 12px;border-radius:999px;}
+  .minical{margin-top:14px;background:rgba(255,255,255,.08);border-radius:14px;padding:10px 12px;position:relative;font-size:11px;}
+  .mcw{display:flex;} .mcw span{flex:1;text-align:center;opacity:.6;font-size:10px;}
+  .mcg{display:flex;flex-wrap:wrap;margin-top:3px;}
+  .mcd{width:14.28%;text-align:center;padding:3px 0;border-radius:6px;display:flex;flex-direction:column;}
+  .mcd .n{font-size:11px;} .mcd .lu{font-size:8px;opacity:.55;margin-top:1px;}
+  .mcd.today{background:var(--gold);color:#fff;}
+  .lamp{margin-top:14px;display:inline-flex;gap:8px;align-items:center;background:rgba(246,236,203,.16);border:1px solid rgba(246,236,203,.4);padding:9px 18px;border-radius:999px;font-size:14px;}
+
+  /* Tabs + feed */
+  .tabs{display:flex;gap:22px;padding:8px 20px 10px;position:sticky;top:0;background:var(--paper);z-index:5;}
+  .tabs .t{font-size:17px;color:var(--muted);position:relative;padding-bottom:6px;}
+  .tabs .t.on{color:var(--ink);font-weight:700;}
+  .tabs .t.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:20px;height:3px;border-radius:3px;background:var(--gold);}
+  .feed{display:flex;padding:8px 10px 0;gap:8px;}
+  .col{flex:1;}
+  .card{background:var(--white);border-radius:18px;margin-bottom:8px;overflow:hidden;box-shadow:var(--shadow-soft);}
+  .card .img{width:100%;display:flex;align-items:center;justify-content:center;font-size:38px;color:#fff;height:120px;}
+  .card .body{padding:10px 11px 11px;}
+  .card .tt{font-size:14px;line-height:1.45;color:var(--ink);font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .card .meta{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:var(--muted);}
+  .card .meta .av{width:20px;height:20px;border-radius:50%;background:#f3e8cf;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gold);}
+  .card .meta .nm{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+  .card .meta .act{color:#b3aa9c;background:#f5f1e8;padding:2px 8px;border-radius:999px;}
+
+  /* 通用区块标题 */
+  .head{padding:20px 20px 4px;}
+  .h-t{font-family:"Source Han Serif SC",serif;font-size:27px;font-weight:700;}
+  .h-s{font-size:13px;color:var(--muted);margin-top:6px;}
+  .filters{display:flex;gap:9px;padding:14px 20px 4px;flex-wrap:wrap;}
+  .chip{font-size:13px;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:#f6f3ec;color:var(--muted);}
+  .chip.on{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#fff;font-weight:700;border:none;}
+
+  /* 文旅 feature + list */
+  .feature{margin:16px 16px 0;border-radius:28px;padding:22px;background:linear-gradient(135deg,#fff7e9,#fdeccb);border:1px solid #f0e6cc;}
+  .feature .badge{display:inline-block;font-size:12px;color:#fff;background:var(--gold);padding:4px 12px;border-radius:999px;font-weight:700;}
+  .feature .ft{font-family:"Source Han Serif SC",serif;font-size:22px;margin-top:12px;font-weight:700;}
+  .feature .fd{font-size:13px;color:#8a7d63;margin-top:8px;}
+  .feature .fp{position:absolute;right:22px;}
+  .tour{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:16px;margin:14px 16px 0;display:flex;align-items:center;box-shadow:var(--shadow-soft);}
+  .tour .cov{width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;flex-shrink:0;margin-right:14px;background:linear-gradient(135deg,#1f4a3e,#123026);}
+  .tour .tt{font-size:16px;font-weight:700;}
+  .tour .ds{font-size:12px;color:var(--muted);margin:5px 0 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .tour .tg{font-size:11px;color:var(--jade);background:rgba(127,183,168,.14);padding:3px 10px;border-radius:999px;}
+  .tour .pr{font-size:13px;color:var(--muted);margin-top:8px;}
+  .tour .pr b{color:var(--gold);font-size:16px;}
+  .tour .book{flex-shrink:0;margin-left:12px;border:1px solid rgba(200,163,90,.5);color:var(--gold);border-radius:999px;padding:9px 16px;font-size:13px;}
+
+  /* 心灵 jade */
+  .med{margin:16px 16px 0;border-radius:30px;padding:30px 24px;text-align:center;background:linear-gradient(160deg,#eef6f2,#e0ede6);border:1px solid #d8e8e0;}
+  .breath{width:96px;height:96px;border-radius:50%;margin:0 auto 18px;background:radial-gradient(circle at 40% 35%,#9FD0C2,#5E9788);box-shadow:0 0 36px rgba(127,183,168,.45);animation:breathe 4s infinite ease-in-out;}
+  @keyframes breathe{0%,100%{transform:scale(.82);opacity:.8;}50%{transform:scale(1.05);opacity:1;}}
+  .med .tt{font-family:"Source Han Serif SC",serif;font-size:21px;color:#3f6f60;font-weight:700;}
+  .med .sd{font-size:13px;color:var(--jade);margin-top:8px;}
+  .med .btn{display:inline-block;margin-top:18px;padding:12px 30px;border-radius:999px;background:linear-gradient(135deg,#9FD0C2,#7FB7A8);color:#0e2a22;font-weight:700;font-size:14px;}
+  .mood{margin:16px 16px 0;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow-soft);}
+  .mood .ml{font-size:14px;font-weight:600;margin-bottom:14px;}
+  .mood .row{display:flex;justify-content:space-between;}
+  .mood .e{font-size:26px;opacity:.45;}
+  .mood .e.on{opacity:1;transform:scale(1.18);}
+  .sec-t{font-size:13px;color:var(--muted);padding:20px 20px 4px;letter-spacing:1px;}
+  .mcard{background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;margin:14px 16px 0;display:flex;align-items:center;box-shadow:var(--shadow-soft);}
+  .mcard .ci{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:rgba(127,183,168,.14);margin-right:14px;}
+  .mcard .ti{font-size:16px;font-weight:700;} .mcard .ds{font-size:12px;color:var(--muted);margin-top:5px;}
+  .mcard .ty{font-size:11px;color:var(--jade);background:rgba(127,183,168,.14);padding:4px 12px;border-radius:999px;}
+
+  /* 功德 */
+  .hero-card{text-align:center;background:linear-gradient(160deg,#fff,#f7f0df);border-radius:24px;padding:24px;margin:16px;}
+  .merit-num{font-size:46px;font-weight:800;color:var(--gold);line-height:1;}
+  .merit-label{font-size:13px;color:var(--muted);margin-top:4px;}
+  .level-badge{display:inline-block;margin-top:10px;background:var(--gold);color:#fff;font-size:14px;padding:4px 16px;border-radius:999px;}
+  .progress{height:9px;background:#f1ede4;border-radius:999px;overflow:hidden;margin:12px 0;}
+  .progress-in{height:100%;background:linear-gradient(90deg,var(--gold-l),var(--gold));border-radius:999px;}
+  .act{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);}
+  .act:last-child{border-bottom:none;}
+  .a-icon{font-size:24px;margin-right:12px;} .a-name{font-size:15px;font-weight:600;flex:1;}
+  .a-btn{background:#f3efe7;color:var(--gold);font-size:13px;padding:7px 14px;border-radius:999px;font-weight:700;}
+
+  /* Tab bar */
+  .tabbar{position:absolute;left:0;right:0;bottom:0;height:62px;background:#fff;display:flex;align-items:center;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 14px rgba(40,33,20,.07);z-index:99;}
+  .tabbar .item{flex:1;text-align:center;font-size:11px;color:var(--muted);}
+  .tabbar .item.on{color:var(--gold);}
+  .tabbar .item .ic{font-size:20px;line-height:1;}
+  .tabbar .item.center .plus{width:52px;height:52px;border-radius:50%;margin-top:-26px;background:linear-gradient(140deg,var(--gold-l),var(--gold));color:#fff;font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(200,163,90,.45);border:3px solid #fff;}
+  .hidden{display:none;}
+  .note-foot{font-size:12px;color:#8a7f6d;text-align:center;padding:8px 0 14px;}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <button class="on" data-s="home" onclick="sw(this)">发现 · 首页</button>
+    <button data-s="tour" onclick="sw(this)">文旅</button>
+    <button data-s="journey" onclick="sw(this)">心灵之旅</button>
+    <button data-s="merit" onclick="sw(this)">功德</button>
+  </div>
+
+  <div class="phone">
+    <div class="screen" id="screen-home">
+      <!-- Hero 深色沉浸区 -->
+      <div class="hero">
+        <div class="stars"></div>
+        <div class="hero-top">
+          <div>
+            <div class="bless">愿你今夜<br>星河入梦</div>
+          </div>
+          <div class="weather"><div class="ic">🌙</div><div class="t">23°</div><div class="c">杭州 · 晴夜</div></div>
+        </div>
+        <div class="hero-mid">
+          <div class="lunar"><span class="s">7月24日 周四</span><span class="l">丙午年 · 六月初十 · 大暑</span></div>
+          <div class="tip">宜 · 祈愿 · 出行</div>
+        </div>
+        <div class="minical">
+          <div class="mcw"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+          <div class="mcg">
+            <div class="mcd"><span class="n">28</span><span class="lu">初五</span></div>
+            <div class="mcd"><span class="n">29</span><span class="lu">初六</span></div>
+            <div class="mcd"><span class="n">30</span><span class="lu">初七</span></div>
+            <div class="mcd"><span class="n">1</span><span class="lu">初八</span></div>
+            <div class="mcd"><span class="n">2</span><span class="lu">初九</span></div>
+            <div class="mcd"><span class="n">3</span><span class="lu">初十</span></div>
+            <div class="mcd"><span class="n">4</span><span class="lu">十一</span></div>
+            <div class="mcd"><span class="n">5</span><span class="lu">十二</span></div>
+            <div class="mcd"><span class="n">6</span><span class="lu">十三</span></div>
+            <div class="mcd"><span class="n">7</span><span class="lu">十四</span></div>
+            <div class="mcd"><span class="n">8</span><span class="lu">十五</span></div>
+            <div class="mcd"><span class="n">9</span><span class="lu">十六</span></div>
+            <div class="mcd"><span class="n">10</span><span class="lu">十七</span></div>
+            <div class="mcd today"><span class="n">24</span><span class="lu">初十</span></div>
+            <div class="mcd"><span class="n">11</span><span class="lu">十八</span></div>
+            <div class="mcd"><span class="n">12</span><span class="lu">十九</span></div>
+            <div class="mcd"><span class="n">13</span><span class="lu">二十</span></div>
+            <div class="mcd"><span class="n">14</span><span class="lu">廿一</span></div>
+            <div class="mcd"><span class="n">15</span><span class="lu">廿二</span></div>
+            <div class="mcd"><span class="n">16</span><span class="lu">廿三</span></div>
+            <div class="mcd"><span class="n">17</span><span class="lu">廿四</span></div>
+            <div class="mcd"><span class="n">18</span><span class="lu">廿五</span></div>
+            <div class="mcd"><span class="n">19</span><span class="lu">廿六</span></div>
+            <div class="mcd"><span class="n">20</span><span class="lu">廿七</span></div>
+            <div class="mcd"><span class="n">21</span><span class="lu">廿八</span></div>
+            <div class="mcd"><span class="n">22</span><span class="lu">廿九</span></div>
+            <div class="mcd"><span class="n">23</span><span class="lu">三十</span></div>
+            <div class="mcd"><span class="n">24</span><span class="lu">七月</span></div>
+            <div class="mcd"><span class="n">25</span><span class="lu">初二</span></div>
+            <div class="mcd"><span class="n">26</span><span class="lu">初三</span></div>
+            <div class="mcd"><span class="n">27</span><span class="lu">初四</span></div>
+            <div class="mcd"><span class="n">28</span><span class="lu">初五</span></div>
+            <div class="mcd"><span class="n">29</span><span class="lu">初六</span></div>
+            <div class="mcd"><span class="n">30</span><span class="lu">初七</span></div>
+            <div class="mcd"><span class="n">31</span><span class="lu">初八</span></div>
+          </div>
+        </div>
+        <div class="lamp">🪔 点亮心灯 · +1 功德</div>
+      </div>
+
+      <div class="tabs"><div class="t">关注</div><div class="t on">发现</div><div class="t">视频</div></div>
+      <div class="feed">
+        <div class="col">
+          <div class="card"><div class="img" style="background:linear-gradient(135deg,#1f4a3e,#123026)">🌿</div><div class="body"><div class="tt">苍山脚下的星空营地，把焦虑留在城市</div><div class="meta"><span class="av">拾</span><span class="nm">拾光旅人</span><span class="act">♥ 3622</span></div></div></div>
+          <div class="card"><div class="img" style="background:linear-gradient(135deg,#2a3f63,#16243f)">🌌</div><div class="body"><div class="tt">用星图读懂自己的迁移宫</div><div class="meta"><span class="av">星</span><span class="nm">星野笔记</span><span class="act">♥ 1284</span></div></div></div>
+        </div>
+        <div class="col">
+          <div class="card"><div class="img" style="background:linear-gradient(135deg,#4a3f2f,#2a2418)">🏮</div><div class="body"><div class="tt">普陀山寄愿一日，听见海的声音</div><div class="meta"><span class="av">愿</span><span class="nm">寄愿小铺</span><span class="act">♥ 992</span></div></div></div>
+          <div class="card"><div class="img" style="background:linear-gradient(135deg,#3a2f52,#221a38)">🧘</div><div class="body"><div class="tt">10 分钟呼吸冥想，回到此刻</div><div class="meta"><span class="av">心</span><span class="nm">心灵驿站</span><span class="act">♥ 2048</span></div></div></div>
+        </div>
+      </div>
+      <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</div>
+    </div>
+
+    <div class="screen hidden" id="screen-tour">
+      <div class="head"><div class="h-t">星象文旅</div><div class="h-s">把星图里的「迁移宫 / 福德宫」<br>变成真实的山水旅程</div></div>
+      <div class="filters"><div class="chip on">全部</div><div class="chip">避暑</div><div class="chip">祈福</div><div class="chip">山海</div></div>
+      <div class="feature">
+        <span class="badge">本期精选</span>
+        <div class="ft">苍山洱海 · 星野疗愈之旅</div>
+        <div class="fd">顺应福德宫，在大理的风里把心事放下。</div>
+        <div class="fp" style="position:static;margin-top:12px;"><span style="font-size:22px;font-weight:700;color:var(--gold)">¥2680</span> <span style="font-size:12px;color:var(--muted)">/人 · 5 天</span></div>
+      </div>
+      <div class="tour"><div class="cov">🏔️</div><div style="flex:1"><div class="tt">普陀山寄愿静心线</div><div class="ds">海天佛国，听潮寄愿</div><span class="tg">祈福 · 避暑</span><div class="pr">¥<b>1880</b> · 3 天</div></div><div class="book">预订</div></div>
+      <div class="tour"><div class="cov" style="background:linear-gradient(135deg,#2a3f63,#16243f)">🌊</div><div style="flex:1"><div class="tt">东极岛观星航海</div><div class="ds">中国大陆最东，追第一缕光</div><span class="tg">山海 · 观星</span><div class="pr">¥<b>2260</b> · 4 天</div></div><div class="book">预订</div></div>
+      <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</div>
+    </div>
+
+    <div class="screen hidden" id="screen-journey">
+      <div class="head"><div class="h-t">心灵之旅</div><div class="h-s">每天 10 分钟，安住当下，温柔待己</div></div>
+      <div class="med"><div class="breath"></div><div class="tt">今日冥想 · 第 12 天</div><div class="sd">跟随呼吸，回到此刻</div><div class="btn">▶ 开始 10 分钟</div></div>
+      <div class="mood"><div class="ml">此刻，你的心情是？</div><div class="row"><div class="e">😊</div><div class="e on">😌</div><div class="e">😐</div><div class="e">😔</div><div class="e">😣</div></div></div>
+      <div class="sec-t">引导冥想</div>
+      <div class="mcard"><div class="ci">🌿</div><div style="flex:1"><div class="ti">山间清风</div><div class="ds">轻装前行，安住当下</div></div><span class="ty">12 min</span></div>
+      <div class="mcard"><div class="ci">🌊</div><div style="flex:1"><div class="ti">海潮入眠</div><div class="ds">在浪声里慢慢松开</div></div><span class="ty">18 min</span></div>
+      <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</div>
+    </div>
+
+    <div class="screen hidden" id="screen-merit">
+      <div class="hero-card">
+        <div class="merit-num">1,286</div>
+        <div class="merit-label">累计功德</div>
+        <div class="level-badge">修士 · Lv.4</div>
+        <div class="progress"><div class="progress-in" style="width:64%"></div></div>
+        <div style="font-size:12px;color:var(--muted)">距「行者」还差 714 功德</div>
+      </div>
+      <div class="card" style="margin:0 16px">
+        <div class="act"><span class="a-icon">🪔</span><span class="a-name">点亮心灯</span><span class="a-btn">+1</span></div>
+        <div class="act"><span class="a-icon">✍️</span><span class="a-name">记一笔 · 发布笔记</span><span class="a-btn">+8</span></div>
+        <div class="act"><span class="a-icon">🤝</span><span class="a-name">共修 · 结一份善缘</span><span class="a-btn">+3</span></div>
+        <div class="act"><span class="a-icon">📅</span><span class="a-name">连续签到</span><span class="a-btn">+2</span></div>
+      </div>
+      <div style="padding:18px 20px 4px;font-size:13px;color:var(--muted)">功德林 · 本周榜</div>
+      <div class="card" style="margin:8px 16px">
+        <div class="act"><span class="a-icon" style="color:var(--gold)">①</span><span class="a-name">清音居士</span><span style="color:var(--gold);font-weight:700">3621</span></div>
+        <div class="act"><span class="a-icon" style="color:var(--gold)">②</span><span class="a-name">山海拾光</span><span style="color:var(--gold);font-weight:700">2980</span></div>
+        <div class="act"><span class="a-icon" style="color:var(--gold)">③</span><span class="a-name">你</span><span style="color:var(--gold);font-weight:700">1286</span></div>
+      </div>
+      <div class="disclaimer">温馨提示：功德仅用于记录善意与陪伴，不可购买、提现或兑换，与商城实物电商完全解耦。</div>
+    </div>
+
+    <div class="tabbar">
+      <div class="item on"><div class="ic">🔍</div>发现</div>
+      <div class="item"><div class="ic">🧭</div>文旅</div>
+      <div class="item center"><div class="plus">✚</div></div>
+      <div class="item"><div class="ic">💬</div>消息</div>
+      <div class="item"><div class="ic">👤</div>我的</div>
+    </div>
+  </div>
+
+<script>
+  function sw(btn){
+    document.querySelectorAll('.topbar button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    var s=btn.dataset.s;
+    ['home','tour','journey','merit'].forEach(function(k){
+      document.getElementById('screen-'+k).classList.toggle('hidden', k!==s);
+    });
+    document.querySelector('.screen:not(.hidden)').scrollTop=0;
+  }
+</script>
+</body>
+</html>

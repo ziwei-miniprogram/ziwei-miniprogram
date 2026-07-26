@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>星野漫游 · 轮播预览（样例 A：痛点共鸣）</title>
+<style>
+  :root{
+    --paper:#f7f5f0; --gold:#c8a35a; --gold-l:#e0c489;
+    --night1:#0B1426; --night2:#16243f; --ink:#5a4a2e; --ink-soft:#9a7b3e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Songti SC","STSong","Noto Serif SC",serif;
+    background:radial-gradient(circle at 50% 0%,#1a2740,#0B1426 70%);
+    color:var(--ink); min-height:100vh; display:flex; flex-direction:column;
+    align-items:center; padding:28px 14px 48px;
+  }
+  h1{color:var(--gold-l); font-size:22px; font-weight:600; letter-spacing:2px; margin-bottom:4px;}
+  .sub{color:#b9c4d8; font-size:13px; margin-bottom:18px; letter-spacing:1px;}
+  .stage{
+    position:relative; width:340px; height:605px; border-radius:22px;
+    overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.55); background:var(--paper);
+  }
+  .slides{display:flex; width:2040px; height:100%; transition:transform .55s cubic-bezier(.22,.61,.36,1);}
+  .slide{
+    width:340px; height:605px; flex:none; padding:34px 30px 110px;
+    display:flex; flex-direction:column; justify-content:flex-start;
+    position:relative; overflow:hidden;
+  }
+  .slide .tag{
+    align-self:flex-start; font-size:12px; color:var(--ink-soft);
+    border:1rpx solid rgba(200,163,90,.4); padding:3px 12px; border-radius:20px;
+    margin-bottom:18px; letter-spacing:1px;
+  }
+  .slide h2{
+    font-size:25px; line-height:1.5; color:var(--night1); font-weight:700;
+    letter-spacing:1px; margin-bottom:14px;
+  }
+  .slide p{font-size:15px; line-height:1.85; color:var(--ink);}
+  .slide .big{font-size:30px; line-height:1.45; color:var(--night1); font-weight:700;}
+  .slide .star{position:absolute; right:18px; top:40px; font-size:60px; opacity:.16; color:var(--gold);}
+  .slide.hero{
+    background:linear-gradient(160deg,var(--night1),var(--night2)); color:#fff;
+  }
+  .slide.hero h2,.slide.hero .big{color:#fff;}
+  .slide.hero p{color:#cdd6e6;}
+  .slide.hero .tag{color:var(--gold-l); border-color:rgba(224,196,137,.5);}
+  .slide.hero .star{opacity:.28;}
+  .dots{display:flex; gap:8px; margin-top:18px;}
+  .dot{width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.25); cursor:pointer; transition:.3s;}
+  .dot.on{background:var(--gold-l); width:22px; border-radius:6px;}
+  .nav{display:flex; gap:12px; margin-top:14px;}
+  .nav button{
+    background:rgba(255,255,255,.08); color:var(--gold-l); border:1rpx solid rgba(224,196,137,.4);
+    padding:8px 20px; border-radius:24px; font-size:14px; cursor:pointer; letter-spacing:1px;
+  }
+  .nav button:hover{background:rgba(224,196,137,.18);}
+  .meta{color:#8b97ad; font-size:12px; margin-top:16px; max-width:340px; text-align:center; line-height:1.7;}
+</style>
+</head>
+<body>
+  <h1>星野漫游 · 轮播预览</h1>
+  <div class="sub">样例 A ｜ 痛点共鸣 · 提问型钩子 ｜ 9:16 竖版</div>
+
+  <div class="stage">
+    <div class="slides" id="slides">
+      <div class="slide hero">
+        <div class="star">✦</div>
+        <div class="tag">HOOK · 封面钩子</div>
+        <div class="big">你有没有过那种，<br>说不清但就是丧的晚上？</div>
+        <div class="star" style="top:auto;bottom:120px;font-size:80px;">🪔</div>
+      </div>
+      <div class="slide">
+        <div class="star">✦</div>
+        <div class="tag">PROBLEM · 痛点</div>
+        <h2>不是矫情</h2>
+        <p>是情绪没有出口。<br>白天撑着，深夜反扑——<br>你只是没人教过，怎么和情绪相处。</p>
+      </div>
+      <div class="slide">
+        <div class="star">✦</div>
+        <div class="tag">AGITATION · 放大</div>
+        <h2>越刷越空</h2>
+        <p>信息填不满心里的洞。<br>手指停不下来，<br>心却越来越轻飘、越来越慌。</p>
+      </div>
+      <div class="slide">
+        <div class="star">✦</div>
+        <div class="tag">SOLUTION · 解法</div>
+        <h2>古人不硬扛</h2>
+        <p>他们用「每日一件小事」<br>安顿自己。<br>不是逃避，是给心一个落点。</p>
+      </div>
+      <div class="slide">
+        <div class="star">✦</div>
+        <div class="tag">FEATURE · 产品</div>
+        <h2>星野「每日三善」</h2>
+        <p>✦ 点灯 · 定念<br>✦ 随喜 · 善意<br>✦ 静心 · 归档<br><br>3 分钟，把今天轻轻放下。</p>
+      </div>
+      <div class="slide hero">
+        <div class="star">✦</div>
+        <div class="tag">CTA · 行动</div>
+        <div class="big">今晚，<br>点你今年的<br>第一盏心灯 🪔</div>
+        <p style="margin-top:14px;color:#cdd6e6;">进小程序，从一件小事开始。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dots" id="dots"></div>
+  <div class="nav">
+    <button onclick="go(-1)">‹ 上一屏</button>
+    <button onclick="go(1)">下一屏 ›</button>
+  </div>
+  <div class="meta">
+    底部 20% 留白（平台控件区）· 视觉 DNA 统一星辉金系 · 文末含合规免责小字。<br>
+    完整 5 套样例 + 钩子库 + 30 天日历见《轮播脚本库.md》《轮播内容策略.md》。
+  </div>
+
+<script>
+  let i = 0; const total = 6;
+  const slides = document.getElementById('slides');
+  const dots = document.getElementById('dots');
+  for(let k=0;k<total;k++){const d=document.createElement('div');d.className='dot'+(k===0?' on':'');d.onclick=()=>show(k);dots.appendChild(d);}
+  function show(n){ i=Math.max(0,Math.min(total-1,n)); slides.style.transform='translateX('+(-i*340)+'px)';
+    [...dots.children].forEach((d,k)=>d.className='dot'+(k===i?' on':'')); }
+  function go(d){ show(i+d); }
+  // 自动轻播一次演示
+  let t=0; const timer=setInterval(()=>{ t++; if(t<total){show(t);} else {clearInterval(timer);} }, 1400);
+</script>
+</body>
+</html>

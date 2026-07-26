@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拾光驿 · P0 断点止血预览</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #e9e5dc; display: flex; justify-content: center; padding: 24px; color: #1f1c17; }
+  .phone { width: 380px; height: 760px; background: #f7f5f0; border-radius: 40px; box-shadow: 0 20px 60px rgba(0,0,0,.25); overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .screen { flex: 1; overflow-y: auto; padding-bottom: 70px; }
+  .search { margin: 14px 18px 6px; background: #f1ede4; border-radius: 999px; height: 44px; display: flex; align-items: center; gap: 8px; padding: 0 18px; color: #9a9286; font-size: 14px; cursor: pointer; }
+  .hero { margin: 6px 18px 14px; border-radius: 24px; padding: 18px; color: #f6eccb; background: linear-gradient(150deg,#0B1426,#16243f 60%,#1f2d4a); }
+  .hero .l1 { font-size: 13px; opacity: .85; } .hero .l2 { font-size: 20px; font-weight: 700; margin-top: 6px; }
+  .quick { display: flex; padding: 0 18px 8px; }
+  .q { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 13px; color: #6b6457; cursor: pointer; }
+  .q-i { width: 52px; height: 52px; border-radius: 16px; background: #f3efe7; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .tabs { display: flex; gap: 22px; padding: 8px 22px 10px; position: sticky; top: 0; background: #f7f5f0; z-index: 5; border-bottom: 1px solid #ece8df; }
+  .t { font-size: 15px; color: #9a9286; } .t.on { color: #1f1c17; font-weight: 700; } .t.on::after { content:""; display:block; width: 22px; height: 3px; background: #c8a35a; border-radius: 3px; margin: 4px auto 0; }
+  .rec { margin: 12px 18px 4px; background: #fff; border: 1px solid #ece8df; border-radius: 16px; padding: 12px 14px; }
+  .rec-h { font-size: 12px; color: #9a9286; margin-bottom: 10px; }
+  .rec-bar { display: flex; gap: 14px; overflow-x: auto; }
+  .rc { text-align: center; min-width: 64px; }
+  .rc-av { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(140deg,#faf3e2,#f0e6cf); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto; }
+  .rc-nm { font-size: 12px; margin-top: 6px; } .rc-btn { display: inline-block; margin-top: 6px; font-size: 12px; color: #fff; background: #c8a35a; border-radius: 999px; padding: 3px 14px; cursor: pointer; }
+  .feed { display: flex; padding: 12px 10px 0; gap: 8px; }
+  .col { flex: 1; } .card { background: #fff; border-radius: 16px; margin-bottom: 8px; overflow: hidden; box-shadow: 0 3px 12px rgba(40,33,20,.06); }
+  .card .img { height: 110px; display: flex; align-items: center; justify-content: center; font-size: 34px; color: #fff; }
+  .card .body { padding: 8px 10px; } .card .tt { font-size: 13px; } .card .mt { font-size: 11px; color: #9a9286; margin-top: 4px; }
+  .tabbar { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: #fff; border-top: 1px solid #ece8df; display: flex; align-items: center; }
+  .tb { flex: 1; text-align: center; font-size: 11px; color: #9a9286; } .tb.on { color: #c8a35a; }
+  .tb-c { flex: 1; } .plus { width: 46px; height: 46px; border-radius: 50%; background: #1f1c17; color: #c8a35a; display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto; }
+  .page { padding: 18px; } .hd { font-size: 20px; font-weight: 700; } .hd-s { font-size: 13px; color: #9a9286; margin-top: 4px; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cell { background: #fff; border: 1px solid #ece8df; border-radius: 16px; padding: 18px 14px; cursor: pointer; } .cell:active { transform: scale(.97); }
+  .cell .ic { width: 50px; height: 50px; border-radius: 14px; background: linear-gradient(140deg,#faf3e2,#f0e6cf); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 10px; }
+  .cell .nm { font-size: 15px; font-weight: 600; } .cell .ds { font-size: 12px; color: #9a9286; margin-top: 3px; }
+  .tip { font-size: 11px; color: #b0a899; text-align: center; margin-top: 20px; line-height: 1.6; }
+  .back { font-size: 13px; color: #c8a35a; cursor: pointer; margin-bottom: 8px; display: inline-block; }
+  .overlay { position: absolute; inset: 0; background: #f7f5f0; z-index: 30; display: none; flex-direction: column; }
+  .overlay.show { display: flex; }
+  .obar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; }
+  .inp { flex: 1; background: #fff; border: 1px solid #ece8df; border-radius: 999px; padding: 10px 16px; font-size: 14px; }
+  .slist { flex: 1; overflow-y: auto; padding: 0 16px 16px; }
+  .si { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #ece8df; border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
+  .si .av { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .si .tt { font-size: 14px; } .si .au { font-size: 12px; color: #9a9286; margin-top: 3px; }
+  .empty { text-align: center; color: #9a9286; font-size: 13px; padding: 60px 20px; }
+  .toast { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(31,28,23,.9); color: #f6eccb; padding: 10px 18px; border-radius: 12px; font-size: 13px; opacity: 0; transition: opacity .2s; z-index: 99; pointer-events: none; }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen" id="screen">
+    <div class="search" onclick="openSearch()">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+    <div class="hero">
+      <div class="l1">丙午年 · 六月初十 · 大暑</div>
+      <div class="l2">愿你所行皆坦途，所念皆如愿</div>
+    </div>
+    <div class="quick">
+      <div class="q" onclick="openSpace()"><div class="q-i">✨</div>星野</div>
+      <div class="q" onclick="toast('进入 文旅')"><div class="q-i">🏯</div>文旅</div>
+      <div class="q" onclick="toast('进入 寄愿墙')"><div class="q-i">🏮</div>寄愿</div>
+      <div class="q" onclick="toast('进入 功德林')"><div class="q-i">🪔</div>功德</div>
+    </div>
+    <div class="tabs">
+      <div class="t" id="tab0" onclick="setTab(0)">关注</div>
+      <div class="t on" id="tab1" onclick="setTab(1)">发现</div>
+      <div class="t" id="tab2" onclick="setTab(2)">视频</div>
+    </div>
+    <div id="recWrap"></div>
+    <div class="feed" id="feed"></div>
+  </div>
+
+  <div class="overlay" id="spaceView">
+    <div class="page">
+      <div class="back" onclick="closeSpace()">‹ 返回发现</div>
+      <div class="hd">星野 · 工具箱</div>
+      <div class="hd-s">星图 · 疗愈 · 心灵 · 寄愿 · 祝福 · 功德</div>
+      <div class="grid" id="starGrid"></div>
+      <div class="tip">所有功能均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成专业建议。</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="searchView">
+    <div class="obar">
+      <input class="inp" id="kw" placeholder="搜索笔记 · 作者 · 星图 · 旅行" oninput="doSearch()" autofocus>
+      <span style="font-size:13px;color:#c8a35a;cursor:pointer" onclick="closeSearch()">取消</span>
+    </div>
+    <div class="slist" id="slist"></div>
+  </div>
+
+  <div class="tabbar">
+    <div class="tb on">发现</div><div class="tb">文旅</div>
+    <div class="tb-c"><div class="plus">✚</div></div>
+    <div class="tb">消息</div><div class="tb">我的</div>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  var follow = {};
+  try { follow = JSON.parse(localStorage.getItem('p0_follow') || '{}'); } catch(e) {}
+  var recommend = [
+    { id: 1, name: '苍山集', avatar: '🏔' },
+    { id: 2, name: '拾光小野', avatar: '🌿' },
+    { id: 3, name: '星野阿哲', avatar: '🔭' },
+    { id: 4, name: '云水禅', avatar: '🪷' }
+  ];
+  var feedNotes = [
+    { id: 101, title: '苍山脚下的星空帐篷', author: '苍山集', emoji: '🌌', bg: 'linear-gradient(140deg,#2b2b4e,#4a4a7a)' },
+    { id: 102, title: '用星图规划一次治愈旅行', author: '星野阿哲', emoji: '🔮', bg: 'linear-gradient(140deg,#3a3660,#6a5f96)' },
+    { id: 103, title: '正念行走 · 把心事交给风', author: '云水禅', emoji: '🍃', bg: 'linear-gradient(140deg,#7fb7a3,#a9d4c5)' },
+    { id: 104, title: '今晚的寄愿 · 愿父母安康', author: '拾光小野', emoji: '🏮', bg: 'linear-gradient(140deg,#c8a35a,#e0c489)' }
+  ];
+  var starTools = [
+    { key: 'chart', icon: '🔮', name: '星图', desc: '深度星象解读', url: 'chart' },
+    { key: 'healing', icon: '🍃', name: '疗愈', desc: '呼吸与冥想', url: 'healing' },
+    { key: 'journey', icon: '🌿', name: '心灵之旅', desc: '正念行走', url: 'journey' },
+    { key: 'wish', icon: '🏮', name: '寄愿墙', desc: '心愿与灯', url: 'wish' },
+    { key: 'blessing', icon: '🌟', name: '祝福视频', desc: '星夜祝福', url: 'blessing' },
+    { key: 'merit', icon: '🪔', name: '功德林', desc: '日行一善', url: 'merit' }
+  ];
+
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(t._t); t._t = setTimeout(function(){ t.classList.remove('show'); }, 1100);
+  }
+  function setTab(i) {
+    for (var k=0;k<3;k++) document.getElementById('tab'+k).classList.toggle('on', k===i);
+    document.getElementById('recWrap').style.display = (i===1) ? 'block' : 'none';
+    renderFeed(i);
+  }
+  function renderRec() {
+    var left = recommend.filter(function(r){ return !follow[r.name]; });
+    var w = document.getElementById('recWrap');
+    if (!left.length) { w.innerHTML = ''; w.style.display='none'; return; }
+    var html = '<div class="rec"><div class="rec-h">推荐关注 · 遇到同好就点一下 +1 功德</div><div class="rec-bar">';
+    left.forEach(function(r){
+      html += '<div class="rc"><div class="rc-av">'+r.avatar+'</div><div class="rc-nm">'+r.name+'</div><div class="rc-btn" onclick="doFollow(\''+r.name+'\')">关注</div></div>';
+    });
+    html += '</div></div>';
+    w.innerHTML = html; w.style.display = (document.getElementById('tab1').classList.contains('on')) ? 'block' : 'none';
+  }
+  function doFollow(name) {
+    follow[name] = true;
+    localStorage.setItem('p0_follow', JSON.stringify(follow));
+    toast('已关注 '+name+' · +1 功德');
+    renderRec();
+  }
+  function renderFeed(tab) {
+    var box = document.getElementById('feed');
+    if (tab === 0) {
+      var followed = recommend.filter(function(r){ return follow[r.name]; });
+      if (!followed.length) { box.innerHTML = '<div class="empty" style="width:100%">还没有关注的人<br>去「发现」点关注，这里会浮现他们的笔记</div>'; return; }
+      box.innerHTML = '<div class="col" id="c0"></div><div class="col" id="c1"></div>';
+      followed.forEach(function(r,i){ var c = document.getElementById('c'+(i%2)); c.innerHTML += card({title: r.name+' 的星野笔记', author: r.name, emoji: r.avatar, bg:'linear-gradient(140deg,#c8a35a,#e0c489)'}); });
+    } else if (tab === 2) {
+      box.innerHTML = '<div class="empty" style="width:100%">视频流（演示）</div>';
+    } else {
+      box.innerHTML = '<div class="col" id="c0"></div><div class="col" id="c1"></div>';
+      feedNotes.forEach(function(n,i){ var c = document.getElementById('c'+(i%2)); c.innerHTML += card(n); });
+    }
+  }
+  function card(n) {
+    return '<div class="card"><div class="img" style="background:'+n.bg+'">'+n.emoji+'</div><div class="body"><div class="tt">'+n.title+'</div><div class="mt">'+n.author+'</div></div></div>';
+  }
+  function openSpace() { document.getElementById('spaceView').classList.add('show'); renderStar(); }
+  function closeSpace() { document.getElementById('spaceView').classList.remove('show'); }
+  function renderStar() {
+    var g = document.getElementById('starGrid'); g.innerHTML = '';
+    starTools.forEach(function(t){
+      var d = document.createElement('div'); d.className = 'cell';
+      d.innerHTML = '<div class="ic">'+t.icon+'</div><div class="nm">'+t.name+'</div><div class="ds">'+t.desc+'</div>';
+      d.onclick = function(){ toast('进入 '+t.name); };
+      g.appendChild(d);
+    });
+  }
+  function openSearch() { document.getElementById('searchView').classList.add('show'); document.getElementById('kw').value=''; doSearch(); document.getElementById('kw').focus(); }
+  function closeSearch() { document.getElementById('searchView').classList.remove('show'); }
+  function doSearch() {
+    var kw = document.getElementById('kw').value.trim();
+    var list = document.getElementById('slist');
+    if (!kw) { list.innerHTML = '<div class="empty">输入关键词，从星野漫游的笔记中查找</div>'; return; }
+    var r = feedNotes.filter(function(n){ return n.title.indexOf(kw)>=0 || n.author.indexOf(kw)>=0; });
+    if (!r.length) { list.innerHTML = '<div class="empty">没有找到「'+kw+'」相关的内容<br>换个词试试，或去发现页逛逛</div>'; return; }
+    list.innerHTML = '';
+    r.forEach(function(n){
+      var d = document.createElement('div'); d.className = 'si';
+      d.innerHTML = '<div class="av" style="background:'+n.bg+'">'+n.emoji+'</div><div><div class="tt">'+n.title+'</div><div class="au">'+n.author+'</div></div>';
+      list.appendChild(d);
+    });
+  }
+  renderRec(); renderFeed(1);
+</script>
+</body>
+</html>

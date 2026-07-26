@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>拾光驿 · 行为干预交互预览</title>
+<style>
+  :root{
+    --paper:#f7f5f0; --paper2:#fffdf8; --ink:#2a241c; --ink2:#6b6253;
+    --gold:#c8a35a; --gold-d:#a9853f; --night:#0B1426; --night2:#16243f;
+    --green:#5a8a6b; --rose:#c87a7a; --line:rgba(138,127,109,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;padding:28px 16px 60px}
+  .wrap{max-width:880px;margin:0 auto}
+  h1{font-size:26px;font-weight:800;letter-spacing:.5px}
+  h1 .sub{font-size:14px;color:var(--gold-d);font-weight:600;display:block;margin-top:4px;letter-spacing:2px}
+  .lead{color:var(--ink2);margin:14px 0 26px;font-size:15px}
+  .guard{background:linear-gradient(135deg,#fffdf8,#f3eee2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:13.5px;color:var(--ink2);margin-bottom:30px}
+  .guard b{color:var(--green)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--paper2);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(40,30,10,.04);transition:transform .2s,box-shadow .2s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(40,30,10,.10)}
+  .tag{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--gold);border-radius:20px;padding:2px 10px;letter-spacing:1px}
+  .tag.b{background:var(--green)} .tag.c{background:var(--rose)} .tag.d{background:var(--night2)}
+  .card h3{font-size:16px;margin:10px 0 4px}
+  .card .pr{font-size:12px;color:var(--gold-d);font-weight:700;margin-bottom:8px}
+  .card p{font-size:13.5px;color:var(--ink2)}
+  /* progress demo */
+  .bar{height:14px;border-radius:10px;background:#ece6d8;overflow:hidden;margin:12px 0 6px;position:relative}
+  .fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-d));border-radius:10px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .ticks{position:absolute;top:0;bottom:0;width:2px;background:rgba(255,255,255,.7)}
+  .row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2)}
+  .btn{margin-top:12px;background:var(--night);color:#fff;border:none;border-radius:10px;padding:9px 14px;font-size:13px;cursor:pointer;font-weight:600}
+  .btn:hover{background:var(--night2)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .stat{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+  .chip{background:#f3eee2;border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:12.5px}
+  /* streak flame */
+  .flames{font-size:30px;letter-spacing:4px;margin:12px 0}
+  /* wish select */
+  .wishes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .wish{border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:13px;cursor:pointer;background:#fff}
+  .wish.on{border-color:var(--gold);background:#fbf3e2;font-weight:700;color:var(--gold-d)}
+  /* social proof */
+  .proof{font-size:14px;margin-top:10px;color:var(--ink)}
+  .proof b{color:var(--gold-d);font-size:20px}
+  /* variable burst */
+  .burst{position:relative;height:60px;margin-top:10px;overflow:hidden}
+  .star{position:absolute;left:50%;top:30px;font-size:22px;animation:rise 1.4s ease-out forwards}
+  @keyframes rise{0%{opacity:0;transform:translate(-50%,10px) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-46px) scale(1.1)}}
+  .foot{margin-top:34px;font-size:12.5px;color:var(--ink2);text-align:center;border-top:1px solid var(--line);padding-top:18px}
+  .note{font-size:11.5px;color:var(--gold-d);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>拾光驿 · 行为干预预览<span class="sub">BEHAVIORAL NUDGE PLAYGROUND</span></h1>
+  <p class="lead">下面 6 个轻轻一推，全部基于现有产品机制（功德经济 / 签到 / 解锁 / 社交 / 首启）。点一点，感受「良性助推」而非「暗黑模式」的差别。</p>
+
+  <div class="guard">
+    🛡️ <b>护栏</b>：所有助推服务于用户自身的正向意图；不制造假紧迫、不隐藏退订、不诱导付费、抽奖公示概率且零金钱。功德不可提现/交易/购买；不出现算命改运/医疗承诺文案；全部提醒可一键关闭。
+  </div>
+
+  <div class="grid">
+
+    <!-- B4 Endowed progress -->
+    <div class="card">
+      <span class="tag">B4 · 进度幻觉</span>
+      <h3>星辉初光：起点非零</h3>
+      <div class="pr">新用户赠 +10 功德（明确标注赠送）</div>
+      <p>深度解读需 30 功德。从「0%」起步让人想放弃；赠 10 让进度从 <b>33%</b> 起跳——经典实验证明起点非零显著提升完成率。</p>
+      <div class="bar"><div class="fill" id="b4fill" style="width:0%"></div>
+        <div class="ticks" style="left:33.3%"></div><div class="ticks" style="left:66.6%"></div></div>
+      <div class="row"><span>0</span><span id="b4txt">未赠送</span><span>30</span></div>
+      <button class="btn" onclick="b4()">模拟新用户进入</button>
+      <div class="note" id="b4note"></div>
+    </div>
+
+    <!-- B5 Goal gradient -->
+    <div class="card">
+      <span class="tag b">B5 · 目标梯度</span>
+      <h3>再攒一点就好</h3>
+      <div class="pr">进度越近终点，文案越催动</div>
+      <p id="b5desc">进度低时说「已攒 X」；≥70% 时切为「再攒 Y 即点亮深度解读」——让人看见终点加速行动。</p>
+      <div class="bar"><div class="fill" id="b5fill" style="width:20%"></div></div>
+      <div class="row"><span id="b5l">已攒 6 / 30</span><span id="b5r">20%</span></div>
+      <button class="btn" onclick="b5()">攒功德 +6（点几次到 70%）</button>
+    </div>
+
+    <!-- A1 Streak protection -->
+    <div class="card">
+      <span class="tag c">A1 · 护火</span>
+      <h3>心灯别熄：断签挽回</h3>
+      <div class="pr">损失厌恶 + 沉没成本</div>
+      <div class="flames" id="flame">🔥🔥🔥</div>
+      <p id="flametxt">连续 3 天签到。火苗是「可失去之物」——断了会收到温和「续火」提醒，回归赠 +2。</p>
+      <button class="btn ghost" onclick="breakStreak()">模拟断签 1 天</button>
+      <button class="btn" onclick="returnStreak()" style="margin-left:8px">回来续火</button>
+    </div>
+
+    <!-- A3 Commitment -->
+    <div class="card">
+      <span class="tag d">A3 · 星愿承诺</span>
+      <h3>立一个本月星愿</h3>
+      <div class="pr">承诺一致 + 蔡格尼克</div>
+      <p>首启引导加一步「立星愿」。写下的承诺产生自我一致张力，驱动你回来完成它。</p>
+      <div class="wishes" id="wishes">
+        <div class="wish" data-w="平静">🌿 内心平静</div>
+        <div class="wish" data-w="连接">🤝 与人连接</div>
+        <div class="wish" data-w="成长">🌱 持续成长</div>
+        <div class="wish" data-w="善行">🪔 日行一善</div>
+      </div>
+      <div class="note" id="wishnote">（可选，可跳过）</div>
+    </div>
+
+    <!-- C9 Social proof -->
+    <div class="card">
+      <span class="tag b">C9 · 社会证明</span>
+      <h3>你不是一个人</h3>
+      <div class="pr">冷启动默认关注 + 人数证明</div>
+      <p>首次进发现流预置 3 位「星野引路人」默认关注，并展示动态人数——社会证明打破「空荡感」。</p>
+      <div class="proof">已有 <b id="ppl">12,800</b> 位旅人正在星野日行一善</div>
+      <div class="stat">
+        <span class="chip">✅ 已为你关注 3 位引路人</span>
+        <span class="chip">🔥 本周 +1,240 人签到</span>
+      </div>
+      <button class="btn ghost" onclick="more()">看看大家都在做什么</button>
+    </div>
+
+    <!-- D10 Variable reward -->
+    <div class="card">
+      <span class="tag c">D10 · 可变奖励</span>
+      <h3>星野抽签·彩蛋</h3>
+      <div class="pr">间歇性强化 + 公示概率</div>
+      <p>抽签 +1 功德基础上，按公示概率触发「隐藏星辉签」额外 +2。不确定性让人想再来一次。</p>
+      <div class="burst" id="burst"></div>
+      <button class="btn" onclick="draw()">抽一支心愿签（每日上限 3）</button>
+      <div class="note" id="drawcnt">今日已抽 0 / 3</div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    以上为「设计预览」，仅前端示意，未改动小程序生产代码。落地映射见 <b>行为干预方案.md</b> 第 6 节。<br/>
+    北极星：7 日留存 × 人均日行一善次数。
+  </div>
+</div>
+
+<script>
+  // B4
+  function b4(){
+    const f=document.getElementById('b4fill'), t=document.getElementById('b4txt'), n=document.getElementById('b4note');
+    f.style.width='33.3%'; t.textContent='10 / 30（已赠 10）';
+    n.textContent='进度从 33% 起跳，而非 0% —— 完成概率显著提升。';
+  }
+  // B5
+  let m5=6;
+  function b5(){
+    if(m5<30) m5+=6; if(m5>30) m5=30;
+    const pct=Math.min(100,Math.round(m5/30*100));
+    document.getElementById('b5fill').style.width=pct+'%';
+    const d=document.getElementById('b5desc'), l=document.getElementById('b5l'), r=document.getElementById('b5r');
+    l.textContent='已攒 '+m5+' / 30'; r.textContent=pct+'%';
+    if(pct>=70){ d.innerHTML='🔆 <b>再攒 '+(30-m5)+' 即点亮深度解读</b>——看见终点，行动加速。'; }
+    else { d.textContent='进度低时说「已攒 X」；≥70% 时切为「再攒 Y 即点亮深度解读」。'; }
+  }
+  // A1
+  let streak=3;
+  function renderFlame(){document.getElementById('flame').textContent='🔥'.repeat(Math.max(0,streak))||'💨';}
+  function breakStreak(){
+    streak=0; renderFlame();
+    document.getElementById('flametxt').innerHTML='💨 心灯熄灭了 1 天……「回来续火🔥，赠你 +2 功德」——温和提醒，不恐吓。';
+  }
+  function returnStreak(){
+    if(streak===0){streak=1; document.getElementById('flametxt').innerHTML='🔥 续火成功！回归首签 +2（虚拟赠送）。明天再来，火苗复燃。';}
+    else {streak++; document.getElementById('flametxt').textContent='连续 '+streak+' 天签到，火苗稳了。';}
+    renderFlame();
+  }
+  // A3
+  document.querySelectorAll('#wishes .wish').forEach(el=>{
+    el.onclick=()=>{
+      document.querySelectorAll('#wishes .wish').forEach(x=>x.classList.remove('on'));
+      el.classList.add('on');
+      document.getElementById('wishnote').textContent='已立星愿：「'+el.dataset.w+'」——它会一直挂在个人页，提醒你回来。';
+    };
+  });
+  // C9
+  function more(){const e=document.getElementById('ppl');let v=parseInt(e.textContent.replace(/,/g,''))+Math.floor(Math.random()*40+10);e.textContent=v.toLocaleString();}
+  // D10
+  let cnt=0; const pool=['平安喜乐 ✨','心之所向 🌟','静水流深 💫','隐藏星辉签！额外 +2 🌠'];
+  function draw(){
+    if(cnt>=3){document.getElementById('drawcnt').textContent='今日已达上限 3 次（防沉迷护栏）';return;}
+    cnt++; document.getElementById('drawcnt').textContent='今日已抽 '+cnt+' / 3';
+    const hidden=Math.random()<0.3; // 公示概率 30%
+    const txt=hidden?pool[3]:pool[Math.floor(Math.random()*3)];
+    const b=document.getElementById('burst'); const s=document.createElement('div');
+    s.className='star'; s.textContent=hidden?'🌠':'✨'; b.appendChild(s);
+    setTimeout(()=>s.remove(),1500);
+    document.getElementById('drawcnt').textContent=(hidden?'🎉 抽到'+txt:'抽到 '+txt)+'　（今日 '+cnt+'/3）';
+  }
+</script>
+</body>
+</html>

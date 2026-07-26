@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拾光驿·星野漫游 — P1/P2 体验预览</title>
+<style>
+:root{
+  --bg:#f7f5f0; --card:#fff; --ink:#2b2622; --gold:#c8a35a; --gold2:#e0c489;
+  --muted:#998f80; --line:#f1ede4; --red:#e0796f;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#e9e6df;display:flex;justify-content:center;padding:24px;color:var(--ink);}
+.phone{width:390px;height:790px;background:var(--bg);border-radius:42px;box-shadow:0 30px 80px rgba(0,0,0,.25);overflow:hidden;display:flex;flex-direction:column;position:relative;}
+.screen{flex:1;overflow-y:auto;padding:0 0 80px;}
+.hero{margin:8px 16px 14px;border-radius:28px;padding:22px 20px;color:#f6eccb;background:linear-gradient(150deg,#0B1426,#16243f 60%,#1f2d4a);position:relative;overflow:hidden;}
+.hero .bless{font-family:"Songti SC",serif;font-size:22px;font-weight:700;letter-spacing:2px;line-height:1.5;}
+.hero .w{text-align:right;position:absolute;top:22px;right:20px;font-size:13px;opacity:.85;}
+.hero .lunar{margin-top:14px;font-size:14px;}
+.hero .lamp{margin-top:14px;display:inline-flex;gap:8px;background:rgba(246,236,203,.16);border:1px solid rgba(246,236,203,.4);padding:10px 18px;border-radius:999px;font-size:14px;}
+.quick{display:flex;padding:0 16px 4px;}
+.q{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;color:#6b6457;}
+.q-i{width:52px;height:52px;border-radius:16px;background:#f3efe7;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.tabs{display:flex;gap:24px;padding:12px 24px 10px;}
+.t{font-size:16px;color:var(--muted);position:relative;padding-bottom:6px;}
+.t.on{color:var(--ink);font-weight:700;}
+.t.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:22px;height:4rpx;height:4px;border-radius:4px;background:var(--gold);}
+.feed{padding:6px 12px 0;display:flex;gap:8px;}
+.col{flex:1;}
+.card{background:var(--card);border-radius:16px;margin-bottom:8px;overflow:hidden;box-shadow:0 2px 10px rgba(40,33,20,.06);}
+.card .img{height:120px;display:flex;align-items:center;justify-content:center;font-size:40px;color:#fff;}
+.card .body{padding:10px 12px;}
+.card .tt{font-size:14px;line-height:1.4;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:var(--muted);}
+.card .acts{display:flex;gap:6px;}
+.card .act{font-size:11px;color:#b3aa9c;background:#f5f1e8;padding:3px 8px;border-radius:999px;}
+.card .act.on{color:var(--gold);background:#f3e8cf;font-weight:700;}
+.space-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px;}
+.sg{background:var(--card);border-radius:18px;padding:18px 8px;text-align:center;box-shadow:0 2px 10px rgba(40,33,20,.05);}
+.sg .ic{font-size:30px;}
+.sg .nm{font-size:13px;margin-top:6px;font-weight:600;}
+.sg .ds{font-size:11px;color:var(--muted);margin-top:2px;}
+.chart-wrap{padding:16px;}
+.lock-card{background:var(--card);border-radius:18px;padding:18px;box-shadow:0 2px 10px rgba(40,33,20,.05);}
+.lock-head{font-size:15px;font-weight:700;}
+.bar{margin-top:12px;height:10px;border-radius:999px;background:#f1ede4;overflow:hidden;}
+.bar .fill{height:100%;border-radius:999px;background:linear-gradient(135deg,var(--gold2),var(--gold));transition:width .4s;}
+.bar-txt{margin-top:8px;font-size:13px;color:var(--muted);}
+.path{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#faf8f3;border:1px solid var(--line);border-radius:12px;margin-top:10px;}
+.path .p-ic{width:40px;height:40px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 2px 6px rgba(40,33,20,.05);}
+.path .p-info{flex:1;}
+.path .p-name{font-size:14px;font-weight:600;}
+.path .p-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.path .p-go{font-size:13px;color:var(--gold);font-weight:600;}
+.seg{display:flex;gap:8px;padding:12px 16px;}
+.s{flex:1;text-align:center;font-size:13px;color:var(--muted);padding:8px 0;border-radius:999px;background:#f1ede4;}
+.s.on{background:var(--card);color:var(--ink);font-weight:700;box-shadow:0 2px 6px rgba(40,33,20,.06);}
+.m-list{padding:0 16px;}
+.m-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;}
+.m-item:active{background:#f7f5f0;}
+.m-dot{width:10px;height:10px;border-radius:50%;background:var(--gold);}
+.m-text{flex:1;font-size:13px;}
+.m-time{font-size:11px;color:var(--muted);}
+.m-arrow{color:var(--gold);font-size:16px;}
+.merit-card{margin:16px;background:linear-gradient(135deg,#f7f0df,#f3e8cf);border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:12px;}
+.merit-card .lv{background:var(--ink);color:#f6eccb;font-size:12px;padding:6px 12px;border-radius:999px;font-weight:600;}
+.merit-card .mt{flex:1;font-size:13px;color:#6b6457;}
+.merit-card .mt b{font-size:16px;color:var(--ink);}
+.entries{display:flex;padding:0 16px;}
+.entry{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:#6b6457;}
+.entry .e-i{width:56px;height:56px;border-radius:16px;background:#f6f4ef;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.mall-list{padding:12px;}
+.pd{background:var(--card);border-radius:16px;margin-bottom:10px;overflow:hidden;box-shadow:0 2px 10px rgba(40,33,20,.06);}
+.pd .img{height:150px;display:flex;align-items:center;justify-content:center;font-size:46px;color:#fff;}
+.pd .body{padding:12px 14px;}
+.pd .tt{font-size:14px;font-weight:500;line-height:1.4;}
+.pd .pr{display:flex;align-items:baseline;gap:8px;margin-top:8px;}
+.pd .price{color:#b8945a;font-size:16px;font-weight:700;}
+.pd .mtag{font-size:11px;color:#b8945a;background:#f3e8cf;padding:2px 8px;border-radius:6px;}
+.pd .buy{margin-top:10px;background:var(--gold);color:#fff;text-align:center;border-radius:999px;padding:10px;font-size:13px;font-weight:700;}
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:64px;background:#fff;display:flex;align-items:center;box-shadow:0 -2px 12px rgba(40,33,20,.07);z-index:50;}
+.tb{flex:1;display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--muted);position:relative;}
+.tb.on{color:var(--gold);}
+.tb .ic{font-size:22px;line-height:1;}
+.tb .center{width:54px;height:54px;margin-top:-26px;border-radius:50%;background:linear-gradient(140deg,var(--gold),var(--gold2));color:#fff;font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(200,163,90,.45);border:4px solid #fff;}
+.badge{position:absolute;top:-4px;right:14px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:var(--red);color:#fff;font-size:11px;line-height:18px;text-align:center;box-shadow:0 2px 4px rgba(224,121,111,.5);}
+.guide{position:absolute;inset:0;z-index:900;display:flex;align-items:center;justify-content:center;}
+.guide-mask{position:absolute;inset:0;background:rgba(20,16,12,.62);}
+.guide-card{position:relative;width:300px;background:#fff;border-radius:24px;padding:30px 24px 22px;text-align:center;box-shadow:0 20px 60px rgba(40,33,20,.3);}
+.g-emoji{font-size:40px;color:var(--gold);}
+.g-title{font-size:20px;font-weight:700;margin-top:8px;}
+.g-sub{font-size:13px;color:var(--muted);margin-top:6px;}
+.g-grid{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0;}
+.g-item{width:calc(33.33% - 7px);background:#faf8f3;border:1px solid var(--line);border-radius:14px;padding:12px 4px;}
+.g-ic{font-size:24px;}
+.g-t{font-size:13px;font-weight:700;margin-top:4px;}
+.g-d{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3;}
+.g-btn{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;border-radius:999px;padding:14px;font-size:14px;font-weight:700;}
+.g-skip{font-size:13px;color:var(--muted);margin-top:12px;}
+.toast{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(31,28,23,.9);color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;z-index:999;opacity:0;pointer-events:none;transition:opacity .2s;}
+.toast.show{opacity:1;}
+.disclaimer{margin:16px 16px 24px;padding:12px 14px;font-size:11px;line-height:1.6;color:#8a7f6d;background:rgba(255,255,255,.6);border:1px solid rgba(138,127,109,.22);border-radius:12px;}
+.back{text-align:center;margin-top:14px;font-size:12px;color:#998f80;}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen" id="screen"></div>
+  <div class="tabbar" id="tabbar"></div>
+  <div class="toast" id="toast"></div>
+</div>
+<script>
+const state = { merit: 12, unread: 2, firstLaunch: true };
+const COST = 30;
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1400); }
+function progress(){ return Math.min(100, Math.round(state.merit/COST*100)); }
+
+const tabs = [
+  {key:'discover', text:'发现', icon:'🔭'},
+  {key:'tourism', text:'文旅', icon:'🏯'},
+  {key:'center', text:'记一笔', icon:'✚', center:true},
+  {key:'message', text:'消息', icon:'✉'},
+  {key:'profile', text:'我的', icon:'👤'}
+];
+let cur = 'discover';
+let spaceView = 'grid';  // grid | chart
+let subView = '';        // '' | 'mall'
+
+function renderTabbar(){
+  const tb = document.getElementById('tabbar');
+  tb.innerHTML = tabs.map(t=>{
+    if(t.center) return '<div class="tb"><div class="center">'+t.icon+'</div></div>';
+    const on = (cur===t.key)?'on':'';
+    let badge='';
+    if(t.key==='message' && state.unread>0) badge='<div class="badge">'+(state.unread>99?'99+':state.unread)+'</div>';
+    return '<div class="tb '+on+'" onclick="go(\''+t.key+'\')"><div class="ic">'+t.icon+'</div>'+badge+'<div>'+t.text+'</div></div>';
+  }).join('');
+}
+
+function go(key){
+  if(key==='center'){ toast('记一笔（演示）'); return; }
+  if(key==='message'){ state.unread = 0; }
+  if(key==='space'){ cur='space'; spaceView='grid'; }
+  else if(key==='mall'){ cur='profile'; subView='mall'; }
+  else { cur=key; subView=''; spaceView='grid'; }
+  renderTabbar(); render();
+}
+
+function render(){
+  const s = document.getElementById('screen');
+  if(cur==='discover') s.innerHTML = discoverHTML();
+  else if(cur==='tourism') s.innerHTML = tourismHTML();
+  else if(cur==='message') s.innerHTML = messageHTML();
+  else if(cur==='space') s.innerHTML = (spaceView==='chart')?chartHTML():spaceHTML();
+  else if(cur==='profile') s.innerHTML = (subView==='mall')?mallHTML():profileHTML();
+}
+
+function discoverHTML(){
+  let guide='';
+  if(state.firstLaunch){
+    guide = '<div class="guide"><div class="guide-mask"></div><div class="guide-card">'+
+      '<div class="g-emoji">✦</div><div class="g-title">欢迎来到拾光驿·星野漫游</div>'+
+      '<div class="g-sub">五个空间，陪你抬头看星</div><div class="g-grid">'+
+      '<div class="g-item"><div class="g-ic">🔭</div><div class="g-t">发现</div><div class="g-d">每日祝福·内容流</div></div>'+
+      '<div class="g-item"><div class="g-ic">✦</div><div class="g-t">星野</div><div class="g-d">星图·疗愈·寄愿</div></div>'+
+      '<div class="g-item"><div class="g-ic">🏯</div><div class="g-t">文旅</div><div class="g-d">星象旅行</div></div>'+
+      '<div class="g-item"><div class="g-ic">✉</div><div class="g-t">消息</div><div class="g-d">动态·社交</div></div>'+
+      '<div class="g-item"><div class="g-ic">👤</div><div class="g-t">我的</div><div class="g-d">功德·资产</div></div>'+
+      '</div><div class="g-btn" onclick="finishGuide()">开始今天的仪式 · 点亮心灯 +1 功德</div>'+
+      '<div class="g-skip" onclick="closeGuide()">先逛逛</div></div></div>';
+  }
+  return ''+
+  '<div class="hero"><div class="bless">愿你所行皆坦途<br>所念皆如愿</div>'+
+  '<div class="w">🌙 杭州<br>23° 晴夜</div>'+
+  '<div class="lunar">7月24日 周五 · 丙午年 六月初十 · 大暑</div>'+
+  '<div class="lamp" onclick="lamp()">🪔 点亮今日心灯 · +1 功德</div></div>'+
+  '<div class="quick">'+
+  '<div class="q" onclick="go(\'space\')"><div class="q-i">✦</div><div>星野</div></div>'+
+  '<div class="q" onclick="go(\'tourism\')"><div class="q-i">🏯</div><div>文旅</div></div>'+
+  '<div class="q" onclick="wish()"><div class="q-i">🏮</div><div>寄愿</div></div>'+
+  '<div class="q" onclick="merit()"><div class="q-i">🪔</div><div>功德</div></div></div>'+
+  '<div class="tabs"><div class="t on">关注</div><div class="t" onclick="toast(\'切到发现分屏\')">发现</div><div class="t" onclick="toast(\'切到视频分屏\')">视频</div></div>'+
+  '<div class="feed"><div class="col">'+
+  '<div class="card"><div class="img" style="background:linear-gradient(135deg,#7aa6c2,#a9c9d6)">🌌</div><div class="body"><div class="tt">深夜抬头，星河落在洱海上</div><div class="meta"><span>小野</span><span class="acts"><span class="act" onclick="event.stopPropagation();like(this)">★ 3622</span><span class="act" onclick="event.stopPropagation();like(this)">♥ 1280</span></span></div></div></div>'+
+  '<div class="card"><div class="img" style="background:linear-gradient(135deg,#c2a06a,#e0c489)">🪔</div><div class="body"><div class="tt">寄愿墙：为远方的她点一盏灯</div><div class="meta"><span>阿星</span><span class="acts"><span class="act">★ 980</span><span class="act">♥ 642</span></span></div></div></div>'+
+  '</div><div class="col">'+
+  '<div class="card"><div class="img" style="background:linear-gradient(135deg,#8a9b7a,#b6c29a)">🍃</div><div class="body"><div class="tt">十分钟呼吸，把焦虑呼出去</div><div class="meta"><span>林深</span><span class="acts"><span class="act">★ 1543</span><span class="act">♥ 902</span></span></div></div></div>'+
+  '<div class="card"><div class="img" style="background:linear-gradient(135deg,#9a7fb0,#c3a9d0)">🔮</div><div class="body"><div class="tt">我的星图：紫微坐命，格局清正</div><div class="meta"><span>拾光驿</span><span class="acts"><span class="act">★ 2310</span><span class="act">♥ 1890</span></span></div></div></div>'+
+  '</div></div>'+ guide +
+  '<div class="disclaimer">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</div>';
+}
+
+function lamp(){ state.merit++; toast('心灯已亮 · +1 功德'); render(); }
+function finishGuide(){ state.firstLaunch=false; state.merit++; toast('心灯已亮 · +1 功德'); render(); }
+function closeGuide(){ state.firstLaunch=false; render(); }
+function wish(){ toast('寄愿墙（演示）'); }
+function merit(){ toast('功德林（演示）'); }
+function like(el){ el.classList.toggle('on'); }
+
+function spaceHTML(){
+  if(spaceView==='chart') return chartHTML();
+  const items = [
+    {ic:'🔮',nm:'星图解读',ds:'紫微·八字'},{ic:'🍃',nm:'心灵疗愈',ds:'冥想·舒压'},
+    {ic:'🌌',nm:'心灵之旅',ds:'夜观星河'},{ic:'🏮',nm:'寄愿墙',ds:'点灯·祈愿'},
+    {ic:'🎬',nm:'祝福视频',ds:'星夜寄语'},{ic:'🪔',nm:'功德林',ds:'日行一善'}
+  ];
+  return '<div style="padding:16px"><div class="lock-head" style="font-size:18px;font-weight:700;margin-bottom:12px">✦ 星野工具箱</div>'+
+    '<div class="space-grid">'+items.map((it,i)=>'<div class="sg" onclick="spaceClick('+i+')"><div class="ic">'+it.ic+'</div><div class="nm">'+it.nm+'</div><div class="ds">'+it.ds+'</div></div>').join('')+'</div>'+
+    '<div class="disclaimer">星野：工具与仪式集合。孤儿页（心灵之旅·祝福视频）现已归位此页。</div></div>';
+}
+function spaceClick(i){ if(i===0) spaceView='chart'; else if(i===4) toast('祝福视频（演示）'); else if(i===3) toast('寄愿墙（演示）'); else toast('工具（演示）'); render(); }
+function chartHTML(){
+  return '<div class="chart-wrap"><div class="lock-card">'+
+    '<div class="lock-head">🔒 解锁进度</div>'+
+    '<div class="bar"><div class="fill" style="width:'+progress()+'%"></div></div>'+
+    '<div class="bar-txt">当前 '+state.merit+' / '+COST+' 功德 · '+progress()+'%</div>'+
+    '<div class="path" onclick="doPath(\'lamp\')"><div class="p-ic">🪔</div><div class="p-info"><div class="p-name">点亮一盏心灯</div><div class="p-desc">寄愿墙 · +1 功德</div></div><div class="p-go">去 ›</div></div>'+
+    '<div class="path" onclick="doPath(\'checkin\')"><div class="p-ic">🛎</div><div class="p-info"><div class="p-name">完成每日签到</div><div class="p-desc">功德林 · +3 功德</div></div><div class="p-go">去 ›</div></div>'+
+    '<div class="path" onclick="doPath(\'publish\')"><div class="p-ic">✍️</div><div class="p-info"><div class="p-name">发布一篇感悟</div><div class="p-desc">记一笔 · +8 功德</div></div><div class="p-go">去 ›</div></div>'+
+    '</div><div class="back" onclick="spaceView=\'grid\';render()">‹ 返回星野工具箱</div></div>';
+}
+function doPath(act){ const g={lamp:1,checkin:3,publish:8}[act]; state.merit+=g; toast('+'+g+' 功德（演示跳转后返回）'); render(); }
+
+function tourismHTML(){
+  const tours=[
+    {t:'星空观测·苍山夜话',d:'大理',bg:'linear-gradient(135deg,#2a3b5c,#4a5f86)'},
+    {t:'海岛观星·东极岛',d:'舟山',bg:'linear-gradient(135deg,#1f5e6b,#3f97a3)'},
+    {t:'沙漠星河·巴丹吉林',d:'内蒙古',bg:'linear-gradient(135deg,#6b5535,#a98a52)'}
+  ];
+  return '<div style="padding:16px"><div class="lock-head" style="font-size:18px;font-weight:700;margin-bottom:12px">🏯 星象旅行</div>'+
+    tours.map(t=>'<div class="card" style="margin-bottom:12px"><div class="img" style="height:140px;background:'+t.bg+'">🌠</div><div class="body"><div class="tt">'+t.t+'</div><div class="meta"><span>'+t.d+'</span><span class="act">查看线路</span></div></div></div>').join('')+
+    '<div class="disclaimer">文旅：星象旅行内容与预订。独立 Tab，常驻可达。</div></div>';
+}
+
+function messageHTML(){
+  const items=[
+    {text:'点赞一条笔记 · +1 功德',time:'今天 21:04'},
+    {text:'收藏一条笔记 · +1 功德',time:'今天 20:30'},
+    {text:'关注了 林深 · +1 功德',time:'今天 19:12'},
+    {text:'发布过审感悟 · +8 功德',time:'今天 18:00'},
+    {text:'完成每日签到 · +3 功德',time:'今天 08:20'}
+  ];
+  return '<div class="seg"><div class="s" onclick="toast(\'私信（演示）\')">私信</div><div class="s" onclick="toast(\'通知（演示）\')">通知</div><div class="s on">功德动态</div></div>'+
+    '<div style="padding:6px 16px 0;font-size:13px;font-weight:600">🪔 你的善意轨迹</div>'+
+    '<div class="m-list">'+items.map(it=>'<div class="m-item" onclick="toast(\'溯源至来源页（演示）\')"><div class="m-dot"></div><div class="m-text">'+it.text+'</div><div class="m-time">'+it.time+'</div><div class="m-arrow">›</div></div>').join('')+'</div>'+
+    '<div class="disclaimer">进入消息即清零红点；功德动态可溯源跳回来源页。</div>';
+}
+
+function profileHTML(){
+  return '<div style="padding-top:20px">'+
+    '<div style="text-align:center"><div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#c8a35a,#e7c98f);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto;border:4px solid #fff;box-shadow:0 4px 14px rgba(200,163,90,.3)">拾</div>'+
+    '<div style="font-size:18px;font-weight:700;margin-top:10px">拾光的小野</div>'+
+    '<div style="font-size:12px;color:#998f80;margin-top:4px">已点亮 186 盏心灯 🪔</div></div>'+
+    '<div class="merit-card"><span class="lv">善信 · Lv.1</span><div class="mt">当前 <b>'+state.merit+'</b> 功德 · 连续签到 0 天</div></div>'+
+    '<div class="entries">'+
+    '<div class="entry" onclick="go(\'space\')"><div class="e-i">✦</div><div>星野工具箱</div></div>'+
+    '<div class="entry" onclick="merit()"><div class="e-i">🪔</div><div>功德林</div></div>'+
+    '<div class="entry" onclick="go(\'mall\')"><div class="e-i">🛍</div><div>星野好物</div></div>'+
+    '</div>'+
+    '<div style="padding:16px"><div class="lock-head" style="font-size:16px;font-weight:700;margin-bottom:10px">✦ 我的星图人格</div>'+
+    '<div class="card" style="background:#fff;border:1px solid var(--line)"><div class="body"><div class="tt">紫微坐命 · 格局清正</div><div class="meta" style="color:#6b6457"><span>沉静而有领导力，宜深耕专业</span></div></div></div></div>'+
+    '<div class="disclaimer">双 Hub 收敛：工具入口唯一归口为「星野工具箱」，不再散落。</div></div>';
+}
+
+function mallHTML(){
+  const goods=[
+    {t:'白水晶原石·净化',cost:30,bg:'linear-gradient(135deg,#cfe3ee,#eaf3f8)',cover:'🔮'},
+    {t:'星夜香薰礼盒',cost:60,bg:'linear-gradient(135deg,#e8dcc8,#f3ece0)',cover:'🕯'},
+    {t:'《星象与人生》',cost:45,bg:'linear-gradient(135deg,#d8c7e0,#ece2f2)',cover:'📖'},
+    {t:'苍山观星之旅',cost:200,bg:'linear-gradient(135deg,#2a3b5c,#4a5f86)',cover:'🌠'}
+  ];
+  return '<div style="padding:14px 16px 0;font-size:16px;font-weight:700">🛍 星野好物</div>'+
+    '<div class="mall-list">'+goods.map(g=>'<div class="pd"><div class="img" style="background:'+g.bg+'">'+g.cover+'</div><div class="body"><div class="tt">'+g.t+'</div><div class="pr"><span class="price">'+g.cost+' 功德</span><span class="mtag">随单赠功德</span></div><div class="buy" onclick="exchange('+g.cost+')">兑换 · '+g.cost+' 功德</div></div></div>').join('')+
+    '<div class="back" onclick="subView=\'\';render()">‹ 返回我的</div>'+
+    '<div class="disclaimer">商城好物以功德兑换，零金钱交易；功德不可购、不可提现、不可兑。</div></div>';
+}
+function exchange(cost){
+  if(state.merit<cost){ toast('功德不足，去星野做日行一善'); return; }
+  state.merit-=cost; toast('已兑换 · -'+cost+' 功德'); render();
+}
+
+window.go=go; window.lamp=lamp; window.finishGuide=finishGuide; window.closeGuide=closeGuide;
+window.wish=wish; window.merit=merit; window.like=like;
+window.spaceClick=spaceClick; window.doPath=doPath; window.toast=toast; window.exchange=exchange;
+renderTabbar(); render();
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>拾光驿 · 心灵之旅预览</title>
+<style>
+  :root{
+    --ink-900:#0B1426; --ink-800:#0E1B33; --gold-300:#F4E3B8; --gold-400:#EBD29A; --gold-500:#E0BE78;
+    --jade-400:#9FD0C2; --jade-500:#7FB7A8; --jade-600:#5E9788;
+    --text-on-dark:#F4EFE3; --text-muted-dark:#A9B4C9;
+    --line-dark:rgba(255,255,255,.10); --surface-glass:rgba(255,255,255,.06); --shadow-color:rgba(8,15,30,.45);
+    --font-serif:"Source Han Serif SC","Songti SC","Noto Serif SC",serif;
+    --font-sans:"PingFang SC","-apple-system","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#05080F;display:flex;justify-content:center;padding:32px 16px;font-family:var(--font-sans);}
+  .phone{width:390px;height:844px;background:var(--ink-900);border-radius:48px;border:10px solid #1a2236;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);overflow:hidden;position:relative;}
+  .screen{height:100%;overflow-y:auto;padding:0 0 110px;scrollbar-width:none;}
+  .screen::-webkit-scrollbar{display:none;}
+  .statusbar{display:flex;justify-content:space-between;padding:14px 26px 4px;color:var(--text-on-dark);font-size:13px;font-weight:600;}
+  .head{padding:8px 24px 4px;}
+  .head .t{font-family:var(--font-serif);font-size:26px;font-weight:700;color:var(--text-on-dark);}
+  .head .s{font-size:12.5px;color:var(--text-muted-dark);margin-top:6px;}
+  /* 冥想 Hero */
+  .med{margin:16px 20px 0;border-radius:28px;padding:34px 24px;position:relative;overflow:hidden;text-align:center;
+    background:radial-gradient(120% 100% at 50% 0%,#1f4a3e,#0e1b33 70%);border:1px solid var(--line-dark);}
+  .breath{width:110px;height:110px;border-radius:50%;margin:0 auto 18px;
+    background:radial-gradient(circle at 40% 35%,var(--jade-400),var(--jade-600));
+    box-shadow:0 0 40px rgba(127,183,168,.5);animation:breathe 4s infinite ease-in-out;}
+  @keyframes breathe{0%,100%{transform:scale(.82);opacity:.8;}50%{transform:scale(1.05);opacity:1;}}
+  .med .tt{font-family:var(--font-serif);font-size:20px;color:var(--text-on-dark);font-weight:700;}
+  .med .sd{font-size:12.5px;color:var(--jade-400);margin-top:8px;}
+  .med .btn{display:inline-block;margin-top:18px;padding:13px 30px;border-radius:999px;
+    background:linear-gradient(135deg,var(--jade-400),var(--jade-600));color:#0B1426;font-weight:700;font-size:14px;}
+  /* 情绪打卡 */
+  .mood{margin:16px 20px 0;background:var(--surface-glass);border:1px solid var(--line-dark);border-radius:22px;padding:16px;backdrop-filter:blur(20px);}
+  .mood .ml{font-size:13px;color:var(--text-on-dark);font-weight:600;margin-bottom:12px;}
+  .mood .row{display:flex;justify-content:space-between;}
+  .mood .e{font-size:24px;text-align:center;opacity:.45;transition:.2s;}
+  .mood .e.on{opacity:1;transform:scale(1.18);}
+  /* 列表 */
+  .sec-t{font-size:14px;color:var(--text-muted-dark);padding:20px 24px 4px;letter-spacing:1px;}
+  .card{background:var(--surface-glass);border:1px solid var(--line-dark);border-radius:20px;padding:16px;
+    margin:12px 20px 0;display:flex;align-items:center;backdrop-filter:blur(20px);box-shadow:0 8px 24px var(--shadow-color);}
+  .card .ci{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;
+    background:rgba(127,183,168,.16);margin-right:14px;flex-shrink:0;}
+  .card .ti{font-size:15px;font-weight:700;color:var(--text-on-dark);}
+  .card .ds{font-size:12px;color:var(--text-muted-dark);margin-top:4px;}
+  .card .ty{font-size:11px;color:var(--jade-400);background:rgba(127,183,168,.14);padding:3px 10px;border-radius:999px;margin-left:auto;}
+  /* 日记 */
+  .diary{margin:14px 20px 0;background:var(--surface-glass);border:1px solid var(--line-dark);border-radius:22px;padding:18px;backdrop-filter:blur(20px);}
+  .diary .dt{font-size:15px;font-weight:700;color:var(--text-on-dark);}
+  .diary .box{margin-top:12px;background:rgba(255,255,255,.05);border:1px solid var(--line-dark);border-radius:14px;
+    padding:14px;font-size:13px;color:var(--text-muted-dark);line-height:1.6;min-height:74px;}
+  .diary .save{margin-top:12px;width:100%;padding:13px;border-radius:14px;border:1px solid rgba(127,183,168,.5);
+    background:transparent;color:var(--jade-400);font-size:14px;font-weight:600;}
+  .diary .note{font-size:11px;color:rgba(169,180,201,.6);margin-top:10px;text-align:center;}
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:78px;display:flex;align-items:center;
+    background:rgba(11,20,38,.86);backdrop-filter:blur(24px);border-top:1px solid var(--line-dark);}
+  .tabbar .ti{flex:1;text-align:center;color:var(--text-muted-dark);font-size:11px;}
+  .tabbar .ti .ic{font-size:20px;display:block;margin-bottom:3px;}
+  .tabbar .ti.active{color:var(--gold-400);}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="screen">
+    <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
+    <div class="head">
+      <div class="t">心灵之旅</div>
+      <div class="s">每天 10 分钟，安住当下，温柔待己</div>
+    </div>
+
+    <div class="med">
+      <div class="breath"></div>
+      <div class="tt">今日冥想 · 第 3 天</div>
+      <div class="sd">跟随呼吸，回到此刻</div>
+      <div class="btn">▶ 开始 10 分钟</div>
+    </div>
+
+    <div class="mood">
+      <div class="ml">此刻，你的心情是？</div>
+      <div class="row">
+        <div class="e">😣</div><div class="e">😔</div><div class="e on">😌</div><div class="e">🙂</div><div class="e">😊</div>
+      </div>
+    </div>
+
+    <div class="sec-t"> guided 冥想</div>
+    <div class="card">
+      <div class="ci">🌙</div>
+      <div><div class="ti">睡前放松冥想</div><div class="ds">放下一日纷扰，安然入眠</div></div>
+      <div class="ty">10 分钟</div>
+    </div>
+    <div class="card">
+      <div class="ci">🍃</div>
+      <div><div class="ti">焦虑舒缓 · 呼吸训练</div><div class="ds">4-7-8 呼吸，平复紧绷</div></div>
+      <div class="ty">6 分钟</div>
+    </div>
+    <div class="card">
+      <div class="ci">🤝</div>
+      <div><div class="ti">预约疗愈师 1v1</div><div class="ds">专业陪伴，轻装前行</div></div>
+      <div class="ty">咨询</div>
+    </div>
+
+    <div class="diary">
+      <div class="dt">心灵日记</div>
+      <div class="box">此刻你在想什么？写下它，温柔对待自己。</div>
+      <button class="save">保存（自动内容审核）</button>
+      <div class="note">日记仅自己可见，经安全审核后加密存储。</div>
+    </div>
+  </div>
+  <div class="tabbar">
+    <div class="ti"><span class="ic">🌟</span>星图</div>
+    <div class="ti"><span class="ic">⛰</span>文旅</div>
+    <div class="ti active"><span class="ic">🌿</span>疗愈</div>
+    <div class="ti"><span class="ic">🛍</span>商城</div>
+    <div class="ti"><span class="ic">👤</span>我的</div>
+  </div>
+</div>
+</body>
+</html>

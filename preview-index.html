@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>拾光驿·星野漫游 — 首页预览（真实农历）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { background: #15131f; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; color: #1f1c17; display: flex; justify-content: center; padding: 24px 12px; }
+  .phone { width: 390px; max-width: 100%; background: #f6f3ec; border-radius: 38px; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,.5); position: relative; }
+  .statusbar { height: 28px; display: flex; justify-content: space-between; align-items: center; padding: 0 22px; font-size: 13px; color: #f6eccb; background: linear-gradient(150deg,#232038,#3a3660); }
+  .screen { padding: 0 0 30px; }
+
+  .search { margin: 14px 22px 6px; background: #ebe6db; border-radius: 999px; height: 42px; display: flex; align-items: center; gap: 8px; padding: 0 18px; color: #9a9286; font-size: 14px; }
+
+  /* Hero */
+  .hero { margin: 6px 16px 14px; border-radius: 26px; padding: 20px 18px 18px; color: #f6eccb; background: linear-gradient(150deg,#232038,#3a3660 60%,#4a3f6b); position: relative; overflow: hidden; }
+  .stars { position: absolute; inset: 0; background-image: radial-gradient(1.5px 1.5px at 18% 22%, rgba(255,255,255,.85), transparent), radial-gradient(1.5px 1.5px at 68% 16%, rgba(255,255,255,.7), transparent), radial-gradient(1.5px 1.5px at 86% 56%, rgba(255,255,255,.6), transparent), radial-gradient(1.5px 1.5px at 40% 78%, rgba(255,255,255,.7), transparent); opacity: .8; }
+  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; }
+  .b-line { font-family: "Songti SC", serif; font-size: 23px; font-weight: 700; letter-spacing: 2px; line-height: 1.5; }
+  .weather { text-align: right; cursor: pointer; }
+  .w-icon { font-size: 26px; }
+  .w-city { font-size: 13px; opacity: .85; }
+  .w-temp { font-size: 26px; font-weight: 700; line-height: 1; }
+  .w-cond { font-size: 12px; opacity: .8; }
+  .hero-mid { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; position: relative; }
+  .l-solar { display: block; font-size: 15px; }
+  .l-lunar { display: block; font-size: 13px; opacity: .8; margin-top: 3px; }
+  .tip { font-size: 12px; opacity: .9; background: rgba(246,236,203,.12); padding: 5px 12px; border-radius: 999px; }
+
+  .mini-cal { margin-top: 14px; background: rgba(255,255,255,.08); border-radius: 14px; padding: 12px 14px; position: relative; }
+  .mc-head { font-size: 13px; opacity: .9; margin-bottom: 6px; }
+  .mc-week { display: flex; }
+  .mc-week span { flex: 1; text-align: center; font-size: 11px; opacity: .55; }
+  .mc-grid { display: flex; flex-wrap: wrap; margin-top: 2px; }
+  .mc-d { width: 14.28%; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.1; padding: 4px 0; font-size: 12px; border-radius: 8px; cursor: pointer; }
+  .mc-d.dim { opacity: .3; cursor: default; }
+  .mc-d.today { background: #c8a35a; color: #fff; font-weight: 700; }
+  .mc-lu { font-size: 10px; opacity: .55; margin-top: 1px; }
+  .mc-yiji { margin-top: 8px; background: rgba(255,255,255,.06); border-radius: 10px; padding: 9px 11px; font-size: 11px; line-height: 1.7; text-align: left; }
+  .yj-head { opacity: .95; margin-bottom: 4px; }
+  .yj-term { color: #c8a35a; font-weight: 700; }
+  .yj-row { display: flex; gap: 8px; }
+  .yj-yi { color: #7fb7a3; font-weight: 700; }
+  .yj-ji { color: #e0796f; font-weight: 700; }
+  .lamp { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; background: rgba(246,236,203,.16); border: 1px solid rgba(246,236,203,.4); padding: 10px 18px; border-radius: 999px; font-size: 14px; cursor: pointer; position: relative; }
+
+  .quick { display: flex; padding: 0 16px 4px; }
+  .q { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 13px; color: #6b6457; }
+  .q-i { width: 50px; height: 50px; border-radius: 15px; background: #efe9df; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+
+  .tabs { display: flex; gap: 22px; padding: 10px 22px 10px; }
+  .t { font-size: 17px; color: #9a9286; position: relative; padding-bottom: 6px; cursor: pointer; }
+  .t.on { color: #1f1c17; font-weight: 700; }
+  .t.on::after { content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 22px; height: 4px; border-radius: 4px; background: #c8a35a; }
+
+  .follow-bar { white-space: nowrap; padding: 6px 18px 0; overflow-x: auto; }
+  .fb { display: inline-flex; flex-direction: column; align-items: center; margin-right: 18px; }
+  .fb-av { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(140deg,#c8a35a,#e0c489); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .fb-nm { font-size: 12px; color: #6b6457; margin-top: 5px; max-width: 58px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .fb-tag { font-size: 10px; color: #c8a35a; margin-top: 1px; }
+
+  .feed { display: flex; padding: 12px 10px 0; gap: 8px; }
+  .col { flex: 1; }
+  .card { background: #fff; border-radius: 16px; margin-bottom: 8px; overflow: hidden; box-shadow: 0 3px 12px rgba(40,33,20,.06); cursor: pointer; }
+  .card .img { width: 100%; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #fff; }
+  .card .body { padding: 9px 11px 11px; }
+  .card .tt { font-size: 15px; line-height: 1.45; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card .meta { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: #9a9286; }
+  .card .av { width: 20px; height: 20px; border-radius: 50%; background: #f3e8cf; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #c8a35a; }
+  .card .nm { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+  .vfeed { padding: 12px 16px 0; }
+  .vcard { background: #fff; border-radius: 16px; margin-bottom: 11px; overflow: hidden; box-shadow: 0 3px 12px rgba(40,33,20,.06); cursor: pointer; }
+  .v-cover { position: relative; height: 190px; display: flex; align-items: center; justify-content: center; }
+  .v-emoji { font-size: 48px; }
+  .v-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,.35); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; padding-left: 4px; }
+  .v-dur { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.5); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .v-topic { position: absolute; left: 10px; top: 10px; background: rgba(200,163,90,.92); color: #fff; font-size: 12px; padding: 2px 9px; border-radius: 999px; }
+  .v-body { padding: 10px 12px 12px; }
+  .v-tt { font-size: 16px; font-weight: 500; line-height: 1.45; }
+  .v-meta { display: flex; justify-content: space-between; margin-top: 7px; font-size: 12px; color: #9a9286; }
+
+  .disclaimer { font-size: 11px; color: #b9b2a6; padding: 16px 22px 0; line-height: 1.6; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>拾光驿 · 预览</span><span>◇ ○ ▮</span></div>
+  <div class="screen">
+    <div class="search">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="stars"></div>
+      <div class="hero-top">
+        <div class="hero-bless">
+          <div class="b-line">愿你所行皆坦途</div>
+          <div class="b-line">所念皆如愿</div>
+        </div>
+        <div class="weather" onclick="refreshWeather()">
+          <div class="w-icon" id="wIcon">🌙</div>
+          <div class="w-city" id="wCity">杭州</div>
+          <div class="w-temp" id="wTemp">23°</div>
+          <div class="w-cond" id="wCond">晴夜</div>
+        </div>
+      </div>
+      <div class="hero-mid">
+        <div class="lunar">
+          <span class="l-solar" id="solar">7月23日 周四</span>
+          <span class="l-lunar" id="lunar">丙午年 六月初十</span>
+        </div>
+        <div class="tip" id="starTip">✦ 今日星象 · 心静则明</div>
+      </div>
+      <div class="mini-cal">
+        <div class="mc-head" id="calHead">2026 年 7 月</div>
+        <div class="mc-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        <div class="mc-grid" id="calGrid"></div>
+        <div class="mc-yiji" id="yiji"></div>
+      </div>
+      <div class="lamp" onclick="lightLamp()">🪔 点亮今日心灯 · +1 功德</div>
+    </div>
+
+    <!-- 快捷入口 -->
+    <div class="quick">
+      <div class="q"><div class="q-i">🔮</div>星图</div>
+      <div class="q"><div class="q-i">🏯</div>文旅</div>
+      <div class="q"><div class="q-i">🍃</div>疗愈</div>
+      <div class="q"><div class="q-i">🏮</div>寄愿</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="t" data-i="0" onclick="switchTab(0)">关注</div>
+      <div class="t on" data-i="1" onclick="switchTab(1)">发现</div>
+      <div class="t" data-i="2" onclick="switchTab(2)">视频</div>
+    </div>
+
+    <!-- 关注 -->
+    <div id="pFollow" class="hidden">
+      <div class="follow-bar" id="followBar"></div>
+      <div class="feed"><div class="col" id="fLeft"></div><div class="col" id="fRight"></div></div>
+    </div>
+    <!-- 发现 -->
+    <div id="pFind">
+      <div class="feed"><div class="col" id="left"></div><div class="col" id="right"></div></div>
+    </div>
+    <!-- 视频 -->
+    <div id="pVideo" class="hidden">
+      <div class="vfeed" id="vfeed"></div>
+    </div>
+
+    <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</div>
+  </div>
+</div>
+
+<script>
+/* ===== 内联真实农历算法（与 utils/lunar.js 同源） ===== */
+const lunarInfo=[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,0x0a2e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a2d0,0x0d150,0x0f252];
+const GAN=['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'], ZHI=['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'], ZODIAC=['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+const MONTH_CN=['正','二','三','四','五','六','七','八','九','十','冬','腊'], DAY_CN=['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十','廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
+const SOLAR_TERM=['小寒','大寒','立春','雨水','惊蛰','春分','清明','谷雨','立夏','小满','芒种','夏至','小暑','大暑','立秋','处暑','白露','秋分','寒露','霜降','立冬','小雪','大雪','冬至'];
+const TERM_INFO=[0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758];
+const JIANCHU=['建','除','满','平','定','执','破','危','成','收','开','闭'];
+const YIJI=[{s:'建',yi:'出行 祈福 动土 开市',ji:'安葬 乘船 词讼'},{s:'除',yi:'疗病 解除 出行 沐浴',ji:'求官 上任 嫁娶'},{s:'满',yi:'嫁娶 开市 交易 纳财',ji:'动土 安葬 破土'},{s:'平',yi:'修造 嫁娶 出行 安床',ji:'祈福 词讼 栽种'},{s:'定',yi:'嫁娶 造屋 入宅 纳采',ji:'词讼 出行 医治'},{s:'执',yi:'造屋 修造 收购 捕捉',ji:'开市 移居 出行'},{s:'破',yi:'破屋 求医 治病',ji:'嫁娶 出行 签约 动土'},{s:'危',yi:'安床 祭祀 祈福',ji:'登高 嫁娶 迁徙'},{s:'成',yi:'嫁娶 开市 入学 安床',ji:'词讼 争斗'},{s:'收',yi:'纳财 收购 入仓 捕捉',ji:'放债 出行 安葬'},{s:'开',yi:'开市 求医 祭祀 入学',ji:'安葬 嫁娶 动土'},{s:'闭',yi:'筑堤 补垣 安葬 埋穴',ji:'开市 出行 求医'}];
+function leapMonth(y){return lunarInfo[y-1900]&0xf;}
+function leapDays(y){return leapMonth(y)?((lunarInfo[y-1900]&0x10000)?30:29):0;}
+function monthDays(y,m){return (lunarInfo[y-1900]&(0x10000>>m))?30:29;}
+function lYearDays(y){let s=348;for(let i=0x8000;i>0x8;i>>=1)s+=(lunarInfo[y-1900]&i)?1:0;return s+leapDays(y);}
+function daysBetween(y,m,d){return Math.round((Date.UTC(y,m-1,d)-Date.UTC(1900,0,31))/86400000);}
+function toLunar(y,m,d){let o=daysBetween(y,m,d),ly=1900,t=0;for(;ly<2101&&o>0;ly++){t=lYearDays(ly);o-=t;}if(o<0){o+=t;ly--;}let isLeap=false;const leap=leapMonth(ly);let lm;for(lm=1;lm<13&&o>0;lm++){if(leap>0&&lm===(leap+1)&&!isLeap){lm--;isLeap=true;t=leapDays(ly);}else{t=monthDays(ly,lm);}if(isLeap&&lm===(leap+1))isLeap=false;o-=t;}if(o===0&&leap>0&&lm===leap+1){if(isLeap){isLeap=false;}else{isLeap=true;lm--;}}if(o<0){o+=t;lm--;}return{year:ly,month:lm,day:o+1,isLeap};}
+function solarTermOf(y,m,d){for(let n=2*(m-1);n<=2*(m-1)+1;n++){const off=new Date(31556925974.7*(y-1900)+TERM_INFO[n]*60000+Date.UTC(1900,0,6,2,5));if(off.getUTCDate()===d)return SOLAR_TERM[n];}return '';}
+function dayGanZhi(y,m,d){const diff=Math.round((Date.UTC(y,m-1,d)-Date.UTC(1900,0,1))/86400000);const c=(diff+10)%60;return{g:GAN[c%10],z:ZHI[c%12],zi:c%12};}
+const JIE=[{n:0,m:1,z:11},{n:2,m:2,z:0},{n:4,m:3,z:1},{n:6,m:4,z:2},{n:8,m:5,z:3},{n:10,m:6,z:4},{n:12,m:7,z:5},{n:14,m:8,z:6},{n:16,m:9,z:7},{n:18,m:10,z:8},{n:20,m:11,z:9},{n:22,m:12,z:10}];
+function jieDateOf(y,j){const off=new Date(31556925974.7*(y-1900)+TERM_INFO[j.n]*60000+Date.UTC(1900,0,6,2,5));return{m:j.m,d:off.getUTCDate()};}
+function doyOf(y,m,d){const md=[0,31,28,31,30,31,30,31,31,30,31,30,31];let s=d;for(let i=1;i<m;i++)s+=md[i];if(m>2&&((y%4===0&&y%100!==0)||y%400===0))s++;return s;}
+function monthZhiOf(y,m,d){const target=doyOf(y,m,d);let chosen=JIE[0];for(const j of JIE){const p=jieDateOf(y,j);if(doyOf(y,p.m,p.d)<=target)chosen=j;}return chosen.z;}
+function getLunar(y,m,d){const L=toLunar(y,m,d);const yg=GAN[(L.year-4)%10],yz=ZHI[(L.year-4)%12],animal=ZODIAC[(L.year-4)%12];const monthCn=(L.isLeap?'闰':'')+MONTH_CN[L.month-1]+'月';const dayCn=DAY_CN[L.day-1];const term=solarTermOf(y,m,d);const dg=dayGanZhi(y,m,d);const mz=monthZhiOf(y,m,d);const jcIdx=(dg.zi-mz+12)%12;const jc=JIANCHU[jcIdx];const yj=YIJI[jcIdx];return{lunarYear:L.year,lunarMonth:L.month,lunarDay:L.day,isLeap:L.isLeap,yearGanZhi:yg+yz,animal,monthCn,dayCn,fullCn:yg+yz+'年 '+monthCn+dayCn,term,dayGanZhi:dg.g+dg.z,jianChu:jc,yi:yj.yi,ji:yj.ji};}
+
+/* ===== 数据（与 utils/mock.js 同源） ===== */
+const feed=[
+ {id:1,emoji:'🌌',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'在苍山脚下看银河，那一刻我懂了「命宫」',author:'野山星野',likes:'1.2w',topic:'星图',h:230},
+ {id:2,emoji:'🔮',bg:'linear-gradient(140deg,#3a3660,#6a5f96)',title:'我的紫微星图：事业宫太阳旺，但迁移宫…',author:'星图笔记',likes:'3621',topic:'星图',h:200},
+ {id:3,emoji:'🍃',bg:'linear-gradient(140deg,#7fb7a3,#a9d4c5)',title:'焦虑时我会做的 4-7-8 呼吸法，亲测有效',author:'疗愈所',likes:'8033',topic:'疗愈',h:250},
+ {id:4,emoji:'🏮',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'普陀山寄愿墙，为妈妈点了一盏灯',author:'寄愿',likes:'5210',topic:'寄愿',h:210},
+ {id:5,emoji:'🏜️',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'十二宫游学·第③站 敦煌星图与壁画',author:'文旅',likes:'2880',topic:'文旅',h:240},
+ {id:6,emoji:'🌙',bg:'linear-gradient(140deg,#3b3a5c,#5b5a82)',title:'睡前冥想 10 分钟，这周终于睡好了',author:'疗愈所',likes:'6742',topic:'疗愈',h:190},
+ {id:7,emoji:'🏆',bg:'linear-gradient(140deg,#c8a35a,#b8945a)',title:'功德林周榜第一的姐妹，每天做了什么？',author:'功德林',likes:'9910',topic:'功德',h:220},
+ {id:8,emoji:'♌',bg:'linear-gradient(140deg,#d99a4e,#e8b96b)',title:'狮子座本周状态：宜专注，忌内耗',author:'星座',likes:'4155',topic:'星座',h:200},
+ {id:9,emoji:'🌿',bg:'linear-gradient(140deg,#7fb7a3,#bfe0d2)',title:'终南山闭关 5 天，我把手机戒了',author:'文旅',likes:'3320',topic:'文旅',h:230},
+ {id:10,emoji:'🪔',bg:'linear-gradient(140deg,#b9544a,#f0a89c)',title:'给陌生人的一盏灯：匿名善意的循环',author:'寄愿',likes:'7180',topic:'寄愿',h:210}
+];
+const followingFeed=[
+ {id:21,emoji:'🌌',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'今天的银河很亮，命宫在寅的人宜动中求静',author:'野山星野',likes:'3201',topic:'星图',h:230},
+ {id:22,emoji:'🍃',bg:'linear-gradient(140deg,#7fb7a3,#a9d4c5)',title:'今晚的冥想引导更新了，焦虑时来听',author:'疗愈所',likes:'5620',topic:'疗愈',h:200},
+ {id:23,emoji:'🏮',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'寄愿墙今晚很暖，替陌生人也点一盏',author:'寄愿',likes:'4180',topic:'寄愿',h:210},
+ {id:24,emoji:'🏜️',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'敦煌站报名过半，星图同好速来',author:'文旅',likes:'2390',topic:'文旅',h:240},
+ {id:25,emoji:'🌙',bg:'linear-gradient(140deg,#3b3a5c,#5b5a82)',title:'睡前 10 分钟，这周终于睡好了',author:'疗愈所',likes:'6742',topic:'疗愈',h:190}
+];
+const following=[{name:'野山星野',avatar:'野'},{name:'疗愈所',avatar:'疗'},{name:'寄愿',avatar:'愿'},{name:'文旅',avatar:'旅'}];
+const videos=[
+ {id:1,cover:'🌌',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'10 分钟睡前冥想引导｜焦虑舒缓',author:'疗愈所',dur:'10:24',plays:'8.2w',topic:'疗愈'},
+ {id:2,cover:'🏮',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'普陀山寄愿 · 一步一灯',author:'寄愿',dur:'03:48',plays:'2.1w',topic:'寄愿'},
+ {id:3,cover:'🌠',bg:'linear-gradient(140deg,#3a3660,#6a5f96)',title:'苍山银河延时 · 命宫与远方',author:'野山星野',dur:'01:12',plays:'12w',topic:'星图'},
+ {id:4,cover:'🏜️',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'敦煌星图漫游 Vlog',author:'文旅',dur:'06:30',plays:'4.5w',topic:'文旅'},
+ {id:5,cover:'🪔',bg:'linear-gradient(140deg,#b9544a,#f0a89c)',title:'给陌生人的一盏灯：善意循环',author:'寄愿',dur:'02:05',plays:'7.1w',topic:'寄愿'},
+ {id:6,cover:'♌',bg:'linear-gradient(140deg,#d99a4e,#e8b96b)',title:'狮子座本周状态｜宜专注忌内耗',author:'星座',dur:'04:33',plays:'5.6w',topic:'星座'}
+];
+function splitColumns(list){const l=[],r=[];list.forEach((it,i)=>(i%2===0?l:r).push(it));return{l,r};}
+
+/* ===== 渲染 ===== */
+let calYear, calMonth, calToday;
+function buildCalendar(year,month,today){
+  const first=new Date(year,month-1,1);const sw=(first.getDay()+6)%7;const dim= new Date(year,month,0).getDate();const pd=new Date(year,month-1,0).getDate();const cells=[];
+  for(let i=0;i<42;i++){let d,dm=false;if(i<sw){d=pd-sw+1+i;dm=true;}else if(i>=sw+dim){d=i-(sw+dim)+1;dm=true;}else{d=i-sw+1;}
+    let lu='';if(!dm){const L=getLunar(year,month,d);lu=L.term||L.dayCn;}
+    cells.push({d,dm,today:!dm&&d===today,lu});}
+  return cells;
+}
+function weatherFor(date){const seed=date.getFullYear()*372+date.getMonth()*31+date.getDate();const pool=[{temp:'22°',cond:'晴夜',icon:'🌙'},{temp:'24°',cond:'多云',icon:'⛅'},{temp:'19°',cond:'小雨',icon:'🌧'},{temp:'26°',cond:'晴',icon:'☀'},{temp:'21°',cond:'微风',icon:'🍃'},{temp:'18°',cond:'阵雨',icon:'🌦'},{temp:'23°',cond:'阴',icon:'☁'}];return pool[seed%pool.length];}
+function renderHero(){
+  const now=new Date();const y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();calYear=y;calMonth=m;calToday=d;
+  const L=getLunar(y,m,d);const wn=['日','一','二','三','四','五','六'];
+  document.getElementById('solar').textContent=`${m}月${d}日 周${wn[now.getDay()]}`;
+  document.getElementById('lunar').textContent=L.fullCn;
+  document.getElementById('starTip').textContent=L.term?`✦ 今日节气 · ${L.term}`:'✦ 今日星象 · 心静则明';
+  document.getElementById('calHead').textContent=`${y} 年 ${m} 月`;
+  const w=weatherFor(now);document.getElementById('wIcon').textContent=w.icon;document.getElementById('wTemp').textContent=w.temp;document.getElementById('wCond').textContent=w.cond;
+  renderCal();renderYiJi(y,m,d);
+  const fl=splitColumns(feed);fillCol('left',fl.l);fillCol('right',fl.r);
+  const fL=splitColumns(followingFeed);fillCol('fLeft',fL.l);fillCol('fRight',fL.r);
+  document.getElementById('followBar').innerHTML=following.map(f=>`<div class="fb"><div class="fb-av">${f.avatar}</div><div class="fb-nm">${f.name}</div><div class="fb-tag">已关注</div></div>`).join('');
+  document.getElementById('vfeed').innerHTML=videos.map(v=>`<div class="vcard"><div class="v-cover" style="background:${v.bg}"><span class="v-emoji">${v.cover}</span><div class="v-play">▶</div><div class="v-dur">${v.dur}</div><div class="v-topic">${v.topic}</div></div><div class="v-body"><div class="v-tt">${v.title}</div><div class="v-meta"><span class="v-auth">${v.author}</span><span class="v-plays">▶ ${v.plays}</span></div></div></div>`).join('');
+}
+function renderCal(){
+  const cells=buildCalendar(calYear,calMonth,calToday);
+  document.getElementById('calGrid').innerHTML=cells.map(c=>`<div class="mc-d ${c.dim?'dim':''} ${c.today?'today':''}" onclick="pickDay(${c.d},${c.dm})"><span>${c.d}</span><span class="mc-lu">${c.lu}</span></div>`).join('');
+}
+function renderYiJi(y,m,d){
+  const L=getLunar(y,m,d);
+  document.getElementById('yiji').innerHTML=`<div class="yj-head">${m}月${d}日 · ${L.fullCn} ${L.term?`<span class="yj-term">${L.term}</span>`:''} · ${L.jianChu}</div><div class="yj-row"><span class="yj-yi">宜</span>${L.yi}</div><div class="yj-row"><span class="yj-ji">忌</span>${L.ji}</div>`;
+}
+function pickDay(d,dm){if(dm)return;renderYiJi(calYear,calMonth,d);}
+function switchTab(i){
+  document.querySelectorAll('.t').forEach(t=>t.classList.toggle('on',+t.dataset.i===i));
+  document.getElementById('pFollow').classList.toggle('hidden',i!==0);
+  document.getElementById('pFind').classList.toggle('hidden',i!==1);
+  document.getElementById('pVideo').classList.toggle('hidden',i!==2);
+}
+function lightLamp(){const el=document.querySelector('.lamp');el.textContent='🪔 心灯已亮 · 今日已 +1 功德';}
+function refreshWeather(){const w=document.querySelector('.weather');w.style.opacity=.6;setTimeout(()=>{w.style.opacity=1;},400);}
+renderHero();
+</script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>拾光驿 · 星野漫游 — 愉悦体验预览</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #efe9dc;
+    color: #2b2622;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 28px 16px 56px;
+  }
+  h1 { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+  .sub { color: #998f80; font-size: 13px; margin: 6px 0 22px; }
+  .stage { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+
+  /* ===== 手机框 ===== */
+  .phone {
+    width: 340px; background: #f7f5f0; border-radius: 36px;
+    box-shadow: 0 24px 60px rgba(40,33,20,.18); padding: 16px 14px 20px;
+    border: 8px solid #1c2738; position: relative; overflow: hidden;
+  }
+  .notch { width: 120px; height: 18px; background: #1c2738; border-radius: 0 0 14px 14px; margin: -16px auto 10px; }
+
+  /* Hero（深蓝星夜） */
+  .hero {
+    position: relative; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(160deg, #0B1426, #16243f);
+    padding: 22px 18px; color: #F4EFE3; min-height: 200px;
+  }
+  .stars { position: absolute; inset: 0; cursor: pointer; opacity: 0; transition: opacity .9s ease; }
+  .hero.lit .stars { opacity: 1; animation: starTwinkle 3.4s ease-in-out infinite; }
+  .star { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px #c8a35a; }
+  @keyframes starTwinkle { 0%,100%{opacity:1;filter:brightness(1)} 50%{opacity:.55;filter:brightness(1.4)} }
+  .hero-bless { position: relative; font-family: "Songti SC", serif; font-size: 18px; line-height: 1.7; }
+  .hero-bless div:last-child { color: #e0c489; }
+  .lamp-btn {
+    position: relative; margin-top: 18px; display: inline-block;
+    background: linear-gradient(135deg, #e0c489, #c8a35a); color: #fff;
+    border-radius: 999px; padding: 12px 22px; font-size: 14px; font-weight: 700;
+    box-shadow: 0 8px 22px rgba(200,163,90,.35); cursor: pointer; user-select: none;
+    transition: transform .15s ease;
+  }
+  .lamp-btn:active { transform: translateY(1px) scale(.98); }
+
+  /* 星图宫位 */
+  .palaces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+  .palace {
+    background: #fff; border-radius: 14px; padding: 12px 6px; text-align: center;
+    box-shadow: 0 4px 14px rgba(40,33,20,.06); cursor: pointer; opacity: 0;
+  }
+  .palaces.lit .palace { animation: palaceOn .5s both; }
+  .palaces.lit .palace:nth-child(1){animation-delay:.04s}
+  .palaces.lit .palace:nth-child(2){animation-delay:.10s}
+  .palaces.lit .palace:nth-child(3){animation-delay:.16s}
+  .palaces.lit .palace:nth-child(4){animation-delay:.22s}
+  .palaces.lit .palace:nth-child(5){animation-delay:.28s}
+  .palaces.lit .palace:nth-child(6){animation-delay:.34s}
+  .palaces.lit .palace:nth-child(7){animation-delay:.40s}
+  .palaces.lit .palace:nth-child(8){animation-delay:.46s}
+  .palaces.lit .palace:nth-child(9){animation-delay:.52s}
+  .palaces.lit .palace:nth-child(10){animation-delay:.58s}
+  .palaces.lit .palace:nth-child(11){animation-delay:.64s}
+  .palaces.lit .palace:nth-child(12){animation-delay:.70s}
+  @keyframes palaceOn { 0%{opacity:0;transform:translateY(14px) scale(.92)} 100%{opacity:1;transform:none} }
+  .palace.tap { animation: palaceTap .5s ease; }
+  @keyframes palaceTap { 0%{transform:scale(1)} 40%{transform:scale(1.08);box-shadow:0 0 18px rgba(200,163,90,.6)} 100%{transform:scale(1)} }
+  .p-name { font-size: 12px; color: #2b2622; font-weight: 600; }
+  .p-star { font-size: 16px; margin-top: 2px; }
+
+  .hint { margin-top: 14px; font-size: 12px; color: #998f80; text-align: center; }
+
+  /* ===== 控制面板 ===== */
+  .panel { width: 320px; }
+  .panel h2 { font-size: 16px; margin-bottom: 8px; }
+  .panel p { font-size: 13px; color: #6f6657; line-height: 1.7; margin-bottom: 14px; }
+  .ctrls { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+  .btn {
+    background: #fff; border: 1.5px solid #c8a35a; color: #b8945a;
+    border-radius: 999px; padding: 10px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background .2s;
+  }
+  .btn:hover { background: #f6ecd4; }
+  .btn.gold { background: linear-gradient(135deg,#e0c489,#c8a35a); color:#fff; border:none; }
+  .copies { background: #fff; border-radius: 16px; padding: 16px 18px; box-shadow: 0 6px 18px rgba(40,33,20,.06); }
+  .copies h3 { font-size: 13px; color: #998f80; margin-bottom: 10px; letter-spacing: 1px; }
+  .copies .row { font-size: 13px; padding: 7px 0; border-bottom: 1px dashed #ece6da; color: #4a4338; }
+  .copies .row:last-child { border-bottom: none; }
+  .copies .tag { display:inline-block; font-size:11px; color:#b8945a; background:#f6ecd4; border-radius:999px; padding:2px 9px; margin-right:8px; }
+
+  /* ===== 浮层（与小程序 app.wxss 同源） ===== */
+  .fx-layer { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; }
+  .fx-item {
+    position: absolute; top: 30%; display: flex; flex-direction: column; align-items: center;
+    animation: fxFloat 1.5s ease-out forwards; will-change: transform, opacity;
+  }
+  .fx-emoji { font-size: 30px; filter: drop-shadow(0 0 8px rgba(200,163,90,.85)); animation: fxPulse .9s ease-in-out infinite; }
+  .fx-text { margin-top: 4px; font-size: 13px; font-weight: 700; color: #b8945a; text-shadow: 0 1px 4px rgba(255,255,255,.85); white-space: nowrap; }
+  @keyframes fxFloat { 0%{transform:translateY(0) scale(.6);opacity:0} 15%{transform:translateY(-10px) scale(1);opacity:1} 100%{transform:translateY(-160px) scale(1);opacity:0} }
+  @keyframes fxPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
+
+  .lu-mask { position: fixed; inset: 0; z-index: 210; background: rgba(11,20,38,.42); display: none; align-items: center; justify-content: center; }
+  .lu-mask.show { display: flex; animation: fadeIn .3s ease; }
+  .lu-card { width: 260px; background: #fff; border-radius: 22px; padding: 30px 24px; text-align: center; box-shadow: 0 20px 48px rgba(8,15,30,.45); animation: luPop .5s cubic-bezier(.23,1,.32,1); }
+  .lu-emoji { font-size: 54px; animation: luSpin 2.2s ease-in-out infinite; }
+  .lu-title { margin-top: 8px; font-size: 13px; color: #998f80; letter-spacing: 2px; }
+  .lu-name { margin-top: 4px; font-size: 26px; font-weight: 700; color: #c8a35a; }
+  .lu-sub { margin-top: 8px; font-size: 12px; color: #8a7d63; }
+  @keyframes luPop { 0%{transform:scale(.7);opacity:0} 60%{transform:scale(1.06);opacity:1} 100%{transform:scale(1);opacity:1} }
+  @keyframes luSpin { 0%,100%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(8deg) scale(1.1)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  .rainbow-overlay {
+    position: fixed; inset: 0; z-index: 199; pointer-events: none; display: none;
+    background: linear-gradient(120deg, rgba(255,154,158,.2), rgba(254,207,239,.2), rgba(160,220,255,.2), rgba(180,255,200,.2));
+    background-size: 400% 400%; animation: rainbowShift 4s ease infinite;
+  }
+  .rainbow-overlay.show { display: block; }
+  @keyframes rainbowShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+</style>
+</head>
+<body>
+  <h1>拾光驿 · 星野漫游</h1>
+  <div class="sub">愉悦体验预览 · 星辉为光，善意有回响</div>
+
+  <div class="stage">
+    <!-- 手机演示 -->
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="hero" id="hero">
+        <div class="stars" id="stars"></div>
+        <div class="hero-bless">
+          <div id="b1">愿你所行皆坦途</div>
+          <div id="b2">所念皆如愿</div>
+        </div>
+        <div class="lamp-btn" id="lampBtn">🪔 点亮心灯 · +1 功德</div>
+      </div>
+
+      <div class="palaces" id="palaces"></div>
+      <div class="hint">✦ 连点上方星空 5 次，唤醒「星河贯通」彩蛋</div>
+    </div>
+
+    <!-- 控制与文案 -->
+    <div class="panel">
+      <h2>体验这四种愉悦</h2>
+      <p>① 点「🪔 点亮心灯」看<strong>功德星光</strong>浮起；② 宫位载入时<strong>依次点亮</strong>；③ 连点星空触发<strong>彩虹星彩蛋</strong>；④ 点「晋阶庆祝」看升级卡。所有动效尊重系统「减少动态」偏好。</p>
+      <div class="ctrls">
+        <div class="btn gold" id="relight">重放宫位点亮</div>
+        <div class="btn gold" id="levelup">触发晋阶庆祝</div>
+        <div class="btn" id="bless">换一句祝福语</div>
+      </div>
+      <div class="copies">
+        <h3>主题化文案（随机轮换）</h3>
+        <div class="row"><span class="tag">加载</span>星河正在流转…</div>
+        <div class="row"><span class="tag">功德</span>心灯已亮 · +1 功德</div>
+        <div class="row"><span class="tag">签到</span>晨钟已响 · 今日功德 +3</div>
+        <div class="row"><span class="tag">空态</span>星野辽阔，尚未结缘</div>
+        <div class="row"><span class="tag">异常</span>星光暂被云遮，稍候再试～</div>
+        <div class="row"><span class="tag">成功</span>金光乍现 · 深度解读已点亮</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fx-layer" id="fxLayer"></div>
+  <div class="lu-mask" id="luMask">
+    <div class="lu-card">
+      <div class="lu-emoji">🏅</div>
+      <div class="lu-title">功德圆满 · 晋阶</div>
+      <div class="lu-name">月白莲灯</div>
+      <div class="lu-sub">星野因你，又明亮一分</div>
+    </div>
+  </div>
+  <div class="rainbow-overlay" id="rainbow"></div>
+
+<script>
+  // ---- 生成星空 ----
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 26; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 2).toFixed(2) + 's';
+    starsEl.appendChild(s);
+  }
+
+  // ---- 宫位数据 ----
+  const palacesData = [
+    ['命宫','紫微'],['兄弟','天机'],['夫妻','太阳'],['子女','武曲'],
+    ['财帛','天同'],['疾厄','廉贞'],['迁移','天府'],['交友','太阴'],
+    ['官禄','贪狼'],['田宅','巨门'],['福德','天相'],['父母','天梁']
+  ];
+  const palacesEl = document.getElementById('palaces');
+  palacesData.forEach(([n, s]) => {
+    const d = document.createElement('div');
+    d.className = 'palace';
+    d.innerHTML = '<div class="p-name">' + n + '</div><div class="p-star">' + s + '</div>';
+    d.addEventListener('click', () => {
+      d.classList.remove('tap'); void d.offsetWidth; d.classList.add('tap');
+    });
+    palacesEl.appendChild(d);
+  });
+
+  // ---- 功德星光浮层 ----
+  const fxLayer = document.getElementById('fxLayer');
+  const MERIT = ['心灯已亮 · +1 功德','一念清净 · +1 功德','善念流转 · +1 功德','星辉入户 · +1 功德','微光成炬 · +1 功德'];
+  function burst(text, emoji) {
+    const item = document.createElement('div');
+    item.className = 'fx-item';
+    item.style.left = (38 + Math.random() * 24) + '%';
+    item.innerHTML = '<div class="fx-emoji">' + (emoji || '🌟') + '</div><div class="fx-text">' + text + '</div>';
+    fxLayer.appendChild(item);
+    setTimeout(() => item.remove(), 1800);
+  }
+
+  // ---- 点灯 ----
+  document.getElementById('lampBtn').addEventListener('click', () => {
+    burst(MERIT[Math.floor(Math.random() * MERIT.length)], '🌟');
+  });
+
+  // ---- 彩蛋：连点星空 5 次 ----
+  const stars = document.getElementById('stars');
+  let taps = 0, tapTimer = null;
+  stars.addEventListener('click', () => {
+    taps++;
+    clearTimeout(tapTimer);
+    if (taps >= 5) {
+      taps = 0;
+      const rb = document.getElementById('rainbow');
+      rb.classList.add('show');
+      burst('星河贯通 · 你唤醒了星图', '🌈');
+      setTimeout(() => rb.classList.remove('show'), 6000);
+      return;
+    }
+    tapTimer = setTimeout(() => { taps = 0; }, 1200);
+  });
+
+  // ---- 晋阶卡 ----
+  document.getElementById('levelup').addEventListener('click', () => {
+    const m = document.getElementById('luMask');
+    m.classList.add('show');
+    setTimeout(() => m.classList.remove('show'), 2600);
+  });
+
+  // ---- 重放宫位点亮 ----
+  function lightPalaces() {
+    palacesEl.classList.remove('lit'); void palacesEl.offsetWidth; palacesEl.classList.add('lit');
+  }
+  document.getElementById('relight').addEventListener('click', lightPalaces);
+
+  // ---- 换祝福语 ----
+  const blessings = [
+    ['愿你所行皆坦途','所念皆如愿'],
+    ['心有星野','不必慌张'],
+    ['一念清净','万里无云'],
+    ['且将星火','予人微光'],
+    ['今夜星垂','好运正在赶来']
+  ];
+  document.getElementById('bless').addEventListener('click', () => {
+    const b = blessings[Math.floor(Math.random() * blessings.length)];
+    document.getElementById('b1').textContent = b[0];
+    document.getElementById('b2').textContent = b[1];
+  });
+
+  // 初始入场
+  setTimeout(() => document.getElementById('hero').classList.add('lit'), 80);
+  lightPalaces();
+</script>
+</body>
+</html>

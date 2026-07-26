@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>拾光驿 · 星野漫游 — 首页交互预览 v2</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --ink: #1f1c17; --sub: #9a9286; --gold: #c8a35a; --gold-d: #b8945a;
+    --night1: #232038; --night2: #3a3660; --night3: #4a3f6b;
+    --bg: #f6f3ec; --card: #fff; --line: #ece6da;
+  }
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--ink); }
+  .app { max-width: 460px; margin: 0 auto; min-height: 100vh; padding-bottom: 120px; }
+  /* 顶栏 */
+  .top { display: flex; align-items: center; gap: 12px; padding: 14px 18px 8px; }
+  .search { flex: 1; background: #f1ede4; border-radius: 999px; height: 44px; display: flex; align-items: center; padding: 0 18px; color: var(--sub); font-size: 14px; }
+  .merit-badge { display: flex; align-items: center; gap: 4px; background: linear-gradient(140deg,var(--night2),var(--night3)); color: #f6eccb; padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; }
+  .checkin { background: #f3e8cf; color: var(--gold-d); padding: 8px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; border: none; }
+  /* Hero */
+  .hero { margin: 6px 14px 14px; border-radius: 24px; padding: 22px 20px; color: #f6eccb; background: linear-gradient(150deg, var(--night1), var(--night2) 60%, var(--night3)); position: relative; overflow: hidden; }
+  .hero .stars { position: absolute; inset: 0; background-image: radial-gradient(2px 2px at 18% 22%, rgba(255,255,255,.85), transparent), radial-gradient(2px 2px at 68% 16%, rgba(255,255,255,.7), transparent), radial-gradient(2px 2px at 86% 56%, rgba(255,255,255,.6), transparent), radial-gradient(2px 2px at 40% 78%, rgba(255,255,255,.7), transparent); opacity: .75; }
+  .hero-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; }
+  .bless .b { font-family: "Songti SC", serif; font-size: 22px; font-weight: 700; letter-spacing: 2px; line-height: 1.5; }
+  .weather { text-align: right; }
+  .weather .ic { font-size: 26px; }
+  .weather .ct { font-size: 13px; opacity: .85; }
+  .weather .tp { font-size: 24px; font-weight: 700; line-height: 1; }
+  .weather .cd { font-size: 12px; opacity: .8; }
+  .hero-mid { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; position: relative; }
+  .lunar .s { display: block; font-size: 14px; }
+  .lunar .l { display: block; font-size: 12px; opacity: .8; margin-top: 3px; }
+  .tip { font-size: 11px; opacity: .9; background: rgba(246,236,203,.12); padding: 5px 10px; border-radius: 999px; }
+  .mini-cal { margin-top: 14px; background: rgba(255,255,255,.08); border-radius: 14px; padding: 12px 14px; position: relative; }
+  .mc-head { font-size: 13px; opacity: .9; margin-bottom: 6px; }
+  .mc-week { display: flex; }
+  .mc-week span { flex: 1; text-align: center; font-size: 11px; opacity: .6; }
+  .mc-grid { display: flex; flex-wrap: wrap; margin-top: 4px; }
+  .mc-d { width: 14.28%; text-align: center; font-size: 12px; padding: 4px 0; border-radius: 6px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+  .mc-d.dim { opacity: .3; }
+  .mc-d.today { background: var(--gold); color: #fff; font-weight: 700; }
+  .mc-lu { font-size: 9px; opacity: .55; margin-top: 1px; }
+  .mc-yi { font-size: 11px; opacity: .85; margin-top: 8px; text-align: left; line-height: 1.7; }
+  .yj-yi { color: #7fb7a3; font-weight: 700; }
+  .yj-ji { color: #e0796f; font-weight: 700; }
+  .lamp { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; background: rgba(246,236,203,.16); border: 1px solid rgba(246,236,203,.4); padding: 10px 18px; border-radius: 999px; font-size: 14px; position: relative; }
+  /* 快捷 */
+  .quick { display: flex; padding: 0 14px 4px; }
+  .q { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; font-size: 13px; color: #6b6457; }
+  .q-i { width: 52px; height: 52px; border-radius: 16px; background: #f3efe7; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  /* Tabs */
+  .tabs { display: flex; gap: 22px; padding: 8px 20px 10px; }
+  .tabs .t { font-size: 17px; color: var(--sub); position: relative; padding-bottom: 6px; }
+  .tabs .t.on { color: var(--ink); font-weight: 700; }
+  .tabs .t.on::after { content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 22px; height: 4px; border-radius: 4px; background: var(--gold); }
+  /* 关注头像行 */
+  .follow-bar { display: flex; gap: 16px; padding: 6px 14px; overflow-x: auto; }
+  .fb { display: flex; flex-direction: column; align-items: center; min-width: 56px; }
+  .fb-av { width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(140deg,var(--gold),#e0c489); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .fb-nm { font-size: 12px; color: #6b6457; margin-top: 5px; max-width: 60px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .fb-btn { font-size: 11px; color: var(--gold-d); margin-top: 3px; border: 1px solid var(--gold); padding: 2px 12px; border-radius: 999px; cursor: pointer; }
+  .fb-btn.on { color: #fff; background: var(--gold); }
+  /* 瀑布 */
+  .feed { display: flex; padding: 12px 10px 0; gap: 8px; }
+  .col { flex: 1; }
+  .card { background: var(--card); border-radius: 16px; margin-bottom: 8px; overflow: hidden; box-shadow: 0 3px 12px rgba(40,33,20,.06); cursor: pointer; }
+  .card .img { width: 100%; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #fff; position: relative; }
+  .mine-flag { position: absolute; left: 8px; top: 8px; background: rgba(200,163,90,.92); color: #fff; font-size: 11px; padding: 2px 9px; border-radius: 999px; }
+  .card .body { padding: 10px 12px 12px; }
+  .card .tt { font-size: 14px; line-height: 1.45; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .meta { display: flex; align-items: center; gap: 6px; margin-top: 9px; font-size: 12px; color: var(--sub); }
+  .meta .av { width: 22px; height: 22px; border-radius: 50%; background: #f3e8cf; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--gold); }
+  .meta .nm { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .acts { display: flex; gap: 6px; flex-shrink: 0; }
+  .act { font-size: 12px; color: #b3aa9c; padding: 3px 8px; border-radius: 999px; background: #f5f1e8; cursor: pointer; }
+  .act.on { color: var(--gold-d); background: #f3e8cf; font-weight: 700; }
+  /* 视频 */
+  .vfeed { padding: 12px 14px 0; }
+  .vcard { background: var(--card); border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 3px 12px rgba(40,33,20,.06); }
+  .v-cover { position: relative; height: 190px; display: flex; align-items: center; justify-content: center; }
+  .v-emoji { font-size: 52px; }
+  .v-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,.35); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; padding-left: 4px; }
+  .v-dur { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.5); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .v-topic { position: absolute; left: 10px; top: 10px; background: rgba(200,163,90,.92); color: #fff; font-size: 12px; padding: 2px 10px; border-radius: 999px; }
+  .v-body { padding: 10px 14px 14px; }
+  .v-tt { font-size: 15px; font-weight: 500; line-height: 1.45; }
+  .v-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; color: var(--sub); }
+  .v-meta .acts { display: flex; align-items: center; gap: 10px; }
+  .v-meta .act.on { color: var(--gold-d); font-weight: 700; }
+  /* 功德动态 */
+  .log { margin: 16px 14px 0; background: var(--card); border-radius: 18px; padding: 14px 16px; box-shadow: 0 3px 12px rgba(40,33,20,.06); }
+  .log-h { font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .log-item { font-size: 12px; color: #6b6457; padding: 6px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; }
+  .log-item:first-of-type { border-top: none; }
+  .log-item .t { color: var(--sub); font-size: 11px; }
+  /* FAB + 发布面板 */
+  .fab { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); background: linear-gradient(140deg,var(--gold),var(--gold-d)); color: #fff; border: none; padding: 14px 30px; border-radius: 999px; font-size: 16px; font-weight: 700; box-shadow: 0 8px 24px rgba(200,163,90,.45); cursor: pointer; z-index: 20; }
+  .mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; z-index: 30; }
+  .mask.show { display: block; }
+  .sheet { position: fixed; left: 50%; bottom: 0; transform: translate(-50%, 100%); width: 100%; max-width: 460px; background: #fff; border-radius: 22px 22px 0 0; padding: 20px 18px 28px; z-index: 40; transition: transform .28s ease; max-height: 86vh; overflow-y: auto; }
+  .sheet.show { transform: translate(-50%, 0); }
+  .sheet h3 { font-size: 17px; margin-bottom: 12px; }
+  .sheet textarea { width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 10px; font-size: 14px; resize: none; font-family: inherit; }
+  .sheet .ta-title { height: 44px; margin-bottom: 10px; }
+  .sheet .ta-body { height: 90px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .chip { font-size: 13px; color: #6b6457; background: #f3efe7; padding: 6px 14px; border-radius: 999px; cursor: pointer; }
+  .chip.on { color: var(--gold-d); background: #f3e8cf; font-weight: 700; }
+  .sheet .pub { width: 100%; background: linear-gradient(140deg,var(--gold),var(--gold-d)); color: #fff; border: none; padding: 13px; border-radius: 999px; font-size: 16px; font-weight: 700; margin-top: 8px; cursor: pointer; }
+  .hint { font-size: 12px; color: #b3aa9c; margin: 8px 2px 0; }
+  .toast { position: fixed; left: 50%; top: 50%; transform: translate(-50%,-50%); background: rgba(0,0,0,.8); color: #fff; padding: 10px 18px; border-radius: 10px; font-size: 14px; z-index: 50; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .disclaimer { font-size: 11px; color: #b3aa9c; text-align: center; padding: 18px 24px 0; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="search">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+    <button class="merit-badge" id="meritBadge">✦ <span id="meritNum">0</span> 功德</button>
+    <button class="checkin" id="checkinBtn">签到+3</button>
+  </div>
+
+  <div class="hero">
+    <div class="stars"></div>
+    <div class="hero-top">
+      <div class="bless"><div class="b">愿你所行皆坦途</div><div class="b">所念皆如愿</div></div>
+      <div class="weather">
+        <div class="ic">🌙</div>
+        <div class="ct">杭州</div>
+        <div class="tp">23°</div>
+        <div class="cd">晴夜</div>
+      </div>
+    </div>
+    <div class="hero-mid">
+      <div class="lunar"><span class="s">7月23日 周四</span><span class="l">丙午年 · 六月初十 · 大暑</span></div>
+      <div class="tip">✦ 今日节气 · 大暑</div>
+    </div>
+    <div class="mini-cal">
+      <div class="mc-head">2026 年 7 月</div>
+      <div class="mc-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+      <div class="mc-grid" id="calGrid"></div>
+      <div class="mc-yi" id="yiBox">点击日期查看宜忌 · 今日宜：祈福、出行；忌：动土、安葬</div>
+    </div>
+    <div class="lamp" id="lampBtn">🪔 点亮今日心灯 · +1 功德</div>
+  </div>
+
+  <div class="quick">
+    <div class="q"><div class="q-i">🔮</div>星图</div>
+    <div class="q"><div class="q-i">🏯</div>文旅</div>
+    <div class="q"><div class="q-i">🍃</div>疗愈</div>
+    <div class="q"><div class="q-i">🏮</div>寄愿</div>
+  </div>
+
+  <div class="tabs">
+    <div class="t" data-i="0" id="tab0">关注</div>
+    <div class="t on" data-i="1" id="tab1">发现</div>
+    <div class="t" data-i="2" id="tab2">视频</div>
+  </div>
+
+  <div id="feedArea"></div>
+
+  <div class="log">
+    <div class="log-h">✦ 今日功德动态（活）</div>
+    <div id="logList"></div>
+  </div>
+
+  <div class="disclaimer">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</div>
+</div>
+
+<button class="fab" id="fab">＋ 记一笔 · +8 功德</button>
+<div class="mask" id="mask"></div>
+<div class="sheet" id="sheet">
+  <h3>记一笔</h3>
+  <textarea class="ta-title" id="pTitle" placeholder="填标题会有更多赞哦~"></textarea>
+  <textarea class="ta-body" id="pBody" placeholder="这一刻的星野、心情或愿想……"></textarea>
+  <div class="chips" id="pChips"></div>
+  <button class="pub" id="pPub">发布并 +8 功德</button>
+  <div class="hint">友善分享 · 发布将过内容安全预检（探测词：算命/改运/稳赚/加微信 等）</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== 模拟数据（与小程序 mock 对齐） =====
+const feed = [
+  { id:1, emoji:"🌌", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"在苍山脚下看银河，那一刻我懂了「命宫」", author:"野山星野", likes:"1.2w", topic:"星图", h:230, noteId:101 },
+  { id:2, emoji:"🔮", bg:"linear-gradient(140deg,#3a3660,#6a5f96)", title:"我的紫微星图：事业宫太阳旺，但迁移宫…", author:"星图笔记", likes:"3621", topic:"星图", h:200, noteId:102 },
+  { id:3, emoji:"🍃", bg:"linear-gradient(140deg,#7fb7a3,#a9d4c5)", title:"焦虑时我会做的 4-7-8 呼吸法，亲测有效", author:"疗愈所", likes:"8033", topic:"疗愈", h:250, noteId:103 },
+  { id:4, emoji:"🏮", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"普陀山寄愿墙，为妈妈点了一盏灯", author:"寄愿", likes:"5210", topic:"寄愿", h:210, noteId:104 },
+  { id:5, emoji:"🏜️", bg:"linear-gradient(140deg,#c8a35a,#e0c489)", title:"十二宫游学·第③站 敦煌星图与壁画", author:"文旅", likes:"2880", topic:"文旅", h:240, noteId:105 },
+  { id:6, emoji:"🌙", bg:"linear-gradient(140deg,#3b3a5c,#5b5a82)", title:"睡前冥想 10 分钟，这周终于睡好了", author:"疗愈所", likes:"6742", topic:"疗愈", h:190, noteId:103 },
+  { id:7, emoji:"🏆", bg:"linear-gradient(140deg,#c8a35a,#b8945a)", title:"功德林周榜第一的姐妹，每天做了什么？", author:"功德林", likes:"9910", topic:"功德", h:220, noteId:106 },
+  { id:8, emoji:"♌", bg:"linear-gradient(140deg,#d99a4e,#e8b96b)", title:"狮子座本周状态：宜专注，忌内耗", author:"星座", likes:"4155", topic:"星座", h:200, noteId:107 }
+];
+const followingFeed = [
+  { id:21, emoji:"🌌", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"今天的银河很亮，命宫在寅的人宜动中求静", author:"野山星野", likes:"3201", topic:"星图", h:230, noteId:101 },
+  { id:22, emoji:"🍃", bg:"linear-gradient(140deg,#7fb7a3,#a9d4c5)", title:"今晚的冥想引导更新了，焦虑时来听", author:"疗愈所", likes:"5620", topic:"疗愈", h:200, noteId:103 },
+  { id:23, emoji:"🏮", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"寄愿墙今晚很暖，替陌生人也点一盏", author:"寄愿", likes:"4180", topic:"寄愿", h:210, noteId:104 },
+  { id:24, emoji:"🏜️", bg:"linear-gradient(140deg,#c8a35a,#e0c489)", title:"敦煌站报名过半，星图同好速来", author:"文旅", likes:"2390", topic:"文旅", h:240, noteId:105 }
+];
+const videos = [
+  { id:1, cover:"🌌", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"10 分钟睡前冥想引导｜焦虑舒缓", author:"疗愈所", dur:"10:24", plays:"8.2w", topic:"疗愈" },
+  { id:2, cover:"🏮", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"普陀山寄愿 · 一步一灯", author:"寄愿", dur:"03:48", plays:"2.1w", topic:"寄愿" },
+  { id:3, cover:"🌠", bg:"linear-gradient(140deg,#3a3660,#6a5f96)", title:"苍山银河延时 · 命宫与远方", author:"野山星野", dur:"01:12", plays:"12w", topic:"星图" }
+];
+const following = [
+  { id:1, name:"野山星野", avatar:"野", bio:"星图旅行家" },
+  { id:2, name:"疗愈所", avatar:"疗", bio:"睡前冥想引导" },
+  { id:3, name:"寄愿", avatar:"愿", bio:"普陀山寄愿墙" },
+  { id:4, name:"文旅", avatar:"旅", bio:"十二宫游学领队" }
+];
+const BLOCK_WORDS = ['算命','改命','改运','转运','消灾','稳赚','带赚','保赚','投资稳赚','加微信','加我微信','微信号','私彩','博彩','赌博','办证','代开发票','迷药','色情','约炮','代孕','重金求子','血光','必死','治百病','包治','偏方治癌'];
+const TOPICS = ['星图旅行','苍山','心灵之旅','疗愈','寄愿','共修'];
+
+// ===== 本地持久化（模拟小程序 storage） =====
+const LS = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+let social = LS.get('social_state', { liked:{}, collected:{}, followed:{} });
+let merit = LS.get('merit', 0);
+let published = LS.get('my_publishes', []);
+let meritLog = LS.get('merit_log', []);
+
+function saveAll(){
+  LS.set('social_state', social); LS.set('merit', merit);
+  LS.set('my_publishes', published); LS.set('merit_log', meritLog);
+}
+function nowLabel(){ const t = new Date(); return `今天 ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`; }
+function pushLog(text){ meritLog.unshift({ id: Date.now(), text, time: nowLabel() }); if(meritLog.length>60) meritLog.length=60; }
+function addMerit(n, reason){ merit += n; pushLog(`${reason} · +${n} 功德`); }
+
+let curTab = 1;
+
+function toast(msg){ const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'), 1200); }
+
+function renderMerit(){ document.getElementById('meritNum').textContent = merit; }
+
+function splitCols(list){ const l=[], r=[]; list.forEach((it,i)=> (i%2===0?l:r).push(it)); return {l,r}; }
+
+function cardHTML(it){
+  const liked = !!social.liked[it.noteId]; const collected = !!social.collected[it.noteId];
+  return `<div class="card" onclick="openNote(${it.noteId})">
+    <div class="img" style="height:${it.h}px;background:${it.bg}">${it.emoji}${it.mine?'<div class="mine-flag">我的</div>':''}</div>
+    <div class="body">
+      <div class="tt">${it.title}</div>
+      <div class="meta">
+        <div class="av">${it.author[0]}</div><span class="nm">${it.author}</span>
+        <div class="acts">
+          <span class="act ${collected?'on':''}" onclick="event.stopPropagation();doCollect(${it.noteId})">★ ${collected?'已藏':'收藏'}</span>
+          <span class="act ${liked?'on':''}" onclick="event.stopPropagation();doLike(${it.noteId})">♥ ${liked?'已赞':'赞'}</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderFeed(){
+  const area = document.getElementById('feedArea');
+  if(curTab === 0){
+    const foll = following.map(f => `<div class="fb"><div class="fb-av">${f.avatar}</div><div class="fb-nm">${f.name}</div><div class="fb-btn ${social.followed[f.name]?'on':''}" onclick="doFollow('${f.name}')">${social.followed[f.name]?'已关注':'关注'}</div></div>`).join('');
+    const {l,r} = splitCols(followingFeed.map(it=>Object.assign({},it,{mine:false})));
+    area.innerHTML = `<div class="follow-bar">${foll}</div><div class="feed"><div class="col">${l.map(cardHTML).join('')}</div><div class="col">${r.map(cardHTML).join('')}</div></div>`;
+  } else if(curTab === 1){
+    const pubCards = published.map(p => ({ id:p.id, emoji:p.emoji, bg:p.bg, title:p.title, author:p.author, likes:p.likes, topic:p.topic, h:p.h, noteId:p.id, mine:true }));
+    const {l,r} = splitCols(pubCards.concat(feed));
+    area.innerHTML = `<div class="feed"><div class="col">${l.map(cardHTML).join('')}</div><div class="col">${r.map(cardHTML).join('')}</div></div>`;
+  } else {
+    area.innerHTML = `<div class="vfeed">${videos.map(v => {
+      const liked = !!social.liked['v'+v.id];
+      return `<div class="vcard"><div class="v-cover" style="background:${v.bg}"><span class="v-emoji">${v.cover}</span><div class="v-play">▶</div><div class="v-dur">${v.dur}</div><div class="v-topic">${v.topic}</div></div>
+      <div class="v-body"><div class="v-tt">${v.title}</div><div class="v-meta"><span>${v.author}</span>
+      <div class="acts"><span class="act ${liked?'on':''}" onclick="doLike('v${v.id}')">♥ ${liked?'已赞':'赞'}</span><span>▶ ${v.plays}</span></div></div></div></div>`;
+    }).join('')}</div>`;
+  }
+}
+
+function renderLog(){
+  const el = document.getElementById('logList');
+  if(!meritLog.length){ el.innerHTML = '<div class="log-item"><span>暂无动态，去点赞 / 关注 / 发布试试 ✦</span></div>'; return; }
+  el.innerHTML = meritLog.slice(0,12).map(x => `<div class="log-item"><span>${x.text}</span><span class="t">${x.time}</span></div>`).join('');
+}
+
+// ===== 互动 =====
+function doLike(ref){
+  const key = String(ref); const was = !!social.liked[key];
+  if(was){ delete social.liked[key]; toast('已取消点赞'); }
+  else { social.liked[key]=true; addMerit(1,'点赞一条笔记'); toast('已赞 · +1 功德'); }
+  saveAll(); renderFeed(); renderMerit(); renderLog();
+}
+function doCollect(ref){
+  const key = String(ref); const was = !!social.collected[key];
+  if(was){ delete social.collected[key]; toast('已取消收藏'); }
+  else { social.collected[key]=true; addMerit(1,'收藏一条笔记'); toast('已收藏 · +1 功德'); }
+  saveAll(); renderFeed(); renderMerit(); renderLog();
+}
+function doFollow(name){
+  const was = !!social.followed[name];
+  if(was){ delete social.followed[name]; toast('已取消关注'); }
+  else { social.followed[name]=true; addMerit(1,`关注了 ${name}`); toast(`已关注 ${name} · +1 功德`); }
+  saveAll(); renderFeed(); renderMerit(); renderLog();
+}
+function openNote(id){ toast('打开笔记详情 #'+id); }
+
+// ===== 万年历（演示宜忌） =====
+(function buildCal(){
+  const grid = document.getElementById('calGrid');
+  const first = new Date(2026,6,1); const start = (first.getDay()+6)%7; const dim = new Date(2026,7,0).getDate(); const prev = new Date(2026,6,0).getDate();
+  let html=''; const yi=['祈福','出行','嫁娶','开市','动土','安葬','求医','移徙'];
+  for(let i=0;i<42;i++){ let d,dm=false; if(i<start){d=prev-start+1+i;dm=true;} else if(i>=start+dim){d=i-(start+dim)+1;dm=true;} else {d=i-start+1;}
+    const today = (!dm && d===23); const lu = dm?'':(d%15===0?'十五':['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二'][d%12]);
+    html += `<div class="mc-d ${dm?'dim':''} ${today?'today':''}" onclick="pickDay(${d},${dm})"><span>${d}</span><span class="mc-lu">${lu}</span></div>`;
+  }
+  grid.innerHTML = html;
+})();
+function pickDay(d, dm){ if(dm) return; const yi=['祈福','出行','嫁娶','开市','动土','安葬','求医','移徙']; const y=yi[(d*7)%8]; const j=yi[(d*3+4)%8]; document.getElementById('yiBox').innerHTML = `7月${d}日 · 丙午年六月初${['十','一','二','三','四','五','六','七','八','九'][d%10]||d} · 宜：<span class="yj-yi">${y}</span>；忌：<span class="yj-ji">${j}</span>`; }
+
+// ===== 顶部按钮 =====
+document.getElementById('lampBtn').onclick = ()=>{ addMerit(1,'点亮心灯'); saveAll(); renderMerit(); renderLog(); toast('心灯已亮 · +1 功德'); };
+document.getElementById('checkinBtn').onclick = ()=>{ addMerit(3,'晨间签到'); saveAll(); renderMerit(); renderLog(); toast('签到 +3 功德'); };
+document.querySelectorAll('.tabs .t').forEach(t => t.onclick = ()=>{ curTab = Number(t.dataset.i); document.querySelectorAll('.tabs .t').forEach(x=>x.classList.remove('on')); t.classList.add('on'); renderFeed(); });
+
+// ===== 发布面板 =====
+let picked = { '星图旅行':true, '苍山':true };
+const fab = document.getElementById('fab'), mask = document.getElementById('mask'), sheet = document.getElementById('sheet');
+fab.onclick = ()=>{ mask.classList.add('show'); sheet.classList.add('show'); renderChips(); };
+mask.onclick = ()=>{ mask.classList.remove('show'); sheet.classList.remove('show'); };
+function renderChips(){ document.getElementById('pChips').innerHTML = TOPICS.map(t=>`<span class="chip ${picked[t]?'on':''}" onclick="toggleTopic('${t}')">#${t}</span>`).join(''); }
+function toggleTopic(t){ if(picked[t]) delete picked[t]; else picked[t]=true; renderChips(); }
+document.getElementById('pPub').onclick = ()=>{
+  const title = document.getElementById('pTitle').value.trim();
+  const body = document.getElementById('pBody').value.trim();
+  if(!title && !body){ toast('写点什么再发布吧~'); return; }
+  const hit = BLOCK_WORDS.filter(w => (title+' '+body).indexOf(w)!==-1);
+  if(hit.length){ toast('含不适宜内容：'+hit.join('、')); return; }
+  const id = 900000 + Math.floor(Math.random()*90000);
+  const emo = ['🌌','🔮','🍃','🏮','🏜️','🌙','🌿'][Math.floor(Math.random()*7)];
+  const bg = ['linear-gradient(140deg,#2b2b4e,#4a4a7a)','linear-gradient(140deg,#3a3660,#6a5f96)','linear-gradient(140deg,#7fb7a3,#a9d4c5)','linear-gradient(140deg,#b9544a,#e0796f)','linear-gradient(140deg,#c8a35a,#e0c489)'][Math.floor(Math.random()*5)];
+  const topic = Object.keys(picked)[0] || '星图旅行';
+  published.unshift({ id, title: title||body.slice(0,12), body, author:'拾光的小野', likes:0, collects:0, topic, h:200+Math.floor(Math.random()*60), emoji:emo, bg, mine:true });
+  addMerit(8,'发布过审感悟');
+  saveAll();
+  mask.classList.remove('show'); sheet.classList.remove('show');
+  document.getElementById('pTitle').value=''; document.getElementById('pBody').value='';
+  curTab = 1; document.querySelectorAll('.tabs .t').forEach(x=>x.classList.remove('on')); document.getElementById('tab1').classList.add('on');
+  renderFeed(); renderMerit(); renderLog(); toast('已发布 · +8 功德');
+};
+
+// 初始化
+renderMerit(); renderFeed(); renderLog();
+</script>
+</body>
+</html>

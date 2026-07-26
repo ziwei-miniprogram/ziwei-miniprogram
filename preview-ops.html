@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>拾光驿 · 小程序预览操作界面</title>
+<style>
+  :root{
+    --ink-900:#0B1426; --ink-800:#0E1B33; --ink-700:#16243F;
+    --gold-300:#F4E3B8; --gold-400:#EBD29A; --gold-500:#E0BE78; --gold-600:#C9A25A;
+    --jade-400:#9FD0C2; --jade-500:#7FB7A8; --rose-400:#E3A9A0;
+    --text-on-dark:#F4EFE3; --text-muted-dark:#A9B4C9;
+    --line-dark:rgba(255,255,255,.10); --surface-glass:rgba(255,255,255,.06); --shadow-color:rgba(8,15,30,.45);
+    --font-serif:"Source Han Serif SC","Songti SC","Noto Serif SC",serif;
+    --font-sans:"PingFang SC","-apple-system","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#05080F;color:var(--text-on-dark);font-family:var(--font-sans);min-height:100vh;
+    display:flex;align-items:stretch;}
+  /* 左侧导航 */
+  .side{width:248px;flex-shrink:0;background:var(--ink-800);border-right:1px solid var(--line-dark);
+    padding:22px 16px;display:flex;flex-direction:column;gap:6px;}
+  .brand{font-family:var(--font-serif);font-size:19px;font-weight:700;color:var(--gold-300);padding:4px 10px 14px;}
+  .brand .sub{font-size:11px;color:var(--text-muted-dark);font-family:var(--font-sans);margin-top:4px;letter-spacing:1px;}
+  .nav-g{font-size:11px;color:var(--text-muted-dark);padding:14px 10px 6px;letter-spacing:1px;}
+  .nav{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;cursor:pointer;font-size:14px;color:var(--text-muted-dark);transition:.18s;}
+  .nav:hover{background:var(--surface-glass);color:var(--text-on-dark);}
+  .nav.active{background:linear-gradient(135deg,rgba(224,190,120,.18),rgba(224,190,120,.06));color:var(--gold-300);font-weight:600;}
+  .nav .ic{font-size:17px;}
+  .side-foot{margin-top:auto;font-size:11px;color:rgba(169,180,201,.5);padding:14px 10px 0;line-height:1.6;border-top:1px solid var(--line-dark);}
+  /* 主区 */
+  .main{flex:1;display:flex;flex-direction:column;align-items:center;padding:26px;}
+  .topbar2{width:100%;max-width:920px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .topbar2 .h{font-size:16px;font-weight:700;}
+  .topbar2 .h span{color:var(--gold-400);}
+  .topbar2 .meta{font-size:12px;color:var(--text-muted-dark);}
+  .stage{display:flex;gap:30px;align-items:flex-start;}
+  /* 手机 */
+  .phone{width:360px;height:760px;background:var(--ink-900);border-radius:46px;border:9px solid #1a2236;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);overflow:hidden;position:relative;flex-shrink:0;}
+  .sc{height:100%;overflow-y:auto;padding:0 0 90px;scrollbar-width:none;}
+  .sc::-webkit-scrollbar{display:none;}
+  .screen-content{display:none;} .screen-content.show{display:block;}
+  /* 通用小组件（操作界面内联） */
+  .st{display:flex;justify-content:space-between;padding:14px 24px 4px;color:var(--text-on-dark);font-size:12px;}
+  .tb{padding:6px 24px 0;display:flex;justify-content:space-between;}
+  .tb .w{font-size:13px;color:var(--text-muted-dark);} .tb .w b{color:var(--text-on-dark);font-size:20px;}
+  .tb .d{text-align:right;font-size:12px;color:var(--gold-400);}
+  .hero{margin:16px 18px 0;border-radius:26px;padding:40px 22px;position:relative;overflow:hidden;text-align:center;
+    background:radial-gradient(120% 90% at 50% -10%,#1c2c4d,#0a1326);border:1px solid var(--line-dark);}
+  .hero .b{font-family:var(--font-serif);font-size:22px;line-height:1.7;color:var(--text-on-dark);}
+  .hero .s2{color:var(--gold-300);font-size:12px;margin-top:14px;letter-spacing:2px;}
+  .hero .lb{display:inline-block;margin-top:22px;padding:13px 26px;border-radius:999px;
+    background:linear-gradient(135deg,var(--gold-400),var(--gold-600));color:#2A2418;font-weight:700;font-size:14px;}
+  .card{background:var(--surface-glass);border:1px solid var(--line-dark);border-radius:20px;padding:16px;margin:14px 18px 0;backdrop-filter:blur(20px);}
+  .card .t{font-size:15px;font-weight:700;color:var(--text-on-dark);}
+  .card .s{font-size:12px;color:var(--text-muted-dark);margin-top:6px;line-height:1.6;}
+  .chip{display:inline-block;font-size:11px;color:var(--jade-400);background:rgba(127,183,168,.14);padding:4px 11px;border-radius:999px;margin:8px 6px 0 0;}
+  .quick{display:flex;gap:8px;margin:14px 18px 0;}
+  .quick .q{flex:1;background:var(--surface-glass);border:1px solid var(--line-dark);border-radius:16px;padding:14px 0;text-align:center;font-size:11px;color:var(--text-on-dark);}
+  .quick .q .i{font-size:22px;display:block;margin-bottom:4px;}
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:70px;display:flex;align-items:center;
+    background:rgba(11,20,38,.86);backdrop-filter:blur(24px);border-top:1px solid var(--line-dark);}
+  .tabbar .ti{flex:1;text-align:center;color:var(--text-muted-dark);font-size:10px;}
+  .tabbar .ti .ic{font-size:18px;display:block;margin-bottom:2px;}
+  .tabbar .ti.on{color:var(--gold-400);}
+  /* 右侧说明 */
+  .panel{width:240px;flex-shrink:0;background:var(--ink-800);border:1px solid var(--line-dark);border-radius:18px;padding:18px;align-self:stretch;}
+  .panel h3{font-size:14px;color:var(--gold-300);margin-bottom:10px;}
+  .panel p{font-size:12px;color:var(--text-muted-dark);line-height:1.7;margin-bottom:10px;}
+  .panel .k{display:inline-block;font-size:11px;background:var(--surface-glass);border:1px solid var(--line-dark);
+    border-radius:8px;padding:3px 9px;margin:0 5px 6px 0;color:var(--text-on-dark);}
+  .disc{font-size:10px;color:rgba(169,180,201,.5);padding:14px 22px 26px;line-height:1.7;text-align:center;}
+  @media(max-width:1100px){.panel{display:none;} }
+  @media(max-width:820px){.side{display:none;} }
+</style>
+</head>
+<body>
+  <!-- 左侧导航 -->
+  <div class="side">
+    <div class="brand">拾光驿 · 星野漫游<div class="sub">小程序预览操作界面</div></div>
+    <div class="nav-g">核心页面</div>
+    <div class="nav active" data-s="home"><span class="ic">🌟</span>首页 · 祝福</div>
+    <div class="nav" data-s="tourism"><span class="ic">⛰</span>星象文旅</div>
+    <div class="nav" data-s="journey"><span class="ic">🌿</span>心灵之旅</div>
+    <div class="nav" data-s="merit"><span class="ic">🪔</span>功德中心</div>
+    <div class="nav" data-s="blessing"><span class="ic">🎬</span>祝福视频</div>
+    <div class="side-foot">设计系统：DESIGN.md（星夜拾光）<br>简洁大气 · 留白为王 · 星辉为光</div>
+  </div>
+
+  <!-- 主区 -->
+  <div class="main">
+    <div class="topbar2">
+      <div class="h">预览 · <span id="curName">首页 · 祝福画面</span></div>
+      <div class="meta">390 × 844 · 所见即所得</div>
+    </div>
+    <div class="stage">
+      <!-- 手机 -->
+      <div class="phone">
+        <div class="sc">
+          <!-- 首页 -->
+          <div class="screen-content show" id="home">
+            <div class="st"><span>9:41</span><span>📶 🔋</span></div>
+            <div class="tb"><div class="w">🌙 <b>23°</b><br>杭州 · 晴夜</div>
+              <div class="d">7月22日 周三<br>农历 六月初九 · 大暑</div></div>
+            <div class="hero"><div class="b">愿你所行皆坦途<br>所念皆如愿</div>
+              <div class="s2">今日星象 · 心静则明</div><div class="lb">🪔 点亮今日心灯 · +1 功德</div></div>
+            <div class="card"><div class="t">2026 年 7 月 · 万年历</div>
+              <div class="s">今日宜：静心 · 规划 · 会友 · 出行<br>今日忌：冲动 · 争执 · 投机</div></div>
+            <div class="quick"><div class="q"><span class="i">🔮</span>星图</div><div class="q"><span class="i">⛰</span>文旅</div>
+              <div class="q"><span class="i">🌿</span>心灵之旅</div><div class="q"><span class="i">🪔</span>寄愿墙</div></div>
+            <div class="card"><div class="t">日行一善 · 善信</div><div class="s">当前 128 功德 · 连续签到 5 天</div></div>
+            <div class="disc">温馨提示：本平台内容为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成专业建议，请勿迷信。</div>
+          </div>
+          <!-- 文旅 -->
+          <div class="screen-content" id="tourism">
+            <div class="st"><span>9:41</span><span>📶 🔋</span></div>
+            <div class="tb" style="display:block"><div class="t" style="font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--text-on-dark)">星象文旅</div>
+              <div class="s" style="font-size:12px;color:var(--text-muted-dark);margin-top:6px">把星图里的「迁移宫 / 福德宫」变成真实的山水旅程</div></div>
+            <div style="display:flex;gap:8px;padding:14px 18px 0">
+              <span class="chip" style="background:linear-gradient(135deg,var(--gold-400),var(--gold-600));color:#2A2418;font-weight:700">全部</span>
+              <span class="chip">按星象</span><span class="chip">按节气</span><span class="chip">按城市</span></div>
+            <div class="card"><div class="t">青城山 · 道家养生研学</div>
+              <div class="s">太极晨练 + 紫微文化讲习 + 禅茶夜话</div>
+              <span class="chip">宜迁移宫旺</span><span class="chip">大暑前后</span>
+              <div class="s" style="color:var(--gold-300);margin-top:8px">¥1299 /人 · 3 天</div></div>
+            <div class="card"><div class="t">普陀山 · 寄愿静心之旅</div><div class="s">观音道场 + 正念抄经 + 海边长走</div>
+              <span class="chip">宜福德宫稳</span><div class="s" style="color:var(--gold-300);margin-top:8px">¥999 · 2 天</div></div>
+            <div class="card"><div class="t">终南山 · 隐修体验营</div><div class="s">闭关静坐 + 疗愈工作坊 + 星空夜话</div>
+              <span class="chip">宜命宫清</span><div class="s" style="color:var(--gold-300);margin-top:8px">¥2599 · 5 天</div></div>
+          </div>
+          <!-- 心灵之旅 -->
+          <div class="screen-content" id="journey">
+            <div class="st"><span>9:41</span><span>📶 🔋</span></div>
+            <div class="tb" style="display:block"><div class="t" style="font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--text-on-dark)">心灵之旅</div>
+              <div class="s" style="font-size:12px;color:var(--text-muted-dark);margin-top:6px">每天 10 分钟，安住当下</div></div>
+            <div class="hero" style="background:radial-gradient(120% 100% at 50% 0%,#1f4a3e,#0a1326)">
+              <div style="width:90px;height:90px;border-radius:50%;margin:0 auto 14px;background:radial-gradient(circle at 40% 35%,var(--jade-400),var(--jade-600));box-shadow:0 0 36px rgba(127,183,168,.5)"></div>
+              <div class="b" style="font-size:18px">今日冥想 · 第 3 天</div>
+              <div class="s2" style="color:var(--jade-400)">跟随呼吸，回到此刻</div>
+              <div class="lb" style="background:linear-gradient(135deg,var(--jade-400),var(--jade-600));color:#0B1426">▶ 开始 10 分钟</div></div>
+            <div class="card"><div class="t">此刻心情</div><div class="s" style="font-size:22px">😣 😔 😌🙂 😊</div></div>
+            <div class="card"><div class="t">睡前放松冥想</div><div class="s">放下一日纷扰，安然入眠</div><span class="chip">10 分钟</span></div>
+            <div class="card"><div class="t">心灵日记</div><div class="s">此刻你在想什么？写下它，温柔对待自己。</div></div>
+          </div>
+          <!-- 功德中心 -->
+          <div class="screen-content" id="merit">
+            <div class="st"><span>9:41</span><span>📶 🔋</span></div>
+            <div class="hero" style="background:radial-gradient(120% 90% at 50% -10%,#3a2f1a,#0a1326)">
+              <div class="b" style="font-size:20px">🪔 善信 · 128 功德</div>
+              <div class="s2">距「清信士」还需 72 功德</div>
+              <div class="lb">连续签到 5 天 · 今日 +3</div></div>
+            <div class="card"><div class="t">功德林 · 本周榜</div>
+              <div class="s">① 云隐山人 2480　② 晚照 1960<br>③ 一叶舟 1520　… 你 · 第 18 名</div></div>
+            <div class="card"><div class="t">共修 · 21 天早睡</div><div class="s">1092 / 1280 人已打卡</div><span class="chip">奖励：月白莲灯皮肤</span></div>
+            <div class="card"><div class="t">寄愿墙</div><div class="s">为「愿家人平安」添灯 · 已 36 盏</div></div>
+          </div>
+          <!-- 祝福视频 -->
+          <div class="screen-content" id="blessing">
+            <div class="st"><span>9:41</span><span>📶 🔋</span></div>
+            <div class="tb" style="display:block"><div class="t" style="font-family:var(--font-serif);font-size:22px;font-weight:700;color:var(--text-on-dark)">祝福视频</div>
+              <div class="s" style="font-size:12px;color:var(--text-muted-dark);margin-top:6px">选模板 · 写寄语 · 一键生成</div></div>
+            <div class="hero"><div class="b" style="font-size:18px">🎬 实时预览</div>
+              <div class="s2">星夜模板 · 含你的祝福语</div></div>
+            <div class="card"><div class="t">寄语</div><div class="s">愿你所行皆坦途，所念皆如愿。</div></div>
+            <div class="quick"><div class="q"><span class="i">🌌</span>星夜</div><div class="q"><span class="i">🌅</span>晨光</div>
+              <div class="q"><span class="i">🏔</span>山居</div><div class="q"><span class="i">🪷</span>莲华</div></div>
+            <div class="card"><div class="t">生成并分享</div><div class="s">生成视频可分享至朋友圈 / 视频号</div></div>
+          </div>
+        </div>
+        <div class="tabbar">
+          <div class="ti on"><span class="ic">🌟</span>星图</div><div class="ti"><span class="ic">⛰</span>文旅</div>
+          <div class="ti"><span class="ic">🌿</span>疗愈</div><div class="ti"><span class="ic">🛍</span>商城</div>
+          <div class="ti"><span class="ic">👤</span>我的</div>
+        </div>
+      </div>
+
+      <!-- 右侧说明 -->
+      <div class="panel">
+        <h3>当前页面说明</h3>
+        <p id="pDesc">首页是客户最想要的「祝福画面」：星夜 Hero + 当日祝福语 + 点亮心灯；上方集成天气与万年历（农历/节气/宜忌），整体简洁大气、留白为王。</p>
+        <div style="margin-top:6px">
+          <span class="k">衬线标题</span><span class="k">玻璃卡片</span><span class="k">星辉金</span>
+          <span class="k">留白</span><span class="k">无敏感词</span>
+        </div>
+        <h3 style="margin-top:16px">切换预览</h3>
+        <p>点击左侧导航，手机实时渲染对应页面，用于设计验收与走查。</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const descs = {
+    home:"首页是客户最想要的「祝福画面」：星夜 Hero + 当日祝福语 + 点亮心灯；上方集成天气与万年历（农历/节气/宜忌），整体简洁大气、留白为王。",
+    tourism:"星象文旅：按星象/节气/城市筛选的线路卡，封面渐变 + 适合星象标签 + 天数价格，强调「星图宫位 → 真实山水」的叙事。",
+    journey:"心灵之旅：玉色疗愈基调，呼吸圆动画引导冥想，情绪打卡 + 冥想列表 + 心灵日记（自动内容审核）。",
+    merit:"功德中心：等级徽章 + 进度 + 功德林榜单 + 共修 + 寄愿墙，构成社交闭环；功德不可充值/交易。",
+    blessing:"祝福视频：选模板 · 写寄语 · 实时预览 · 一键生成可分享视频，复用星夜视觉语言。"
+  };
+  const names = { home:"首页 · 祝福画面", tourism:"星象文旅", journey:"心灵之旅", merit:"功德中心", blessing:"祝福视频" };
+  document.querySelectorAll('.nav').forEach(n=>{
+    n.onclick=()=>{
+      const s=n.dataset.s;
+      document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
+      n.classList.add('active');
+      document.querySelectorAll('.screen-content').forEach(x=>x.classList.remove('show'));
+      document.getElementById(s).classList.add('show');
+      document.getElementById('curName').textContent=names[s];
+      document.getElementById('pDesc').textContent=descs[s];
+    };
+  });
+</script>
+</body>
+</html>
