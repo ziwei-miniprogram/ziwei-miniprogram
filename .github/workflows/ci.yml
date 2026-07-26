@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: 语法与安全校验
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 全量语法与安全校验
+        run: |
+          node -e '
+            const fs = require("fs"), cp = require("child_process"), path = require("path");
+            const src = cp.execSync("git ls-files").toString().trim().split("\n");
+            const exts = { ".js": 1, ".json": 1, ".wxml": 1, ".wxss": 1, ".py": 1 };
+            const files = src.filter(f => exts[path.extname(f)]);
+            const byExt = {};
+            for (const f of files) { (byExt[path.extname(f)] = byExt[path.extname(f)] || []).push(f); }
+            let code = 0;
+
+            // 1) JS 语法校验 (node --check)
+            let jsErr = 0;
+            for (const f of (byExt[".js"] || [])) {
+              const r = cp.spawnSync("node", ["--check", f]);
+              if (r.status !== 0) { console.log("::error file=" + f + "::JS 语法错误\n" + r.stderr.toString()); jsErr++; }
+            }
+            console.log(jsErr ? ("❌ " + jsErr + " 个 JS 语法错误") : ("✅ JS 语法通过 (" + (byExt[".js"] || []).length + " 个)"));
+
+            // 2) JSON 合法性校验
+            let jsonBad = 0;
+            for (const f of (byExt[".json"] || [])) {
+              try { JSON.parse(fs.readFileSync(f, "utf8")); }
+              catch (e) { console.log("::error file=" + f + "::JSON 非法: " + e.message); jsonBad++; }
+            }
+            console.log(jsonBad ? ("❌ " + jsonBad + " 个非法 JSON") : ("✅ JSON 合法 (" + (byExt[".json"] || []).length + " 个)"));
+
+            // 3) Python 编译校验
+            let pyErr = 0;
+            for (const f of (byExt[".py"] || [])) {
+              const r = cp.spawnSync("python3", ["-m", "py_compile", f]);
+              if (r.status !== 0) { console.log("::error file=" + f + "::Python 编译失败\n" + r.stderr.toString()); pyErr++; }
+            }
+            console.log(pyErr ? ("❌ " + pyErr + " 个 Python 编译失败") : ("✅ Python 编译通过 (" + (byExt[".py"] || []).length + " 个)"));
+
+            // 4) 密钥/敏感信息扫描 (仅源码扩展名, 值需 >=12 字符引号串)
+            const Q = "[\"\x27]";
+            const re = new RegExp("(api[_-]?key|secret|token|password|passwd)\\s*[:=]\\s*" + Q + "[A-Za-z0-9_-]{12,}" + Q, "gi");
+            let hit = 0;
+            for (const f of files) {
+              const m = fs.readFileSync(f, "utf8").match(re);
+              if (m) { console.log("::error file=" + f + "::疑似硬编码密钥: " + m[0].slice(0, 40)); hit++; }
+            }
+            console.log(hit ? ("❌ " + hit + " 处疑似硬编码密钥") : "✅ 未检测到硬编码密钥");
+
+            code = (jsErr || jsonBad || pyErr || hit) ? 1 : 0;
+            process.exit(code);
+          '
