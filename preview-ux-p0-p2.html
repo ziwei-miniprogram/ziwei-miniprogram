@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>星野漫游 · 整体体验原型（P0–P2）</title>
+<style>
+:root{
+  /* 设计系统令牌 — 浅色暖纸 */
+  --bg-primary:#f7f5f0;
+  --bg-secondary:#fffdf8;
+  --card:#ffffff;
+  --card-soft:#fbf8f0;
+  --text-primary:#2b2b28;
+  --text-secondary:#7a756b;
+  --border-color:#e7e1d4;
+  --gold:#c8a35a;
+  --gold-deep:#8a6a2a;
+  --gold-soft:#f3e9d4;
+  --gold-tint:#faf4e6;
+  --night:#0B1426;
+  --gold-grad:linear-gradient(135deg,#e7c789 0%,#c8a35a 55%,#a07e36 100%);
+  --reco-card-bg:#fffdf8;
+  --reco-card-border:#e9dcc0;
+  --flow-cta-bg:linear-gradient(135deg,#e7c789,#c8a35a);
+  --shadow-1:0 2px 8px rgba(40,30,10,.06);
+  --shadow-2:0 8px 24px rgba(40,30,10,.12);
+  --loop-chip-bg:#fffdf8;
+  --loop-chip-border:#e7dcc2;
+  --loop-chip-fg:#8a6a2a;
+}
+html[data-theme="dark"]{
+  --bg-primary:#0B1426;
+  --bg-secondary:#101b30;
+  --card:#15203a;
+  --card-soft:#121d34;
+  --text-primary:#eef2fb;
+  --text-secondary:#9fb0cc;
+  --border-color:#243352;
+  --gold:#d9b66a;
+  --gold-deep:#d9b66a;
+  --gold-soft:#2a2c1d;
+  --gold-tint:#1a2238;
+  --gold-grad:linear-gradient(135deg,#f0d49a 0%,#d9b66a 55%,#b4904a 100%);
+  --reco-card-bg:#15203a;
+  --reco-card-border:#2c3a5c;
+  --flow-cta-bg:linear-gradient(135deg,#f0d49a,#d9b66a);
+  --shadow-1:0 2px 10px rgba(0,0,0,.35);
+  --shadow-2:0 10px 30px rgba(0,0,0,.5);
+  --loop-chip-bg:#15203a;
+  --loop-chip-border:#2c3a5c;
+  --loop-chip-fg:#d9b66a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#3a3a40;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:24px 0;color:var(--text-primary);transition:background .3s;}
+.phone{width:390px;height:844px;background:var(--bg-primary);border-radius:44px;box-shadow:0 30px 70px rgba(0,0,0,.45);overflow:hidden;position:relative;display:flex;flex-direction:column;border:10px solid #1c1c20;transition:background .3s;}
+.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;color:var(--text-primary);flex:0 0 auto;}
+.statusbar .dots{display:flex;gap:5px;}
+.statusbar .dots i{width:6px;height:6px;border-radius:50%;background:var(--gold);display:block;}
+.appbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:6px 16px 10px;background:var(--bg-primary);border-bottom:1px solid var(--border-color);transition:background .3s;}
+.appbar .back{font-size:20px;color:var(--gold-deep);cursor:pointer;width:28px;}
+.appbar .title{font-size:17px;font-weight:700;flex:1;}
+.appbar .title small{display:block;font-size:11px;font-weight:400;color:var(--text-secondary);}
+.appbar .arch{font-size:11px;background:var(--gold-soft);color:var(--gold-deep);border:1px solid var(--gold);border-radius:20px;padding:4px 9px;cursor:pointer;white-space:nowrap;}
+.appbar .toggle{display:flex;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:20px;padding:2px;cursor:pointer;}
+.appbar .toggle span{font-size:11px;padding:4px 8px;border-radius:16px;color:var(--text-secondary);line-height:1;}
+.appbar .toggle span.on{background:var(--gold-grad);color:#3a2c10;font-weight:600;}
+.screen{flex:1 1 auto;overflow-y:auto;padding:16px;padding-bottom:96px;-webkit-overflow-scrolling:touch;}
+.screen::-webkit-scrollbar{width:0;}
+.hero{background:var(--gold-grad);border-radius:20px;padding:20px 18px;color:#3a2c10;box-shadow:var(--shadow-2);margin-bottom:16px;position:relative;overflow:hidden;}
+.hero::after{content:"✦";position:absolute;right:14px;top:10px;font-size:46px;opacity:.25;}
+.hero h1{margin:0 0 6px;font-size:20px;letter-spacing:1px;}
+.hero p{margin:0;font-size:13px;opacity:.85;}
+.card{background:var(--card);border:1px solid var(--border-color);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:var(--shadow-1);transition:background .3s,border-color .3s;}
+.card h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:6px;}
+.card h3 .pin{color:var(--gold);}
+.section-h{font-size:13px;color:var(--text-secondary);margin:4px 2px 8px;font-weight:600;letter-spacing:.5px;}
+.chip-row{display:flex;gap:10px;flex-wrap:wrap;}
+.chip{flex:1 1 calc(33% - 7px);min-width:96px;background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;box-shadow:var(--shadow-1);transition:transform .15s,background .3s;}
+.chip:active{transform:scale(.96);}
+.chip .ic{font-size:22px;}
+.chip .t{font-size:12px;margin-top:5px;font-weight:600;}
+.chip .d{font-size:10px;color:var(--text-secondary);margin-top:2px;}
+.cluster{margin-bottom:6px;}
+.cluster .ct{font-size:12px;color:var(--gold-deep);font-weight:700;margin:10px 2px 8px;display:flex;align-items:center;gap:6px;}
+.cluster .ct::before{content:"";width:3px;height:13px;background:var(--gold-grad);border-radius:2px;display:inline-block;}
+/* 分段控件 */
+.seg{display:flex;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:24px;padding:3px;margin-bottom:14px;}
+.seg .s{flex:1;text-align:center;font-size:13px;padding:8px 4px;border-radius:21px;color:var(--text-secondary);cursor:pointer;transition:.2s;}
+.seg .s.on{background:var(--gold-grad);color:#3a2c10;font-weight:700;}
+/* 按钮 */
+.btn{display:block;width:100%;text-align:center;background:var(--gold-grad);color:#3a2c10;font-weight:700;font-size:15px;border:none;border-radius:14px;padding:13px;cursor:pointer;box-shadow:var(--shadow-1);}
+.btn:active{transform:scale(.98);}
+.btn.ghost{background:transparent;color:var(--gold-deep);border:1px solid var(--gold);box-shadow:none;}
+.btn.sm{width:auto;padding:8px 16px;font-size:13px;display:inline-block;}
+/* 表单 */
+.fld{margin-bottom:12px;}
+.fld .lab{font-size:12px;color:var(--text-secondary);margin-bottom:6px;}
+.fld input,.fld textarea{width:100%;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;padding:10px;font-size:14px;color:var(--text-primary);font-family:inherit;resize:none;}
+.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--gold);}
+/* LoopChip 回灌 */
+.loop-chip{background:var(--loop-chip-bg);border:1px solid var(--loop-chip-border);border-radius:16px;padding:12px 12px 14px;margin-top:6px;box-shadow:var(--shadow-1);}
+.loop-chip .lct{font-size:12px;color:var(--loop-chip-fg);font-weight:600;margin-bottom:8px;}
+.loop-chip .items{display:flex;gap:8px;overflow-x:auto;}
+.loop-chip .li{flex:0 0 auto;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;white-space:nowrap;color:var(--text-primary);}
+.loop-chip .li .e{font-size:16px;}
+/* 推荐区 */
+.reco-zone{background:var(--reco-card-bg);border:1px solid var(--reco-card-border);border-radius:16px;padding:13px;margin-bottom:14px;box-shadow:var(--shadow-1);}
+.reco-z-h{font-size:13px;font-weight:700;color:var(--gold-deep);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.mj-reco{display:flex;gap:11px;align-items:center;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:transform .12s;}
+.mj-reco:active{transform:scale(.98);}
+.mj-reco:last-child{margin-bottom:0;}
+.mj-reco .ic{font-size:26px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:var(--gold-tint);border-radius:11px;flex:0 0 auto;}
+.mj-reco .body{flex:1;}
+.mj-reco .tag{font-size:10px;color:var(--gold-deep);background:var(--gold-soft);border-radius:8px;padding:1px 7px;display:inline-block;margin-bottom:3px;}
+.mj-reco .nm{font-size:14px;font-weight:600;}
+.mj-reco .ds{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+.mj-reco .go{font-size:12px;color:var(--gold-deep);font-weight:600;white-space:nowrap;}
+/* 功德长明灯 sink */
+.merit-lamp{background:var(--gold-tint);border:1px solid var(--gold);border-radius:16px;padding:13px;margin-bottom:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-1);}
+.merit-lamp .ml-ic{font-size:30px;}
+.merit-lamp .ml-body{flex:1;}
+.merit-lamp .ml-t{font-size:14px;font-weight:700;color:var(--gold-deep);}
+.merit-lamp .ml-s{font-size:11px;color:var(--text-secondary);margin-top:2px;}
+.merit-lamp .ml-btn{background:var(--gold-grad);color:#3a2c10;border:none;border-radius:12px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.merit-lamp.done{opacity:.85;}
+.merit-lamp.done .ml-btn{background:var(--bg-secondary);color:var(--text-secondary);border:1px solid var(--border-color);}
+/* 商品列表 */
+.feed{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:4px;}
+.goods{background:var(--card);border:1px solid var(--border-color);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-1);}
+.goods .ph{height:84px;background:var(--gold-grad);display:flex;align-items:center;justify-content:center;font-size:34px;}
+.goods .gb{padding:9px 10px;}
+.goods .gn{font-size:13px;font-weight:600;}
+.goods .gp{font-size:12px;color:var(--gold-deep);margin-top:3px;font-weight:600;}
+.goods .badge{font-size:9px;color:#3a2c10;background:var(--gold-soft);border-radius:6px;padding:1px 5px;margin-left:4px;}
+/* 城市守护网格 */
+.city-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.city{background:var(--card);border:1px solid var(--border-color);border-radius:13px;padding:11px 6px;text-align:center;box-shadow:var(--shadow-1);}
+.city .ce{font-size:22px;}
+.city .cn{font-size:12px;margin-top:4px;font-weight:600;}
+.city .cs{font-size:10px;color:var(--text-secondary);margin-top:2px;}
+.city.lit{background:var(--gold-tint);border-color:var(--gold);}
+.city.lit .cs{color:var(--gold-deep);}
+/* 星图点阵 */
+.starmap{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:8px 0 14px;}
+.starmap .st{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text-secondary);background:var(--bg-secondary);border-radius:50%;cursor:pointer;border:1px solid var(--border-color);}
+.starmap .st.lit{color:var(--gold);background:var(--gold-tint);border-color:var(--gold);box-shadow:0 0 10px rgba(200,163,90,.4);}
+/* 守护榜 */
+.board{background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:12px;font-size:12px;color:var(--text-secondary);margin-top:10px;}
+.board b{color:var(--gold-deep);}
+/* 盲盒 */
+.box{height:200px;border-radius:18px;background:linear-gradient(135deg,#1a2440,#0B1426);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#e7c789;cursor:pointer;box-shadow:var(--shadow-2);position:relative;overflow:hidden;}
+.box .lid{font-size:54px;transition:transform .5s;}
+.box.open .lid{transform:rotateY(180deg) scale(1.3);opacity:0;}
+.box .hint{font-size:13px;margin-top:10px;opacity:.8;}
+.box .reveal{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#f3e9d4,#e7c789);color:#3a2c10;padding:18px;text-align:center;}
+.box.open .reveal{display:flex;animation:fade .6s;}
+@keyframes fade{from{opacity:0;}to{opacity:1;}}
+/* 徽章墙 */
+.badges{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+.badge-i{aspect-ratio:1;border-radius:13px;background:var(--bg-secondary);border:1px solid var(--border-color);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px;position:relative;}
+.badge-i.lock{filter:grayscale(1);opacity:.4;}
+.badge-i .bl{font-size:9px;margin-top:3px;color:var(--text-secondary);}
+.badge-i.have{border-color:var(--gold);background:var(--gold-tint);}
+/* 底栏 */
+.tabbar{flex:0 0 auto;display:flex;background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:8px 0 18px;transition:background .3s;}
+.tabbar .tb{flex:1;text-align:center;font-size:11px;color:var(--text-secondary);cursor:pointer;position:relative;padding-top:4px;}
+.tabbar .tb .ti{font-size:21px;display:block;margin-bottom:2px;}
+.tabbar .tb.on{color:var(--gold-deep);font-weight:700;}
+.tabbar .tb .reddot{position:absolute;top:2px;left:calc(50% + 8px);width:7px;height:7px;border-radius:50%;background:#e0533a;}
+.tabbar.hide{display:none;}
+/* 心灯 FAB */
+.fab{position:absolute;right:16px;bottom:88px;width:54px;height:54px;border-radius:50%;background:var(--gold-grad);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:var(--shadow-2);cursor:pointer;z-index:20;color:#3a2c10;}
+/* 底部弹层 */
+.sheet-mask{position:absolute;inset:0;background:rgba(0,0,0,.4);display:none;z-index:30;align-items:flex-end;}
+.sheet-mask.show{display:flex;}
+.sheet{background:var(--bg-primary);border-radius:22px 22px 0 0;padding:18px 16px 28px;width:100%;box-shadow:var(--shadow-2);animation:slideup .3s;}
+@keyframes slideup{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.sheet .sh{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.sheet .sh .x{color:var(--text-secondary);font-size:20px;cursor:pointer;}
+.sheet .qs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.sheet .qi{background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:14px 8px;text-align:center;cursor:pointer;box-shadow:var(--shadow-1);}
+.sheet .qi .e{font-size:26px;}
+.sheet .qi .t{font-size:12px;margin-top:6px;font-weight:600;}
+/* 架构说明弹层 */
+.modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.5);display:none;z-index:40;align-items:center;justify-content:center;padding:24px;}
+.modal-mask.show{display:flex;}
+.modal{background:var(--card);border-radius:18px;padding:18px;max-height:80%;overflow:auto;box-shadow:var(--shadow-2);}
+.modal h3{margin:0 0 12px;font-size:16px;color:var(--gold-deep);}
+.modal .row{border-left:3px solid var(--gold);padding:6px 10px;margin-bottom:10px;font-size:12.5px;color:var(--text-primary);}
+.modal .row b{color:var(--gold-deep);}
+.modal .close{margin-top:6px;width:100%;}
+/* Toast */
+.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(20,20,25,.9);color:#fff;padding:11px 18px;border-radius:12px;font-size:13px;z-index:60;opacity:0;pointer-events:none;transition:opacity .25s;max-width:80%;text-align:center;}
+.toast.show{opacity:1;}
+.disclaimer{font-size:10px;color:var(--text-secondary);text-align:center;line-height:1.5;margin-top:6px;padding:0 6px 4px;}
+.kv{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px dashed var(--border-color);}
+.kv:last-child{border:none;}
+.kv b{color:var(--gold-deep);}
+.muted{font-size:11px;color:var(--text-secondary);}
+.pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:var(--gold-soft);color:var(--gold-deep);margin:2px 3px 2px 0;}
+.deed{display:flex;align-items:center;gap:10px;padding:11px;background:var(--card);border:1px solid var(--border-color);border-radius:12px;margin-bottom:9px;cursor:pointer;}
+.deed .de{font-size:22px;}
+.deed .dt{flex:1;font-size:13px;font-weight:600;}
+.deed .chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--border-color);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;}
+.deed.done .chk{background:var(--gold-grad);border-color:var(--gold);}
+.deed.done{background:var(--gold-tint);}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span id="clock">9:41</span><span class="dots"><i></i><i></i><i></i></span></div>
+  <div class="appbar" id="appbar"></div>
+  <div class="screen" id="screen"></div>
+
+  <div class="fab" data-act="openLamp" title="心灯">🪔</div>
+
+  <div class="tabbar" id="tabbar"></div>
+
+  <!-- 心灯 BottomSheet -->
+  <div class="sheet-mask" id="lampSheet">
+    <div class="sheet">
+      <div class="sh">心灯 · 顺手安住此刻 <span class="x" data-act="closeLamp">×</span></div>
+      <div class="qs" id="lampQs"></div>
+    </div>
+  </div>
+
+  <!-- 架构说明 -->
+  <div class="modal-mask" id="archModal">
+    <div class="modal">
+      <h3>体验架构 · 断点 → 闭环（P0–P2）</h3>
+      <div class="row"><b>B2 深井</b>：星野 9 宫格 → 压平为 PINNED(1跳) + CLUSTERS(三簇)，心灯 FAB 升级 BottomSheet，高频操作 1 步到位。</div>
+      <div class="row"><b>B3 孤儿页</b>：紫微/八字/星座 三测试合并为「星盘」内部 seg tab，底部 LoopChip 回灌主循环，读完有去处。</div>
+      <div class="row"><b>B4 死胡同</b>：每日流 / 叶子页底部加 LoopChip，送回 点亮星图 / 寄愿 / 三善 / 记一笔 主循环。</div>
+      <div class="row"><b>B5 转化弱</b>：盲盒揭晓、星图点亮峰值接 ContextualCta 单件推荐；商城 P2 内容驱动推荐区 + 功德 sink 多样（长明灯/9折/晒单）。</div>
+      <div class="row"><b>B6 GPS 门槛</b>：文旅加「遥寄祝福」，不在当地也能守护城市、解锁折扣券与优先购。</div>
+      <div class="muted" style="margin-top:6px">微信 5-tab 硬限制未动；全链路复用 themeable 双主题 + 设计令牌；门禁 validate-mp 全仓 42/0。</div>
+      <button class="btn close" data-act="closeArch">明白了</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+"use strict";
+/* ===== 状态（模拟小程序 globalData + storage） ===== */
+const LS='xysj_preview_state';
+const defaults={
+  theme:'system',
+  merit:800,
+  wish:'',
+  deeds:{lamp:false,bond:false,meditate:false},
+  streak:3,
+  litStars:11,
+  litCities:{},
+  shares:0,
+  meritLampLit:false,
+  recoCat:''
+};
+let state=Object.assign({},defaults);
+try{const s=JSON.parse(localStorage.getItem(LS));if(s)state=Object.assign(state,s);}catch(e){}
+function save(){try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){}}
+
+/* 派生：星图点亮数 = floor(merit/2000*28) */
+function starLit(){return Math.max(0,Math.min(28,Math.floor(state.merit/2000*28)));}
+function didDeed(){return state.deeds.lamp||state.deeds.bond||state.deeds.meditate;}
+
+/* ===== 主题 ===== */
+function applySystemTheme(){
+  const m=window.matchMedia('(prefers-color-scheme: dark)');
+  return m.matches?'dark':'light';
+}
+function applyTheme(){
+  let t=state.theme;
+  if(t==='system')t=applySystemTheme();
+  document.documentElement.setAttribute('data-theme',t);
+}
+function toggleTheme(t){
+  state.theme=t;applyTheme();save();renderAppbar();toast('主题：'+({light:'浅色暖纸',dark:'夜灯星夜',system:'跟随系统'}[t]));
+}
+
+/* ===== 导航 ===== */
+const TABS=['space','tourism','mall','message','profile'];
+const TAB_META={space:{t:'星野',i:'🌌'},tourism:{t:'文旅',i:'🗺️'},mall:{t:'商城',i:'🛍️'},message:{t:'消息',i:'💬'},profile:{t:'我的',i:'👤'}};
+let current='space';
+let stack=[];
+function isTab(k){return TABS.indexOf(k)>=0;}
+function nav(k){
+  if(isTab(k)){current=k;stack=[];}
+  else{stack.push(current);current=k;}
+  render();
+}
+function back(){if(stack.length){current=stack.pop();render();}}
+
+/* ===== Toast ===== */
+let toastTimer=null;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),1600);
+}
+
+/* ===== 行为动作 ===== */
+function act(a,el){
+  switch(a){
+    case 'openLamp':showLamp();break;
+    case 'closeLamp':hideLamp();break;
+    case 'closeArch':document.getElementById('archModal').classList.remove('show');break;
+    case 'showArch':document.getElementById('archModal').classList.add('show');break;
+    case 'setTheme':toggleTheme(el.dataset.theme);break;
+    case 'back':back();break;
+    case 'goChart':nav('chart');break;
+    case 'lightStar':{
+      state.merit+=200;state.litStars=Math.min(28,state.litStars+1);save();
+      burst('✨ 点亮一宿，星图 +1');render();
+      break;
+    }
+    case 'doDeed':{
+      const k=el.dataset.k;state.deeds[k]=!state.deeds[k];
+      if(state.deeds[k]){state.merit+=5;}
+      save();toast(state.deeds[k]?'善行已落 · 功德+5':'已取消');render();
+      break;
+    }
+    case 'setWish':state.wish=el.value;save();break;
+    case 'remoteCity':{
+      const c=el.dataset.c;if(state.litCities[c]){toast('已守护');break;}
+      state.litCities[c]={remote:true};state.merit+=9;save();
+      burst('🏮 遥寄祝福 · 守护 '+c);render();
+      break;
+    }
+    case 'openBox':{
+      const b=document.getElementById('surpriseBox');b.classList.add('open');break;
+    }
+    case 'recoTap':{
+      state.recoCat=el.dataset.cat;toast('已筛选：'+el.dataset.cat);render();
+      break;
+    }
+    case 'lightLamp':{
+      if(state.meritLampLit){toast('长明灯已点亮');break;}
+      if(state.merit<30){toast('功德不足，先去积功德 ✦');nav('chart');break;}
+      state.merit-=30;state.meritLampLit=true;save();
+      burst('🪔 长明祈福灯点亮');render();
+      break;
+    }
+    case 'shareMall':{
+      if(state.shares>=3){toast('今日晒单已达上限（3 次）');break;}
+      state.shares++;state.merit+=30;save();
+      burst('晒单返星屑 · 功德+30');render();
+      break;
+    }
+    case 'toggleNight':{
+      toggleTheme(state.theme==='dark'?'light':'dark');break;
+    }
+    case 'lampGo':{
+      hideLamp();const k=el.dataset.k;
+      if(k==='lamp'){act('doDeed',{dataset:{k:'lamp'}});}
+      else if(k==='checkin'){toast('已签到 · 连签+1');state.streak++;save();render();}
+      else if(k==='publish'){toast('去发布 ✍️');nav('profile');}
+      else nav(k);
+      break;
+    }
+  }
+}
+function burst(msg){toast(msg);}
+
+/* ===== 渲染：appbar ===== */
+function renderAppbar(){
+  const ab=document.getElementById('appbar');
+  const tab=isTab(current);
+  const meta={space:{t:'星野漫游',s:'顺星野 · 安此心'},tourism:{t:'城市守护',s:'文旅打卡 · 解锁折扣'},mall:{t:'星野好物',s:'依你足迹结缘'},message:{t:'消息',s:'星友动态 · 未读'},profile:{t:'我的',s:'星图 · 功德 · 成就'},chart:{t:'二十八宿星图',s:'点亮你的守护'},surprise:{t:'星野盲盒',s:'每日惊喜揭晓'},star:{t:'星盘',s:'命理合集'},daily:{t:'每日流',s:'顺时而养'},merit:{t:'寄愿 · 功德',s:'一笔星愿'}}[current]||{t:'星野漫游',s:''};
+  let html='';
+  if(!tab)html+='<div class="back" data-act="back">‹</div>';
+  html+='<div class="title">'+meta.t+(meta.s?'<small>'+meta.s+'</small>':'')+'</div>';
+  if(tab)html+='<div class="arch" data-act="showArch">架构 B2–B6</div>';
+  const t=state.theme;
+  html+='<div class="toggle">'+
+    '<span class="'+(t==='light'?'on':'')+'" data-act="setTheme" data-theme="light">☀</span>'+
+    '<span class="'+(t==='dark'?'on':'')+'" data-act="setTheme" data-theme="dark">🌙</span>'+
+    '<span class="'+(t==='system'?'on':'')+'" data-act="setTheme" data-theme="system">💻</span></div>';
+  ab.innerHTML=html;
+}
+/* ===== 渲染：tabbar ===== */
+function renderTabbar(){
+  const tb=document.getElementById('tabbar');
+  tb.classList.toggle('hide',!isTab(current));
+  tb.innerHTML=TABS.map(k=>{
+    const m=TAB_META[k];
+    const red=(k==='message'&&(state.litStars>0))?'<span class="reddot"></span>':'';
+    return '<div class="tb '+(current===k?'on':'')+'" data-act="goTab" data-k="'+k+'">'+red+'<span class="ti">'+m.i+'</span>'+m.t+'</div>';
+  }).join('');
+}
+/* 底栏点击（在全局代理里处理 goTab） */
+
+/* ===== 心灯 BottomSheet ===== */
+const LAMP_ITEMS=[
+  {k:'chart',e:'🔭',t:'点亮星图'},{k:'merit',e:'🪔',t:'寄愿一笔'},
+  {k:'daily',e:'🛎',t:'今日三善'},{k:'lamp',e:'✨',t:'点一盏灯'},
+  {k:'checkin',e:'📅',t:'签到'},{k:'publish',e:'✍️',t:'记一笔'}
+];
+function showLamp(){
+  document.getElementById('lampQs').innerHTML=LAMP_ITEMS.map(i=>
+    '<div class="qi" data-act="lampGo" data-k="'+i.k+'"><div class="e">'+i.e+'</div><div class="t">'+i.t+'</div></div>'
+  ).join('');
+  document.getElementById('lampSheet').classList.add('show');
+}
+function hideLamp(){document.getElementById('lampSheet').classList.remove('show');}
+
+/* ===== 屏幕渲染 ===== */
+function buildReco(){
+  const ALL=[
+    {emoji:'🏮',tag:'寄愿结缘',name:'寄愿·暖月香薰',desc:'为你许下的星愿，配一盏静心灯',cat:'香薰',hit:!!state.wish},
+    {emoji:'📿',tag:'疗愈三善',name:'静心好书 · 抄经',desc:'今日善行已落，配一笔静好',cat:'书籍',hit:didDeed()},
+    {emoji:'💎',tag:'星图系列',name:'二十八宿夜灯',desc:'星图已亮，结缘星夜同款',cat:'水晶',hit:starLit()>0},
+    {emoji:'🪷',tag:'城市守护',name:'星辉结缘 · 念珠',desc:'连签守护，带一份陪伴回家',cat:'文创',hit:state.streak>0},
+    {emoji:'🌙',tag:'节气疗愈',name:'睡前冥想 21 天',desc:'顺时而养，静心陪伴',cat:'课程',hit:true}
+  ];
+  const hits=ALL.filter(r=>r.hit),rest=ALL.filter(r=>!r.hit);
+  const picked=[],seen={};
+  hits.concat(rest).forEach(r=>{if(picked.length>=3)return;if(seen[r.cat])return;seen[r.cat]=true;picked.push(r);});
+  return picked;
+}
+function loopChip(items,title){
+  return '<div class="loop-chip"><div class="lct">'+title+'</div><div class="items">'+items.map(i=>
+    '<div class="li" data-act="goLoop" data-k="'+i.k+'"><span class="e">'+i.e+'</span>'+i.t+'</div>'
+  ).join('')+'</div></div>';
+}
+const LOOP_DEFAULT=[
+  {k:'chart',e:'🔭',t:'点亮星图'},{k:'merit',e:'🪔',t:'寄愿一笔'},
+  {k:'daily',e:'🛎',t:'今日三善'},{k:'star',e:'✍️',t:'记一笔'}
+];
+
+function render(){
+  renderAppbar();renderTabbar();
+  const s=document.getElementById('screen');
+  s.innerHTML=VIEWS[current]?VIEWS[current]():'';
+}
+
+const VIEWS={
+  /* ===== P0-a 星野（压平 + BottomSheet 入口） ===== */
+  space(){
+    return `
+    <div class="hero"><h1>星野漫游</h1><p>传统文化 × 心理慰藉 · 顺星野，安此心</p></div>
+    <div class="card">
+      <h3><span class="pin">✦</span>常驻高频（一步直达）</h3>
+      <div class="chip-row">
+        <div class="chip" data-act="goChart"><div class="ic">🔭</div><div class="t">点亮星图</div><div class="d">二十八宿</div></div>
+        <div class="chip" data-act="goMerit"><div class="ic">🪔</div><div class="t">寄愿一笔</div><div class="d">星愿承诺</div></div>
+        <div class="chip" data-act="goDaily"><div class="ic">🛎</div><div class="t">今日三善</div><div class="d">善行打卡</div></div>
+      </div>
+    </div>
+    <div class="cluster">
+      <div class="ct">识星簇</div>
+      <div class="chip-row">
+        <div class="chip" data-act="goStar" data-mode="ziwei"><div class="ic">🌟</div><div class="t">紫微斗数</div><div class="d">命宫主星</div></div>
+        <div class="chip" data-act="goStar" data-mode="bazi"><div class="ic">☯️</div><div class="t">八字命理</div><div class="d">五行排盘</div></div>
+        <div class="chip" data-act="goStar" data-mode="xingzuo"><div class="ic">♒</div><div class="t">星座测试</div><div class="d">今日运势</div></div>
+      </div>
+    </div>
+    <div class="cluster">
+      <div class="ct">安善簇</div>
+      <div class="chip-row">
+        <div class="chip" data-act="goTourism"><div class="ic">🗺️</div><div class="t">城市守护</div><div class="d">文旅打卡</div></div>
+        <div class="chip" data-act="goMerit"><div class="ic">💮</div><div class="t">功德中心</div><div class="d">结缘流转</div></div>
+      </div>
+    </div>
+    <div class="cluster">
+      <div class="ct">表达簇</div>
+      <div class="chip-row">
+        <div class="chip" data-act="goDaily"><div class="ic">📝</div><div class="t">记一笔</div><div class="d">感悟随笔</div></div>
+        <div class="chip" data-act="goProfile"><div class="ic">📣</div><div class="t">去发布</div><div class="d">星友共修</div></div>
+      </div>
+    </div>
+    <p class="disclaimer">星野漫游为传统文化与心理慰藉的娱乐参考，内容不构成改运、医疗或付费算命建议。</p>`;
+  },
+  /* ===== P0-b 每日流（LoopChip 收口） ===== */
+  daily(){
+    const deeds=[{k:'lamp',e:'✨',t:'点一盏灯',done:state.deeds.lamp},{k:'bond',e:'🤝',t:'随喜结缘',done:state.deeds.bond},{k:'meditate',e:'🧘',t:'静心冥想',done:state.deeds.meditate}];
+    return `
+    <div class="hero"><h1>每日三善</h1><p>顺时而养 · 今日善行已落 ${deeds.filter(d=>d.done).length}/3</p></div>
+    ${deeds.map(d=>`<div class="deed ${d.done?'done':''}" data-act="doDeed" data-k="${d.k}"><div class="de">${d.e}</div><div class="dt">${d.t}</div><div class="chk">${d.done?'✓':''}</div></div>`).join('')}
+    <p class="muted" style="margin:6px 2px 12px">点亮三善，星愿更显、功德渐丰。完成即触发商城「疗愈三善」推荐。</p>
+    ${loopChip(LOOP_DEFAULT,'识己之后，顺手安住此刻')}`;
+  },
+  /* ===== P0-c 文旅（遥寄解 GPS 门槛 + 守护榜） ===== */
+  tourism(){
+    const cities=[{id:'宿城',e:'🏯'},{id:'临川',e:'🌉'},{id:'云栖',e:'⛰️'},{id:'海边',e:'🌊'},{id:'古城',e:'🏮'},{id:'山林',e:'🌲'}];
+    const litN=Object.keys(state.litCities).length;
+    const unlit=cities.filter(c=>!state.litCities[c.id]);
+    return `
+    <div class="hero"><h1>城市守护 · 文旅打卡</h1><p>已守护 ${litN}/6 城 · 解锁全国礼进度 ${Math.floor(litN/6*100)}%</p></div>
+    <div class="card">
+      <h3><span class="pin">🏮</span>遥寄祝福（不在当地也能守护）</h3>
+      <div class="city-grid">
+        ${cities.map(c=>{const l=state.litCities[c.id];return `<div class="city ${l?'lit':''}" data-act="remoteCity" data-c="${c.id}"><div class="ce">${c.e}</div><div class="cn">${c.id}</div><div class="cs">${l?(l.remote?'遥寄点亮':'已点亮'):'守护'}</div></div>`;}).join('')}
+      </div>
+      ${unlit.length?`<button class="btn ghost sm" style="margin-top:10px" data-act="remoteCity" data-c="${unlit[0].id}">遥寄祝福 · 守护「${unlit[0].id}」</button>`:`<p class="muted" style="margin-top:8px">六城皆守护 · 全国礼已解锁 🏆</p>`}
+    </div>
+    <div class="board">🌟 城市守护榜：你已点亮 <b>${litN}</b> 城；星友共建守护 <b>1280+</b> 城次。集满 6 城解锁限定大漆星图杯（全国礼）。</div>
+    <p class="disclaimer">线下打卡享城市折扣券（7 天）与限定款优先购（24h），遥寄同享守护与折扣，零金钱、纯文化陪伴。</p>`;
+  },
+  /* ===== P0-d 星图（点亮 → 峰值 ContextualCta） ===== */
+  chart(){
+    const sl=starLit();
+    let stars='';
+    for(let i=0;i<28;i++){stars+=`<div class="st ${i<sl?'lit':''}" data-act="lightStar">${i<sl?'★':'☆'}</div>`;}
+    const reco=sl>0?`<div class="reco-zone"><div class="reco-z-h">✦ 星图已亮 · 为你结缘星夜同款</div>
+      <div class="mj-reco" data-act="recoTap" data-cat="水晶"><div class="ic">💎</div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿夜灯</div><div class="ds">把点亮的星宿带回家</div></div><div class="go">去看看 ›</div></div>
+      <div class="mj-reco" data-act="recoTap" data-cat="丝巾"><div class="ic">🧣</div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿丝巾</div><div class="ds">非遗宋锦 · 星辉纹样</div></div><div class="go">去看看 ›</div></div>
+    </div>`:'';
+    return `
+    <div class="hero"><h1>二十八宿星图</h1><p>已点亮 ${sl}/28 宿 · 功德 ${state.merit}</p></div>
+    <div class="starmap">${stars}</div>
+    <p class="muted" style="margin:-4px 2px 12px">点一颗星即点亮一宿（演示：星图+1、功德+200）。点亮后触发峰值单件结缘推荐。</p>
+    ${reco}
+    ${loopChip([{k:'merit',e:'🪔',t:'寄愿一笔'},{k:'daily',e:'🛎',t:'今日三善'},{k:'mall',e:'🛍️',t:'去商城'}],'点亮之后，顺手安住此刻')}`;
+  },
+  /* ===== 盲盒（揭晓 → 节气 ContextualCta） ===== */
+  surprise(){
+    return `
+    <div class="hero"><h1>星野盲盒</h1><p>每日惊喜 · 揭晓你的星宿礼</p></div>
+    <div class="box" id="surpriseBox" data-act="openBox">
+      <div class="lid">🎁</div>
+      <div class="hint">轻触揭晓</div>
+      <div class="reveal"><div style="font-size:40px">🌿</div><div style="font-weight:700;margin:8px 0">今日 · 大暑节气香</div><div style="font-size:12px">顺时养生，静心一缕。为你的节气，配一款香。</div><button class="btn sm" style="margin-top:12px" data-act="recoTap" data-cat="香薰">去看看 ›</button></div>
+    </div>
+    <p class="muted" style="margin-top:12px">盲盒揭晓峰值接 ContextualCta（按当日节气推荐结缘物），是 B5 转化弱的解法之一。</p>`;
+  },
+  /* ===== P1 星盘（三命理合并为内部 seg tab） ===== */
+  star(){
+    const mode=state.starMode||'ziwei';
+    const tabs=[{k:'ziwei',n:'紫微斗数'},{k:'bazi',n:'八字命理'},{k:'xingzuo',n:'星座测试'}];
+    let body='';
+    if(mode==='ziwei')body=`<div class="card"><div class="section-h">命宫主星</div><div style="font-size:30px;text-align:center;color:var(--gold-deep)">★ 太阳星 · 命宫</div><div class="muted" style="text-align:center;margin-top:6px">主星入命，光华外显，宜守正持衡。</div><button class="btn ghost sm" style="margin-top:12px" data-act="goChart">去星图看二十八宿 ›</button></div>`;
+    else if(mode==='bazi')body=`<div class="card"><div class="section-h">四柱五行</div><div class="badges" style="grid-template-columns:repeat(4,1fr)"><div class="badge-i have">甲<div class="bl">年</div></div><div class="badge-i have">丙<div class="bl">月</div></div><div class="badge-i have">戊<div class="bl">日</div></div><div class="badge-i have">庚<div class="bl">时</div></div></div><div class="muted" style="margin-top:8px">五行：金2 木1 水1 火2 土2，中和偏暖。</div></div>`;
+    else body=`<div class="card"><div class="section-h">今日运势</div><div style="font-size:26px;text-align:center;color:var(--gold-deep)">♒ 水瓶座</div><div class="kv"><span>综合</span><b>★★★★☆</b></div><div class="kv"><span>爱情</span><b>★★★☆☆</b></div><div class="kv"><span>事业</span><b>★★★★☆</b></div><div class="kv"><span>健康</span><b>★★★☆☆</b></div></div>`;
+    return `
+    <div class="hero"><h1>星盘 · 命理合集</h1><p>识己之后，顺手安住此刻</p></div>
+    <div class="seg">${tabs.map(t=>`<div class="s ${mode===t.k?'on':''}" data-act="setStarMode" data-mode="${t.k}">${t.n}</div>`).join('')}</div>
+    ${body}
+    <p class="disclaimer">命理内容仅为传统文化与心理慰藉的娱乐参考，不构成改运、医疗或付费算命建议。</p>
+    ${loopChip(LOOP_DEFAULT,'读完命理，回到主循环')}`;
+  },
+  /* ===== P2 商城（内容驱动推荐区 + 功德长明灯 sink） ===== */
+  mall(){
+    const reco=buildReco();
+    const lamp=state.meritLampLit;
+    const goods=[
+      {e:'🕯️',n:'二十八宿夜灯',p:'¥129',c:'水晶'},{e:'🏮',n:'寄愿·暖月香薰',p:'¥89',c:'香薰'},
+      {e:'📿',n:'静心抄经本',p:'¥49',c:'书籍'},{e:'🧣',n:'宋锦星辉丝巾',p:'¥199',c:'丝巾'},
+      {e:'🪷',n:'星辉结缘念珠',p:'¥69',c:'文创'},{e:'🌿',n:'节气香 · 大暑',p:'¥59',c:'香薰'}
+    ];
+    const shown=state.recoCat?goods.filter(g=>g.c===state.recoCat):goods;
+    return `
+    <div class="hero"><h1>星野好物</h1><p>依你的星野足迹，结一份缘</p></div>
+    ${reco.length?`<div class="reco-zone"><div class="reco-z-h">✦ 为你结缘 · 依你的星野足迹</div>
+      ${reco.map(r=>`<div class="mj-reco" data-act="recoTap" data-cat="${r.cat}"><div class="ic">${r.emoji}</div><div class="body"><span class="tag">${r.tag}</span><div class="nm">${r.name}</div><div class="ds">${r.desc}</div></div><div class="go">去看看 ›</div></div>`).join('')}
+    </div>`:''}
+    <div class="merit-lamp ${lamp?'done':''}">
+      <div class="ml-ic">${lamp?'🪔':'🔆'}</div>
+      <div class="ml-body"><div class="ml-t">${lamp?'长明祈福灯 · 已点亮':'点亮长明祈福灯'}</div><div class="ml-s">${lamp?'愿你星途恒明':'消耗功德 '+30+' · 当前余额 '+state.merit}</div></div>
+      <button class="ml-btn" data-act="lightLamp">${lamp?'已点亮':'点亮'}</button>
+    </div>
+    <div class="card">
+      <h3><span class="pin">🛍️</span>星野好物${state.recoCat?' · '+state.recoCat:''}</h3>
+      <div class="feed">
+        ${shown.map(g=>`<div class="goods"><div class="ph">${g.e}</div><div class="gb"><div class="gn">${g.n}${state.recoCat===g.c?'<span class="badge">推荐</span>':''}</div><div class="gp">${g.p}</div></div></div>`).join('')}
+      </div>
+      ${state.recoCat?'<button class="btn ghost sm" style="margin-top:12px" data-act="clearReco">查看全部</button>':''}
+    </div>
+    <div class="card">
+      <h3><span class="pin">💮</span>功德流转</h3>
+      <div class="kv"><span>当前功德</span><b>${state.merit}</b></div>
+      <div class="kv"><span>连签天数</span><b>${state.streak} 天</b></div>
+      <div class="kv"><span>晒单返星屑</span><b>${state.shares}/3 今日</b></div>
+      <button class="btn sm" style="margin-top:10px" data-act="shareMall">晒单返星屑 · 功德+30</button>
+      <p class="muted" style="margin-top:8px">功德为虚拟文化积分，不可提现/交易/购买；抽奖零金钱、概率公示、每日上限。</p>
+    </div>`;
+  },
+  /* ===== 寄愿 / 功德中心 ===== */
+  merit(){
+    return `
+    <div class="hero"><h1>寄愿 · 功德</h1><p>一笔星愿，心有所安</p></div>
+    <div class="card">
+      <h3><span class="pin">🪔</span>寄一笔星愿</h3>
+      <div class="fld"><div class="lab">你的星愿（文明寄语，不参与迷信改运）</div><textarea rows="3" placeholder="写下此刻心愿…" data-act="setWish">${state.wish}</textarea></div>
+      <p class="muted">立愿后，商城「寄愿结缘」推荐区将为你出现 🏮</p>
+    </div>
+    <div class="card">
+      <h3><span class="pin">💮</span>功德中心</h3>
+      <div class="kv"><span>功德余额</span><b>${state.merit}</b></div>
+      <div class="kv"><span>今日三善</span><b>${didDeed()?'已落 ✓':'未开始'}</b></div>
+      <div class="kv"><span>连签</span><b>${state.streak} 天</b></div>
+      <div class="kv"><span>星图点亮</span><b>${starLit()}/28 宿</b></div>
+      <button class="btn sm" style="margin-top:10px" data-act="goDaily">去完成今日三善 ›</button>
+    </div>`;
+  },
+  /* ===== 我的（双 Hub + 夜灯模式 + 徽章） ===== */
+  profile(){
+    const badges=[{e:'🌟',h:true,t:'启明'},{e:'🪔',h:state.meritLampLit,t:'长明'},{e:'🗺️',h:Object.keys(state.litCities).length>0,t:'守护'},{e:'📿',h:didDeed(),t:'三善'},{e:'🔭',h:starLit()>0,t:'观星'},{e:'🏮',h:!!state.wish,t:'立愿'},{e:'🌿',h:false,t:'节气'},{e:'🪷',h:false,t:'结缘'},{e:'💎',h:false,t:'星图'},{e:'📅',h:state.streak>=7,t:'连签'}];
+    return `
+    <div class="hero"><h1>我的星野</h1><p>夜灯模式 · ${state.theme==='dark'?'已开 🌙':'浅色 ☀'}</p></div>
+    <div class="card"><h3><span class="pin">🌗</span>夜灯模式</h3><div class="deed ${state.theme==='dark'?'done':''}" data-act="toggleNight"><div class="de">🌙</div><div class="dt">切换夜灯星夜主题</div><div class="chk">${state.theme==='dark'?'✓':''}</div></div></div>
+    <div class="card"><h3><span class="pin">🏅</span>金色成就徽章</h3><div class="badges">${badges.map(b=>`<div class="badge-i ${b.h?'have':''} ${!b.h?'lock':''}">${b.e}<div class="bl">${b.t}</div></div>`).join('')}</div></div>
+    <div class="card"><h3><span class="pin">🔭</span>星图进度</h3><div class="starmap">${Array.from({length:28}).map((_,i)=>`<div class="st ${i<starLit()?'lit':''}">${i<starLit()?'★':'☆'}</div>`).join('')}</div></div>
+    ${loopChip([{k:'space',e:'🌌',t:'回星野'},{k:'mall',e:'🛍️',t:'去商城'},{k:'daily',e:'🛎',t:'今日三善'}],'回到主循环')}`;
+  }
+};
+/* starMode 默认注入 */
+state.starMode=state.starMode||'ziwei';
+
+/* ===== 全局事件代理 ===== */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');
+  if(!el)return;
+  const a=el.dataset.act;
+  if(a==='goTab'){nav(el.dataset.k);return;}
+  if(a==='goChart'){nav('chart');return;}
+  if(a==='goMerit'){nav('merit');return;}
+  if(a==='goDaily'){nav('daily');return;}
+  if(a==='goTourism'){nav('tourism');return;}
+  if(a==='goStar'){state.starMode=el.dataset.mode;nav('star');return;}
+  if(a==='goProfile'){nav('profile');return;}
+  if(a==='setStarMode'){state.starMode=el.dataset.mode;render();return;}
+  if(a==='clearReco'){state.recoCat='';render();return;}
+  if(a==='goLoop'){nav(el.dataset.k==='star'?'star':el.dataset.k);return;}
+  act(a,el);
+});
+
+document.addEventListener('input',e=>{
+  const el=e.target.closest('[data-act="setWish"]');
+  if(el){state.wish=el.value;save();}
+});
+
+/* ===== 启动 ===== */
+applyTheme();
+render();
+</script>
+</body>
+</html>
