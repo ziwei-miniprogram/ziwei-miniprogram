@@ -29,7 +29,7 @@ function load() {
     const s = wx.getStorageSync(KEY);
     if (s && typeof s === 'object') return s;
   } catch (e) {}
-  return { checked: [], coupons: {}, priorityPass: null };
+  return { checked: [], coupons: {}, priorityPass: null, shares: { date: '', count: 0, items: [] } };
 }
 function save(s) {
   try { wx.setStorageSync(KEY, s); } catch (e) {}
@@ -69,7 +69,8 @@ function checkIn(cityId) {
 
 function progress() {
   const s = load();
-  return { checked: s.checked, checkedCount: s.checked.length, total: TOTAL };
+  const done = s.checked.length >= TOTAL;
+  return { checked: s.checked, checkedCount: s.checked.length, total: TOTAL, allChecked: done };
 }
 
 function activeCoupons() {
@@ -136,6 +137,61 @@ function priorityRemainText() {
 }
 
 // ============================================================
+// P2：闭环复访 —— 全国守护礼（集满 6 城）+ 晒单返星屑
+// ============================================================
+
+const SHARE_DAILY_LIMIT = 3;   // 每日晒单返利上限（防刷）
+const SHARE_RETURN = 30;       // 每次晒单返还功德（星屑回馈，零金钱）
+
+// 是否已集齐全部城市（解锁全国守护礼）
+function isAllChecked() {
+  return load().checked.length >= TOTAL;
+}
+
+// 全国守护礼状态：集满 6 城解锁限定大漆星图杯（成就 + 稀缺框架）
+function allRewardInfo() {
+  const s = load();
+  const done = s.checked.length >= TOTAL;
+  return {
+    done: done,
+    remain: Math.max(0, TOTAL - s.checked.length),
+    rewardName: '全国守护礼 · 限定大漆星图杯',
+    rewardDesc: done
+      ? '已集齐 6 城星图，全国守护礼已解锁'
+      : '集齐 6 城星图，解锁全国守护礼（含限定大漆星图杯）'
+  };
+}
+
+// 今日是否还可晒单（返回 { ok, remain }）
+function canShare() {
+  const s = load();
+  const today = new Date().toISOString().slice(0, 10);
+  if (s.shares.date !== today) return { ok: true, remain: SHARE_DAILY_LIMIT };
+  return { ok: s.shares.count < SHARE_DAILY_LIMIT, remain: Math.max(0, SHARE_DAILY_LIMIT - s.shares.count) };
+}
+
+// 记录一次晒单：成功返回 { ok:true, returned }，达上限返回 { ok:false, reason:'limit' }
+// 返利数值由调用方（商城页）加到功德账户，本层只管记录与限额
+function recordShare(productTitle) {
+  const s = load();
+  const today = new Date().toISOString().slice(0, 10);
+  if (s.shares.date !== today) { s.shares = { date: today, count: 0, items: [] }; }
+  if (s.shares.count >= SHARE_DAILY_LIMIT) return { ok: false, reason: 'limit' };
+  s.shares.count += 1;
+  s.shares.items.push({ title: productTitle, at: Date.now() });
+  save(s);
+  return { ok: true, returned: SHARE_RETURN };
+}
+
+// 已晒单商品标题集合（供商城页标记 shared 防重复）
+function sharesSnapshot() {
+  const s = load();
+  const today = new Date().toISOString().slice(0, 10);
+  if (s.shares.date !== today) return [];
+  return s.shares.items.map(it => it.title);
+}
+
+// ============================================================
 // P1：GPS 自动打卡
 // ============================================================
 
@@ -175,9 +231,10 @@ function autoCheckInByLocation(lat, lng) {
 }
 
 module.exports = {
-  CITIES, TOTAL, PRIORITY_MS, NEAR_RADIUS,
+  CITIES, TOTAL, PRIORITY_MS, NEAR_RADIUS, SHARE_DAILY_LIMIT, SHARE_RETURN,
   isChecked, checkIn, progress, activeCoupons, couponCount,
   hasPriority, priorityRemainMs, priorityRemainText, hasCoupon,
   discountCost, redeemCoupon, canPriorityBuy,
-  distance, nearbyCity, autoCheckInByLocation
+  distance, nearbyCity, autoCheckInByLocation,
+  isAllChecked, allRewardInfo, canShare, recordShare, sharesSnapshot
 };
