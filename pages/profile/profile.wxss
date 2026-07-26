@@ -1,5 +1,5 @@
 .page { padding: 0 0 40rpx; }
-.cover { height: 280rpx; background: linear-gradient(140deg, #e0c489, #c8a35a); }
+.cover { height: 280rpx; background: var(--gold-grad); }
 .head { display: flex; align-items: flex-end; gap: 26rpx; padding: 0 36rpx; margin-top: -70rpx; }
 .av { width: 140rpx; height: 140rpx; border-radius: 50%; border: 6rpx solid #fff; background: linear-gradient(135deg, #c8a35a, #e7c98f); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 54rpx; }
 .h-info { flex: 1; padding-bottom: 12rpx; }

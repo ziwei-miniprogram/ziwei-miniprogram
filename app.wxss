@@ -75,13 +75,13 @@ page, .page {
 }
 .container { padding: 24rpx; background: var(--bg); min-height: 100vh; }
 
-/* 卡片：令牌驱动，明暗自动适配 */
+/* 卡片：令牌驱动，明暗自动适配（已升级为美化令牌：大圆角 + 分层柔影） */
 .card {
   background: var(--card);
-  border-radius: 24rpx;
+  border-radius: var(--radius-lg);
   padding: 28rpx;
   margin: 20rpx 0;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-1), var(--shadow-2);
   border: 1rpx solid var(--border);
   color: var(--fg);
 }
@@ -462,7 +462,7 @@ page, .page {
 /* P1-6 快捷发布 */
 .quickpost { display: flex; gap: 14rpx; margin: 14rpx 0 6rpx; align-items: center; }
 .qp-input { flex: 1; height: 68rpx; background: var(--card); border: 1rpx solid rgba(200,163,90,.35); border-radius: 34rpx; padding: 0 24rpx; font-size: 26rpx; color: var(--fg-3); }
-.qp-btn { flex: none; height: 68rpx; line-height: 68rpx; padding: 0 28rpx; background: linear-gradient(135deg,var(--gold),#e0c489); color: #3a2c10; border-radius: 34rpx; font-size: 26rpx; font-weight: 600; }
+.qp-btn { flex: none; height: 68rpx; line-height: 68rpx; padding: 0 28rpx; background: var(--gold-grad); color: #3a2c10; border-radius: 34rpx; font-size: 26rpx; font-weight: 600; }
 
 /* P1-2 今日三善 */
 .deeds .d-head2 { display: flex; align-items: center; gap: 12rpx; font-size: 28rpx; color: var(--gold-deep); font-weight: 600; }
@@ -471,7 +471,7 @@ page, .page {
 .deed { display: flex; align-items: center; gap: 16rpx; padding: 14rpx 0; border-top: 1rpx solid rgba(200,163,90,.16); }
 .deed .de-ic { font-size: 34rpx; }
 .deed .de-name { flex: 1; font-size: 26rpx; color: var(--fg-3); }
-.de-btn { flex: none; min-width: 96rpx; text-align: center; padding: 12rpx 18rpx; border-radius: 30rpx; background: linear-gradient(135deg,var(--gold),#e0c489); color: #3a2c10; font-size: 24rpx; font-weight: 600; }
+.de-btn { flex: none; min-width: 96rpx; text-align: center; padding: 12rpx 18rpx; border-radius: 30rpx; background: var(--gold-grad); color: #3a2c10; font-size: 24rpx; font-weight: 600; }
 .de-btn.de-done { background: rgba(120,160,120,.18); color: var(--success); }
 
 /* ===== 命理测试页通用表单基元（双主题，单一真相源）===== */

@@ -357,8 +357,8 @@ Page({
     this.setData({ showGuide: false });
   },
   goGuideSpace() { wx.switchTab({ url: '/pages/space/space' }); },
-  // 星夜物语卡片点击：进入点灯/三善/寄愿（merit 为非 tab 页，用 navigateTo）
-  onStoryTap() { wx.navigateTo({ url: '/pages/merit/merit' }); },
+  // 星夜物语卡片点击：进入每日命理内容流（daily 为非 tab 页，用 navigateTo）
+  onStoryTap() { wx.navigateTo({ url: '/pages/daily/daily' }); },
 
   // P1-6 快捷发布：首页直接「记一笔」，降低发布摩擦
   quickInput(e) { this.setData({ quickText: e.detail.value }); },

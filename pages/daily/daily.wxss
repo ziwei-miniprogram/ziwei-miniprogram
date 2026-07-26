@@ -1,0 +1,45 @@
+/* 每日命理内容流：令牌驱动，明暗自适应；复用 .u-hero-night 夜空基底。 */
+.daily-hero { margin-top: 24rpx; }
+.dh-kicker {
+  font-size: 22rpx; color: var(--gold, #c8a35a); letter-spacing: 2rpx;
+  border: 1rpx solid rgba(200,163,90,.4); border-radius: 999rpx;
+  display: inline-block; padding: 6rpx 18rpx;
+}
+.dh-term { margin-top: 20rpx; font-size: 60rpx; font-weight: 700; color: #f3ead4; line-height: 1.2; }
+.dh-day { margin-top: 8rpx; font-size: 24rpx; color: #d9cba8; }
+.dh-mansion { margin-top: 18rpx; font-size: 30rpx; color: var(--gold, #c8a35a); font-weight: 600; }
+.dh-season { margin-top: 12rpx; font-size: 26rpx; line-height: 1.8; color: #e9dcc0; }
+
+.dh-prog { margin-top: 28rpx; }
+.dh-prog-bar { height: 12rpx; background: rgba(243,234,212,.18); border-radius: 10rpx; overflow: hidden; }
+.dh-prog-fill {
+  height: 100%; border-radius: 10rpx;
+  background: linear-gradient(90deg, var(--gold, #c8a35a), #f0d49a);
+  transition: width .8s cubic-bezier(.2,.8,.2,1);
+}
+.dh-prog-txt { margin-top: 12rpx; font-size: 22rpx; color: #d9cba8; }
+
+/* 往日星轨时间线 */
+.track-title {
+  margin: 36rpx 24rpx 8rpx; font-size: 28rpx; font-weight: 700; color: var(--fg);
+}
+.track { margin: 8rpx 24rpx 0; position: relative; }
+.track-item {
+  display: flex; gap: 20rpx; padding: 22rpx 0; position: relative;
+  border-top: 1rpx solid var(--border);
+}
+.ti-dot {
+  width: 16rpx; height: 16rpx; border-radius: 50%; margin-top: 10rpx; flex: none;
+  background: var(--gold, #c8a35a); box-shadow: 0 0 10rpx rgba(200,163,90,.5);
+}
+.ti-date { width: 84rpx; flex: none; font-size: 24rpx; color: var(--fg-3); padding-top: 2rpx; }
+.ti-body { flex: 1; }
+.ti-mansion { font-size: 26rpx; color: var(--gold-deep); font-weight: 600; }
+.ti-line { margin-top: 6rpx; font-size: 26rpx; line-height: 1.7; color: var(--fg); }
+.ti-sign { margin-top: 6rpx; font-size: 22rpx; color: var(--fg-2); }
+
+.daily-hero .u-glow {
+  position: absolute; top: -60rpx; right: -50rpx;
+  width: 280rpx; height: 280rpx; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,163,90,.4), transparent 70%);
+}

@@ -27,7 +27,7 @@
 .to-top { position: fixed; right: 28rpx; bottom: 150rpx; width: 84rpx; height: 84rpx; border-radius: 50%; background: rgba(31,28,23,.82); color: var(--gold-tint); font-size: 24rpx; display: flex; align-items: center; justify-content: center; z-index: 60; box-shadow: 0 6rpx 20rpx rgba(0,0,0,.25); }
 
 /* 星夜 Hero —— 唯一深色沉浸区：深蓝星夜（非紫），浅/暗主题通用 */
-.hero { margin: 6rpx 24rpx 20rpx; border-radius: 36rpx; padding: 32rpx 28rpx 30rpx; color: #f6eccb; background: linear-gradient(150deg, #0B1426, #16243f 60%, #1f2d4a); position: relative; overflow: hidden; }
+.hero { margin: 6rpx 24rpx 20rpx; border-radius: 36rpx; padding: 32rpx 28rpx 30rpx; color: #f6eccb; background: var(--night-grad); position: relative; overflow: hidden; }
 .hero .stars { position: absolute; inset: 0; background-image: radial-gradient(2rpx 2rpx at 18% 22%, rgba(255,255,255,.85), transparent), radial-gradient(2rpx 2rpx at 68% 16%, rgba(255,255,255,.7), transparent), radial-gradient(2rpx 2rpx at 86% 56%, rgba(255,255,255,.6), transparent), radial-gradient(2rpx 2rpx at 40% 78%, rgba(255,255,255,.7), transparent); opacity: .75; }
 .hero-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
 .hero-bless .b-line { font-family: "Songti SC", serif; font-size: 40rpx; font-weight: 700; letter-spacing: 3rpx; line-height: 1.5; }

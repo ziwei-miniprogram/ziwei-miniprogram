@@ -1,0 +1,43 @@
+<view class="page {{theme}}">
+  <!-- 夜空 Hero：当前节气章节（叙事主轴·漫游节拍） -->
+  <view class="u-hero-night daily-hero">
+    <view class="u-glow"></view>
+    <view class="dh-kicker">星夜物语 · 每日一章</view>
+    <view class="dh-term serif">{{chapter.term}}</view>
+    <view class="dh-day">第 {{chapter.termDay}} 日 · 共 {{chapter.termLen}} 日</view>
+    <view class="dh-mansion">{{chapter.mansion}} 当值</view>
+    <view class="dh-season">{{chapter.seasonLine}}</view>
+    <!-- 距下一节气进度（回访钩子） -->
+    <view class="dh-prog">
+      <view class="dh-prog-bar"><view class="dh-prog-fill" style="width:{{progress}}%"></view></view>
+      <view class="dh-prog-txt">距「{{chapter.nextTerm}}」还有 {{chapter.nextTermIn}} 天</view>
+    </view>
+  </view>
+
+  <!-- 今日星夜物语（标杆组件：母题=夜，双主题 + 线性 SVG） -->
+  <story-card
+    wx:if="{{chapter}}"
+    host="{{chapter.host}}"
+    body="{{chapter.mansionLine}}"
+    sign="{{chapter.lucky}}"
+    actionText="{{chapter.action}}"
+    motif="{{chapter.motif}}"
+    theme="{{theme}}"
+    bind:tap="goIndex" />
+
+  <!-- 往日星轨：连续时间线（序列化叙事的「已读」轨迹） -->
+  <view class="track-title">往日星轨</view>
+  <view class="track">
+    <view class="track-item" wx:for="{{past}}" wx:key="date">
+      <view class="ti-dot"></view>
+      <view class="ti-date">{{item.dateLabel}}</view>
+      <view class="ti-body">
+        <view class="ti-mansion">{{item.mansion}} 当值</view>
+        <view class="ti-line">{{item.line}}</view>
+        <view class="ti-sign">幸运签 · {{item.sign}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="disclaimer">温馨提示：本平台星象、节气、抽签等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>
+</view>

@@ -64,6 +64,108 @@ const ACTS = [
 // 母题轮换（演示母题系统：夜 / 灯 / 星）
 const MOTIFS = ['night', 'lamp', 'star'];
 
+/* ============================================================
+   序列化叙事引擎：24 节气 × 二十八宿（视觉叙事「回访钩子」核心）
+   说明：节气采用近似公历日期（传统文化娱乐参考，非天文精确值）；
+   每年同一天稳定、同全员一致，便于社会证明与单测。
+   章节 = 当前节气 + 第 N 日 + 当值二十八宿 + 季节物语，构成连续可读的「星夜物语」。
+   ============================================================ */
+const SOLAR_TERMS = [
+  { name: '立春', m: 2, d: 4 }, { name: '雨水', m: 2, d: 19 }, { name: '惊蛰', m: 3, d: 6 },
+  { name: '春分', m: 3, d: 21 }, { name: '清明', m: 4, d: 5 }, { name: '谷雨', m: 4, d: 20 },
+  { name: '立夏', m: 5, d: 6 }, { name: '小满', m: 5, d: 21 }, { name: '芒种', m: 6, d: 6 },
+  { name: '夏至', m: 6, d: 21 }, { name: '小暑', m: 7, d: 7 }, { name: '大暑', m: 7, d: 23 },
+  { name: '立秋', m: 8, d: 8 }, { name: '处暑', m: 8, d: 23 }, { name: '白露', m: 9, d: 8 },
+  { name: '秋分', m: 9, d: 23 }, { name: '寒露', m: 10, d: 8 }, { name: '霜降', m: 10, d: 24 },
+  { name: '立冬', m: 11, d: 8 }, { name: '小雪', m: 11, d: 22 }, { name: '大雪', m: 12, d: 7 },
+  { name: '冬至', m: 12, d: 22 }, { name: '小寒', m: 1, d: 6 }, { name: '大寒', m: 1, d: 20 }
+];
+
+// 24 节气各一句温柔物语（季节母题，轻叙事、不迷信、不预示吉凶）
+const SEASON_LINES = [
+  '东风解冻，万物始生。今日宜把心愿轻轻种下。',
+  '好雨知时，润物无声。让心事被温柔浸软。',
+  '春雷乍动，蛰虫始醒。也唤醒心里那个念头。',
+  '昼夜均分，阴阳相半。找一找生活的平衡点。',
+  '气清景明，万物皆显。把挂念的人，想起一遍。',
+  '雨生百谷，润泽生长。今天的努力，会被记得。',
+  '万物并秀，生机盎然。把节奏提一提，也别忘了呼吸。',
+  '小得盈满，未及全盛。刚刚好，也是一种丰盈。',
+  '有芒可种，忙而不乱。一事一件，从容落子。',
+  '日长之至，阳气极盛。白昼最长，也留一点静。',
+  '暑气初盛，心静自然。一杯凉茶，半页闲书。',
+  '炎热至极，宜养神明。正午的烈，留给树荫。',
+  '凉风至，暑气渐收。把夏天的事，轻轻收尾。',
+  '暑气止，秋意初生。渐渐慢下来的好。',
+  '露凝而白，清润心生。晨起的凉，是提醒。',
+  '昼夜再均，收获在望。数一数今年的果实。',
+  '露气寒冷，将凝为霜。添一件衣，也添一分暖。',
+  '霜叶尽染，秋之尾声。把美景，看进心里。',
+  '万物收藏，养精蓄锐。给身体，一个停顿。',
+  '雪未盛，寒未极。煮一壶暖，等一场白。',
+  '雪盛天寒，宜围炉。把故事，说给炉火听。',
+  '阴极阳生，一线长。最长的夜，最暖的灯。',
+  '寒气犹盛，静待春信。再熬一熬，就见光。',
+  '寒之极也，岁末将尽。把这一年，温柔合上。'
+];
+
+// 取当前节气（含跨年回绕：1 月初归属上一年大雪/冬至/小寒/大寒）
+function getSolarTerm(date) {
+  const y = date.getFullYear();
+  const cands = SOLAR_TERMS.map(t => ({ name: t.name, m: t.m, d: t.d, date: new Date(y, t.m - 1, t.d) }))
+    .concat(SOLAR_TERMS.map(t => ({ name: t.name, m: t.m, d: t.d, date: new Date(y - 1, t.m - 1, t.d) })));
+  let cur = null;
+  for (const c of cands) {
+    if (c.date <= date && (!cur || c.date > cur.date)) cur = c;
+  }
+  return cur || cands[0];
+}
+
+// 取下一个节气（用于进度条与回访钩子）
+function getNextSolarTerm(date) {
+  const y = date.getFullYear();
+  const cands = SOLAR_TERMS.map(t => ({ name: t.name, date: new Date(y, t.m - 1, t.d) }))
+    .concat(SOLAR_TERMS.map(t => ({ name: t.name, date: new Date(y + 1, t.m - 1, t.d) })));
+  for (const c of cands) if (c.date > date) return c;
+  return cands[0];
+}
+
+// 当日「章节」：节气 + 第 N 日 + 宿物语 + 季节物语 + 幸运签（序列化叙事单元）
+function getDailyChapter(now) {
+  now = now || new Date();
+  const story = getDailyStory(now);
+  const term = getSolarTerm(now);
+  const next = getNextSolarTerm(now);
+  const termDay = Math.max(1, Math.floor((now - term.date) / 86400000) + 1);
+  const termLen = Math.max(1, Math.round((next.date - term.date) / 86400000));
+  const nextTermIn = Math.max(0, Math.round((next.date - now) / 86400000));
+  const termIdx = SOLAR_TERMS.findIndex(t => t.name === term.name);
+  return {
+    date: dateKey(now),
+    term: term.name,
+    termDay: termDay,
+    termLen: termLen,
+    nextTerm: next.name,
+    nextTermIn: nextTermIn,
+    mansion: story.sushe,
+    mansionLine: story.body,
+    seasonLine: SEASON_LINES[termIdx] || '',
+    lucky: story.sign,
+    action: story.action,
+    host: story.host,
+    motif: story.motif
+  };
+}
+
+// 确定性「每日星礼」（盲盒揭晓内容）：节气 + 宿 + 幸运签 + 虚拟功德奖励
+function getSurprise(now) {
+  now = now || new Date();
+  const ch = getDailyChapter(now);
+  const reward = 3 + (dayIndex(now) % 7); // 3~9 功德，同日全员一致，纯娱乐激励
+  return Object.assign({}, ch, { reward: reward });
+}
+
+
 function pad(n) { return n < 10 ? '0' + n : '' + n; }
 function dateKey(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
 
@@ -89,6 +191,8 @@ function getDailyStory(now) {
 }
 
 module.exports = {
-  getDailyStory, dateKey, dayIndex,
-  SUSHE, HOSTS, SUSHE_LINE, SIGNS, ACTS, MOTIFS
+  getDailyStory, getDailyChapter, getSurprise,
+  getSolarTerm, getNextSolarTerm, dateKey, dayIndex,
+  SUSHE, HOSTS, SUSHE_LINE, SIGNS, ACTS, MOTIFS,
+  SOLAR_TERMS, SEASON_LINES
 };

@@ -16,6 +16,7 @@
     "pages/ziwei/ziwei",
     "pages/bazi/bazi",
     "pages/xingzuo/xingzuo",
+    "pages/daily/daily",
     "pages/search/search"
   ],
   "window": {
