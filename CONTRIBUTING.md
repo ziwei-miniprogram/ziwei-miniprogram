@@ -30,8 +30,11 @@ git push -u origin feat/my-feature
 
 ## 4. PR 与评审门禁
 - PR 必须关联意图说明（用 PR 模板）。
-- 至少 1 人评审通过；CI（lint + 小程序构建）必须通过。
-- `main` 分支保护：禁止直接 push、要求 PR、要求 status checks。
+- 至少 1 人评审通过；CI（见 §7）必须通过。
+- `main` 分支保护（GitHub → Settings → Branches）：
+  - ✅ Require a pull request before merging
+  - ✅ Require status checks to pass → 勾选 **validate**（即 CI 的「语法与安全校验」job）
+  - ❌ 取消 "Allow force pushes" / "Allow deletions"
 
 ## 5. 回滚与恢复
 - 已合并的问题用 `git revert <commit>`（生成反向提交），**不要** `reset --hard` 已推送历史。
@@ -44,3 +47,19 @@ git worktree add ../hotfix fix/urgent   # 并行修另一个问题时用 worktre
 git rebase -i HEAD~3                    # 合并/改写最近 3 个提交
 git switch -c feat/x origin/main        # 新建特性分支
 ```
+
+## 7. CI（持续集成）
+
+配置文件：`.github/workflows/ci.yml`，在 **push 到 `main`** 与 **PR 到 `main`** 时自动运行，单 job `validate`，步骤：
+
+1. **JS 语法校验** —— 对所有已跟踪 `.js` 跑 `node --check`（含 `pages/`、`components/`、`utils/`、`carousel/`、`cloudfunctions/`）。
+2. **JSON 合法性校验** —— 所有 `.json` 配置 `JSON.parse` 校验（页面/组件配置、`project.config.json`、`sitemap.json`、`carousel/*.json`）。
+3. **Python 编译校验** —— `carousel/*.py` 跑 `python3 -m py_compile`。
+4. **密钥扫描** —— 对源码扩展名（`.js/.json/.wxml/.wxss/.py`）正则扫描疑似硬编码密钥（`api_key`/`secret`/`token`/`password` 且值为 ≥12 字符引号串），命中即失败。
+- 校验范围基于 `git ls-files`（已跟踪文件），不碰 `.gitignore` 忽略项。
+- 任一环节失败，PR 的 status check **validate** 即标红，阻断合并。
+- 本地预演（等价 CI 逻辑）：
+  ```bash
+  node -e 'const cp=require("child_process");const out=cp.execSync("git ls-files -- '*.js' '*.json'").toString();for(const f of out.trim().split("\n")){require("fs").existsSync(f)&&cp.spawnSync("node",["--check",f])}'
+  ```
+
