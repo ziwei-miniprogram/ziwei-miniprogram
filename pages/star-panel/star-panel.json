@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "heart-lamp": "/components/heart-lamp/heart-lamp",
+    "loop-chip": "/components/loop-chip/loop-chip"
+  },
+  "navigationBarTitleText": "星盘 · 命理合集"
+}

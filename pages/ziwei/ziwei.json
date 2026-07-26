@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "heart-lamp": "/components/heart-lamp/heart-lamp"
-  },
-  "navigationBarTitleText": "紫微斗数"
-}

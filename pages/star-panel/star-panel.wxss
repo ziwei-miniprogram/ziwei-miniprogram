@@ -1,0 +1,23 @@
+/* 星盘页样式：复用全局 .page/.container/.card/.btn/.btn-ghost/.disclaimer/.seg/.d-form/.fi
+   以下为三命理模式专属类（原 ziwei/bazi/xingzuo 页合并而来，集中到本页避免删旧页后样式丢失） */
+.hd { padding: 8rpx 4rpx 18rpx; }
+.h-t { font-size: 44rpx; font-weight: 700; color: var(--fg); }
+.h-s { font-size: 24rpx; color: var(--fg-2); margin-top: 6rpx; }
+
+.star-hero { text-align: center; padding: 12rpx 0 20rpx; }
+.star-hero .sh-t { font-size: 60rpx; font-weight: 700; color: var(--gold-deep); }
+.star-hero .sh-s { font-size: 24rpx; color: var(--fg-2); margin-top: 8rpx; }
+
+.z-desc { font-size: 27rpx; color: var(--fg-3); line-height: 1.8; margin-top: 14rpx; }
+
+.bazi-grid { display: flex; gap: 14rpx; margin: 8rpx 0 16rpx; }
+.bazi-col { flex: 1; background: var(--bg-elev); border: 1rpx solid var(--border); border-radius: 16rpx; padding: 20rpx 0; text-align: center; }
+.bazi-col .bc-t { font-size: 22rpx; color: var(--fg-2); }
+.bazi-col .bc-g { font-size: 36rpx; font-weight: 700; color: var(--gold-deep); margin-top: 8rpx; }
+
+.wx-row { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 6rpx; }
+.wx-row .w { font-size: 24rpx; color: var(--fg-3); background: var(--bg-elev); border: 1rpx solid var(--border); border-radius: 999rpx; padding: 8rpx 18rpx; }
+
+.xz-rate { display: flex; align-items: center; justify-content: space-between; padding: 16rpx 0; border-bottom: 1rpx solid var(--border); font-size: 27rpx; color: var(--fg-3); }
+.xz-rate .stars { color: var(--gold); letter-spacing: 4rpx; }
+.xz-line { font-size: 27rpx; color: var(--fg-3); line-height: 1.8; margin-top: 18rpx; }

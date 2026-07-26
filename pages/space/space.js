@@ -12,9 +12,9 @@ const PINNED = [
 // 其余按心智分 3 簇（2 跳：簇可见 → 进入）
 const CLUSTERS = [
   { name: '识星', items: [
-    { key: 'ziwei', name: '紫微斗数', desc: '命宫主星', url: '/pages/ziwei/ziwei' },
-    { key: 'bazi', name: '八字命理', desc: '五行排盘', url: '/pages/bazi/bazi' },
-    { key: 'xingzuo', name: '星座测试', desc: '今日运势', url: '/pages/xingzuo/xingzuo' }
+    { key: 'ziwei', name: '紫微斗数', desc: '命宫主星', url: '/pages/star-panel/star-panel?mode=ziwei' },
+    { key: 'bazi', name: '八字命理', desc: '五行排盘', url: '/pages/star-panel/star-panel?mode=bazi' },
+    { key: 'xingzuo', name: '星座测试', desc: '今日运势', url: '/pages/star-panel/star-panel?mode=xingzuo' }
   ] },
   { name: '安善', items: [
     { key: 'healing', name: '疗愈', desc: '呼吸与冥想', url: '/pages/healing/healing' },

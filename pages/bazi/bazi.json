@@ -1,6 +1,0 @@
-{
-  "usingComponents": {
-    "heart-lamp": "/components/heart-lamp/heart-lamp"
-  },
-  "navigationBarTitleText": "八字命理"
-}

@@ -1,0 +1,91 @@
+<view class="page {{theme}} container">
+  <view class="hd">
+    <view class="h-t serif">星盘</view>
+    <view class="h-s">识己 · 星象命理合集（传统文化娱乐参考）</view>
+  </view>
+
+  <!-- 内部 tab：三命理模式合一（解 B3 孤儿页合并） -->
+  <view class="seg">
+    <view class="s {{mode === item.key ? 'on' : ''}}" wx:for="{{modes}}" wx:key="key" data-mode="{{item.key}}" bindtap="switchMode">{{item.name}}</view>
+  </view>
+
+  <!-- 紫微斗数 -->
+  <block wx:if="{{mode === 'ziwei'}}">
+    <view class="card">
+      <view class="d-form">
+        <view class="fld"><text class="lab">出生年份</text><input class="fi" type="number" placeholder="如 1995" value="{{y}}" bindinput="onY" /></view>
+        <view class="fld"><text class="lab">出生月份</text><input class="fi" type="number" placeholder="1 - 12" value="{{m}}" bindinput="onM" /></view>
+        <view class="fld"><text class="lab">出生日</text><input class="fi" type="number" placeholder="1 - 31" value="{{d}}" bindinput="onD" /></view>
+        <view class="btn" bindtap="run">排盘 · 看我的命宫主星</view>
+      </view>
+    </view>
+    <block wx:if="{{ziwei}}">
+      <view class="card">
+        <view class="star-hero">
+          <view class="sh-t serif">{{ziwei.star}}</view>
+          <view class="sh-s">命宫主星</view>
+        </view>
+        <view class="z-desc">{{ziwei.line}}</view>
+        <view class="z-desc text-gold">本命宿「{{ziwei.sushe}}」微微发亮，宜静心观想</view>
+        <view class="btn-ghost" bindtap="goChart">去星图看二十八宿 ›</view>
+      </view>
+    </block>
+    <view class="disclaimer">紫微斗数内容由简化模型生成，为传统文化娱乐参考，非真实命理推算，不预示吉凶、不构成专业建议。</view>
+  </block>
+
+  <!-- 八字命理 -->
+  <block wx:if="{{mode === 'bazi'}}">
+    <view class="card">
+      <view class="d-form">
+        <view class="fld"><text class="lab">出生年份</text><input class="fi" type="number" placeholder="如 1995" value="{{y}}" bindinput="onY" /></view>
+        <view class="fld"><text class="lab">出生月份</text><input class="fi" type="number" placeholder="1 - 12" value="{{m}}" bindinput="onM" /></view>
+        <view class="fld"><text class="lab">出生日</text><input class="fi" type="number" placeholder="1 - 31" value="{{d}}" bindinput="onD" /></view>
+        <view class="fld"><text class="lab">出生时辰</text><picker class="fi" mode="selector" range="{{hours}}" value="{{hIndex}}" bindchange="onH"><view class="fi-txt">{{hours[hIndex]}}</view></picker></view>
+        <view class="btn" bindtap="run">排四柱 · 看我的五行</view>
+      </view>
+    </view>
+    <block wx:if="{{bazi}}">
+      <view class="card">
+        <view class="bazi-grid">
+          <view class="bazi-col"><view class="bc-t">年柱</view><view class="bc-g">{{bazi.yg}}</view></view>
+          <view class="bazi-col"><view class="bc-t">月柱</view><view class="bc-g">{{bazi.mg}}</view></view>
+          <view class="bazi-col"><view class="bc-t">日柱</view><view class="bc-g">{{bazi.dg}}</view></view>
+          <view class="bazi-col"><view class="bc-t">时柱</view><view class="bc-g">{{bazi.hg}}</view></view>
+        </view>
+        <view class="wx-row">
+          <text class="w" wx:for="{{bazi.wx}}" wx:key="k">{{item.k}} {{item.v}}</text>
+        </view>
+        <view class="z-desc">{{bazi.line}}</view>
+      </view>
+    </block>
+    <view class="disclaimer">八字内容由简化规则生成，为传统文化娱乐参考，非真实历法推算，不预示吉凶、不构成专业建议。</view>
+  </block>
+
+  <!-- 星座测试 -->
+  <block wx:if="{{mode === 'xingzuo'}}">
+    <view class="card">
+      <view class="d-form">
+        <view class="fld"><text class="lab">你的星座</text><picker class="fi" mode="selector" range="{{signs}}" value="{{sIndex}}" bindchange="onS"><view class="fi-txt">{{signs[sIndex]}}</view></picker></view>
+        <view class="btn" bindtap="run">抽取今日运势</view>
+      </view>
+    </view>
+    <block wx:if="{{xz}}">
+      <view class="card">
+        <view class="star-hero">
+          <view class="sh-t serif">{{xz.sign}}座</view>
+          <view class="sh-s">今日星象 · 娱乐参考</view>
+        </view>
+        <view class="xz-rate"><text>综合运势</text><text class="stars">{{xz.starsAll}}</text></view>
+        <view class="xz-rate"><text>爱情</text><text class="stars">{{xz.starsLove}}</text></view>
+        <view class="xz-rate"><text>事业</text><text class="stars">{{xz.starsCareer}}</text></view>
+        <view class="xz-rate"><text>健康</text><text class="stars">{{xz.starsHealth}}</text></view>
+        <view class="xz-line">{{xz.line}}</view>
+      </view>
+    </block>
+    <view class="disclaimer">星座运势为娱乐化内容，由程序随机生成，不预示吉凶、不构成任何专业建议。</view>
+  </block>
+
+  <!-- 回灌闭环：看完命理顺手做一件，送回主循环（解 B3） -->
+  <loop-chip items="{{loopItems}}" title="识己之后，顺手安住此刻" />
+</view>
+<heart-lamp />
