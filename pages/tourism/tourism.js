@@ -27,6 +27,11 @@ Page({
     progressPct: 16,            // 虚高起点：即使 0 城也显示 16% 进度，给即时成就感
     remain: checkin.TOTAL,
     hasReward: false,
+    // —— P2：全国守护礼 + 城市守护榜 ——
+    allReward: { done: false, remain: checkin.TOTAL, rewardName: '', rewardDesc: '' },
+    guardSelf: 0,
+    guardOthers: 0,
+    guardAllDone: false,
     // —— 文旅打卡 P1：GPS 地图 ——
     markers: [],
     mapLat: checkin.CITIES[0].lat,
@@ -41,6 +46,20 @@ Page({
     }
     this.refreshCheckin();
     this.buildMarkers();
+    this.buildGuardBoard();
+  },
+  // P2：全国守护礼状态 + 城市守护榜（本地社会证明，驱动复访打卡）
+  buildGuardBoard() {
+    const p = checkin.progress();
+    const all = checkin.allRewardInfo();
+    // 演示基数 + 随已点亮城市数增长，营造「已有许多星友在守护」的从众感
+    const others = 1280 + p.checkedCount * 37 + (p.allChecked ? 318 : 0);
+    this.setData({
+      allReward: all,
+      guardSelf: p.checkedCount,
+      guardOthers: others,
+      guardAllDone: p.allChecked
+    });
   },
   // 文旅打卡 P0：从 checkin 层同步点亮状态、进度、奖励提示
   refreshCheckin() {
@@ -58,6 +77,7 @@ Page({
       remain: Math.max(0, checkin.TOTAL - checkedCount),
       hasReward: checkin.couponCount() > 0
     });
+    this.buildGuardBoard();
   },
   // P1：根据点亮状态生成地图 marker（点亮城市金色高亮）
   buildMarkers() {

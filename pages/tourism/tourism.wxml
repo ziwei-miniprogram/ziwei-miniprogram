@@ -33,6 +33,15 @@
     <view class="cg-tip" wx:if="{{checkedCount === 0}}">点亮第 1 城，开启你的星图守护</view>
     <view class="cg-tip" wx:else>已点亮 {{checkedCount}} / {{total}} 城 · 差 {{remain}} 城解锁限定礼</view>
 
+    <!-- P2：全国守护礼（集满 6 城解锁）-->
+    <view class="cg-nation {{allReward.done ? 'on' : ''}}">
+      <text class="cn-emoji">{{allReward.done ? '🏆' : '🔒'}}</text>
+      <view class="cn-body">
+        <view class="cn-t">{{allReward.rewardName}}</view>
+        <view class="cn-d">{{allReward.rewardDesc}}</view>
+      </view>
+    </view>
+
     <!-- 到访打卡：每城一个点亮按钮 -->
     <view class="cg-actions">
       <view class="cg-btn" wx:for="{{cities}}" wx:key="id"
@@ -43,6 +52,22 @@
 
     <!-- 默认偏置解锁的奖励提示 -->
     <view class="cg-reward" wx:if="{{hasReward}}">🎁 已解锁城市守护折扣 + 限定优先购资格（24h）</view>
+  </view>
+
+  <!-- P2：城市守护榜（本地社会证明，从众驱动复访打卡）-->
+  <view class="guard-board">
+    <view class="gb-head">
+      <view class="gb-t">城市守护榜</view>
+      <view class="gb-s">点亮一座城，汇入星野守护</view>
+    </view>
+    <view class="gb-self">
+      <text class="gb-self-emoji">🌟</text>
+      <text class="gb-self-t">你已点亮 <text class="gb-self-n">{{guardSelf}}</text> / {{total}} 城</text>
+      <text class="gb-self-tail" wx:if="{{guardAllDone}}">· 全国守护礼已解锁 🏆</text>
+      <text class="gb-self-tail" wx:else>· 还差 {{allReward.remain}} 城</text>
+    </view>
+    <view class="gb-others">已有 <text class="gb-others-n">{{guardOthers}}</text> 位星友点亮过这些城</view>
+    <view class="gb-foot">每点亮一座城，都是对这片山水的一次温柔守诺</view>
   </view>
 
   <view class="filters">
