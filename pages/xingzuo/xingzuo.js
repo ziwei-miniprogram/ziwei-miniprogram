@@ -6,6 +6,7 @@ function starStr(n) {
 }
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     theme: 'light',
     signs: XZ.map((s) => s + '座'),
@@ -13,9 +14,6 @@ Page({
     result: null
   },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
   },
   onS(e) { this.setData({ sIndex: Number(e.detail.value) }); },
   run() {

@@ -3,6 +3,7 @@ const merit = require('../../utils/merit.js');
 const whimsy = require('../../utils/whimsy.js');
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     tab: 'overview',
     merit: 0,
@@ -37,8 +38,6 @@ Page({
 
   onShow() {
     const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
     const groups = meritGroups.map(g => ({ ...g }));
     const groupNotDone = groups.some(g => !g.myJoined);
     const groupProof = groups.reduce((s, g) => s + g.checked, 0);

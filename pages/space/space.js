@@ -18,12 +18,12 @@ function withIcons(list, theme) {
 }
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: { tools: [], theme: 'light' },
   onShow() {
     const app = getApp();
-    app.applyTheme();
     const theme = app.getTheme();
-    this.setData({ theme, tools: withIcons(TOOLS, theme) });
+    this.setData({ tools: withIcons(TOOLS, theme) });
   },
   go(e) {
     wx.navigateTo({ url: e.currentTarget.dataset.url });

@@ -2,6 +2,7 @@
 const { HOURS, computeBazi } = require('../../utils/divine.js');
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     theme: 'light',
     y: '',
@@ -12,9 +13,6 @@ Page({
     result: null
   },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
   },
   onY(e) { this.setData({ y: e.detail.value }); },
   onM(e) { this.setData({ m: e.detail.value }); },

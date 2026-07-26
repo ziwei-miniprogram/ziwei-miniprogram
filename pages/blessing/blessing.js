@@ -8,6 +8,7 @@ const musics = ['轻柔钢琴', '自然白噪音', '古风笛声', '无'];
 const whimsy = require('../../utils/whimsy.js');
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     templates,
     musics,
@@ -21,9 +22,6 @@ Page({
     theme: 'light'
   },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
   },
   onReady() {
     this.initCanvas();

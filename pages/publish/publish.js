@@ -13,6 +13,7 @@ const BGS = [
 ];
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     imgs: ['🌌', '🏔'],
     topics: ['星图旅行', '苍山', '心灵之旅', '疗愈', '寄愿', '共修'],
@@ -27,9 +28,6 @@ Page({
     theme: 'light'
   },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
   },
   toggleTopic(e) {
     const t = e.currentTarget.dataset.t;

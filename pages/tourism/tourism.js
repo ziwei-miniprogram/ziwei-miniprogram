@@ -11,6 +11,7 @@ const deco = [
 const tours2 = tours.map((t, i) => ({ ...t, g: deco[i % 3].g, tag: deco[i % 3].tag }));
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     tours: tours2,
     feature: tours2[0],
@@ -38,9 +39,6 @@ Page({
     mapLng: checkin.CITIES[0].lng
   },
   onShow() {
-    const app = getApp();
-    if (app && app.applyTheme) app.applyTheme();
-    this.setData({ theme: app ? app.getTheme() : 'light' });
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1 });
     }

@@ -3,6 +3,7 @@ const { feed, followingFeed, videos, following } = require('../../utils/mock.js'
 const social = require('../../utils/social.js');
 const whimsy = require('../../utils/whimsy.js');
 const daily = require('../../utils/daily-content.js');
+const { check, advice } = require('../../utils/censor.js');
 
 // 生成某月日历（周一起始，6 行 42 格，含上下月补位与今日高亮 + 农历小字）
 function buildCalendar(year, month, today) {
@@ -79,6 +80,7 @@ function toCard(it) {
 }
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     today: 23,
     tabs: ['关注', '发现', '视频'],
@@ -185,8 +187,6 @@ Page({
 
   onShow() {
     const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
     const m = app.globalData.merit;
     const cost = this.data.unlockCost;
     const pct = Math.min(100, Math.round(m / cost * 100));
@@ -365,6 +365,16 @@ Page({
   quickPost() {
     const text = (this.data.quickText || '').trim();
     if (!text) { wx.showToast({ title: '写点什么再记一笔~', icon: 'none' }); return; }
+    // 内容安全预检（本地演示版；生产应接微信内容安全 API）
+    const c = check(text);
+    if (!c.ok) {
+      wx.showModal({
+        title: '内容需调整',
+        content: '检测到以下内容需修改，保持传统文化与友善分享：\n\n' + advice(c.hits),
+        showCancel: false
+      });
+      return;
+    }
     const emojis = ['🌌', '🔮', '🍃', '🏮', '🌙', '🌿', '🪔', '⭐'];
     const bgs = [
       'linear-gradient(140deg,#2b2b4e,#4a4a7a)',

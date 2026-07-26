@@ -1,6 +1,7 @@
 const { healings } = require('../../utils/mock.js');
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     streak: 3,
     log: '',
@@ -10,9 +11,6 @@ Page({
     theme: 'light'
   },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }

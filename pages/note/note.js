@@ -19,6 +19,7 @@ function loadMine(id) {
 }
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     note: null,
     liked: false,
@@ -29,9 +30,6 @@ Page({
     theme: 'light'
   },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
   },
   onLoad(opts) {
     const id = Number(opts.id) || 101;

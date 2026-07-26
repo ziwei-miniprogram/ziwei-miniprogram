@@ -14,6 +14,7 @@ function buildSaleMap() {
 }
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     cats: ['全部', '水晶', '香薰', '书籍', '线路', '文创', '课程'],
     cat: '全部',
@@ -41,9 +42,6 @@ Page({
     this.buildList();
   },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
     this.refreshShared();
     this.refreshCheckin();
   },

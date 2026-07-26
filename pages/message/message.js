@@ -2,6 +2,7 @@ const { messages } = require('../../utils/mock.js');
 const social = require('../../utils/social.js');
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     seg: 'chat',
     sessions: [],
@@ -15,8 +16,6 @@ Page({
   onShow() {
     const app = getApp();
     if (app && typeof app.markRead === 'function') app.markRead();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
     // 优先展示真实的「活」功德动态；无记录时回退演示数据
     const log = social.getLog();
     this.setData({

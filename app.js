@@ -10,7 +10,6 @@ App({
   globalData: {
     userInfo: null,
     // 取消内容付费后，会员/VIP 概念移除，改为功德系统
-    palaza: null,
     merit: 0,
     streak: 0,            // 连续签到天数
     lastCheckin: '',      // 上次签到日期 YYYY-MM-DD

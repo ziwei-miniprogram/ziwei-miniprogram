@@ -51,6 +51,7 @@ function buildBadges(app) {
 }
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     merit: 0,
     level: { name: '善信' },
@@ -90,14 +91,12 @@ Page({
       statCollect: c.collects,
       statLike: c.likes,
       myWish: wx.getStorageSync('my_wish') || '',
-      theme: app.getTheme(),
       unread: app.globalData.unread || 0,
       badges,
       badgeCount: badges.filter(b => b.unlocked).length,
       starSign,
       starSignedToday
     });
-    app.applyTheme();
     if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ selected: 3 });
   },
 
@@ -106,8 +105,7 @@ Page({
     const app = getApp();
     const next = app.getTheme() === 'dark' ? 'light' : 'dark';
     app.setTheme(next);
-    this.setData({ theme: next });
-    app.applyTheme();
+    this.syncTheme();
     const tb = this.getTabBar && this.getTabBar();
     if (tb) tb.setData({ theme: next });
     wx.showToast({ title: next === 'dark' ? '夜灯已亮 🌙' : '回到暖纸 ☀', icon: 'none' });

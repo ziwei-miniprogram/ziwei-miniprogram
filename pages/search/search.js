@@ -9,11 +9,9 @@ function getPublished() {
 }
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: { kw: '', results: [], theme: 'light' },
   onShow() {
-    const app = getApp();
-    app.applyTheme();
-    this.setData({ theme: app.getTheme() });
   },
   onInput(e) {
     this.setData({ kw: e.detail.value });

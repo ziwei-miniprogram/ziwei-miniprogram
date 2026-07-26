@@ -3,6 +3,7 @@
 const daily = require('../../utils/daily-content.js');
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     theme: 'light',
     chapter: null,
@@ -11,8 +12,6 @@ Page({
   },
 
   onShow() {
-    const app = getApp();
-    app.applyTheme();
     const now = new Date();
     const ch = daily.getDailyChapter(now);
     // 往日星轨：前 6 天（确定性，构成连续可读的时间线）
@@ -30,7 +29,7 @@ Page({
       });
     }
     const progress = ch.termLen > 0 ? Math.min(100, Math.round(ch.termDay / ch.termLen * 100)) : 0;
-    this.setData({ theme: app.getTheme(), chapter: ch, past: past, progress: progress });
+    this.setData({ chapter: ch, past: past, progress: progress });
   },
 
   goIndex() { wx.switchTab({ url: '/pages/index/index' }); },

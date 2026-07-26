@@ -17,6 +17,7 @@ const ROUTES = [
 ];
 
 Page({
+  behaviors: [require('../../behaviors/themeable.js')],
   data: {
     palaza,
     active: 0,
@@ -42,13 +43,11 @@ Page({
     const m = app.globalData.merit;
     const pct = Math.min(100, Math.round(m / this.data.cost * 100));
     const starLit = Math.max(0, Math.min(28, Math.floor(m / 2000 * 28)));
-    app.applyTheme();
     this.setData({
       merit: m,
       progress: pct,
       toUnlock: Math.max(0, this.data.cost - m),
       near: pct >= 70,
-      theme: app.getTheme(),
       starLit,
       starGlow: app.globalData.streak > 0
     });
