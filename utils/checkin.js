@@ -1,23 +1,26 @@
-// utils/checkin.js — 文旅打卡数据层（P0 MVP，本地存储，零后端）
+// utils/checkin.js — 文旅打卡数据层（P0 + P1，本地存储，零后端）
 // 行为助推原理：
 //   · 虚高起点：页面层显示「已点亮 1/6 城」（见 tourism 页），给即时成就感
 //   · 目标梯度：差 K 城解锁限定礼，制造前进动力
 //   · 默认偏置：折扣券打卡即自动到账，无需额外「领取」动作
 //   · 损失框架：优先购资格仅 24h，制造「不抢就失效」的轻度紧迫
+// P1 新增：GPS 自动打卡——到访真实坐标即点亮最近城市（距离阈值内），免去手动点击负担
 // 合规：折扣仅作用于「功德」兑换（零金钱交易）；文案用守护/陪伴，禁改运/逆天/必应。
 
 const KEY = 'checkin_city_state';
 const PRIORITY_MS = 24 * 3600 * 1000;   // 优先购资格有效期
 const COUPON_MS = 7 * 24 * 3600 * 1000; // 城市折扣券有效期
+const NEAR_RADIUS = 1500;               // P1：到访判定半径（米），距离内视为真实到访
 
 // 文旅城市（与 mock.cityLights / tours 调性呼应；接后端后可由接口替换）
+// lat/lng 为城市中心近似坐标，用于 P1 GPS 自动打卡的距离判定
 const CITIES = [
-  { id: 'hangzhou', name: '杭州', star: '🌊', desc: '西湖星垂，断桥灯暖' },
-  { id: 'chengdu', name: '成都', star: '🍃', desc: '锦官城静，茶馆灯长' },
-  { id: 'dali', name: '大理', star: '🏔️', desc: '苍山雪映，洱海星移' },
-  { id: 'dunhuang', name: '敦煌', star: '🏜️', desc: '大漠星河，飞天灯列' },
-  { id: 'putuoshan', name: '普陀山', star: '🏮', desc: '莲岛潮音，寄愿灯明' },
-  { id: 'suzhou', name: '苏州', star: '🪷', desc: '园林灯影，水巷星移' }
+  { id: 'hangzhou', name: '杭州', star: '🌊', desc: '西湖星垂，断桥灯暖', lat: 30.2741, lng: 120.1551 },
+  { id: 'chengdu', name: '成都', star: '🍃', desc: '锦官城静，茶馆灯长', lat: 30.5728, lng: 106.5516 },
+  { id: 'dali', name: '大理', star: '🏔️', desc: '苍山雪映，洱海星移', lat: 25.6065, lng: 100.2676 },
+  { id: 'dunhuang', name: '敦煌', star: '🏜️', desc: '大漠星河，飞天灯列', lat: 40.1421, lng: 94.6618 },
+  { id: 'putuoshan', name: '普陀山', star: '🏮', desc: '莲岛潮音，寄愿灯明', lat: 30.0108, lng: 122.3947 },
+  { id: 'suzhou', name: '苏州', star: '🪷', desc: '园林灯影，水巷星移', lat: 31.2989, lng: 120.5853 }
 ];
 const TOTAL = CITIES.length;
 
@@ -132,9 +135,49 @@ function priorityRemainText() {
   return `${h}:${pad(m)}:${pad(s)}`;
 }
 
+// ============================================================
+// P1：GPS 自动打卡
+// ============================================================
+
+// haversine 距离（米），用于判定是否真实到访某城
+function distance(lat1, lng1, lat2, lng2) {
+  const R = 6371000;
+  const toRad = (d) => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+    Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+// 返回坐标 1.5km 内最近的城市（命中则返回 {city, meters}，否则 null）
+function nearbyCity(lat, lng) {
+  if (typeof lat !== 'number' || typeof lng !== 'number') return null;
+  let best = null;
+  for (const c of CITIES) {
+    const m = distance(lat, lng, c.lat, c.lng);
+    if (m <= NEAR_RADIUS && (!best || m < best.meters)) {
+      best = { city: c, meters: m };
+    }
+  }
+  return best;
+}
+
+// 自动打卡：传入当前坐标，命中阈值内城市且未打卡则点亮；返回结果对象
+//   { status: 'checked'|'already'|'none', city?, meters?, result? }
+function autoCheckInByLocation(lat, lng) {
+  const hit = nearbyCity(lat, lng);
+  if (!hit) return { status: 'none' };
+  if (isChecked(hit.city.id)) return { status: 'already', city: hit.city, meters: hit.meters };
+  const result = checkIn(hit.city.id);
+  return { status: 'checked', city: hit.city, meters: hit.meters, result };
+}
+
 module.exports = {
-  CITIES, TOTAL, PRIORITY_MS,
+  CITIES, TOTAL, PRIORITY_MS, NEAR_RADIUS,
   isChecked, checkIn, progress, activeCoupons, couponCount,
   hasPriority, priorityRemainMs, priorityRemainText, hasCoupon,
-  discountCost, redeemCoupon, canPriorityBuy
+  discountCost, redeemCoupon, canPriorityBuy,
+  distance, nearbyCity, autoCheckInByLocation
 };
