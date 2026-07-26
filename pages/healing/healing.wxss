@@ -1,0 +1,11 @@
+.heal { display: flex; align-items: center; }
+.heal-cover {
+  width: 96rpx; height: 96rpx; border-radius: 16rpx;
+  background: var(--bg-elev); font-size: 48rpx;
+  display: flex; align-items: center; justify-content: center; margin-right: 20rpx;
+}
+.play {
+  width: 64rpx; height: 64rpx; border-radius: 50%;
+  background: linear-gradient(135deg,#e0c489,var(--gold)); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 28rpx;
+}

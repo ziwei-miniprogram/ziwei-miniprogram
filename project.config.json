@@ -1,0 +1,17 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "ziwei-wenlv",
+  "description": "拾光驿·星野漫游小程序 MVP 骨架",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "latest",
+  "condition": {}
+}

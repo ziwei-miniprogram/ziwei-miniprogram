@@ -1,0 +1,49 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="page {{theme}}">
+  <view class="seg">
+    <view class="s {{seg==='chat'?'on':''}}" data-s="chat" bindtap="switchSeg">私信</view>
+    <view class="s {{seg==='notice'?'on':''}}" data-s="notice" bindtap="switchSeg">通知</view>
+    <view class="s {{seg==='merit'?'on':''}}" data-s="merit" bindtap="switchSeg">功德动态</view>
+  </view>
+
+  <view wx:if="{{seg==='chat'}}">
+    <view class="chat" wx:for="{{sessions}}" wx:key="id" bindtap="openChat">
+      <view class="av">{{item.avatar}}</view>
+      <view class="c-body">
+        <view class="c-top"><text class="c-name">{{item.name}}</text><text class="c-time">{{item.time}}</text></view>
+        <view class="c-last">{{item.last}}</view>
+      </view>
+      <view class="unread" wx:if="{{item.unread}}">{{item.unread}}</view>
+    </view>
+  </view>
+
+  <view wx:if="{{seg==='notice'}}">
+    <view class="notice" wx:for="{{notices}}" wx:key="id">
+      <view class="n-icon">{{item.type==='like'?'♡':item.type==='collect'?'⭐':'👤'}}</view>
+      <view class="n-body">
+        <view class="n-text">{{item.text}}</view>
+        <view class="n-time">{{item.time}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{seg==='merit'}}">
+    <!-- P1-5 行为序列消息：上下文「星野小提示」 -->
+    <view class="tips" wx:if="{{tips.length}}">
+      <view class="tip-h">✦ 星野小提示</view>
+      <view class="tip" wx:for="{{tips}}" wx:key="text" data-route="{{item.route}}" bindtap="openMeritItem">
+        <text class="tip-ic">{{item.icon}}</text>
+        <text class="tip-t">{{item.text}}</text>
+        <text class="tip-arrow">›</text>
+      </view>
+    </view>
+    <view class="m-head">🪔 你的善意轨迹</view>
+    <view class="merit-item {{item.route ? 'link' : ''}}" wx:for="{{meritFeed}}" wx:key="id" data-route="{{item.route}}" bindtap="openMeritItem">
+      <view class="m-dot"></view>
+      <view class="m-text">{{item.text}}</view>
+      <view class="m-time">{{item.time}}</view>
+      <view class="m-arrow" wx:if="{{item.route}}">›</view>
+    </view>
+  </view>
+</view>
+<template is="whimsyFx"/>

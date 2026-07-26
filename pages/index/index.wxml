@@ -1,0 +1,250 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="page {{theme}}">
+  <!-- 入场「开窗」动画：两扇窗扉向两侧滑开，星光透入（小程序进入时播放一次） -->
+  <view class="win-open" wx:if="{{winOpen}}" aria-hidden="true">
+    <view class="wo-pane wo-left"></view>
+    <view class="wo-pane wo-right"></view>
+    <view class="wo-glow"></view>
+    <view class="wo-stars">
+      <view class="wo-star" wx:for="{{winStars}}" wx:key="id" style="left:{{item.x}};top:{{item.y}};animation-delay:{{item.d}}s;"></view>
+    </view>
+    <view class="wo-center">
+      <view class="wo-mark">✦</view>
+      <view class="wo-name serif">拾光驿 · 星野漫游</view>
+    </view>
+  </view>
+
+  <!-- 搜索胶囊 -->
+  <view class="search" bindtap="goSearch">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</view>
+
+  <!-- 星夜祝福 Hero（含天气 + 万年历 + 宜忌）-->
+  <view class="hero {{heroLit?'lit':''}}">
+    <view class="stars" bindtap="onHeroTap"></view>
+    <!-- Hero 星爆：首屏一次性放射星爆（社媒新用户浪漫感） -->
+    <view class="hero-burst" wx:if="{{heroBurst}}">
+      <view class="hb" wx:for="{{heroBurst}}" wx:key="id" style="--dx:{{item.dx}}rpx;--dy:{{item.dy}}rpx;"></view>
+    </view>
+    <view class="hero-top">
+      <view class="hero-bless">
+        <view class="b-line">{{heroBlessing[0]}}</view>
+        <view class="b-line">{{heroBlessing[1]}}</view>
+      </view>
+      <view class="weather" bindtap="refreshWeather">
+        <view class="w-icon">{{weather.icon}}</view>
+        <view class="w-city">{{weather.city}}</view>
+        <view class="w-temp">{{weather.temp}}</view>
+        <view class="w-cond">{{weather.cond}}</view>
+      </view>
+    </view>
+    <view class="hero-mid">
+      <view class="lunar">
+        <text class="l-solar">{{solar}}</text>
+        <text class="l-lunar">{{lunar}}</text>
+      </view>
+      <view class="tip">✦ {{starTip}}</view>
+    </view>
+    <view class="mini-cal">
+      <view class="mc-head">{{cal.month}}</view>
+      <view class="mc-week">
+        <text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text><text>日</text>
+      </view>
+      <view class="mc-grid">
+        <view class="mc-d {{d.dim?'dim':''}} {{d.today?'today':''}}" wx:for="{{cal.days}}" wx:key="index" data-d="{{d.d}}" bindtap="pickDay">
+          <text class="mc-num">{{d.d}}</text>
+          <text class="mc-lu">{{d.lunarShort}}</text>
+        </view>
+      </view>
+      <view class="mc-yiji" wx:if="{{selYiJi.date}}">
+        <view class="yj-head">{{selYiJi.date}} · {{selYiJi.lunar}} <text wx:if="{{selYiJi.term}}" class="yj-term">{{selYiJi.term}}</text> · {{selYiJi.jianChu}}</view>
+        <view class="yj-row"><text class="yj-yi">宜</text>{{selYiJi.yi}}</view>
+        <view class="yj-row"><text class="yj-ji">忌</text>{{selYiJi.ji}}</view>
+      </view>
+    </view>
+    <view class="lamp" bindtap="lightLamp">🪔 点亮今日心灯 · +1 功德</view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick">
+    <view class="q" bindtap="goSpace"><view class="q-i">✨</view><view>星野</view></view>
+    <view class="q" bindtap="goTourism"><view class="q-i">🏯</view><view>文旅</view></view>
+    <view class="q" bindtap="goWish"><view class="q-i">🏮</view><view>寄愿</view></view>
+    <view class="q" bindtap="goMerit"><view class="q-i">🪔</view><view>功德</view></view>
+  </view>
+
+  <!-- 距深度解读进度 + 社会证明（P0-2 / P0-4） -->
+  <view class="unlock-chip" bindtap="goChart">
+    <view class="uc-l">✦ {{unlockHint}}</view>
+    <view class="uc-bar"><view class="uc-fill" style="width:{{unlockPct}}%"></view></view>
+    <view class="uc-r">{{unlockPct}}%</view>
+  </view>
+  <view class="proof-bar">🔥 已有 {{socialProof}} 位旅人正在星野日行一善 · 已为你关注 3 位星野引路人</view>
+
+  <!-- 顶 Tab（吸顶） -->
+  <view class="tabs-wrap">
+    <view class="tabs">
+      <view class="t {{tab===0?'on':''}}" data-i="0" bindtap="switchTab">关注</view>
+      <view class="t {{tab===1?'on':''}}" data-i="1" bindtap="switchTab">发现</view>
+      <view class="t {{tab===2?'on':''}}" data-i="2" bindtap="switchTab">视频</view>
+    </view>
+  </view>
+
+  <!-- 首屏骨架屏 -->
+  <view wx:if="{{loading}}" class="sk">
+    <view class="sk-row">
+      <view class="sk-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+        <view class="sk-img"></view><view class="sk-l1"></view><view class="sk-l2"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 关注分屏 -->
+  <block wx:if="{{tab===0}}">
+    <scroll-view wx:if="{{following.length>0}}" scroll-x class="follow-bar">
+      <view class="fb" wx:for="{{following}}" wx:key="id">
+        <view class="fb-av">{{item.avatar}}</view>
+        <text class="fb-nm">{{item.name}}</text>
+        <text class="fb-btn {{item.followed?'on':''}}" catchtap="onToggleFollow" data-name="{{item.name}}">{{item.followed?'已关注':'关注'}}</text>
+      </view>
+    </scroll-view>
+    <view class="feed">
+      <view class="col">
+        <view class="card" wx:for="{{fLeft}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="body">
+            <view class="tt">{{item.title}}</view>
+            <view class="meta">
+              <view class="av">{{item.author[0]}}</view><text class="nm">{{item.author}}</text>
+              <view class="acts">
+                <text class="act {{item.collected?'on':''}}" catchtap="onCollect" data-ref="{{item.noteId}}">★ {{item.collectNum}}</text>
+                <text class="act {{item.liked?'on':''}}" catchtap="onLike" data-ref="{{item.noteId}}">♥ {{item.likeNum}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="col">
+        <view class="card" wx:for="{{fRight}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="body">
+            <view class="tt">{{item.title}}</view>
+            <view class="meta">
+              <view class="av">{{item.author[0]}}</view><text class="nm">{{item.author}}</text>
+              <view class="acts">
+                <text class="act {{item.collected?'on':''}}" catchtap="onCollect" data-ref="{{item.noteId}}">★ {{item.collectNum}}</text>
+                <text class="act {{item.liked?'on':''}}" catchtap="onLike" data-ref="{{item.noteId}}">♥ {{item.likeNum}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{following.length===0}}" class="empty">
+      <view class="em-emoji">🪷</view>
+      <view class="em-tt">还没有关注的人</view>
+      <view class="em-sub">{{emptyFollow}}</view>
+    </view>
+  </block>
+
+  <!-- 发现分屏 -->
+  <block wx:elif="{{tab===1}}">
+    <!-- P1-6 快捷发布：随手记一笔 -->
+    <view class="quickpost">
+      <input class="qp-input" placeholder="随手记一笔，星野为你留痕…" value="{{quickText}}" bindinput="quickInput" confirm-type="发送" bindconfirm="quickPost"/>
+      <view class="qp-btn" bindtap="quickPost">记一笔 +8</view>
+    </view>
+    <view wx:if="{{recommend.length>0}}" class="rec">
+      <view class="rec-h">推荐关注 · 遇到同好就点一下 +1 功德</view>
+      <scroll-view scroll-x class="rec-bar">
+        <view class="rc" wx:for="{{recommend}}" wx:key="id">
+          <view class="rc-av">{{item.avatar}}</view>
+          <text class="rc-nm">{{item.name}}</text>
+          <text class="rc-btn" catchtap="onToggleFollow" data-name="{{item.name}}">关注</text>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="feed">
+      <view class="col">
+        <view class="card" wx:for="{{left}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="body">
+            <view class="tt">{{item.title}}</view>
+            <view class="meta">
+              <view class="av">{{item.author[0]}}</view><text class="nm">{{item.author}}</text>
+              <view class="acts">
+                <text class="act {{item.collected?'on':''}}" catchtap="onCollect" data-ref="{{item.noteId}}">★ {{item.collectNum}}</text>
+                <text class="act {{item.liked?'on':''}}" catchtap="onLike" data-ref="{{item.noteId}}">♥ {{item.likeNum}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="col">
+        <view class="card" wx:for="{{right}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="body">
+            <view class="tt">{{item.title}}</view>
+            <view class="meta">
+              <view class="av">{{item.author[0]}}</view><text class="nm">{{item.author}}</text>
+              <view class="acts">
+                <text class="act {{item.collected?'on':''}}" catchtap="onCollect" data-ref="{{item.noteId}}">★ {{item.collectNum}}</text>
+                <text class="act {{item.liked?'on':''}}" catchtap="onLike" data-ref="{{item.noteId}}">♥ {{item.likeNum}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 视频分屏 -->
+  <block wx:else>
+    <view class="vfeed">
+      <view class="vcard" wx:for="{{videos}}" wx:key="id" bindtap="openVideo">
+        <view class="v-cover" style="background:{{item.bg}}">
+          <text class="v-emoji">{{item.cover}}</text>
+          <view class="v-play">▶</view>
+          <view class="v-dur">{{item.dur}}</view>
+          <view class="v-topic">{{item.topic}}</view>
+        </view>
+        <view class="v-body">
+          <view class="v-tt">{{item.title}}</view>
+          <view class="v-meta">
+            <text class="v-auth">{{item.author}}</text>
+            <view class="acts">
+              <text class="act {{item.liked?'on':''}}" catchtap="onLike" data-ref="{{item.ref}}">♥ {{item.likeNum}}</text>
+              <text class="v-plays">▶ {{item.plays}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <view wx:if="{{showTop}}" class="to-top" bindtap="backTop">↑ 顶部</view>
+
+  <!-- 首次启动引导（仅首次） -->
+  <view class="guide" wx:if="{{showGuide}}">
+    <view class="guide-mask"></view>
+    <view class="guide-card">
+      <view class="g-emoji">✦</view>
+      <view class="g-title serif">欢迎来到拾光驿·星野漫游</view>
+      <view class="g-sub">五个空间，陪你抬头看星</view>
+      <view class="g-grid">
+        <view class="g-item"><view class="g-ic">🔭</view><view class="g-t">发现</view><view class="g-d">每日祝福 · 内容流</view></view>
+        <view class="g-item"><view class="g-ic">✦</view><view class="g-t">星野</view><view class="g-d">星图 · 疗愈 · 寄愿</view></view>
+        <view class="g-item"><view class="g-ic">🏯</view><view class="g-t">文旅</view><view class="g-d">星象旅行</view></view>
+        <view class="g-item"><view class="g-ic">✉</view><view class="g-t">消息</view><view class="g-d">动态 · 社交</view></view>
+        <view class="g-item"><view class="g-ic">👤</view><view class="g-t">我的</view><view class="g-d">功德 · 资产</view></view>
+      </view>
+      <view class="g-wish-t">立一个本月星愿（可选）</view>
+      <view class="g-wishes">
+        <view class="gw {{myWish===item.k?'on':''}}" wx:for="{{wishes}}" wx:key="k" data-k="{{item.k}}" bindtap="onWish">
+          <text class="gw-emoji">{{item.emoji}}</text><text class="gw-t">{{item.t}}</text>
+        </view>
+      </view>
+      <view class="g-btn" bindtap="finishGuide">开始今天的仪式 · 点亮心灯 +1 功德</view>
+      <view class="g-skip" bindtap="closeGuide">先逛逛</view>
+    </view>
+  </view>
+</view>
+<template is="whimsyFx"/>
+<view class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>

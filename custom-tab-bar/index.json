@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "heart-lamp": "/components/heart-lamp/heart-lamp"
+  }
+}

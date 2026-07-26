@@ -1,0 +1,43 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="container page {{theme}}">
+  <view class="card">
+    <view class="title">祝福视频制作</view>
+    <view class="subtitle">选模板 · 写祝福 · 配音乐 · 一键生成分享</view>
+  </view>
+
+  <view class="card">
+    <view class="subtitle">① 选择模板</view>
+    <view class="tpls">
+      <view wx:for="{{templates}}" wx:key="key"
+        class="tpl {{tpl === index ? 'on' : ''}}"
+        data-index="{{index}}" bindtap="pickTpl">
+        {{item.emoji}} {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="subtitle">② 祝福文案</view>
+    <textarea class="tx" value="{{text}}" bindinput="onText" maxlength="40" placeholder="写下你的祝福" />
+  </view>
+
+  <view class="card">
+    <view class="subtitle">③ 背景音乐</view>
+    <view class="tpls">
+      <view wx:for="{{musics}}" wx:key="*this"
+        class="tpl {{music === index ? 'on' : ''}}"
+        data-index="{{index}}" bindtap="pickMusic">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <view class="card preview">
+    <canvas type="2d" id="cv" class="cv"></canvas>
+    <view class="muted">预览（正式导出为 MP4 视频，需云端 ffmpeg 合成）</view>
+  </view>
+
+  <view class="btn" bindtap="generate">生成并分享</view>
+</view>
+<template is="whimsyFx"/>
+<view class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>

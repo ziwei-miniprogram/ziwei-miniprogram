@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "功德中心",
+  "usingComponents": {
+    "heart-lamp": "/components/heart-lamp/heart-lamp"
+  }
+}

@@ -1,0 +1,67 @@
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.palace {
+  width: 31%;
+  background: var(--card);
+  border-radius: 16rpx;
+  padding: 20rpx 0;
+  text-align: center;
+  margin-bottom: 16rpx;
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--border);
+}
+.palace.on {
+  background: linear-gradient(135deg, var(--gold), #e0c489);
+  color: #fff;
+}
+.p-name { font-size: 24rpx; color: var(--fg-2); }
+.palace.on .p-name { color: #fff; }
+.p-star { font-size: 30rpx; font-weight: 700; margin-top: 6rpx; color: var(--fg); }
+.deep-text {
+  font-size: 26rpx;
+  color: var(--fg-3);
+  line-height: 1.8;
+  margin-top: 14rpx;
+  white-space: pre-wrap;
+}
+
+/* 解锁进度 + 成长路径 */
+.lock-head { font-size: 28rpx; font-weight: 700; color: var(--fg); }
+.progress {
+  margin-top: 18rpx;
+  height: 16rpx;
+  border-radius: 999rpx;
+  background: var(--bg-elev);
+  overflow: hidden;
+}
+.progress .fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(135deg, var(--gold), #e0c489);
+  transition: width .4s ease;
+}
+.progress-txt { margin-top: 12rpx; font-size: 24rpx; color: var(--fg-3); }
+.paths { margin-top: 22rpx; }
+.path {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 20rpx 22rpx;
+  background: var(--bg-elev);
+  border: 1rpx solid var(--border);
+  border-radius: 18rpx;
+  margin-bottom: 14rpx;
+}
+.path:active { background: var(--card); }
+.path .p-ic {
+  width: 64rpx; height: 64rpx; border-radius: 18rpx;
+  background: var(--card); display: flex; align-items: center; justify-content: center;
+  font-size: 34rpx; box-shadow: var(--shadow-sm);
+}
+.path .p-info { flex: 1; }
+.path .p-name { font-size: 27rpx; font-weight: 600; color: var(--fg); }
+.path .p-desc { font-size: 22rpx; color: var(--fg-3); margin-top: 4rpx; }
+.path .p-go { font-size: 26rpx; color: var(--gold-deep); font-weight: 600; }

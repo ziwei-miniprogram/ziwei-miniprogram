@@ -1,0 +1,52 @@
+/* 心灵之旅 —— 玉色点缀，令牌驱动，明暗自适应 */
+.container { padding: 0 0 110rpx; }
+.head { padding: 32rpx 32rpx 8rpx; }
+.h-t { font-family: "Source Han Serif SC", "Songti SC", serif; font-size: 46rpx; font-weight: 700; color: var(--fg); }
+.h-s { font-size: 24rpx; color: var(--fg-2); margin-top: 12rpx; }
+
+/* 冥想 Hero —— 柔和玉色浅底，呼吸圆保留 */
+.med { margin: 28rpx 28rpx 0; border-radius: 44rpx; padding: 56rpx 40rpx; position: relative; overflow: hidden;
+  text-align: center; background: linear-gradient(160deg, var(--bg-elev), var(--bg)); border: 1rpx solid var(--border); }
+.breath { width: 180rpx; height: 180rpx; border-radius: 50%; margin: 0 auto 32rpx;
+  background: radial-gradient(circle at 40% 35%, #9FD0C2, var(--success));
+  box-shadow: 0 0 60rpx rgba(127, 183, 168, .45); animation: breathe 4s infinite ease-in-out; }
+@keyframes breathe { 0%, 100% { transform: scale(.82); opacity: .8; } 50% { transform: scale(1.05); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .breath { animation: none; transform: scale(1); opacity: 1; }
+}
+.tt { font-family: "Source Han Serif SC", serif; font-size: 38rpx; color: var(--fg); font-weight: 700; }
+.sd { font-size: 24rpx; color: var(--success); margin-top: 14rpx; }
+.btn { display: inline-block; margin-top: 32rpx; padding: 22rpx 52rpx; border-radius: 999rpx;
+  background: linear-gradient(135deg, #9FD0C2, #7FB7A8); color: #0e2a22; font-weight: 700; font-size: 28rpx; }
+.btn:active { filter: brightness(.97); }
+
+/* 情绪打卡 */
+.mood { margin: 28rpx 28rpx 0; background: var(--card); border: 1rpx solid var(--border);
+  border-radius: 36rpx; padding: 32rpx; box-shadow: var(--shadow-sm); }
+.ml { font-size: 26rpx; color: var(--fg); font-weight: 600; margin-bottom: 24rpx; }
+.row { display: flex; justify-content: space-between; }
+.e { font-size: 48rpx; text-align: center; opacity: .45; transition: .2s; }
+.e.on { opacity: 1; transform: scale(1.18); }
+
+/* 列表 */
+.sec-t { font-size: 26rpx; color: var(--fg-2); padding: 36rpx 36rpx 8rpx; letter-spacing: 2rpx; }
+.card { background: var(--card); border: 1rpx solid var(--border); border-radius: 32rpx;
+  padding: 28rpx; margin: 24rpx 28rpx 0; display: flex; align-items: center;
+  box-shadow: var(--shadow-sm); }
+.ci { width: 90rpx; height: 90rpx; border-radius: 26rpx; display: flex; align-items: center; justify-content: center;
+  font-size: 44rpx; background: rgba(127, 183, 168, .14); margin-right: 24rpx; flex-shrink: 0; }
+.ct { flex: 1; }
+.ti { font-size: 30rpx; font-weight: 700; color: var(--fg); }
+.ds { font-size: 22rpx; color: var(--fg-2); margin-top: 8rpx; }
+.ty { font-size: 22rpx; color: var(--success); background: rgba(127, 183, 168, .14); padding: 8rpx 22rpx; border-radius: 999rpx; }
+
+/* 日记 */
+.diary { margin: 28rpx 28rpx 0; background: var(--card); border: 1rpx solid var(--border);
+  border-radius: 36rpx; padding: 32rpx; box-shadow: var(--shadow-sm); }
+.dt { font-size: 30rpx; font-weight: 700; color: var(--fg); }
+.box { margin-top: 22rpx; width: 100%; height: 150rpx; background: var(--bg-elev);
+  border: 1rpx solid var(--border); border-radius: 22rpx; padding: 24rpx; font-size: 26rpx;
+  color: var(--fg); box-sizing: border-box; }
+.save { margin-top: 22rpx; width: 100%; padding: 24rpx; border-radius: 22rpx; border: 1rpx solid rgba(127, 183, 168, .5);
+  background: transparent; color: var(--success); font-size: 28rpx; font-weight: 600; }
+.note { font-size: 22rpx; color: var(--fg-2); margin-top: 18rpx; text-align: center; }

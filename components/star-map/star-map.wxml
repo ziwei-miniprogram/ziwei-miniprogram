@@ -1,0 +1,22 @@
+<!-- 二十八宿星图：把修行进度可视化为四方星宿的点亮 -->
+<view class="sm {{theme}}">
+  <view class="sm-head">
+    <text class="sm-t">✦ 二十八宿星图</text>
+    <text class="sm-s">{{lit}}/28 已点亮</text>
+  </view>
+  <view class="sm-groups">
+    <view class="sm-group" wx:for="{{groups}}" wx:for-item="g" wx:key="alias">
+      <view class="sm-gname">{{g.alias}}</view>
+      <view class="sm-stars">
+        <view
+          class="sm-star {{item.on ? 'on' : ''}} {{selected === item.name ? 'sel' : ''}}"
+          wx:for="{{g.stars}}" wx:for-item="item" wx:key="name"
+          bindtap="onTap" data-name="{{item.name}}" data-meaning="{{item.meaning}}"
+        >
+          <text class="sm-char">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="sm-cap" wx:if="{{cap}}">{{cap}}</view>
+</view>

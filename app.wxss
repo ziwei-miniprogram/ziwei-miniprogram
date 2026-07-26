@@ -1,0 +1,416 @@
+/* ===== 拾光驿 · 星野漫游 — 全局设计令牌（双主题：暖纸浅色 / 夜灯深色）=====
+   单一真相源：所有页面共享此体系。金色只在关键行动处出现，密度克制。
+   令牌驱动：所有颜色改为 var()，明暗主题通过 .page / .page.dark 切换。
+   金字可读性：浅底用深金 --gold-deep(#8a6a2a) 达 WCAG AA 4.5:1；暗底用亮金 --gold。 */
+
+/* —— 浅色（暖纸）令牌 —— */
+page, .page {
+  --bg: #f7f5f0;
+  --bg-elev: #fffdf8;          /* 轻浮层/胶囊 */
+  --card: #ffffff;
+  --fg: #2b2622;              /* 主文字 */
+  --fg-2: #998f80;            /* 次级/弱化 */
+  --fg-3: #6b6457;           /* 辅助文字 */
+  --border: rgba(138,127,109,.18);
+  --gold: #c8a35a;           /* 装饰/大字/渐变 */
+  --gold-deep: #8a6a2a;       /* 浅底正文金（AA 4.5:1） */
+  --gold-soft: rgba(200,163,90,.12);
+  --gold-tint: #f6ecd4;
+  --success: #5e9788;
+  --danger: #e0796f;
+  --shadow-sm: 0 4rpx 18rpx rgba(40,33,20,.05);
+  --shadow-md: 0 8rpx 22rpx rgba(200,163,90,.18);
+  --nav-bg: #f7f5f0;
+  --nav-fg: black;
+}
+
+/* —— 深色（夜灯）令牌 —— */
+.page.dark {
+  --bg: #0B1426;
+  --bg-elev: #121d33;
+  --card: #121d33;
+  --fg: #ece6dc;
+  --fg-2: #9da9bd;
+  --fg-3: #c2bca8;
+  --border: rgba(200,180,140,.16);
+  --gold: #d9b66a;            /* 暗底正文金（对深蓝约 6.8:1，超 AA） */
+  --gold-deep: #c8a35a;
+  --gold-soft: rgba(217,182,106,.14);
+  --gold-tint: #2a2418;
+  --success: #6fb3a3;
+  --danger: #e08a80;
+  --shadow-sm: 0 4rpx 18rpx rgba(0,0,0,.42);
+  --shadow-md: 0 10rpx 26rpx rgba(0,0,0,.5);
+  --nav-bg: #0B1426;
+  --nav-fg: white;
+}
+
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background .35s ease, color .35s ease;
+}
+.container { padding: 24rpx; background: var(--bg); min-height: 100vh; }
+
+/* 卡片：令牌驱动，明暗自动适配 */
+.card {
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin: 20rpx 0;
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--border);
+  color: var(--fg);
+}
+
+/* 区块标题 / 副标题 */
+.title { font-size: 34rpx; font-weight: 700; color: var(--fg); }
+.subtitle { font-size: 24rpx; color: var(--fg-2); margin-top: 6rpx; }
+
+/* 衬线装饰大标题（仅文化感标题用，UI 文本用无衬线） */
+.serif { font-family: "Source Han Serif SC", "Songti SC", "Noto Serif SC", serif; }
+
+/* 强调色文字（浅底用深金 AA） */
+.text-gold { color: var(--gold-deep); }
+
+/* 主按钮：星辉金渐变，仅用于关键行动 */
+.btn {
+  background: linear-gradient(135deg, var(--gold), #e0c489);
+  color: #fff;
+  border-radius: 999rpx;
+  text-align: center;
+  padding: 22rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+}
+.btn:active { filter: brightness(.96); }
+.btn-done { background: var(--gold-soft); color: var(--gold-deep); box-shadow: none; }
+
+.btn-ghost {
+  border: 2rpx solid var(--gold);
+  color: var(--gold-deep);
+  border-radius: 999rpx;
+  text-align: center;
+  padding: 20rpx;
+  font-size: 28rpx;
+  background: transparent;
+}
+.btn-ghost:active { background: var(--gold-soft); }
+
+.row { display: flex; align-items: center; justify-content: space-between; }
+.muted { color: var(--fg-2); font-size: 24rpx; }
+
+/* 标签 / 角标 */
+.tag {
+  display: inline-block;
+  background: var(--bg-elev);
+  color: var(--fg-2);
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 999rpx;
+  margin: 6rpx 8rpx 0 0;
+}
+.tag.gold { background: var(--gold-soft); color: var(--gold-deep); }
+
+/* 顶部分段胶囊（列表类页面统一筛选器） */
+.seg {
+  display: flex;
+  gap: 12rpx;
+  padding: 8rpx;
+  background: var(--bg-elev);
+  border-radius: 999rpx;
+  margin: 16rpx 0;
+}
+.seg .s {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--fg-2);
+  padding: 14rpx 0;
+  border-radius: 999rpx;
+}
+.seg .s.on {
+  background: var(--card);
+  color: var(--fg);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+
+/* 合规：全站统一免责声明 */
+.disclaimer {
+  margin: 24rpx 32rpx 48rpx;
+  padding: 20rpx 24rpx;
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: var(--fg-2);
+  background: var(--bg-elev);
+  border: 1rpx solid var(--border);
+  border-radius: 16rpx;
+}
+
+/* ============================================================
+   愉悦体验层（Whimsy · 拾光驿星野漫游）
+   原则：星辉为光、善意有回响；动效只做呼吸/淡入/轻位移，
+   时长 300–1500ms，尊重「减少动态效果」系统偏好（见文末）。
+   ============================================================ */
+
+/* 1) 功德星光浮层：固定全屏、不拦截点击 */
+.fx-layer {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none; z-index: 200; overflow: hidden;
+}
+.fx-item {
+  position: absolute; top: 32%;
+  display: flex; flex-direction: column; align-items: center;
+  animation: fxFloat 1.5s ease-out forwards;
+  will-change: transform, opacity;
+}
+.fx-emoji {
+  font-size: 60rpx;
+  filter: drop-shadow(0 0 14rpx rgba(200, 163, 90, .85));
+  animation: fxPulse .9s ease-in-out infinite;
+}
+.fx-text {
+  margin-top: 8rpx; font-size: 26rpx; font-weight: 700; color: var(--gold-deep);
+  text-shadow: 0 1rpx 6rpx rgba(255, 255, 255, .85); white-space: nowrap;
+}
+@keyframes fxFloat {
+  0%   { transform: translateY(0) scale(.6); opacity: 0; }
+  15%  { transform: translateY(-12rpx) scale(1); opacity: 1; }
+  100% { transform: translateY(-230rpx) scale(1); opacity: 0; }
+}
+@keyframes fxPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+/* 1b) 星屑分型微交互：afterMerit 触发，多点放射的细碎星光 */
+.fx-dust {
+  position: absolute;
+  width: 10rpx; height: 10rpx; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, var(--gold) 60%, transparent 70%);
+  box-shadow: 0 0 10rpx var(--gold);
+  animation: dustFly .9s ease-out forwards;
+  will-change: transform, opacity;
+}
+@keyframes dustFly {
+  0%   { transform: translate(0,0) scale(.4); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translate(var(--dx,0), var(--dy,0)) scale(1); opacity: 0; }
+}
+
+/* 2) 晋阶庆祝卡 */
+.lu-mask {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 210;
+  background: rgba(11, 20, 38, .42);
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn .3s ease;
+}
+.lu-card {
+  width: 540rpx; background: var(--card); border-radius: 28rpx; padding: 48rpx 40rpx;
+  text-align: center; box-shadow: var(--shadow-md);
+  animation: luPop .5s cubic-bezier(.23, 1, .32, 1);
+}
+.lu-emoji { font-size: 96rpx; animation: luSpin 2.2s ease-in-out infinite; }
+.lu-title { margin-top: 12rpx; font-size: 26rpx; color: var(--fg-2); letter-spacing: 2rpx; }
+.lu-name { margin-top: 8rpx; font-size: 48rpx; font-weight: 700; color: var(--gold-deep); }
+.lu-sub { margin-top: 14rpx; font-size: 24rpx; color: var(--fg-3); }
+@keyframes luPop {
+  0% { transform: scale(.7); opacity: 0; }
+  60% { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes luSpin { 0%, 100% { transform: rotate(-8deg) scale(1); } 50% { transform: rotate(8deg) scale(1.1); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* 3) 首页 Hero 星野入场：星星渐显 + 微闪 */
+.hero .stars { opacity: 0; transition: opacity .9s ease; }
+.hero.lit .stars { opacity: 1; animation: starTwinkle 3.4s ease-in-out infinite; }
+@keyframes starTwinkle {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  50% { opacity: .7; filter: brightness(1.3); }
+}
+
+/* 3b) Hero 星爆：首屏一次性放射星爆（社媒新用户 3 秒浪漫感） */
+.hero-burst { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+.hero-burst .hb {
+  position: absolute; left: 50%; top: 38%;
+  width: 14rpx; height: 14rpx; border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, var(--gold) 55%, transparent 70%);
+  box-shadow: 0 0 16rpx var(--gold);
+  animation: hbFly 1.5s cubic-bezier(.18,.7,.3,1) forwards;
+}
+@keyframes hbFly {
+  0%   { transform: translate(-50%,-50%) scale(.2); opacity: 0; }
+  12%  { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); opacity: 0; }
+}
+
+/* 4) 星图宫位依次点亮（载入时容器加 .lit） */
+.palaces.lit .palace { animation: palaceOn .5s both; }
+.palaces.lit .palace:nth-child(1) { animation-delay: .04s; }
+.palaces.lit .palace:nth-child(2) { animation-delay: .10s; }
+.palaces.lit .palace:nth-child(3) { animation-delay: .16s; }
+.palaces.lit .palace:nth-child(4) { animation-delay: .22s; }
+.palaces.lit .palace:nth-child(5) { animation-delay: .28s; }
+.palaces.lit .palace:nth-child(6) { animation-delay: .34s; }
+.palaces.lit .palace:nth-child(7) { animation-delay: .40s; }
+.palaces.lit .palace:nth-child(8) { animation-delay: .46s; }
+.palaces.lit .palace:nth-child(9) { animation-delay: .52s; }
+.palaces.lit .palace:nth-child(10) { animation-delay: .58s; }
+.palaces.lit .palace:nth-child(11) { animation-delay: .64s; }
+.palaces.lit .palace:nth-child(12) { animation-delay: .70s; }
+@keyframes palaceOn {
+  0% { opacity: 0; transform: translateY(16rpx) scale(.92); }
+  100% { opacity: 1; transform: none; }
+}
+.palace.tap { animation: palaceTap .5s ease; }
+@keyframes palaceTap {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); box-shadow: 0 0 26rpx rgba(200, 163, 90, .6); }
+  100% { transform: scale(1); }
+}
+
+/* 5) 解锁深度解读：金光扫过标题 */
+.deep-title.sweep {
+  background: linear-gradient(100deg, var(--gold) 0%, var(--gold-tint) 25%, var(--gold) 50%, var(--gold-tint) 75%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; color: transparent;
+  animation: goldSweep 1.3s ease;
+}
+@keyframes goldSweep { from { background-position: 200% center; } to { background-position: 0 center; } }
+
+/* 6) 连续签到火焰轻晃 */
+.streak-flame { display: inline-block; animation: flameSway 1.8s ease-in-out infinite; transform-origin: bottom center; }
+@keyframes flameSway { 0%, 100% { transform: rotate(-4deg) scale(1); } 50% { transform: rotate(4deg) scale(1.06); } }
+
+/* 7) 彩蛋：星河贯通（彩虹星覆盖层） */
+.rainbow-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 199;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255,154,158,.18), rgba(254,207,239,.18), rgba(160,220,255,.18), rgba(180,255,200,.18));
+  background-size: 400% 400%;
+  animation: rainbowShift 4s ease infinite;
+}
+@keyframes rainbowShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 8) 通用：温柔空状态点缀（留白 + 衬线） */
+.empty-soft { text-align: center; padding: 60rpx 40rpx; }
+.empty-soft .em-emoji { font-size: 72rpx; }
+.empty-soft .em-tt { margin-top: 16rpx; font-size: 30rpx; color: var(--fg); font-weight: 700; }
+.empty-soft .em-sub { margin-top: 10rpx; font-size: 24rpx; color: var(--fg-2); line-height: 1.7; }
+
+/* 9) 尊重系统「减少动态效果」偏好：关掉非必要动画，保留信息 */
+@media (prefers-reduced-motion: reduce) {
+  .fx-item, .fx-dust, .hero.lit .stars, .hero-burst .hb,
+  .palaces.lit .palace, .palace.tap, .deep-title.sweep,
+  .streak-flame, .rainbow-overlay, .lu-emoji {
+    animation: none !important;
+  }
+  .fx-item { opacity: 1; }
+  .hero .stars { opacity: 1; }
+  .hero-burst { display: none !important; }
+}
+
+/* ===== 行为干预（P0）新增样式：令牌驱动，明暗自适应 ===== */
+
+/* P0-2 距深度解读进度胶囊 */
+.unlock-chip {
+  margin: 20rpx 24rpx 0;
+  background: var(--bg-elev);
+  border: 1rpx solid var(--border);
+  border-radius: 18rpx;
+  padding: 16rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.unlock-chip .uc-l { font-size: 24rpx; color: var(--fg-3); white-space: nowrap; }
+.unlock-chip .uc-bar { flex: 1; height: 12rpx; background: rgba(138,127,109,.22); border-radius: 10rpx; overflow: hidden; }
+.unlock-chip .uc-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-deep)); border-radius: 10rpx; transition: width .8s cubic-bezier(.2,.8,.2,1); }
+.unlock-chip .uc-r { font-size: 22rpx; color: var(--gold-deep); font-weight: 700; min-width: 64rpx; text-align: right; }
+
+/* P0-4 社会证明条 */
+.proof-bar {
+  margin: 14rpx 24rpx 0;
+  font-size: 22rpx;
+  color: var(--fg-2);
+  background: var(--gold-soft);
+  border: 1rpx solid rgba(200,163,90,.22);
+  border-radius: 14rpx;
+  padding: 14rpx 20rpx;
+  line-height: 1.6;
+}
+
+/* P0-3 首启星愿选择 */
+.g-wish-t { margin: 26rpx 0 12rpx; font-size: 24rpx; color: var(--fg-2); }
+.g-wishes { display: flex; flex-wrap: wrap; gap: 14rpx; }
+.gw {
+  display: flex; align-items: center; gap: 8rpx;
+  padding: 12rpx 18rpx;
+  background: var(--bg-elev);
+  border: 1rpx solid var(--border);
+  border-radius: 999rpx;
+  font-size: 24rpx; color: var(--fg-3);
+}
+.gw .gw-emoji { font-size: 26rpx; }
+.gw.on { border-color: var(--gold); background: var(--gold-soft); color: var(--gold-deep); font-weight: 700; }
+
+/* P0-3 个人页星愿卡 */
+.wish-card {
+  margin: 20rpx 24rpx 0;
+  display: flex; align-items: center; gap: 16rpx;
+  background: var(--bg-elev);
+  border: 1rpx solid rgba(200,163,90,.24);
+  border-radius: 18rpx;
+  padding: 18rpx 22rpx;
+}
+.wish-card .w-emoji { font-size: 40rpx; }
+.wish-card .w-body { flex: 1; }
+.wish-card .w-t { font-size: 22rpx; color: var(--fg-2); }
+.wish-card .w-v { font-size: 30rpx; color: var(--fg); font-weight: 700; margin-top: 4rpx; }
+
+/* P0-2 星图进度「再攒 Y」高亮 */
+.pt-near { color: var(--gold-deep); font-weight: 700; }
+
+/* ===== P1 行为助推样式（令牌驱动）===== */
+/* P1-3 排行榜跃升提示 */
+.rank-nudge { display: flex; align-items: center; gap: 18rpx; background: linear-gradient(135deg,var(--gold-soft),var(--gold-tint)); border-color: rgba(200,163,90,.35); }
+.rank-nudge .rn-emoji { font-size: 44rpx; }
+.rank-nudge .rn-text { flex: 1; }
+.rank-nudge .rn-t1 { font-size: 28rpx; color: var(--gold-deep); font-weight: 600; }
+.rank-nudge .rn-t2 { font-size: 24rpx; color: var(--fg-3); margin-top: 4rpx; }
+
+/* P1-4 共修提醒（社会证明） */
+.group-remind { display: flex; align-items: center; gap: 12rpx; font-size: 24rpx; color: var(--gold-deep); background: var(--gold-soft); }
+.group-remind .gr-emoji { font-size: 32rpx; }
+
+/* P1-5 星野小提示 */
+.tips { margin: 8rpx 0 18rpx; }
+.tip-h { font-size: 24rpx; color: var(--gold-deep); margin: 6rpx 4rpx; }
+.tip { display: flex; align-items: center; gap: 12rpx; background: var(--card); border: 1rpx solid rgba(200,163,90,.22); border-radius: 14rpx; padding: 18rpx 20rpx; margin-bottom: 10rpx; }
+.tip-ic { font-size: 30rpx; }
+.tip-t { flex: 1; font-size: 25rpx; color: var(--fg-3); }
+.tip-arrow { color: var(--gold-deep); font-size: 30rpx; }
+
+/* P1-6 快捷发布 */
+.quickpost { display: flex; gap: 14rpx; margin: 14rpx 0 6rpx; align-items: center; }
+.qp-input { flex: 1; height: 68rpx; background: var(--card); border: 1rpx solid rgba(200,163,90,.35); border-radius: 34rpx; padding: 0 24rpx; font-size: 26rpx; color: var(--fg-3); }
+.qp-btn { flex: none; height: 68rpx; line-height: 68rpx; padding: 0 28rpx; background: linear-gradient(135deg,var(--gold),#e0c489); color: #3a2c10; border-radius: 34rpx; font-size: 26rpx; font-weight: 600; }
+
+/* P1-2 今日三善 */
+.deeds .d-head2 { display: flex; align-items: center; gap: 12rpx; font-size: 28rpx; color: var(--gold-deep); font-weight: 600; }
+.deeds .d-count { font-size: 24rpx; color: var(--gold-deep); background: var(--gold-soft); padding: 2rpx 14rpx; border-radius: 20rpx; }
+.deeds .d-sub { font-size: 23rpx; color: var(--fg-3); margin: 4rpx 0 12rpx; }
+.deed { display: flex; align-items: center; gap: 16rpx; padding: 14rpx 0; border-top: 1rpx solid rgba(200,163,90,.16); }
+.deed .de-ic { font-size: 34rpx; }
+.deed .de-name { flex: 1; font-size: 26rpx; color: var(--fg-3); }
+.de-btn { flex: none; min-width: 96rpx; text-align: center; padding: 12rpx 18rpx; border-radius: 30rpx; background: linear-gradient(135deg,var(--gold),#e0c489); color: #3a2c10; font-size: 24rpx; font-weight: 600; }
+.de-btn.de-done { background: rgba(120,160,120,.18); color: var(--success); }

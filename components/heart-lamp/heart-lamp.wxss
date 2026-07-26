@@ -1,0 +1,91 @@
+/* 心灯浮标：固定右下，悬浮于 tabBar 之上，不拦截滚动 */
+.hl {
+  position: fixed;
+  right: 30rpx;
+  bottom: 168rpx;
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(140deg, #c8a35a, #e0c489);
+  box-shadow: 0 10rpx 26rpx rgba(200, 163, 90, .42);
+  z-index: 70;
+  border: 4rpx solid #fff;
+}
+.hl-hover { transform: scale(.94); opacity: .92; }
+.hl-ring {
+  position: absolute;
+  inset: -10rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(200, 163, 90, .5);
+  animation: hlPulse 2.4s ease-in-out infinite;
+}
+@keyframes hlPulse {
+  0%, 100% { transform: scale(1); opacity: .5; }
+  50% { transform: scale(1.12); opacity: 0; }
+}
+.hl-emoji { font-size: 40rpx; line-height: 1; }
+.hl-num { font-size: 20rpx; color: #3a2c10; font-weight: 700; margin-top: 2rpx; }
+.hl-streak {
+  position: absolute;
+  top: -10rpx;
+  right: -6rpx;
+  font-size: 18rpx;
+  background: #fff;
+  color: #c8702f;
+  border-radius: 999rpx;
+  padding: 0 8rpx;
+  box-shadow: 0 2rpx 6rpx rgba(0, 0, 0, .15);
+}
+/* 暗色夜灯：浮标转深蓝描边、金色更亮 */
+.hl.dark {
+  background: linear-gradient(140deg, #d9b66a, #f0d49a);
+  border-color: #0B1426;
+  box-shadow: 0 10rpx 26rpx rgba(0, 0, 0, .5);
+}
+.hl.dark .hl-num { color: #2a200a; }
+.hl.dark .hl-streak { background: #0B1426; color: #f0d49a; }
+
+/* 本日三善已成：浮标转为金色并呼吸，作为温柔的日常成就回响 */
+.hl.all-done {
+  background: linear-gradient(140deg, #b8862f, #e8c065);
+  border-color: #fff;
+  box-shadow: 0 10rpx 30rpx rgba(200, 163, 90, .6);
+}
+.hl.dark.all-done {
+  background: linear-gradient(140deg, #f0d49a, #d9b66a);
+  border-color: #0B1426;
+  box-shadow: 0 10rpx 30rpx rgba(217, 182, 106, .6);
+}
+.hl.all-done .hl-ring {
+  border-color: rgba(255, 224, 150, .9);
+  animation: hlGold 1.8s ease-in-out infinite;
+}
+@keyframes hlGold {
+  0%, 100% { transform: scale(1); opacity: .55; box-shadow: 0 0 0 0 rgba(255, 224, 150, .5); }
+  50% { transform: scale(1.16); opacity: 0; box-shadow: 0 0 26rpx 10rpx rgba(255, 224, 150, .65); }
+}
+/* 三善成小标 */
+.hl-deed {
+  position: absolute;
+  top: -14rpx;
+  left: -14rpx;
+  font-size: 16rpx;
+  color: #5a3d0c;
+  background: linear-gradient(135deg, #ffe9a8, #f3cf72);
+  border: 1rpx solid #fff;
+  border-radius: 999rpx;
+  padding: 2rpx 10rpx;
+  font-weight: 700;
+  box-shadow: 0 2rpx 8rpx rgba(200, 163, 90, .5);
+  animation: hlDeed 1.8s ease-in-out infinite;
+}
+@keyframes hlDeed { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hl-ring { animation: none !important; }
+  .hl-deed { animation: none !important; }
+}

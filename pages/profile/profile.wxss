@@ -1,0 +1,70 @@
+.page { padding: 0 0 40rpx; }
+.cover { height: 280rpx; background: linear-gradient(140deg, #e0c489, #c8a35a); }
+.head { display: flex; align-items: flex-end; gap: 26rpx; padding: 0 36rpx; margin-top: -70rpx; }
+.av { width: 140rpx; height: 140rpx; border-radius: 50%; border: 6rpx solid #fff; background: linear-gradient(135deg, #c8a35a, #e7c98f); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 54rpx; }
+.h-info { flex: 1; padding-bottom: 12rpx; }
+.name { font-size: 40rpx; font-weight: 700; }
+.edit { display: inline-block; margin-top: 14rpx; font-size: 24rpx; border: 1rpx solid #ece8df; border-radius: 999rpx; padding: 10rpx 28rpx; color: #6b6457; }
+.bio { padding: 20rpx 36rpx 0; font-size: 25rpx; color: #6b6457; line-height: 1.6; }
+
+.merit-card { margin: 28rpx 36rpx 0; background: linear-gradient(135deg, var(--gold-soft), var(--gold-tint)); border-radius: 28rpx; padding: 26rpx 30rpx; display: flex; align-items: center; gap: 20rpx; }
+.merit-card .lv { background: #1f1c17; color: #f6eccb; font-size: 24rpx; padding: 10rpx 22rpx; border-radius: 999rpx; font-weight: 600; }
+.page.dark .merit-card .lv { background: #0B1426; color: var(--gold-tint); }
+.merit-card .mt { flex: 1; font-size: 25rpx; color: var(--fg-3); }
+.merit-card .mt .m-num { font-size: 32rpx; font-weight: 700; color: var(--fg); }
+.merit-card .go { font-size: 25rpx; color: var(--gold-deep); font-weight: 600; }
+
+.stat { display: flex; padding: 24rpx 36rpx 10rpx; }
+.stat .st { flex: 1; text-align: center; }
+.stat .st-n { display: block; font-size: 36rpx; font-weight: 700; }
+.stat .st-l { font-size: 23rpx; color: #9a9286; }
+
+.persona { margin: 22rpx 36rpx 0; background: var(--card); border: 1rpx solid var(--border); border-radius: 28rpx; padding: 28rpx 30rpx; box-shadow: var(--shadow-sm); }
+.p-title { font-size: 23rpx; color: var(--gold-deep); }
+.p-name { font-size: 34rpx; font-weight: 700; margin-top: 10rpx; color: var(--fg); }
+.p-desc { font-size: 26rpx; color: var(--fg-3); line-height: 1.7; margin-top: 12rpx; }
+.p-traits { display: flex; flex-wrap: wrap; gap: 12rpx; margin-top: 16rpx; }
+.trait { font-size: 23rpx; color: var(--gold-deep); background: var(--gold-soft); border-radius: 999rpx; padding: 6rpx 20rpx; }
+.p-btn { margin-top: 20rpx; text-align: center; background: var(--fg); color: var(--bg); border-radius: 999rpx; padding: 20rpx; font-size: 26rpx; }
+
+.entries { display: flex; padding: 28rpx 36rpx 0; }
+.entry { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10rpx; font-size: 23rpx; color: var(--fg-3); }
+.entry .e-i { width: 92rpx; height: 92rpx; border-radius: 26rpx; background: var(--bg-elev); display: flex; align-items: center; justify-content: center; font-size: 44rpx; }
+
+.ptabs { display: flex; gap: 44rpx; padding: 34rpx 40rpx 18rpx; }
+.pt { font-size: 30rpx; color: var(--fg-2); padding-bottom: 10rpx; }
+.pt.on { color: var(--fg); font-weight: 700; border-bottom: 4rpx solid var(--gold); }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8rpx; padding: 8rpx 36rpx 0; }
+.g { aspect-ratio: 1; border-radius: 16rpx; display: flex; align-items: flex-end; padding: 14rpx; font-size: 50rpx; color: #fff; position: relative; }
+.g-tt { position: absolute; left: 14rpx; bottom: 14rpx; right: 14rpx; font-size: 22rpx; color: #fff; text-shadow: 0 1rpx 4rpx rgba(0,0,0,.5); }
+
+/* 收藏 / 赞 空状态 */
+.empty { text-align: center; padding: 70rpx 40rpx; }
+.empty .em-tt { font-size: 30rpx; font-weight: 700; color: var(--fg); }
+.empty .em-sub { font-size: 24rpx; color: var(--fg-2); margin-top: 12rpx; line-height: 1.6; }
+
+/* 夜灯模式切换 */
+.theme-toggle { display: flex; align-items: center; gap: 14rpx; padding: 0 36rpx; margin-top: -34rpx; justify-content: flex-end; }
+.tt-ic { font-size: 32rpx; }
+.tt-label { font-size: 24rpx; color: var(--fg-3); }
+.tt-switch { transform: scale(.78); }
+
+/* 每日星签彩蛋 */
+.sign-card { margin: 22rpx 36rpx 0; background: linear-gradient(135deg, var(--gold-soft), var(--gold-tint)); border: 1rpx solid rgba(200,163,90,.3); border-radius: 24rpx; padding: 24rpx 28rpx; }
+.sc-title { font-size: 24rpx; color: var(--gold-deep); font-weight: 700; }
+.sc-tip { font-size: 26rpx; color: var(--gold-deep); margin-top: 10rpx; font-weight: 600; }
+.sc-line { font-size: 26rpx; color: var(--fg); line-height: 1.7; margin-top: 8rpx; }
+.sc-foot { font-size: 21rpx; color: var(--fg-2); margin-top: 12rpx; }
+.sc-empty { font-size: 26rpx; color: var(--gold-deep); margin-top: 10rpx; }
+
+/* 金色成就徽章墙 */
+.badges { margin: 24rpx 36rpx 0; }
+.b-title { font-size: 28rpx; font-weight: 700; color: var(--fg); }
+.b-count { font-size: 22rpx; color: var(--gold-deep); margin-left: 8rpx; }
+.b-grid { display: flex; flex-wrap: wrap; gap: 18rpx; margin-top: 18rpx; }
+.badge { width: calc(25% - 14rpx); display: flex; flex-direction: column; align-items: center; gap: 8rpx; padding: 18rpx 0; border-radius: 20rpx; background: var(--bg-elev); border: 1rpx solid var(--border); opacity: .5; filter: grayscale(.7); }
+.badge.on { opacity: 1; filter: none; background: linear-gradient(140deg, var(--gold-tint), var(--gold-soft)); border-color: rgba(200,163,90,.4); box-shadow: 0 4rpx 14rpx rgba(200,163,90,.25); }
+.b-ic { font-size: 44rpx; }
+.b-nm { font-size: 21rpx; color: var(--fg); }
+.b-desc { font-size: 17rpx; color: var(--fg-2); line-height: 1.3; text-align: center; padding: 0 6rpx; }

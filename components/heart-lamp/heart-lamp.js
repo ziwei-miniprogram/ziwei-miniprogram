@@ -1,0 +1,93 @@
+// components/heart-lamp — 常驻心灯浮标（情感锚点）
+// 提供「随时点灯 / 签到 / 记一笔」的低摩擦入口；灵动但不打扰。
+const whimsy = require('../../utils/whimsy.js');
+
+Component({
+  properties: {
+    // 由父级（如 tabBar）传入主题，确保切换时同步
+    theme: {
+      type: String,
+      value: 'light',
+      observer(t) { this.setData({ theme: t || 'light' }); }
+    }
+  },
+  data: { merit: 0, streak: 0, checkedIn: false, theme: 'light', deedDoneAll: false },
+
+  pageLifetimes: {
+    show() { this.sync(); }
+  },
+  lifetimes: {
+    attached() { this.sync(); }
+  },
+
+  methods: {
+    // 本日三善（点灯/随喜/冥想）是否皆已成 —— 用于心灯金色呼吸提醒
+    _deedDoneAll(app) {
+      const done = app.getDailyDeeds ? app.getDailyDeeds() : {};
+      return !!(done && done.lamp && done.bond && done.meditate);
+    },
+
+    sync() {
+      const app = getApp();
+      if (!app || !app.globalData) return;
+      this.setData({
+        merit: app.globalData.merit,
+        streak: app.globalData.streak,
+        checkedIn: app.checkedInToday(),
+        theme: app.getTheme(),
+        deedDoneAll: this._deedDoneAll(app)
+      });
+    },
+
+    onTap() {
+      const app = getApp();
+      if (!app) return;
+      const self = this;
+      wx.showActionSheet({
+        itemList: ['🪔 点亮心灯 +1 功德', '🛎 签到 +功德', '✍️ 记一笔 +8 功德'],
+        success(r) {
+          if (r.tapIndex === 0) self.doLamp(app);
+          else if (r.tapIndex === 1) self.doCheckin(app);
+          else self.goPublish();
+        }
+      });
+    },
+
+    // 在当前页面实例上触发愉悦反馈（fx 浮层由页面渲染）
+    _page() {
+      const pages = getCurrentPages();
+      return pages && pages.length ? pages[pages.length - 1] : null;
+    },
+
+    doLamp(app) {
+      const page = this._page();
+      const before = app.globalData.level;
+      app.addMerit(1, '点灯');
+      app.markDailyDeed('lamp'); // 计为今日「点灯」一善，推进三善进度
+      const after = app.globalData.level;
+      if (page && page.setData) {
+        whimsy.afterMerit(page, before, after, 1, 'lamp');
+        whimsy.stardust(page, { x: '85%', y: '82%' });
+      }
+      this.sync();
+    },
+
+    doCheckin(app) {
+      const page = this._page();
+      const before = app.globalData.level;
+      const res = app.doCheckin();
+      if (!res.ok) { wx.showToast({ title: whimsy.COPY.error.signed, icon: 'none' }); return; }
+      const after = app.globalData.level;
+      if (page && page.setData) {
+        whimsy.afterMerit(page, before, after, res.gain, 'checkin');
+        whimsy.stardust(page, { x: '85%', y: '82%' });
+        if (res.milestone) whimsy.burst(page, { text: `连签 ${res.milestone.streak} 天 · 里程碑 +${res.milestone.bonus} 🎉`, emoji: '🏆' });
+      }
+      this.sync();
+    },
+
+    goPublish() {
+      wx.navigateTo({ url: '/pages/publish/publish' });
+    }
+  }
+});

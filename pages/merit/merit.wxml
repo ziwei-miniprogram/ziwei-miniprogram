@@ -1,0 +1,165 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="page {{theme}} container">
+  <view class="hero">
+    <view class="hero-title">功德中心</view>
+    <view class="hero-sub">日行一善 · 积功累德 · 结缘有缘人</view>
+  </view>
+
+  <!-- 分段切换 -->
+  <view class="tabs">
+    <view class="tab {{tab==='overview'?'on':''}}" data-tab="overview" bindtap="switchTab">概览</view>
+    <view class="tab {{tab==='board'?'on':''}}" data-tab="board" bindtap="switchTab">功德林</view>
+    <view class="tab {{tab==='bond'?'on':''}}" data-tab="bond" bindtap="switchTab">结缘</view>
+    <view class="tab {{tab==='group'?'on':''}}" data-tab="group" bindtap="switchTab">共修</view>
+    <view class="tab {{tab==='wish'?'on':''}}" data-tab="wish" bindtap="switchTab">寄愿墙</view>
+  </view>
+
+  <!-- 概览 -->
+  <block wx:if="{{tab==='overview'}}">
+    <view class="card hero-card">
+      <view class="merit-num">{{merit}}</view>
+      <view class="merit-label">功德值</view>
+      <view class="level-badge">{{level.name}}</view>
+      <view class="subtitle" style="margin-top:8rpx">{{level.desc}}</view>
+      <view class="progress">
+        <view class="progress-in" style="width:{{level.progress}}%"></view>
+      </view>
+      <view class="subtitle">
+        {{level.next ? '距「'+level.next+'」还差 '+level.toNext+' 功德' : '已臻大德，泽被有缘'}}
+      </view>
+      <view class="streak"><text class="streak-flame">🔥</text> 连续签到 {{streak}} 天</view>
+      <view class="btn {{checkedIn?'btn-done':''}}" bindtap="checkin">
+        {{checkedIn ? '今日已签到 ✓' : '晨钟暮鼓 · 签到 +功德'}}
+      </view>
+    </view>
+
+    <!-- 因果日报 -->
+    <view class="card daily" wx:if="{{daily}}">
+      <view class="d-head">{{daily.flame}} 因果日报</view>
+      <view class="d-text">{{daily.text}}</view>
+    </view>
+
+    <!-- P1-2 今日三善：每日做满 3 件小事的日常仪式 -->
+    <view class="card deeds" wx:if="{{deeds.length}}">
+      <view class="d-head2">🌿 今日三善 <text class="d-count">{{deedCount}}/3</text></view>
+      <view class="d-sub">做满三件小事，今日心安 ✦</view>
+      <view class="deed" wx:for="{{deeds}}" wx:key="key">
+        <view class="de-ic">{{item.icon}}</view>
+        <view class="de-name">{{item.name}}</view>
+        <view class="de-btn {{dailyDone[item.key]?'de-done':''}}" data-key="{{item.key}}" bindtap="doDeed">
+          {{dailyDone[item.key] ? '已记 ✅' : '+'+item.merit}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 点亮城市 -->
+    <view class="card" wx:if="{{cityLights.length}}">
+      <view class="title">🗺 我点亮的城</view>
+      <view class="cities">
+        <text class="city" wx:for="{{cityLights}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="title">日行一善</view>
+      <view class="subtitle" style="margin-top:6rpx">做正向小事即可积累功德，无需花费分文</view>
+      <view class="action" wx:for="{{actions}}" wx:key="key">
+        <view class="a-icon">{{item.icon}}</view>
+        <view style="flex:1">
+          <view class="a-name">{{item.name}}</view>
+          <view class="a-desc">{{item.desc}}</view>
+        </view>
+        <view class="a-btn" data-key="{{item.key}}" bindtap="doAction">+{{item.merit}}</view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 功德林 -->
+  <block wx:if="{{tab==='board'}}">
+    <!-- P1-3 排行榜跃升提示 -->
+    <view class="card rank-nudge" wx:if="{{rankNudge}}">
+      <view class="rn-emoji">🌟</view>
+      <view class="rn-text">
+        <view class="rn-t1">你已超越 {{rankNudge.pct}}% 的星野旅人</view>
+        <view class="rn-t2" wx:if="{{rankNudge.hasNext}}">再攒 {{rankNudge.gap}} 功德，可前进 {{rankNudge.ranks}} 名 ✦</view>
+        <view class="rn-t2" wx:else>已位列星主之列，泽被有缘 🪔</view>
+      </view>
+    </view>
+    <view class="chips">
+      <view class="chip {{boardFilter==='global'?'on':''}}" data-f="global" bindtap="setFilter">全球</view>
+      <view class="chip {{boardFilter==='city'?'on':''}}" data-f="city" bindtap="setFilter">同城</view>
+      <view class="chip {{boardFilter==='friend'?'on':''}}" data-f="friend" bindtap="setFilter">好友</view>
+    </view>
+    <view class="card">
+      <view class="board-head">
+        <text class="bh-king">👑 本周星主 · {{board[0].name}}</text>
+        <text class="bh-anon" bindtap="toggleAnonymous">{{anonymous ? '匿名中 🕶' : '公开'}}</text>
+      </view>
+      <view class="row board-head2">
+        <text>排名</text><text style="flex:1;margin-left:20rpx">有缘人</text><text>功德</text><text style="margin-left:20rpx">等级</text>
+      </view>
+      <view class="board-item {{item.me?'me':''}}" wx:for="{{board}}" wx:key="rank">
+        <text class="b-rank {{item.crown?'king':''}}">{{item.crown ? '👑' : item.rank}}</text>
+        <view style="flex:1;margin-left:20rpx">
+          <view class="b-name">{{item.me && anonymous ? '匿名善信' : item.name}}</view>
+          <view class="b-region">{{item.region}}</view>
+        </view>
+        <text class="b-merit">{{item.merit}}</text>
+        <text class="b-level">{{item.level}}</text>
+      </view>
+    </view>
+    <view class="muted" style="text-align:center">榜单仅作娱乐激励，可于上方开启匿名展示。</view>
+  </block>
+
+  <!-- 结缘 -->
+  <block wx:if="{{tab==='bond'}}">
+    <view class="card">
+      <view class="title">我的有缘人</view>
+      <view class="subtitle" style="margin-top:6rpx">每日为缘分「随喜」+1，善意往来成羁绊</view>
+      <view class="bond" wx:for="{{bonds}}" wx:key="id" wx:for-index="i">
+        <view style="flex:1">
+          <view class="a-name">{{item.name}}</view>
+          <view class="a-desc">{{item.bond}}</view>
+        </view>
+        <view class="a-btn {{item.todayGiven?'a-done':''}}" data-i="{{i}}" bindtap="giveBond">
+          {{item.todayGiven ? '已随喜' : '随喜 +1'}}
+        </view>
+      </view>
+      <view class="btn btn-ghost" style="margin-top:20rpx" bindtap="sendBond">🤝 发送结缘帖邀请好友</view>
+    </view>
+  </block>
+
+  <!-- 共修 -->
+  <block wx:if="{{tab==='group'}}">
+    <!-- P1-4 共修提醒（社会证明） -->
+    <view class="card group-remind" wx:if="{{groupRemind}}">
+      <text class="gr-emoji">🔥</text><text>{{groupRemind}}</text>
+    </view>
+    <view class="card" wx:for="{{groups}}" wx:key="id">
+      <view class="title">{{item.name}}</view>
+      <view class="subtitle" style="margin-top:6rpx">已满 {{item.checked}}/{{item.members}} 人打卡 · 奖励：{{item.reward}}</view>
+      <view class="progress">
+        <view class="progress-in" style="width:{{item.checked/item.members*100}}%"></view>
+      </view>
+      <view class="btn {{item.myJoined?'btn-done':''}}" style="margin-top:16rpx" data-i="{{index}}" bindtap="groupCheckin">
+        {{item.myJoined ? '今日共修打卡 +10' : '加入并打卡 +10'}}
+      </view>
+    </view>
+  </block>
+
+  <!-- 寄愿墙 -->
+  <block wx:if="{{tab==='wish'}}">
+    <view class="card" wx:for="{{wishes}}" wx:key="id">
+      <view class="row">
+        <view class="a-name">{{item.name}}</view>
+        <view class="lamp">🪔 {{item.lamps}}</view>
+      </view>
+      <view class="wish-text">{{item.wish}}</view>
+      <view class="a-btn" style="align-self:flex-end" data-i="{{index}}" bindtap="addLamp">为他添灯 +3</view>
+    </view>
+    <view class="muted" style="text-align:center">你添的每一盏灯，都是一份匿名善意。</view>
+  </block>
+</view>
+<template is="whimsyFx"/>
+<heart-lamp/>
+<view class="disclaimer">功德为娱乐化正向激励，不代表真实宗教功德，不可提现或交易。本平台内容均为传统文化与心理慰藉的娱乐参考，请勿迷信。</view>

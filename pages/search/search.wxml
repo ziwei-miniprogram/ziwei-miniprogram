@@ -1,0 +1,26 @@
+<view class="page {{theme}}">
+  <view class="bar">
+    <view class="box">
+      <text class="ic">🔍</text>
+      <input class="inp" placeholder="搜索笔记 · 作者 · 星图 · 旅行" value="{{kw}}" bindinput="onInput" confirm-type="search" />
+    </view>
+  </view>
+
+  <view wx:if="{{kw && results.length===0}}" class="empty">
+    <view class="em">🪷</view>
+    <view class="em-tt">没有找到「{{kw}}」相关的内容</view>
+    <view class="em-sub">换个词试试，或去发现页逛逛</view>
+  </view>
+
+  <view wx:if="{{results.length>0}}" class="list">
+    <view class="item" wx:for="{{results}}" wx:key="id" data-id="{{item.id}}" bindtap="open">
+      <view class="av" style="background:{{item.bg}}">{{item.emoji}}</view>
+      <view class="info">
+        <view class="tt">{{item.title}}</view>
+        <view class="au">{{item.author}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{!kw}}" class="hint">输入关键词，从星野漫游的笔记中查找</view>
+</view>

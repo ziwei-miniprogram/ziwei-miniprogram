@@ -1,0 +1,16 @@
+<view class="page {{theme}}">
+  <view class="hd">
+    <view class="h-t">星野 · 工具箱</view>
+    <view class="h-s">星图 · 疗愈 · 心灵 · 寄愿 · 祝福 · 功德</view>
+  </view>
+
+  <view class="grid">
+    <view class="cell" wx:for="{{tools}}" wx:key="key" data-url="{{item.url}}" bindtap="go">
+      <view class="ic">{{item.icon}}</view>
+      <view class="nm">{{item.name}}</view>
+      <view class="ds">{{item.desc}}</view>
+    </view>
+  </view>
+
+  <view class="tip">所有功能均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成专业建议。</view>
+</view>

@@ -1,0 +1,9 @@
+{
+  "name": "genBlessingVideo",
+  "version": "1.0.0",
+  "description": "祝福视频云端合成（ffmpeg）云函数示例",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

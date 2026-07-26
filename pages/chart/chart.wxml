@@ -1,0 +1,54 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="page {{theme}} container">
+  <view class="card">
+    <view class="title">{{palaza.mingJu}}</view>
+    <view class="subtitle">{{palaza.birth}} · {{palaza.gender}}</view>
+  </view>
+
+  <view class="grid palaces {{lit?'lit':''}}">
+    <view
+      wx:for="{{palaza.palaces}}"
+      wx:key="name"
+      class="palace {{active === index ? 'on' : ''}} {{tapIdx === index ? 'tap' : ''}}"
+      data-index="{{index}}"
+      bindtap="onSelect"
+    >
+      <view class="p-name">{{item.name}}</view>
+      <view class="p-star">{{item.star}}</view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{palaza.palaces[active]}}">
+    <view class="title">{{palaza.palaces[active].name}} · {{palaza.palaces[active].star}}</view>
+    <view class="subtitle" style="margin-top:10rpx">{{palaza.palaces[active].desc}}</view>
+    <view class="btn-ghost" style="margin-top:20rpx" bindtap="unlock">{{unlocked ? '已点亮 · 查看深度解读' : (near ? '再攒 ' + toUnlock + ' · 点亮深度解读' : '用 ' + cost + ' 功德 · 点亮深度解读')}}</view>
+  </view>
+
+  <!-- 解锁进度 + 三条成长路径（把墙变成长线） -->
+  <view class="card" wx:if="{{!unlocked}}">
+    <view class="lock-head">🔒 解锁进度</view>
+    <view class="progress"><view class="fill" style="width:{{progress}}%"></view></view>
+    <view class="progress-txt">当前 {{merit}} / {{cost}} 功德 · {{progress}}%<text wx:if="{{near && !unlocked}}" class="pt-near"> · 再攒 {{toUnlock}} 即点亮 ✦</text></view>
+    <view class="paths">
+      <view class="path" wx:for="{{routes}}" wx:key="act" data-act="{{item.act}}" bindtap="onRoute">
+        <view class="p-ic">{{item.icon}}</view>
+        <view class="p-info">
+          <view class="p-name">{{item.name}}</view>
+          <view class="p-desc">{{item.desc}}</view>
+        </view>
+        <view class="p-go">去 ›</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{unlocked}}">
+    <view class="title deep-title {{unlocked ? 'sweep' : ''}}">深度解读</view>
+    <view class="deep-text">{{deepText}}</view>
+  </view>
+
+  <!-- 二十八宿星图：修行进度可视化 -->
+  <star-map lit="{{starLit}}" glow="{{starGlow}}" theme="{{theme}}"/>
+</view>
+<heart-lamp/>
+<template is="whimsyFx"/>
+<view class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>

@@ -1,0 +1,40 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="page {{theme}} container">
+  <view class="head">
+    <view class="h-t">星象文旅</view>
+    <view class="h-s">把星图里的「迁移宫 / 福德宫」<br>变成真实的山水旅程</view>
+  </view>
+
+  <view class="filters">
+    <view class="chip {{filter===item?'on':''}}" wx:for="{{filters}}" wx:key="*this"
+      data-f="{{item}}" bindtap="onFilter">{{item}}</view>
+  </view>
+
+  <!-- 本期精选 -->
+  <view class="feature">
+    <view class="badge">本期精选</view>
+    <view class="ft">{{feature.title}}</view>
+    <view class="fd">{{feature.desc}}</view>
+    <view class="fm">
+      <text class="tag">{{feature.tag}}</text>
+      <text class="tag">大暑前后</text>
+    </view>
+    <view class="fp"><view class="p">¥{{feature.price}}</view><view class="d">/人 · {{feature.days}} 天</view></view>
+  </view>
+
+  <!-- 线路列表 -->
+  <view class="list">
+    <view class="card" wx:for="{{tours}}" wx:key="id">
+      <view class="cov {{item.g}}">{{item.cover}}</view>
+      <view class="info">
+        <view class="tt">{{item.title}}</view>
+        <view class="ds">{{item.desc}}</view>
+        <text class="tg">{{item.tag}}</text>
+        <view class="meta"><text class="price">¥{{item.price}}</text> · {{item.days}} 天</view>
+      </view>
+      <view class="book" data-index="{{index}}" bindtap="book">预订</view>
+    </view>
+  </view>
+</view>
+<template is="whimsyFx"/>
+<view class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>

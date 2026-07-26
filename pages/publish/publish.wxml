@@ -1,0 +1,31 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="page {{theme}}">
+  <view class="uploads">
+    <view class="u f" wx:for="{{imgs}}" wx:key="*this">{{item}}</view>
+    <view class="u" bindtap="chooseImg">＋</view>
+    <view class="u">＋</view>
+    <view class="u">＋</view>
+    <view class="u">＋</view>
+    <view class="u">＋</view>
+  </view>
+
+  <input class="ti" placeholder="填标题会有更多赞哦~" value="{{title}}" bindinput="onTitle" />
+  <textarea class="ta" placeholder="这一刻的星野、心情或愿想……" value="{{body}}" bindinput="onBody" maxlength="500" />
+  <view style="font-size:22rpx;color:var(--fg-2);padding:6rpx 6rpx 0;">友善分享 · 发布将过内容安全预检</view>
+
+  <view class="sec">
+    <view class="h">添加话题</view>
+    <view class="chips">
+      <view class="c {{picked[item]?'on':''}}" wx:for="{{topics}}" wx:key="*this" data-t="{{item}}" bindtap="toggleTopic">#{{item}}</view>
+    </view>
+  </view>
+
+  <view class="sec">
+    <view class="row" bindtap="choosePlace"><text>📍 地点</text><text class="r">{{place}} ›</text></view>
+    <view class="row" bindtap="chooseStar"><text>🔮 关联我的星图</text><text class="r">{{star}} ▾</text></view>
+    <view class="row" bindtap="chooseStar"><text>🏮 关联今日寄愿</text><text class="r">为妈妈 ›</text></view>
+  </view>
+
+  <button class="pub" bindtap="publish">发布并 +8 功德</button>
+  <template is="whimsyFx"/>
+</view>

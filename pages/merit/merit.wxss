@@ -1,0 +1,155 @@
+.container { padding: 24rpx; }
+.hero {
+  text-align: center;
+  padding: 20rpx 0 8rpx;
+}
+.hero-title { font-size: 40rpx; font-weight: 800; color: var(--gold-deep); }
+.hero-sub { font-size: 24rpx; color: var(--fg-2); margin-top: 8rpx; }
+
+.tabs {
+  display: flex;
+  background: var(--card);
+  border-radius: 999rpx;
+  padding: 8rpx;
+  margin: 16rpx 0;
+  box-shadow: var(--shadow-sm);
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--fg-2);
+  padding: 14rpx 0;
+  border-radius: 999rpx;
+}
+.tab.on {
+  background: linear-gradient(135deg, var(--gold), #e0c489);
+  color: #fff;
+  font-weight: 700;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 20rpx;
+  padding: 28rpx;
+  margin: 20rpx 0;
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--border);
+}
+.title { font-size: 34rpx; font-weight: 700; color: var(--gold-deep); }
+.subtitle { font-size: 24rpx; color: var(--fg-2); margin-top: 6rpx; }
+
+.hero-card { text-align: center; background: linear-gradient(160deg, var(--gold-soft), var(--gold-tint)); }
+.merit-num { font-size: 80rpx; font-weight: 800; color: var(--gold-deep); line-height: 1; }
+.merit-label { font-size: 24rpx; color: var(--fg-2); margin-top: 6rpx; }
+.level-badge {
+  display: inline-block;
+  margin-top: 16rpx;
+  background: var(--gold);
+  color: #fff;
+  font-size: 26rpx;
+  padding: 6rpx 24rpx;
+  border-radius: 999rpx;
+}
+.streak { font-size: 26rpx; color: var(--gold-deep); margin: 18rpx 0 8rpx; }
+
+.progress {
+  height: 16rpx;
+  background: var(--bg-elev);
+  border-radius: 999rpx;
+  overflow: hidden;
+  margin: 14rpx 0;
+}
+.progress-in {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #e0c489);
+  border-radius: 999rpx;
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--gold), #e0c489);
+  color: #fff;
+  border-radius: 999rpx;
+  text-align: center;
+  padding: 22rpx;
+  font-size: 30rpx;
+  margin-top: 16rpx;
+}
+.btn-ghost {
+  border: 2rpx solid var(--gold);
+  color: var(--gold-deep);
+  background: transparent;
+}
+.btn-done { background: var(--gold-soft); color: var(--gold-deep); }
+
+.action {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.action:last-child { border-bottom: none; }
+.a-icon { font-size: 44rpx; margin-right: 18rpx; }
+.a-name { font-size: 28rpx; color: var(--fg); font-weight: 600; }
+.a-desc { font-size: 22rpx; color: var(--fg-2); margin-top: 4rpx; }
+.a-btn {
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+  font-size: 26rpx;
+  padding: 12rpx 22rpx;
+  border-radius: 999rpx;
+  font-weight: 700;
+}
+.a-done { background: var(--bg-elev); color: var(--fg-2); }
+
+.chips { display: flex; gap: 16rpx; margin: 8rpx 0; }
+.chip {
+  font-size: 26rpx;
+  color: var(--fg-2);
+  padding: 10rpx 28rpx;
+  border-radius: 999rpx;
+  background: var(--card);
+}
+.chip.on { background: var(--gold); color: #fff; font-weight: 700; }
+
+.board-head { font-size: 24rpx; color: var(--fg-2); padding-bottom: 12rpx; border-bottom: 1rpx solid var(--border); }
+.board-item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.board-item.me { background: var(--gold-soft); border-radius: 12rpx; }
+.b-rank { width: 48rpx; text-align: center; color: var(--gold-deep); font-weight: 700; }
+.b-name { font-size: 28rpx; color: var(--fg); font-weight: 600; }
+.b-region { font-size: 20rpx; color: var(--fg-2); }
+.b-merit { width: 110rpx; text-align: right; color: var(--gold-deep); font-weight: 700; }
+.b-level { width: 90rpx; text-align: right; font-size: 24rpx; color: var(--fg-2); }
+
+.bond {
+  display: flex;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid var(--border);
+}
+.bond:last-of-type { border-bottom: none; }
+
+.lamp { color: var(--gold-deep); font-size: 28rpx; }
+.wish-text { font-size: 28rpx; color: var(--fg); margin: 12rpx 0 16rpx; line-height: 1.6; }
+.muted { color: var(--fg-2); font-size: 22rpx; }
+
+/* 因果日报 */
+.daily { background: linear-gradient(160deg, var(--gold-soft), var(--gold-tint)); }
+.d-head { font-size: 28rpx; font-weight: 700; color: var(--gold-deep); }
+.d-text { font-size: 26rpx; color: var(--fg-3); line-height: 1.7; margin-top: 12rpx; }
+
+/* 点亮城市 */
+.cities { display: flex; flex-wrap: wrap; gap: 14rpx; margin-top: 16rpx; }
+.city { font-size: 24rpx; color: var(--gold-deep); background: var(--gold-soft); border-radius: 999rpx; padding: 8rpx 22rpx; }
+
+/* 功德林头部 */
+.board-head { display: flex; justify-content: space-between; align-items: center; }
+.bh-king { color: var(--gold-deep); font-weight: 700; font-size: 26rpx; }
+.bh-anon { font-size: 22rpx; color: var(--fg-2); background: var(--bg-elev); padding: 6rpx 18rpx; border-radius: 999rpx; }
+.board-head2 { color: var(--fg-2); font-size: 22rpx; padding-top: 14rpx; }
+.b-rank.king { font-size: 34rpx; }

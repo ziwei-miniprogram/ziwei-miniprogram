@@ -1,0 +1,43 @@
+<view class="container page {{theme}}">
+  <view class="head">
+    <view class="h-t">心灵之旅</view>
+    <view class="h-s">每天 10 分钟，安住当下，温柔待己</view>
+  </view>
+
+  <!-- 今日冥想 Hero -->
+  <view class="med">
+    <view class="breath"></view>
+    <view class="tt">今日冥想 · 第 {{streak}} 天</view>
+    <view class="sd">跟随呼吸，回到此刻</view>
+    <view class="btn">▶ 开始 10 分钟</view>
+  </view>
+
+  <!-- 情绪打卡 -->
+  <view class="mood">
+    <view class="ml">此刻，你的心情是？</view>
+    <view class="row">
+      <view class="e {{moodSel===idx?'on':''}}" wx:for="{{moods}}" wx:key="*this" wx:for-index="idx"
+        data-i="{{idx}}" bindtap="pickMood">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 冥想列表 -->
+  <view class="sec-t">引导冥想</view>
+  <view class="card" wx:for="{{meditations}}" wx:key="id">
+    <view class="ci">{{item.cover}}</view>
+    <view class="ct">
+      <view class="ti">{{item.title}}</view>
+      <view class="ds">轻装前行，安住当下</view>
+    </view>
+    <view class="ty">{{item.type}}</view>
+  </view>
+
+  <!-- 心灵日记 -->
+  <view class="diary">
+    <view class="dt">心灵日记</view>
+    <textarea class="box" placeholder="此刻你在想什么？写下它，温柔对待自己。" value="{{log}}" bindinput="onInput" />
+    <view class="save" bindtap="save">保存（自动内容审核）</view>
+    <view class="note">日记仅自己可见，经安全审核后加密存储。</view>
+  </view>
+</view>
+<view class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>

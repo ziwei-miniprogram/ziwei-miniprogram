@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/chart/chart",
+    "pages/tourism/tourism",
+    "pages/journey/journey",
+    "pages/healing/healing",
+    "pages/blessing/blessing",
+    "pages/mall/mall",
+    "pages/merit/merit",
+    "pages/note/note",
+    "pages/message/message",
+    "pages/profile/profile",
+    "pages/publish/publish",
+    "pages/space/space",
+    "pages/search/search"
+  ],
+  "window": {
+    "navigationBarTitleText": "拾光驿·星野漫游",
+    "navigationBarBackgroundColor": "#f7f5f0",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f5f0"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#9a9286",
+    "selectedColor": "#c8a35a",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "发现" },
+      { "pagePath": "pages/tourism/tourism", "text": "文旅" },
+      { "pagePath": "pages/message/message", "text": "消息" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

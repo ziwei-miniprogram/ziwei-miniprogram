@@ -1,0 +1,9 @@
+<!-- 常驻心灯浮标：底部右侧悬浮，快捷点灯/签到/记一笔。不挡操作，44px+ 触控区 -->
+<view class="hl {{theme}} {{deedDoneAll ? 'all-done' : ''}}" bindtap="onTap" hover-class="hl-hover" role="button" aria-label="心灯快捷入口">
+  <view class="hl-ring"></view>
+  <text class="hl-emoji">{{checkedIn ? '🪔' : '🕯'}}</text>
+  <text class="hl-num">{{merit}}</text>
+  <view wx:if="{{streak>=3}}" class="hl-streak">🔥{{streak}}</view>
+  <!-- 本日三善已成：金色呼吸小标，强化日常仪式感 -->
+  <view wx:if="{{deedDoneAll}}" class="hl-deed">三善成</view>
+</view>

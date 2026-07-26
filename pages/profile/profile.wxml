@@ -1,0 +1,101 @@
+<import src="/utils/whimsy.wxml"/>
+<view class="page {{theme}}">
+  <view class="cover"></view>
+  <view class="head">
+    <view class="av">拾</view>
+    <view class="h-info">
+      <view class="name">拾光的小野</view>
+      <view class="edit" bindtap="editProfile">编辑资料</view>
+    </view>
+    <!-- 夜灯模式切换 -->
+    <view class="theme-toggle">
+      <text class="tt-ic">{{theme==='dark' ? '🌙' : '🌞'}}</text>
+      <view class="tt-label" bindtap="toggleTheme">夜灯模式</view>
+      <switch checked="{{theme==='dark'}}" bindchange="toggleTheme" color="#c8a35a" class="tt-switch"/>
+    </view>
+  </view>
+  <view class="bio">记录每一次抬头看星的时刻 · 已点亮 186 盏心灯 🪔</view>
+
+  <!-- 本月星愿（P0-3 星愿承诺） -->
+  <view class="wish-card" wx:if="{{myWish}}">
+    <text class="w-emoji">🌟</text>
+    <view class="w-body">
+      <view class="w-t">本月星愿</view>
+      <view class="w-v">{{myWish}}</view>
+    </view>
+  </view>
+
+  <!-- 每日星签彩蛋 -->
+  <view class="sign-card" bindtap="drawStarSign">
+    <view class="sc-title">✦ 今日星签</view>
+    <block wx:if="{{starSign}}">
+      <view class="sc-tip">{{starSign.tip}}</view>
+      <view class="sc-line">{{starSign.line}}</view>
+      <view class="sc-foot">{{starSignedToday ? '每日一签 · 明日可再抽' : '点此抽签 ✦'}}</view>
+    </block>
+    <view wx:else class="sc-empty">点此抽取今日星签 ✦</view>
+  </view>
+
+  <!-- 功德卡 -->
+  <view class="merit-card" bindtap="goMerit">
+    <view class="lv">{{level.name}} · Lv.{{level.lv}}</view>
+    <view class="mt"><text class="m-num">{{merit}}</text> 功德 · 连续签到 {{streak}} 天</view>
+    <view class="go">功德中心 ›</view>
+  </view>
+
+  <!-- 金色成就徽章墙 -->
+  <view class="badges">
+    <view class="b-title">🏅 成就徽章 <text class="b-count">{{badgeCount}}/{{badges.length}}</text></view>
+    <view class="b-grid">
+      <view class="badge {{item.unlocked ? 'on' : ''}}" wx:for="{{badges}}" wx:key="key">
+        <view class="b-ic">{{item.icon}}</view>
+        <view class="b-nm">{{item.name}}</view>
+        <view class="b-desc">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 统计 -->
+  <view class="stat">
+    <view class="st"><text class="st-n">{{statNote}}</text><text class="st-l">笔记</text></view>
+    <view class="st"><text class="st-n">{{statCollect}}</text><text class="st-l">收藏</text></view>
+    <view class="st"><text class="st-n">{{statLike}}</text><text class="st-l">赞</text></view>
+  </view>
+
+  <!-- 星图人格卡 -->
+  <view class="persona">
+    <view class="p-title">✦ 我的星图人格</view>
+    <view class="p-name">{{personality.title}}</view>
+    <view class="p-desc">{{personality.desc}}</view>
+    <view class="p-traits">
+      <text class="trait" wx:for="{{personality.traits}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="p-btn" bindtap="goSpace">进入星野工具箱 ›</view>
+  </view>
+
+  <!-- 快捷入口（双 Hub 收敛：工具唯一归口为星野） -->
+  <view class="entries">
+    <view class="entry" bindtap="goSpace"><view class="e-i">✦</view><view>星野工具箱</view></view>
+    <view class="entry" bindtap="goMerit"><view class="e-i">🪔</view><view>功德林</view></view>
+    <view class="entry" bindtap="goMall"><view class="e-i">🛍</view><view>星野好物</view></view>
+  </view>
+
+  <!-- 笔记网格 -->
+  <view class="ptabs">
+    <view class="pt {{ptab==='note'?'on':''}}" data-t="note" bindtap="switchPTab">笔记</view>
+    <view class="pt {{ptab==='collect'?'on':''}}" data-t="collect" bindtap="switchPTab">收藏</view>
+    <view class="pt {{ptab==='like'?'on':''}}" data-t="like" bindtap="switchPTab">赞</view>
+  </view>
+  <view class="grid">
+    <view class="g" wx:for="{{notes}}" wx:key="id" data-id="{{item.id}}" bindtap="openNote" style="background:{{item.bg}};position:relative;">
+      {{item.emoji}}  <view class="g-tt">{{item.title}}</view>
+      <view wx:if="{{item.mine}}" style="position:absolute;right:10rpx;top:10rpx;background:rgba(200,163,90,.92);color:#fff;font-size:16rpx;padding:2rpx 10rpx;border-radius:999rpx;">我的</view>
+    </view>
+  </view>
+  <view wx:if="{{notes.length===0 && ptab!=='note'}}" class="empty">
+    <view class="em-tt">{{ptab==='collect'?'还没有收藏的笔记':'还没有赞过的笔记'}}</view>
+    <view class="em-sub">去「发现」逛逛，遇到喜欢的就点一下 ♥ · +1 功德</view>
+  </view>
+</view>
+<template is="whimsyFx"/>
+<view class="disclaimer">本平台内容仅供传统文化娱乐与心理慰藉参考，请勿迷信。</view>
