@@ -16,6 +16,15 @@ const PATHS = {
   xingzuo: 'M5 6l5 4 4-6 5 8 M5 6h0 M10 10h0 M14 4h0 M19 12h0 M7 18l4-3 M11 15l5 2'
 };
 
+// 内容叙事母题图标（星 / 灯 / 纸 / 夜 / 金线），描边用品牌金
+const MOTIF_PATHS = {
+  star: 'M12 3l2.5 5.6L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.4z',
+  lamp: 'M12 3c3 4 5 6.5 5 9.5A5 5 0 0 1 7 12.5C7 9.5 9 7 12 3z M9 18h6 M10 21h4',
+  paper: 'M6 3h9l4 4v14H6z M14 3v5h5 M9 13h7 M9 17h5',
+  night: 'M16 4a8 8 0 1 0 0 16 6 6 0 0 1 0-16z',
+  spark: 'M12 4l1.6 4.4L18 10l-4.4 1.6L12 16l-1.6-4.4L6 10l4.4-1.6z'
+};
+
 function iconDataUri(path, color) {
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" ' +
     'stroke="' + color + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
@@ -31,4 +40,11 @@ function toolIcon(key, theme) {
   return iconDataUri(p, color);
 }
 
-module.exports = { PATHS, iconDataUri, toolIcon };
+// 母题图标：用于内容叙事卡片（星夜物语 / 节气来信 / 星图传记），描边用品牌金，明暗自适应
+function motifIcon(key, theme) {
+  const p = MOTIF_PATHS[key] || MOTIF_PATHS.star;
+  const color = theme === 'dark' ? '#d9b66a' : '#c8a35a';
+  return iconDataUri(p, color);
+}
+
+module.exports = { PATHS, MOTIF_PATHS, iconDataUri, toolIcon, motifIcon };

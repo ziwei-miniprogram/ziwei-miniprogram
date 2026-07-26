@@ -1,0 +1,37 @@
+/* 星夜物语卡片：自包含样式（不依赖全局工具类，便于团队照抄复用）
+   令牌驱动，明暗自适应；母题为「夜」，呼应叙事主轴。 */
+.story {
+  border-radius: var(--radius-lg, 40rpx);
+  padding: 32rpx;
+  margin: 20rpx 24rpx;
+  background: var(--night-grad, linear-gradient(160deg, #16233f, #0B1426));
+  color: #f3ead4;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-1, 0 2rpx 8rpx rgba(0,0,0,.05)), var(--shadow-2, 0 12rpx 32rpx rgba(0,0,0,.08));
+}
+.story-hover { filter: brightness(1.06); }
+.u-glow {
+  position: absolute; top: -60rpx; right: -50rpx;
+  width: 280rpx; height: 280rpx; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,163,90,.4), transparent 70%);
+}
+.s-head { display: flex; align-items: center; gap: 16rpx; position: relative; }
+.s-motif { width: 48rpx; height: 48rpx; flex: none; }
+.s-host { font-size: 24rpx; color: var(--gold, #c8a35a); letter-spacing: 1rpx; }
+.s-body {
+  font-size: 30rpx; line-height: 1.9; margin-top: 18rpx;
+  color: #f3ead4; position: relative;
+}
+.s-sign {
+  margin-top: 20rpx;
+  border: 1rpx solid rgba(200,163,90,.5);
+  border-radius: 16rpx; padding: 16rpx 20rpx;
+  font-size: 26rpx; color: #f6e6c0;
+}
+.s-act {
+  margin-top: 22rpx; display: inline-block;
+  background: var(--gold-grad, linear-gradient(135deg, #d8b876, #b98e44));
+  color: #3a2c10; border-radius: 999rpx;
+  padding: 18rpx 36rpx; font-size: 28rpx; font-weight: 700;
+}

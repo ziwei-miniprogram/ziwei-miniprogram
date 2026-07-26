@@ -1,0 +1,10 @@
+<view class="story" bindtap="onTap" hover-class="story-hover">
+  <view class="u-glow"></view>
+  <view class="s-head">
+    <image class="s-motif" src="{{motifSrc}}" mode="aspectFit"></image>
+    <view class="s-host">{{host}}</view>
+  </view>
+  <view class="s-body serif">{{body}}</view>
+  <view class="s-sign">今日星签 · {{sign}}</view>
+  <view class="s-act">{{actionText}} →</view>
+</view>

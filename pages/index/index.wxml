@@ -79,6 +79,17 @@
   </view>
   <view class="proof-bar">🔥 已有 {{socialProof}} 位旅人正在星野日行一善 · 已为你关注 3 位星野引路人</view>
 
+  <!-- 星夜物语 · 每日视觉叙事入口（标杆组件：母题=夜，双主题 + 线性 SVG） -->
+  <story-card
+    wx:if="{{story}}"
+    host="{{story.host}}"
+    body="{{story.body}}"
+    sign="{{story.sign}}"
+    actionText="{{story.action}}"
+    motif="{{story.motif}}"
+    theme="{{theme}}"
+    bind:tap="onStoryTap" />
+
   <!-- 顶 Tab（吸顶） -->
   <view class="tabs-wrap">
     <view class="tabs">

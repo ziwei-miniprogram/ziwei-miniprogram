@@ -2,6 +2,7 @@ const { getLunar } = require('../../utils/lunar.js');
 const { feed, followingFeed, videos, following } = require('../../utils/mock.js');
 const social = require('../../utils/social.js');
 const whimsy = require('../../utils/whimsy.js');
+const daily = require('../../utils/daily-content.js');
 
 // 生成某月日历（周一起始，6 行 42 格，含上下月补位与今日高亮 + 农历小字）
 function buildCalendar(year, month, today) {
@@ -194,7 +195,7 @@ Page({
     if (toUnlock === 0) hint = '已可点亮深度解读 ✦';
     else if (pct >= 70) hint = `再攒 ${toUnlock} 即点亮深度解读 ✦`;
     else hint = `距深度解读还差 ${toUnlock} 功德`;
-    this.setData({ merit: m, level: app.globalData.level, checkedIn: app.checkedInToday(), unlockPct: pct, unlockHint: hint });
+    this.setData({ merit: m, level: app.globalData.level, checkedIn: app.checkedInToday(), unlockPct: pct, unlockHint: hint, story: daily.getDailyStory() });
     if (typeof this.getTabBar === 'function' && this.getTabBar()) this.getTabBar().setData({ selected: 0 });
     this.buildLists();
   },
@@ -356,6 +357,8 @@ Page({
     this.setData({ showGuide: false });
   },
   goGuideSpace() { wx.switchTab({ url: '/pages/space/space' }); },
+  // 星夜物语卡片点击：进入点灯/三善/寄愿（merit 为非 tab 页，用 navigateTo）
+  onStoryTap() { wx.navigateTo({ url: '/pages/merit/merit' }); },
 
   // P1-6 快捷发布：首页直接「记一笔」，降低发布摩擦
   quickInput(e) { this.setData({ quickText: e.detail.value }); },
