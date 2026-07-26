@@ -93,4 +93,4 @@ jobs:
         run: npm install miniprogram-ci --no-save
 
       - name: 编译预览校验
-        run: npx miniprogram-ci preview --appid ${{ secrets.WX_APPID }} --pkp ./private.key -p . -o preview.jpg
+        run: npx miniprogram-ci preview --appid "${{ secrets.WX_APPID }}" --private-key-path ./private.key --project-path . --upload-version "1.0.${{ github.run_number }}" --qrcode-output-dest preview.jpg

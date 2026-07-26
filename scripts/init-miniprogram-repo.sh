@@ -165,6 +165,7 @@ jobs:
               if (r.status !== 0) { console.log("::error file=" + f + "::JS 语法错误\n" + r.stderr.toString()); jsErr++; }
             }
             console.log(jsErr ? ("❌ " + jsErr + " 个 JS 语法错误") : ("✅ JS 语法通过 (" + (byExt[".js"] || []).length + " 个)"));
+
             // 2) JSON 合法性校验
             let jsonBad = 0;
             for (const f of (byExt[".json"] || [])) {
@@ -172,6 +173,7 @@ jobs:
               catch (e) { console.log("::error file=" + f + "::JSON 非法: " + e.message); jsonBad++; }
             }
             console.log(jsonBad ? ("❌ " + jsonBad + " 个非法 JSON") : ("✅ JSON 合法 (" + (byExt[".json"] || []).length + " 个)"));
+
             // 3) Python 编译校验
             let pyErr = 0;
             for (const f of (byExt[".py"] || [])) {
@@ -179,6 +181,7 @@ jobs:
               if (r.status !== 0) { console.log("::error file=" + f + "::Python 编译失败\n" + r.stderr.toString()); pyErr++; }
             }
             console.log(pyErr ? ("❌ " + pyErr + " 个 Python 编译失败") : ("✅ Python 编译通过 (" + (byExt[".py"] || []).length + " 个)"));
+
             // 4) 密钥/敏感信息扫描 (仅源码扩展名, 值需 >=12 字符引号串)
             const Q = "[\"\x27]";
             const re = new RegExp("(api[_-]?key|secret|token|password|passwd)\\s*[:=]\\s*" + Q + "[A-Za-z0-9_-]{12,}" + Q, "gi");
@@ -188,6 +191,7 @@ jobs:
               if (m) { console.log("::error file=" + f + "::疑似硬编码密钥: " + m[0].slice(0, 40)); hit++; }
             }
             console.log(hit ? ("❌ " + hit + " 处疑似硬编码密钥") : "✅ 未检测到硬编码密钥");
+
             code = (jsErr || jsonBad || pyErr || hit) ? 1 : 0;
             process.exit(code);
           '
@@ -201,16 +205,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
       - name: 写入上传私钥
         run: printf '%s' "${{ secrets.WX_PRIVATE_KEY }}" > ./private.key && chmod 600 ./private.key
+
       - name: 安装 miniprogram-ci
         run: npm install miniprogram-ci --no-save
+
       - name: 编译预览校验
-        run: npx miniprogram-ci preview --appid ${{ secrets.WX_APPID }} --pkp ./private.key -p . -o preview.jpg
+        run: npx miniprogram-ci preview --appid "${{ secrets.WX_APPID }}" --private-key-path ./private.key --project-path . --upload-version "1.0.${{ github.run_number }}" --qrcode-output-dest preview.jpg
 CI_EOF
 
 # ---------- CONTRIBUTING.md（精简版，结构同本项目） ----------
