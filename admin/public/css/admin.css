@@ -155,3 +155,51 @@ body {
     transition: color .2s, border-color .2s;
 }
 .nav-logout:hover { color: var(--gold-deep); border-color: var(--gold); }
+
+/* ===== P1 通用：工具条 / 筛选标签 ===== */
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.tab {
+    border: 1px solid var(--border); background: var(--card); color: var(--fg-2);
+    border-radius: 999px; padding: 10px 18px; font-size: 20px; cursor: pointer; transition: .2s;
+}
+.tab:hover { background: var(--gold-soft); color: var(--gold-deep); }
+.tab.on { background: var(--gold-soft); color: var(--gold-deep); font-weight: 700; border-color: var(--gold); }
+
+/* ===== 商城：商品卡片 ===== */
+.product-card { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.pc-cover { height: 160px; position: relative; }
+.pc-limited { position: absolute; top: 12px; left: 12px; background: rgba(0, 0, 0, .35); color: #fff; font-size: 16px; padding: 4px 12px; border-radius: 999px; }
+.pc-body { padding: 20px 24px 24px; }
+.pc-cat { font-size: 18px; color: var(--fg-2); }
+.pc-name { font-size: 26px; font-weight: 700; margin: 4px 0 8px; }
+.pc-meta { font-size: 18px; color: var(--fg-2); }
+.pc-price { font-size: 26px; font-weight: 700; color: var(--gold-deep); margin: 10px 0 16px; }
+.pc-margin { font-size: 16px; color: var(--fg-2); font-weight: 400; margin-left: 8px; }
+.pc-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+/* ===== 文旅：城市卡片 / 进度条 ===== */
+.city-card { }
+.city-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.city-name { font-size: 26px; font-weight: 700; }
+.city-meta { font-size: 18px; color: var(--fg-2); margin: 12px 0 16px; }
+.progress-track { height: 10px; background: var(--gold-soft); border-radius: 999px; overflow: hidden; }
+.progress-track.sm { height: 8px; }
+.progress-fill { height: 100%; background: var(--gold-grad); border-radius: 999px; transition: width .4s; }
+
+/* ===== 数据看板：KPI / 趋势 ===== */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.kpi { padding: 28px; }
+.trend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+.trend-col { }
+.trend-title { font-size: 20px; color: var(--fg-2); margin-bottom: 12px; }
+.bars { display: flex; align-items: flex-end; gap: 6px; height: 120px; }
+.bar-wrap { flex: 1; height: 100%; display: flex; align-items: flex-end; }
+.bar { width: 100%; background: var(--gold-grad); border-radius: 6px 6px 0 0; min-height: 4px; transition: height .3s; }
+.trend-total { font-size: 18px; color: var(--fg-2); margin-top: 10px; }
+
+/* ===== 通用：模态表单 ===== */
+.modal-mask { position: fixed; inset: 0; background: rgba(11, 20, 38, .5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 24px; }
+.modal { width: 100%; max-width: 520px; max-height: 90vh; overflow: auto; background: var(--card); border-radius: var(--radius); padding: 36px; box-shadow: var(--shadow-2); }
+.modal-title { margin: 0 0 24px; font-size: 32px; font-weight: 700; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }

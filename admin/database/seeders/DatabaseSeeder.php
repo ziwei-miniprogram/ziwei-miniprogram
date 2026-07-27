@@ -71,5 +71,12 @@ class DatabaseSeeder extends Seeder
             'target_id' => (string) $super->id,
             'meta' => ['note' => '初始种子数据'],
         ]);
+
+        // P1 演示数据
+        $this->call([
+            ProductSeeder::class,
+            TourismSeeder::class,
+            MetricSeeder::class,
+        ]);
     }
 }

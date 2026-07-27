@@ -5,6 +5,9 @@ use App\Livewire\AdminDashboard;
 use App\Livewire\ReviewQueue;
 use App\Livewire\MeritLedger;
 use App\Livewire\AuditLog;
+use App\Livewire\MallManager;
+use App\Livewire\TourismConfig;
+use App\Livewire\AnalyticsDashboard;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +31,13 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('role:operator,super');
     Route::get('/admin/audit', AuditLog::class)->name('admin.audit')
         ->middleware('role:super');
+
+    // P1：商城管理 / 文旅运营（运营+超管）；数据看板全员可见
+    Route::get('/admin/mall', MallManager::class)->name('admin.mall')
+        ->middleware('role:operator,super');
+    Route::get('/admin/tourism', TourismConfig::class)->name('admin.tourism')
+        ->middleware('role:operator,super');
+    Route::get('/admin/analytics', AnalyticsDashboard::class)->name('admin.analytics');
 });
 
 // 小程序 API 入口（P2 真实 API 对接时启用；Sanctum token 鉴权）
