@@ -29,6 +29,13 @@
     <view class="ml-btn">点亮</view>
   </view>
 
+  <!-- Apple 风商城头部：宽留白 + 大字号 -->
+  <view class="mall-hero">
+    <view class="u-eyebrow">结缘好物 · 依你而选</view>
+    <view class="mall-h2">星野好物，陪你日行一善</view>
+    <view class="mall-lede">香氛、手串、祈福御守——每一件都为静心与陪伴而做。</view>
+  </view>
+
   <scroll-view class="cats" scroll-x>
     <view class="cat {{cat===item?'on':''}}" wx:for="{{cats}}" wx:key="*this" data-c="{{item}}" bindtap="switchCat">{{item}}</view>
   </scroll-view>

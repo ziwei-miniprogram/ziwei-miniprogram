@@ -26,6 +26,7 @@
     </view>
     <view class="hero-top">
       <view class="hero-bless">
+        <view class="hero-eyebrow">星野漫游 · 每日星语</view>
         <view class="b-line">{{heroBlessing[0]}}</view>
         <view class="b-line">{{heroBlessing[1]}}</view>
       </view>
@@ -69,6 +70,30 @@
     <view class="q" bindtap="goTourism"><view class="q-i">🏯</view><view>文旅</view></view>
     <view class="q" bindtap="goWish"><view class="q-i">🏮</view><view>寄愿</view></view>
     <view class="q" bindtap="goMerit"><view class="q-i">🪔</view><view>功德</view></view>
+  </view>
+
+  <!-- Apple 风特性展示：三大支柱（宽留白 + 大字号 + 柔影） -->
+  <view class="u-section">
+    <view class="u-eyebrow">日行一善 · 三步成习</view>
+    <view class="u-h2">抬头看星，落笔安心</view>
+    <view class="u-lede">把每一天的小仪式，安放进星河里。</view>
+    <view class="u-bento">
+      <view class="u-apple-card u-spring" bindtap="goChart">
+        <view class="ub-ic">🔭</view>
+        <view class="ub-t">点亮星图</view>
+        <view class="ub-d">二十八宿，照亮今日心绪</view>
+      </view>
+      <view class="u-apple-card u-spring" bindtap="goWish">
+        <view class="ub-ic">🏮</view>
+        <view class="ub-t">寄一笔愿</view>
+        <view class="ub-d">把心事交给星河，慢慢安放</view>
+      </view>
+      <view class="u-apple-card u-spring" bindtap="goMerit">
+        <view class="ub-ic">🪔</view>
+        <view class="ub-t">今日三善</view>
+        <view class="ub-d">点灯 · 随喜 · 冥想，积微成光</view>
+      </view>
+    </view>
   </view>
 
   <!-- 距深度解读进度 + 社会证明（P0-2 / P0-4） -->

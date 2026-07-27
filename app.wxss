@@ -499,3 +499,37 @@ page, .page {
   --loop-chip-border: rgba(217,182,106,.45);
   --reco-card-border: rgba(217,182,106,.32);
 }
+
+/* ===== Apple Store 风格设计层（.u-* 工具类；延续小程序令牌；全局可复用）=====
+   原则：超大留白、系统字体大标题、柔和分层阴影、克制描边、spring 微交互。 */
+.u-eyebrow { font-size: 20rpx; letter-spacing: 3rpx; font-weight: 700; color: var(--gold-deep); }
+.u-h2 { font-size: 42rpx; font-weight: 700; letter-spacing: -1rpx; line-height: 1.28; color: var(--fg); margin: 10rpx 0 0; }
+.u-lede { font-size: 26rpx; line-height: 1.7; color: var(--fg-2); margin-top: 12rpx; }
+.u-section { margin: 48rpx 24rpx 8rpx; }
+.u-bento { display: flex; gap: 16rpx; margin-top: 22rpx; }
+.u-apple-card {
+  flex: 1; min-width: 0;
+  background: var(--card);
+  border: 1rpx solid var(--border);
+  border-radius: 28rpx;
+  padding: 26rpx 24rpx;
+  box-shadow: var(--shadow-1), var(--shadow-2);
+}
+.ub-ic { font-size: 44rpx; line-height: 1; }
+.ub-t { font-size: 28rpx; font-weight: 700; color: var(--fg); margin-top: 14rpx; }
+.ub-d { font-size: 22rpx; line-height: 1.6; color: var(--fg-2); margin-top: 6rpx; }
+.u-spring { transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .25s ease; }
+.u-spring:active { transform: scale(.97); box-shadow: var(--shadow-1); }
+
+/* Hero eyebrow（Apple 风小标签，置于星夜 Hero 内） */
+.hero-eyebrow { font-size: 20rpx; letter-spacing: 3rpx; opacity: .82; margin-bottom: 10rpx; font-weight: 600; }
+
+/* 商城 Apple 风头部 */
+.mall-hero { margin: 16rpx 24rpx 4rpx; }
+.mall-h2 { font-size: 42rpx; font-weight: 700; letter-spacing: -1rpx; line-height: 1.28; color: var(--fg); margin: 10rpx 0 0; }
+.mall-lede { font-size: 25rpx; line-height: 1.65; color: var(--fg-2); margin-top: 12rpx; }
+
+@media (prefers-reduced-motion: reduce) {
+  .u-spring { transition: none; }
+  .u-spring:active { transform: none; }
+}
