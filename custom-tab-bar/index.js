@@ -7,21 +7,25 @@ const GOLD = '#c8a35a'; // 选中（星辉金）
 // 生成线性 SVG data URI（stroke 着色，fill none）
 function svg(inner, color) {
   const s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="' + color +
-    '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
+    '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + inner + '</svg>';
   return 'data:image/svg+xml,' + encodeURIComponent(s);
 }
 // 居中星野：金色实心圆 + 深蓝星（始终高亮，强调品牌中枢）
 function svgCenter() {
   const s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">' +
     '<circle cx="12" cy="12" r="11" fill="#c8a35a"/>' +
-    '<path d="M12 5l1.9 4.9L19 11l-5.1 1.1L12 17l-1.9-4.9L5 11l5.1-1.1z" fill="#0B1426"/></svg>';
+    '<path d="M12 3.4 13.5 10.5 20.6 12 13.5 13.5 12 20.6 10.5 13.5 3.4 12 10.5 10.5 Z" fill="#0B1426"/></svg>';
   return 'data:image/svg+xml,' + encodeURIComponent(s);
 }
 const ICON = {
-  compass: '<circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/>',
-  map: '<path d="M12 3l8 4-8 4-8-4 8-4z"/><path d="M4 11v6l8 4 8-4v-6"/>',
-  bag: '<path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 016 0v2"/>',
-  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>'
+  // 发现：罗盘（外环 + 指针菱形 + 中心轴）
+  compass: '<circle cx="12" cy="12" r="9"/><path d="M12 6.4 14 12l-2 5.6L10 12z"/><circle cx="12" cy="12" r="1"/>',
+  // 文旅：地图定位针
+  map: '<path d="M12 21.4S18.5 15.4 18.5 10A6.5 6.5 0 1 0 5.5 10c0 5.4 6.5 11.4 6.5 11.4z"/><circle cx="12" cy="10" r="2.4"/>',
+  // 商城：精致购物袋（圆角袋身 + 提手）
+  bag: '<path d="M6.5 8h11l-1 11.4h-9z"/><path d="M9.4 8v-1a2.6 2.6 0 0 1 5.2 0v1"/>',
+  // 我的：人像（头部 + 肩部弧）
+  user: '<circle cx="12" cy="8" r="3.6"/><path d="M5.4 20a6.6 6.6 0 0 1 13.2 0z"/>'
 };
 
 Component({
