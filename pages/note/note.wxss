@@ -25,3 +25,18 @@
 .nb-bar .cmt { flex: 1; background: var(--bg-elev); border-radius: 999rpx; height: 72rpx; display: flex; align-items: center; padding: 0 26rpx; color: var(--fg-2); font-size: 26rpx; }
 .nb-bar .act { font-size: 26rpx; color: var(--fg-2); display: flex; align-items: center; gap: 6rpx; }
 .nb-bar .act.on { color: var(--danger); font-weight: 600; }
+
+/* —— UGC 随手记：足迹列表 + 合规撰写面板 —— */
+.cmt-list { margin-top: 30rpx; padding-top: 24rpx; border-top: 1rpx solid var(--border); }
+.cmt-list-h { font-size: 24rpx; color: var(--fg-2); margin-bottom: 16rpx; }
+.cmt-item { display: flex; gap: 16rpx; padding: 16rpx 0; }
+.cmt-av { width: 60rpx; height: 60rpx; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #e0c489); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26rpx; flex-shrink: 0; }
+.cmt-body { flex: 1; }
+.cmt-name { font-size: 22rpx; color: var(--fg-2); margin-bottom: 6rpx; }
+.cmt-text { font-size: 27rpx; line-height: 1.7; color: var(--fg); }
+
+.cmt-panel { position: fixed; left: 0; right: 0; bottom: 110rpx; background: var(--card); border-top: 1rpx solid var(--border); padding: 22rpx 30rpx; z-index: 60; box-shadow: 0 -8rpx 30rpx rgba(0,0,0,.08); }
+.cmt-input { width: 100%; height: 150rpx; background: var(--bg-elev); border-radius: 18rpx; padding: 20rpx; font-size: 28rpx; color: var(--fg); box-sizing: border-box; }
+.cmt-actions { display: flex; justify-content: flex-end; gap: 20rpx; margin-top: 16rpx; }
+.cmt-cancel { font-size: 26rpx; color: var(--fg-2); padding: 14rpx 30rpx; border-radius: 999rpx; background: var(--bg-elev); }
+.cmt-send { font-size: 26rpx; color: #fff; padding: 14rpx 40rpx; border-radius: 999rpx; background: var(--gold); font-weight: 600; }

@@ -24,13 +24,30 @@
         </view>
       </view>
     </view>
+    <view class="cmt-list" wx:if="{{comments.length}}">
+      <view class="cmt-list-h">足迹 · {{comments.length}}</view>
+      <view class="cmt-item" wx:for="{{comments}}" wx:key="id">
+        <view class="cmt-av">我</view>
+        <view class="cmt-body">
+          <view class="cmt-name">我 · {{item.t}}</view>
+          <view class="cmt-text">{{item.text}}</view>
+        </view>
+      </view>
+    </view>
   </view>
 
   <view class="nb-bar">
-    <view class="cmt">说点什么…</view>
+    <view class="cmt" bindtap="openComment">说点什么…</view>
     <view class="act {{liked?'on':''}}" bindtap="toggleLike">♥ {{likeNum}}</view>
     <view class="act {{collected?'on':''}}" bindtap="toggleCollect">⭐ {{collectNum}}</view>
     <view class="act" bindtap="addLamp">🪔 +1</view>
+  </view>
+  <view class="cmt-panel" wx:if="{{showComment}}">
+    <textarea class="cmt-input" placeholder="温柔地留一句话…" value="{{commentText}}" bindinput="onComment" maxlength="120" focus="{{showComment}}" />
+    <view class="cmt-actions">
+      <view class="cmt-cancel" bindtap="closeComment">取消</view>
+      <view class="cmt-send" bindtap="sendComment">发送</view>
+    </view>
   </view>
 </view>
 <view class="disclaimer" wx:if="{{note}}">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</view>
