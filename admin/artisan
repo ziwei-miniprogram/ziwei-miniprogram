@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+
+define('LARAVEL_START', microtime(true));
+
+// 注册 Composer 自动加载
+require __DIR__ . '/vendor/autoload.php';
+
+// 启动 Laravel 应用
+$app = require_once __DIR__ . '/bootstrap/app.php';
+
+// 执行控制台内核
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+exit($kernel->handle(new Symfony\Component\Console\Input\ArgvInput));
