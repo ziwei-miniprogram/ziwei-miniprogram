@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>星野漫游 · 叙事节奏真机预览</title>
+<style>
+  :root{
+    --bg:#f7f5f0; --bg-elev:#fffdf8; --card:#fffdf8; --fg:#2b2620; --fg-2:#6b6358; --fg-3:#9a9186;
+    --gold:#c8a35a; --gold-deep:#8a6a2a; --gold-soft:rgba(200,163,90,.16); --gold-tint:rgba(200,163,90,.08);
+    --border:rgba(43,38,32,.10); --success:#5b8a5b;
+  }
+  .page.dark{
+    --bg:#0B1426; --bg-elev:#121d33; --card:#13203a; --fg:#ece6da; --fg-2:#a9a295; --fg-3:#6f6a5f;
+    --gold:#d9b66a; --gold-deep:#d9b66a; --gold-soft:rgba(217,182,106,.18); --gold-tint:rgba(217,182,106,.10);
+    --border:rgba(236,230,218,.12); --success:#7fb38a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{background:#1a1a1a;font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;display:flex;justify-content:center;padding:28px 12px;color:var(--fg);}
+  .stage{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;justify-content:center;}
+  /* 手机框 */
+  .phone{width:380px;height:780px;background:var(--bg);border-radius:44px;border:10px solid #2a2a2a;overflow:hidden;position:relative;box-shadow:0 30px 70px rgba(0,0,0,.5);transition:background .4s;}
+  .screen{height:100%;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;padding-bottom:90px;}
+  .screen::-webkit-scrollbar{width:0;}
+  /* 顶部状态 + 主题切换 */
+  .topbar{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:14px 20px 10px;background:linear-gradient(var(--bg),rgba(247,245,240,0));}
+  .dark .topbar{background:linear-gradient(var(--bg),rgba(11,20,38,0));}
+  .kicker{font-size:11px;letter-spacing:2px;color:var(--fg-3);text-transform:uppercase;}
+  .theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--bg-elev);}
+  /* 幕标 */
+  .act-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:1px;color:var(--gold-deep);background:var(--gold-soft);padding:5px 11px;border-radius:20px;margin:18px 20px 0;}
+  /* 英雄区 */
+  .hero{padding:26px 24px 30px;text-align:center;position:relative;}
+  .hero .glow{position:absolute;inset:0;background:radial-gradient(120px 120px at 50% 22%,var(--gold-soft),transparent 70%);pointer-events:none;}
+  .hero-eyebrow{font-size:12px;letter-spacing:3px;color:var(--gold-deep);}
+  .hero-title{font-family:"Songti SC",serif;font-size:30px;font-weight:700;letter-spacing:3px;margin:14px 0 10px;line-height:1.4;}
+  .hero-line{font-family:"Songti SC",serif;font-size:18px;color:var(--fg-2);letter-spacing:1px;line-height:1.8;}
+  /* 通用卡片 */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;margin:14px 20px;}
+  .apple-card{display:flex;flex-direction:column;gap:5px;transition:transform .25s;}
+  .apple-card:active{transform:scale(.97);}
+  .ac-ic{width:46px;height:46px;border-radius:14px;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;}
+  .ac-t{font-size:17px;font-weight:600;}
+  .ac-d{font-size:13px;color:var(--fg-2);line-height:1.6;}
+  /* 三支柱 bento */
+  .bento{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 20px;}
+  .bento .apple-card{padding:14px 10px;align-items:center;text-align:center;gap:8px;}
+  .bento .ac-ic{width:40px;height:40px;}
+  .bento .ac-t{font-size:13px;}
+  /* 英雄输入框（寄愿） */
+  .wish-hero{margin:6px 20px;background:linear-gradient(135deg,var(--card),var(--gold-tint));border:1px solid var(--border);border-radius:22px;padding:18px;position:relative;overflow:hidden;transition:.3s;}
+  .wish-hero.focus{box-shadow:0 0 0 2px var(--gold),0 16px 40px rgba(200,163,90,.25);}
+  .wish-hero .stars{position:absolute;inset:0;opacity:0;transition:opacity .4s;background:radial-gradient(2px 2px at 20% 30%,var(--gold),transparent),radial-gradient(2px 2px at 70% 60%,var(--gold),transparent),radial-gradient(1.5px 1.5px at 45% 80%,var(--gold),transparent);}
+  .wish-hero.focus .stars{opacity:.7;}
+  .wh-label{font-size:12px;letter-spacing:2px;color:var(--gold-deep);margin-bottom:8px;}
+  .wh-input{width:100%;border:none;background:transparent;font-size:16px;color:var(--fg);font-family:inherit;outline:none;resize:none;height:48px;line-height:1.6;}
+  .wh-input::placeholder{color:var(--fg-3);}
+  .wh-send{margin-top:10px;align-self:flex-end;background:var(--gold-deep);color:#fff;border:none;border-radius:20px;padding:8px 20px;font-size:13px;cursor:pointer;opacity:.4;pointer-events:none;transition:.3s;}
+  .wish-hero.focus .wh-send{opacity:1;pointer-events:auto;}
+  /* 章节滚动（每日命理流） */
+  .chapter{display:flex;gap:14px;padding:18px 20px;border-top:1px solid var(--border);opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
+  .chapter.in{opacity:1;transform:none;}
+  .ch-ic{flex:none;width:50px;height:50px;border-radius:14px;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;}
+  .ch-eyebrow{font-size:12px;letter-spacing:1px;color:var(--gold-deep);}
+  .ch-line{font-family:"Songti SC",serif;font-size:16px;line-height:1.7;margin:6px 0;color:var(--fg);}
+  .ch-sign{font-size:12px;color:var(--fg-2);}
+  .sec-title{font-size:13px;letter-spacing:1px;color:var(--fg-3);margin:22px 20px 0;}
+  /* 寄愿墙 */
+  .wish-item{padding:14px 0;}
+  .wish-item .row{display:flex;justify-content:space-between;align-items:center;}
+  .w-name{font-size:14px;font-weight:600;}
+  .w-lamp{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--gold-deep);}
+  .w-text{font-size:14px;color:var(--fg);line-height:1.6;margin:8px 0;}
+  .w-add{background:var(--gold-soft);color:var(--gold-deep);border:none;border-radius:16px;padding:6px 14px;font-size:12px;cursor:pointer;align-self:flex-end;}
+  .disclaimer{font-size:11px;color:var(--fg-3);line-height:1.7;margin:22px 20px 0;text-align:center;}
+  /* 底部 tab */
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:var(--bg-elev);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding-bottom:8px;}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--fg-3);}
+  .tab.on{color:var(--gold-deep);}
+  .tab svg{display:block;}
+  /* SVG 图标统一样式 */
+  .ic{stroke:var(--gold-deep);color:var(--gold-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .dark .ic{stroke:var(--gold);color:var(--gold);}
+  .ic .fill{fill:currentColor;stroke:none;}
+  /* 侧栏说明 */
+  .notes{width:300px;color:#cfcfcf;font-size:13px;line-height:1.8;}
+  .notes h3{color:#fff;font-size:15px;margin:18px 0 6px;}
+  .notes h3:first-child{margin-top:0;}
+  .notes .tag{display:inline-block;background:#2e2e2e;border-radius:6px;padding:1px 7px;font-size:11px;color:#d9b66a;margin-right:4px;}
+  .notes p{color:#a8a8a8;}
+  .progress-track{margin-top:14px;font-size:12px;color:#888;}
+</style>
+</head>
+<body>
+<div class="stage">
+  <!-- 手机预览 -->
+  <div class="phone">
+    <div class="screen" id="screen">
+      <div class="topbar">
+        <span class="kicker">星野漫游</span>
+        <div class="theme-btn" id="themeBtn" title="切换 ☀/🌙">
+          <svg class="ic" width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/></svg>
+        </div>
+      </div>
+
+      <!-- 第一幕：仰望（Hero 叙事化） -->
+      <div class="act-tag"><span class="tag">第一幕</span> 仰望 · 与星河对望</div>
+      <div class="hero">
+        <div class="glow"></div>
+        <div class="hero-eyebrow">星野漫游 · 每日星语</div>
+        <div class="hero-title">夜空低垂<br/>星河为你留了一盏灯</div>
+        <div class="hero-line">不必急着赶路，<br/>先抬头，认认今夜的星。</div>
+      </div>
+      <div class="bento">
+        <div class="apple-card"><div class="ac-ic"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><circle cx="5" cy="6" r="1.3" class="fill"/><circle cx="12" cy="4" r="1.3" class="fill"/><circle cx="18" cy="9" r="1.3" class="fill"/><circle cx="9" cy="16" r="1.3" class="fill"/><circle cx="17" cy="17" r="1.3" class="fill"/><path d="M5 6l7-2 6 5-9 7 8 1" stroke-width="1.1"/></svg></div><div class="ac-t">点亮星图</div></div>
+        <div class="apple-card"><div class="ac-ic"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><path d="M7 4h10v15H7z"/><path d="M7 4c-1.4 0-2 1-2 2s.6 2 2 2"/><path d="M17 19c1.4 0 2-1 2-2s-.6-2-2-2"/><path d="M12 7.5l.8 1.9 2 .1-1.5 1.3.5 2-1.8-1.1-1.8 1.1.5-2-1.5-1.3 2-.1z" class="fill"/></svg></div><div class="ac-t">寄一笔愿</div></div>
+        <div class="apple-card"><div class="ac-ic"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.1" class="fill"/><circle cx="12" cy="12" r="2.1" class="fill"/><circle cx="18" cy="12" r="2.1" class="fill"/></svg></div><div class="ac-t">今日三善</div></div>
+      </div>
+
+      <!-- 第二幕：连接（寄愿输入框即英雄） -->
+      <div class="act-tag"><span class="tag">第二幕</span> 连接 · 把心事交给星河</div>
+      <div class="wish-hero" id="wishHero">
+        <div class="stars"></div>
+        <div class="wh-label">写下一笔愿 · 星河替你收着</div>
+        <textarea class="wh-input" id="wishInput" placeholder="此刻你最想安放的心事是……"></textarea>
+        <button class="wh-send" id="wishSend">寄出 ✦</button>
+      </div>
+
+      <!-- 第三幕：安住（每日命理流章节式滚动） -->
+      <div class="act-tag"><span class="tag">第三幕</span> 安住 · 一章一宿，慢慢读</div>
+      <div class="hero" style="padding:18px 24px 6px;text-align:left;">
+        <div class="hero-eyebrow">星夜物语 · 每日一章</div>
+        <div class="hero-title" style="font-size:22px;text-align:left;margin:8px 0 4px;">大暑 · 第 6 日</div>
+        <div class="hero-line" style="font-size:14px;text-align:left;">柳宿当值 · 心静自然凉</div>
+      </div>
+      <div class="sec-title">往日星轨 · 一章一宿</div>
+      <div class="chapter">
+        <div class="ch-ic"><svg class="ic" width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/></svg></div>
+        <div class="ch-body"><div class="ch-eyebrow">07-21 · 星宿当值</div><div class="ch-line">昨夜风清，宜把杂念轻轻放下。</div><div class="ch-sign">幸运签 · 稳中求进</div></div>
+      </div>
+      <div class="chapter">
+        <div class="ch-ic"><svg class="ic" width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/></svg></div>
+        <div class="ch-body"><div class="ch-eyebrow">07-20 · 张宿当值</div><div class="ch-line">言多必失，今日宜少说多做。</div><div class="ch-sign">幸运签 · 沉默是金</div></div>
+      </div>
+      <div class="chapter">
+        <div class="ch-ic"><svg class="ic" width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.2 5.2l2.1 2.1M16.7 16.7l2.1 2.1M18.8 5.2l-2.1 2.1M7.3 16.7l-2.1 2.1"/></svg></div>
+        <div class="ch-body"><div class="ch-eyebrow">07-19 · 翼宿当值</div><div class="ch-line">远方有信，久候终有回音。</div><div class="ch-sign">幸运签 · 守得云开</div></div>
+      </div>
+
+      <!-- 第四幕：回访（寄愿墙 + 复访钩子） -->
+      <div class="act-tag"><span class="tag">第四幕</span> 回访 · 你添的灯，仍在亮</div>
+      <div class="card">
+        <div class="wish-item"><div class="row"><span class="w-name">匿名旅人</span><span class="w-lamp"><svg class="ic" width="15" height="15" viewBox="0 0 24 24"><path d="M12 2l1.9 6.3L20 10l-6.1 1.7L12 18l-1.9-6.3L4 10l6.1-1.7z" class="fill"/></svg> 128</span></div><div class="w-text">愿家人安康，少些奔波。</div><button class="w-add">为他添灯 +3</button></div>
+        <div class="wish-item" style="border-top:1px solid var(--border);"><div class="row"><span class="w-name">星河旅人</span><span class="w-lamp"><svg class="ic" width="15" height="15" viewBox="0 0 24 24"><path d="M12 2l1.9 6.3L20 10l-6.1 1.7L12 18l-1.9-6.3L4 10l6.1-1.7z" class="fill"/></svg> 64</span></div><div class="w-text">愿自己学会温柔一点。</div><button class="w-add">为他添灯 +3</button></div>
+      </div>
+      <p class="disclaimer">温馨提示：本平台星象、节气、抽签等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </div>
+    <!-- 底部 tab -->
+    <div class="tabbar">
+      <div class="tab on"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg>发现</div>
+      <div class="tab"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><path d="M12 21s6.5-5.6 6.5-11A6.5 6.5 0 0 0 5.5 10c0 5.4 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>文旅</div>
+      <div class="tab"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><path d="M7 4h10v15H7z"/><path d="M7 4c-1.4 0-2 1-2 2s.6 2 2 2"/><path d="M17 19c1.4 0 2-1 2-2s-.6-2-2-2"/><path d="M12 7.5l.8 1.9 2 .1-1.5 1.3.5 2-1.8-1.1-1.8 1.1.5-2-1.5-1.3 2-.1z" class="fill"/></svg>寄愿</div>
+      <div class="tab"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" class="fill"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg>功德</div>
+      <div class="tab"><svg class="ic" width="22" height="22" viewBox="0 0 24 24"><path d="M12 2l2 8 8 2-8 2-2 8-2-8-8-2 8-2z" class="fill"/></svg>星野</div>
+    </div>
+  </div>
+
+  <!-- 侧栏：叙事节奏说明 -->
+  <div class="notes">
+    <h3>叙事节奏 · 四幕弧</h3>
+    <p><span class="tag">仰望</span>首屏 1.2s 内只用一句星语 + 衬线大字，留白 60%，制造「抬头」的停顿感。删掉原段落式功能介绍。</p>
+    <p><span class="tag">连接</span>寄愿输入框即主角：聚焦时背景星夜虚化、金色描边浮起、寄出键点亮。用户第一动作=倾诉，而非浏览。</p>
+    <p><span class="tag">安住</span>每日命理流改章节卡，滚动时逐章淡入上移（IntersectionObserver），一章一宿，节奏慢而稳。</p>
+    <p><span class="tag">回访</span>寄愿墙 + 添灯钩子把「安住」转成复访：你添的灯仍在亮，明天再回来看。</p>
+    <h3>视觉语言</h3>
+    <p>天体图谱图标系统（细金线 1.8 + 圆头 + 星芒点睛）全面替代 emoji，浅底深金 AA、暗底亮金。点击 <b>右上角 ☀/🌙</b> 切夜灯模式看对比。</p>
+    <h3>真机手感代理</h3>
+    <p>本预览用手机框 + 滚动驱动淡入 + 输入框聚焦态 + 双主题，模拟真机节奏。真机验证仍需微信开发者工具导入 <code>ziwei-miniprogram</code>。</p>
+    <div class="progress-track">门禁：validate 42/0 · ESLint 0 · Jest 36/36 ✓</div>
+  </div>
+</div>
+
+<script>
+  // 主题切换
+  const themeBtn = document.getElementById('themeBtn');
+  const phone = document.querySelector('.phone');
+  let dark = false;
+  themeBtn.addEventListener('click', () => {
+    dark = !dark;
+    phone.querySelector('.screen').parentElement.classList.toggle('dark', dark);
+    phone.classList.toggle('dark', dark);
+  });
+  // 寄愿框聚焦态
+  const hero = document.getElementById('wishHero');
+  const input = document.getElementById('wishInput');
+  const send = document.getElementById('wishSend');
+  input.addEventListener('focus', () => hero.classList.add('focus'));
+  input.addEventListener('blur', () => { if(!input.value) hero.classList.remove('focus'); });
+  // 章节滚动淡入
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.25 });
+  document.querySelectorAll('.chapter').forEach(c => io.observe(c));
+</script>
+</body>
+</html>

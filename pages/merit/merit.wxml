@@ -149,10 +149,26 @@
 
   <!-- 寄愿墙 -->
   <block wx:if="{{tab==='wish'}}">
+    <!-- 寄愿输入框即英雄：聚焦时背景星夜虚化（Act II 连接 · 写下一笔，星河替你收着） -->
+    <view class="wish-compose {{composing?'focused':''}}">
+      <view class="wc-bg"></view>
+      <view class="wc-inner">
+        <view class="wc-eyebrow">写下一笔 · 星河替你收着</view>
+        <textarea class="wc-input" placeholder="此刻心里，最想说的话是什么？" value="{{myWishText}}" maxlength="50" bindfocus="onWishFocus" bindblur="onWishBlur" bindinput="onWishInput" />
+        <view class="wc-send {{myWishText?'on':''}}" bindtap="sendMyWish">寄出一笔愿</view>
+      </view>
+    </view>
+    <view class="card" wx:for="{{myWishes}}" wx:key="id">
+      <view class="row">
+        <view class="a-name">我的星愿</view>
+        <view class="lamp"><astro name="lamp" size="26" theme="{{theme}}"/> {{item.lamps}}</view>
+      </view>
+      <view class="wish-text">{{item.wish}}</view>
+    </view>
     <view class="card" wx:for="{{wishes}}" wx:key="id">
       <view class="row">
         <view class="a-name">{{item.name}}</view>
-        <view class="lamp">🪔 {{item.lamps}}</view>
+        <view class="lamp"><astro name="lamp" size="26" theme="{{theme}}"/> {{item.lamps}}</view>
       </view>
       <view class="wish-text">{{item.wish}}</view>
       <view class="a-btn" style="align-self:flex-end" data-i="{{index}}" bindtap="addLamp">为他添灯 +3</view>

@@ -1,6 +1,7 @@
 const { meritBoard, meritGroups, wishWall, myBonds, cityLights } = require('../../utils/mock.js');
 const merit = require('../../utils/merit.js');
 const whimsy = require('../../utils/whimsy.js');
+const { check, advice } = require('../../utils/censor.js');
 
 Page({
   behaviors: [require('../../behaviors/themeable.js')],
@@ -19,6 +20,10 @@ Page({
     cityLights: [],
     daily: null,
     anonymous: false,
+    // —— 寄愿输入框（Act II 连接）状态位 ——
+    myWishText: '',
+    composing: false,
+    myWishes: [],
     // —— P1 行为助推状态位 ——
     deeds: [],
     dailyDone: {},
@@ -51,6 +56,7 @@ Page({
       actions: merit.ACTIONS,
       groups,
       wishes: wishWall.map(w => ({ ...w })),
+      myWishes: (() => { try { const a = wx.getStorageSync('my_wishes'); return Array.isArray(a) ? a : []; } catch (e) { return []; } })(),
       bonds: myBonds.map(b => ({ ...b })),
       cityLights,
       board: boardRes.board,
@@ -205,6 +211,36 @@ Page({
     const after = app.globalData.level;
     this.setData({ wishes, merit: app.globalData.merit, level: after });
     whimsy.afterMerit(this, before, after, 3, 'lamp');
+  },
+
+  // 寄愿输入框即英雄：聚焦态 + 内容安全预检 + 存 storage + 星屑
+  onWishFocus() { this.setData({ composing: true }); },
+  onWishBlur() { this.setData({ composing: false }); },
+  onWishInput(e) { this.setData({ myWishText: e.detail.value }); },
+  sendMyWish() {
+    const text = (this.data.myWishText || '').trim();
+    if (!text) { wx.showToast({ title: '写点什么再寄出~', icon: 'none' }); return; }
+    const c = check(text);
+    if (!c.ok) {
+      wx.showModal({ title: '内容需调整', content: advice(c.hits), showCancel: false });
+      return;
+    }
+    const wish = { id: Date.now(), wish: text, lamps: 1 };
+    const arr = this.data.myWishes.slice();
+    arr.unshift(wish);
+    let store = [];
+    try { store = wx.getStorageSync('my_wishes'); } catch (e) {}
+    if (!Array.isArray(store)) store = [];
+    store.unshift(wish);
+    try { wx.setStorageSync('my_wishes', store); } catch (e) {}
+    const app = getApp();
+    const before = app.globalData.level;
+    app.addMerit(3, '寄愿');
+    const after = app.globalData.level;
+    this.setData({ myWishes: arr, myWishText: '', composing: false, merit: app.globalData.merit, level: after });
+    whimsy.afterMerit(this, before, after, 3, 'wish');
+    whimsy.stardust(this, { x: '50%', y: '30%' });
+    wx.showToast({ title: '星河已收下你的愿 ✦', icon: 'none' });
   },
 
   onShareAppMessage() {

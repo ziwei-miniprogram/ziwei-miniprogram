@@ -15,7 +15,7 @@
   </view>
 
   <!-- 搜索胶囊 -->
-  <view class="search" bindtap="goSearch">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</view>
+  <view class="search" bindtap="goSearch"><astro name="search" size="28" theme="{{theme}}"/><text>搜索 星图 · 旅行 · 疗愈 · 寄愿</text></view>
 
   <!-- 星夜祝福 Hero（含天气 + 万年历 + 宜忌）-->
   <view class="hero {{heroLit?'lit':''}}">
@@ -27,8 +27,8 @@
     <view class="hero-top">
       <view class="hero-bless">
         <view class="hero-eyebrow">星野漫游 · 每日星语</view>
-        <view class="b-line">{{heroBlessing[0]}}</view>
-        <view class="b-line">{{heroBlessing[1]}}</view>
+        <view class="b-title serif">今夜，星空为你留了一盏灯</view>
+        <view class="b-line">{{starTip}}</view>
       </view>
       <view class="weather" bindtap="refreshWeather">
         <view class="w-icon">{{weather.icon}}</view>
@@ -61,15 +61,15 @@
         <view class="yj-row"><text class="yj-ji">忌</text>{{selYiJi.ji}}</view>
       </view>
     </view>
-    <view class="lamp" bindtap="lightLamp">🪔 点亮今日心灯 · +1 功德</view>
+    <view class="lamp" bindtap="lightLamp"><astro name="lamp" size="30" theme="{{theme}}"/> 点亮今日心灯 · +1 功德</view>
   </view>
 
   <!-- 快捷入口 -->
   <view class="quick">
-    <view class="q" bindtap="goSpace"><view class="q-i">✨</view><view>星野</view></view>
-    <view class="q" bindtap="goTourism"><view class="q-i">🏯</view><view>文旅</view></view>
-    <view class="q" bindtap="goWish"><view class="q-i">🏮</view><view>寄愿</view></view>
-    <view class="q" bindtap="goMerit"><view class="q-i">🪔</view><view>功德</view></view>
+    <view class="q" bindtap="goSpace"><astro class="q-ic" name="star" size="36" theme="{{theme}}"/><view>星野</view></view>
+    <view class="q" bindtap="goTourism"><astro class="q-ic" name="tourism" size="36" theme="{{theme}}"/><view>文旅</view></view>
+    <view class="q" bindtap="goWish"><astro class="q-ic" name="wish" size="36" theme="{{theme}}"/><view>寄愿</view></view>
+    <view class="q" bindtap="goMerit"><astro class="q-ic" name="lamp" size="36" theme="{{theme}}"/><view>功德</view></view>
   </view>
 
   <!-- Apple 风特性展示：三大支柱（宽留白 + 大字号 + 柔影） -->
@@ -79,17 +79,17 @@
     <view class="u-lede">把每一天的小仪式，安放进星河里。</view>
     <view class="u-bento">
       <view class="u-apple-card u-spring" bindtap="goChart">
-        <view class="ub-ic">🔭</view>
+        <astro class="ub-ic" name="chart" size="44" theme="{{theme}}"/>
         <view class="ub-t">点亮星图</view>
         <view class="ub-d">二十八宿，照亮今日心绪</view>
       </view>
       <view class="u-apple-card u-spring" bindtap="goWish">
-        <view class="ub-ic">🏮</view>
+        <astro class="ub-ic" name="wish" size="44" theme="{{theme}}"/>
         <view class="ub-t">寄一笔愿</view>
         <view class="ub-d">把心事交给星河，慢慢安放</view>
       </view>
       <view class="u-apple-card u-spring" bindtap="goMerit">
-        <view class="ub-ic">🪔</view>
+        <astro class="ub-ic" name="deeds" size="44" theme="{{theme}}"/>
         <view class="ub-t">今日三善</view>
         <view class="ub-d">点灯 · 随喜 · 冥想，积微成光</view>
       </view>
@@ -102,7 +102,7 @@
     <view class="uc-bar"><view class="uc-fill" style="width:{{unlockPct}}%"></view></view>
     <view class="uc-r">{{unlockPct}}%</view>
   </view>
-  <view class="proof-bar">🔥 已有 {{socialProof}} 位旅人正在星野日行一善 · 已为你关注 3 位星野引路人</view>
+  <view class="proof-bar"><astro name="streak" size="26" theme="{{theme}}"/> 已有 {{socialProof}} 位旅人正在星野日行一善 · 已为你关注 3 位星野引路人</view>
 
   <!-- 星夜物语 · 每日视觉叙事入口（标杆组件：母题=夜，双主题 + 线性 SVG） -->
   <story-card

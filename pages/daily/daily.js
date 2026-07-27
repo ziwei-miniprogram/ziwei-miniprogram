@@ -8,7 +8,8 @@ Page({
     theme: 'light',
     chapter: null,
     past: [],
-    progress: 0
+    progress: 0,
+    inList: []
   },
 
   onShow() {
@@ -36,7 +37,29 @@ Page({
       { icon: '🛎', label: '今日三善', url: '/pages/merit/merit' },
       { icon: '✍️', label: '记一笔感悟', url: '/pages/note/note' }
     ];
-    this.setData({ chapter: ch, past: past, progress: progress, loopItems: loopItems });
+    this.setData({ chapter: ch, past: past, progress: progress, loopItems: loopItems, inList: [] });
+    const self = this;
+    setTimeout(() => self.observeChapters(), 60);
+  },
+
+  // 章节式滚动：进入视口时淡入上移（尊重 reduced-motion 由 CSS 关闭过渡）
+  observeChapters() {
+    const self = this;
+    if (this._io) { try { this._io.disconnect(); } catch (e) {} }
+    this._io = wx.createIntersectionObserver(this);
+    this._io.relativeToViewport({ bottom: 60 });
+    this._io.observe('.chapter', (res) => {
+      if (res.intersectionRatio > 0 && res.id) {
+        const i = Number(String(res.id).replace('ch', ''));
+        if (!isNaN(i) && !self.data.inList[i]) {
+          self.setData({ ['inList[' + i + ']']: true });
+        }
+      }
+    });
+  },
+
+  onUnload() {
+    if (this._io) { try { this._io.disconnect(); } catch (e) {} }
   },
 
   goIndex() { wx.switchTab({ url: '/pages/index/index' }); },

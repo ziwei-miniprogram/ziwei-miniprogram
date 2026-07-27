@@ -398,6 +398,7 @@ page, .page {
 
 /* P0-4 社会证明条 */
 .proof-bar {
+  display: flex; align-items: center; gap: 10rpx;
   margin: 14rpx 24rpx 0;
   font-size: 22rpx;
   color: var(--fg-2);

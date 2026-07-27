@@ -25,16 +25,15 @@
     theme="{{theme}}"
     bind:tap="goIndex" />
 
-  <!-- 往日星轨：连续时间线（序列化叙事的「已读」轨迹） -->
-  <view class="track-title">往日星轨</view>
+  <!-- 往日星轨：章节式滚动叙事（淡入上移 + 统一结构：eyebrow·宿 + 一句星语 + 签） -->
+  <view class="track-title">往日星轨 · 一章一宿</view>
   <view class="track">
-    <view class="track-item" wx:for="{{past}}" wx:key="date">
-      <view class="ti-dot"></view>
-      <view class="ti-date">{{item.dateLabel}}</view>
-      <view class="ti-body">
-        <view class="ti-mansion">{{item.mansion}} 当值</view>
-        <view class="ti-line">{{item.line}}</view>
-        <view class="ti-sign">幸运签 · {{item.sign}}</view>
+    <view class="chapter {{inList[index] ? 'in' : ''}}" id="ch{{index}}" wx:for="{{past}}" wx:key="date">
+      <view class="ch-ic"><astro name="solar" size="32" theme="{{theme}}"/></view>
+      <view class="ch-body">
+        <view class="ch-eyebrow">{{item.dateLabel}} · {{item.mansion}} 当值</view>
+        <view class="ch-line">{{item.line}}</view>
+        <view class="ch-sign">幸运签 · {{item.sign}}</view>
       </view>
     </view>
   </view>

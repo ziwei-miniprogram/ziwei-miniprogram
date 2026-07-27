@@ -30,7 +30,8 @@
 .hero { margin: 6rpx 24rpx 20rpx; border-radius: 36rpx; padding: 32rpx 28rpx 30rpx; color: #f6eccb; background: var(--night-grad); position: relative; overflow: hidden; }
 .hero .stars { position: absolute; inset: 0; background-image: radial-gradient(2rpx 2rpx at 18% 22%, rgba(255,255,255,.85), transparent), radial-gradient(2rpx 2rpx at 68% 16%, rgba(255,255,255,.7), transparent), radial-gradient(2rpx 2rpx at 86% 56%, rgba(255,255,255,.6), transparent), radial-gradient(2rpx 2rpx at 40% 78%, rgba(255,255,255,.7), transparent); opacity: .75; }
 .hero-top { display: flex; justify-content: space-between; align-items: flex-start; position: relative; z-index: 2; }
-.hero-bless .b-line { font-family: "Songti SC", serif; font-size: 40rpx; font-weight: 700; letter-spacing: 3rpx; line-height: 1.5; }
+.hero-bless .b-title { font-family: "Source Han Serif SC","Songti SC",serif; font-size: 46rpx; font-weight: 700; letter-spacing: 2rpx; line-height: 1.38; margin-top: 14rpx; }
+.hero-bless .b-line { font-family: "Songti SC", serif; font-size: 28rpx; font-weight: 500; letter-spacing: 1rpx; line-height: 1.5; opacity: .9; margin-top: 12rpx; }
 .weather { text-align: right; }
 .weather .w-icon { font-size: 44rpx; }
 .weather .w-city { font-size: 24rpx; opacity: .85; }
@@ -57,6 +58,7 @@
 .quick { display: flex; padding: 0 24rpx 4rpx; }
 .q { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8rpx; font-size: 24rpx; color: var(--fg-3); }
 .q-i { width: 84rpx; height: 84rpx; border-radius: 24rpx; background: var(--bg-elev); display: flex; align-items: center; justify-content: center; font-size: 40rpx; }
+.q-ic { width: 84rpx; height: 84rpx; border-radius: 24rpx; background: var(--bg-elev); display: flex; align-items: center; justify-content: center; }
 
 /* 推荐关注条 */
 .rec { margin: 14rpx 24rpx 4rpx; background: var(--card); border: 1rpx solid var(--border); border-radius: 22rpx; padding: 18rpx 20rpx 16rpx; box-shadow: var(--shadow-sm); }

@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "story-card": "/components/story-card/story-card"
+    "story-card": "/components/story-card/story-card",
+    "astro": "/components/icon/icon"
   },
   "navigationBarTitleText": "拾光驿·星野漫游",
   "enablePullDownRefresh": true,
