@@ -13,10 +13,10 @@
                 <td style="color:var(--fg-2)">{{ $e->created_at?->format('m-d H:i') }}</td>
             </tr>
         @empty
-            <tr><td colspan="5" style="color:var(--fg-2);text-align:center;padding:40rpx">暂无审计记录</td></tr>
+            <tr><td colspan="5" style="color:var(--fg-2);text-align:center;padding:40px">暂无审计记录</td></tr>
         @endforelse
         </tbody>
     </table>
 </div>
 
-<div style="margin-top:16rpx">{{ $entries->links() }}</div>
+<div style="margin-top:16px">{{ $entries->links() }}</div>

@@ -2,13 +2,12 @@
   "name": "ziwei/ziwei-admin",
   "description": "星野漫游 · 后台管理协调层 (Laravel 11 + Livewire 3 + FluxUI) — P0: 内容审核台 / 功德账本 / RBAC 审计日志",
   "type": "project",
-  "require": {
-    "php": "^8.2",
-    "laravel/framework": "^11.0",
-    "laravel/sanctum": "^4.0",
-    "livewire/livewire": "^3.5",
-    "livewire/flux": "^1.0"
-  },
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
+        "livewire/livewire": "^3.5"
+    },
   "require-dev": {
     "laravel/pint": "^1.13",
     "phpunit/phpunit": "^11.0"

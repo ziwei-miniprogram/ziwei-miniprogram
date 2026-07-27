@@ -1,7 +1,7 @@
 @section('title', '内容审核台')
 
 {{-- 状态筛选（Apple 风胶囊） --}}
-<div style="display:flex;gap:12rpx;margin-bottom:24rpx">
+<div style="display:flex;gap:12px;margin-bottom:24px">
     @foreach (['pending'=>'待审','approved'=>'已通过','rejected'=>'已驳回','whitelisted'=>'已加白','all'=>'全部'] as $k => $label)
         <button class="btn {{ $filter===$k ? 'btn-approve' : 'btn-white' }}" wire:click="setFilter('{{ $k }}')">{{ $label }}</button>
     @endforeach
@@ -16,7 +16,7 @@
         @forelse ($items as $item)
             <tr>
                 <td>{{ match($item->content_type) { 'note'=>'随手记','wish'=>'寄愿','comment'=>'评论', default=>$item->content_type } }}</td>
-                <td style="max-width:420rpx">{{ Str::limit($item->content, 60) }}</td>
+                <td style="max-width:420px">{{ Str::limit($item->content, 60) }}</td>
                 <td><span class="badge risk-{{ $item->risk_level }}">{{ $item->risk_level }}</span></td>
                 <td>{{ is_array($item->censor_hits) ? count($item->censor_hits) : 0 }} 项</td>
                 <td style="white-space:nowrap">
@@ -26,10 +26,10 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="5" style="color:var(--fg-2);text-align:center;padding:40rpx">队列为空 🎉</td></tr>
+            <tr><td colspan="5" style="color:var(--fg-2);text-align:center;padding:40px">队列为空</td></tr>
         @endforelse
         </tbody>
     </table>
 </div>
 
-<div style="margin-top:16rpx">{{ $items->links() }}</div>
+<div style="margin-top:16px">{{ $items->links() }}</div>

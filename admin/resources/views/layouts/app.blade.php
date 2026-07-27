@@ -24,6 +24,10 @@
         <div class="nav-foot">
             <span class="nav-user">{{ auth()->user()->name ?? '管理员' }}</span>
             <span class="nav-role">{{ auth()->user()->role ?? 'super' }}</span>
+            <form method="POST" action="{{ route('logout') }}" style="margin-top:12px">
+                @csrf
+                <button type="submit" class="nav-logout">退出登录</button>
+            </form>
         </div>
     </aside>
 

@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<div class="apple-card" style="margin-top:24rpx">
+<div class="apple-card" style="margin-top:24px">
     <p class="section-sub">善信等级分布（每 2000 功德一阶）</p>
     <table class="tbl">
         <thead><tr><th>梯队</th><th>人数</th></tr></thead>

@@ -1,0 +1,157 @@
+/* 星野漫游后台 · 设计令牌（与小程序同源：暖纸 #f7f5f0 / 星辉金 #c8a35a / 星夜蓝 #0B1426）
+   Apple Store 风格：系统字体、超大留白、柔和分层阴影、克制描边。 */
+
+:root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --fg: #2b2622;
+    --fg-2: #998f80;
+    --gold: #c8a35a;
+    --gold-deep: #8a6a2a;
+    --gold-soft: rgba(200, 163, 90, .12);
+    --gold-grad: linear-gradient(135deg, #d8b876, #b98e44 62%, #caa45c);
+    --border: rgba(40, 33, 20, .08);
+    --shadow-1: 0 2px 8px rgba(40, 33, 20, .05);
+    --shadow-2: 0 12px 32px rgba(40, 33, 20, .08);
+    --radius: 20px;
+    --space: 32px;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+}
+
+html.dark {
+    --bg: #0B1426;
+    --card: #121d33;
+    --fg: #ece6dc;
+    --fg-2: #9da9bd;
+    --gold: #d9b66a;
+    --gold-deep: #c8a35a;
+    --gold-soft: rgba(217, 182, 106, .14);
+    --gold-grad: linear-gradient(135deg, #e6c789, #c79a4e 62%, #d8b66a);
+    --border: rgba(236, 230, 220, .1);
+    --shadow-1: 0 2px 8px rgba(0, 0, 0, .4);
+    --shadow-2: 0 14px 36px rgba(0, 0, 0, .5);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+}
+
+.admin-shell { display: flex; min-height: 100vh; }
+
+/* 侧边导航 */
+.admin-nav {
+    width: 240px;
+    flex: none;
+    padding: 40px 24px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    background: var(--bg);
+}
+.nav-brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark { color: var(--gold); font-size: 28px; }
+.brand-name { font-size: 24px; font-weight: 700; letter-spacing: 1px; }
+.nav-items { display: flex; flex-direction: column; gap: 8px; }
+.nav-link {
+    padding: 16px 20px;
+    border-radius: 14px;
+    color: var(--fg-2);
+    text-decoration: none;
+    font-size: 24px;
+    transition: background .2s cubic-bezier(.16, 1, .3, 1), color .2s;
+}
+.nav-link:hover { background: var(--gold-soft); color: var(--gold-deep); }
+.nav-link.on { background: var(--gold-soft); color: var(--gold-deep); font-weight: 700; }
+.nav-foot { margin-top: auto; }
+.nav-user { display: block; font-size: 22px; font-weight: 600; }
+.nav-role { font-size: 18px; color: var(--fg-2); }
+
+/* 主区 */
+.admin-main { flex: 1; padding: 40px 48px 64px; }
+.admin-topbar {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 40px;
+}
+.eyebrow {
+    margin: 0; font-size: 18px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold-deep); font-weight: 700;
+}
+.page-title { margin: 8px 0 0; font-size: 44px; font-weight: 700; letter-spacing: -1px; }
+.theme-toggle {
+    border: 1px solid var(--border); background: var(--card); color: var(--fg);
+    border-radius: 999px; padding: 12px 24px; font-size: 22px; cursor: pointer;
+    transition: transform .2s cubic-bezier(.34, 1.56, .64, 1);
+}
+.theme-toggle:active { transform: scale(.96); }
+
+/* Apple 风卡片：大留白、柔影、克制描边 */
+.apple-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow-1), var(--shadow-2);
+}
+.grid-bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.stat-num { font-size: 52px; font-weight: 700; letter-spacing: -2px; }
+.stat-label { font-size: 20px; color: var(--fg-2); margin-top: 8px; }
+
+/* 表格（审核/账本/审计） */
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th {
+    text-align: left; font-size: 20px; color: var(--fg-2); font-weight: 600;
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+}
+.tbl td { padding: 20px; border-bottom: 1px solid var(--border); font-size: 22px; vertical-align: top; }
+.badge {
+    display: inline-block; font-size: 18px; padding: 4px 14px; border-radius: 999px;
+    background: var(--gold-soft); color: var(--gold-deep); font-weight: 700;
+}
+.badge.risk-high { background: rgba(224, 121, 111, .15); color: #c0564c; }
+.badge.risk-mid { background: rgba(200, 163, 90, .18); color: var(--gold-deep); }
+
+.btn {
+    border: none; border-radius: 999px; padding: 12px 24px; font-size: 20px; font-weight: 700;
+    cursor: pointer; transition: transform .2s cubic-bezier(.34, 1.56, .64, 1);
+}
+.btn:active { transform: scale(.95); }
+.btn-approve { background: var(--gold-grad); color: #3a2c10; }
+.btn-reject { background: rgba(224, 121, 111, .15); color: #c0564c; }
+.btn-white { background: var(--gold-soft); color: var(--gold-deep); }
+
+.section-sub { font-size: 22px; color: var(--fg-2); margin: 32px 0 16px; }
+
+/* 登录页 */
+.login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.login-card { width: 100%; max-width: 420px; padding: 48px 40px; }
+.login-brand { display: flex; align-items: center; gap: 12px; justify-content: center; margin-bottom: 32px; }
+.login-brand .brand-name { font-size: 26px; }
+.login-err {
+    background: rgba(224, 121, 111, .15); color: #c0564c; font-size: 20px;
+    padding: 14px 18px; border-radius: 12px; margin-bottom: 20px;
+}
+.login-field { display: block; margin-bottom: 20px; }
+.login-field span { display: block; font-size: 18px; color: var(--fg-2); margin-bottom: 8px; }
+.login-field input {
+    width: 100%; padding: 16px 18px; font-size: 22px; border-radius: 14px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--fg);
+    outline: none; transition: border-color .2s;
+}
+.login-field input:focus { border-color: var(--gold); }
+.login-remember { display: flex; align-items: center; gap: 8px; font-size: 18px; color: var(--fg-2); margin-bottom: 24px; }
+.login-submit { width: 100%; padding: 18px; font-size: 24px; }
+.login-hint { text-align: center; font-size: 16px; color: var(--fg-2); margin: 24px 0 0; }
+
+.nav-logout {
+    border: 1px solid var(--border); background: transparent; color: var(--fg-2);
+    border-radius: 999px; padding: 8px 18px; font-size: 18px; cursor: pointer;
+    transition: color .2s, border-color .2s;
+}
+.nav-logout:hover { color: var(--gold-deep); border-color: var(--gold); }

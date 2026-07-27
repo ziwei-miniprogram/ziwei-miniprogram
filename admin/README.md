@@ -1,57 +1,65 @@
-# 星野漫游 · 后台管理协调层（P0 骨架）
+# 星野漫游 · 后台管理协调层（Laravel 11 + Livewire 3）
 
-> Laravel 11 + Livewire 3 + FluxUI。位于小程序仓 `ziwei-miniprogram/admin/` 子目录（monorepo）。
+> 位置：小程序仓 `ziwei-miniprogram/admin/` 子目录（monorepo）。
 > 复用小程序设计令牌（暖纸 `#f7f5f0` / 星辉金 `#c8a35a` / 星夜蓝 `#0B1426`），视觉同源。
+> 定位：内容把关 + 数据可视，先不阻塞小程序（小程序仍可跑 mock）。
 
-## P0 范围（本骨架已落地）
+## P0 范围（本版已落地，可运行）
 
 | 模块 | 文件 | 说明 |
 |---|---|---|
 | 内容审核台 | `app/Livewire/ReviewQueue.php` + `resources/views/livewire/review-queue.blade.php` | censor 命中件队列、按状态筛选、通过/驳回/加白 |
 | 功德账本 | `app/Livewire/MeritLedger.php` | 全局流水、等级分布、短时暴涨异常预警 |
-| RBAC + 审计 | `app/Http/Middleware/RoleMiddleware.php` + `app/Livewire/AuditLog.php` | 运营/审核/超管三角色、操作全留痕 |
+| 操作审计 | `app/Livewire/AuditLog.php` | 谁、何时、改了什么，全留痕 |
+| RBAC | `app/Http/Middleware/RoleMiddleware.php` | reviewer / operator / super 三角色，路由级约束 |
+| 登录 | `app/Http/Controllers/Auth/LoginController.php` | 极简邮箱+密码（会话鉴权） |
+| 种子 | `database/seeders/DatabaseSeeder.php` | 三角色账号 + 审核样本 + 功德流水（含异常） |
 
 业务规则集中在 `app/Services/`（ReviewService / MeritService / AuditService），Livewire 组件只做编排。
+
+## 运行（需本机 PHP ≥ 8.2 + Composer）
+
+```bash
+cd ziwei-miniprogram/admin
+bash setup.sh          # 首次：补全骨架 + 安装 + 迁移 + 种子（一次性）
+php artisan serve      # http://localhost:8000/admin
+```
+
+登录账号（种子生成，密码统一 `ziwei2026`）：
+- `admin@ziwei.app`（super，可进全部模块）
+- `review@ziwei.app`（reviewer，仅审核台 + 总览）
+- `ops@ziwei.app`（operator，仅功德账本 + 总览）
+
+> 默认数据库为 **SQLite**（`database/database.sqlite`，零配置）。
+> 改用 MySQL：编辑 `.env` 的 `DB_CONNECTION` / `DB_*` 后 `php artisan migrate:fresh --seed`。
 
 ## 合规红线（延续小程序）
 
 - **功德虚拟、不可提现/交易/购买**：`MeritService::adjust()` 在 `MERIT_REDEEMABLE=false` 时拒绝任何负向兑换。
-- censor 词库与端上预检同源；所有 UGC 留痕可溯（audit_entries）。
+- censor 词库与端上预检同源；所有 UGC 留痕可溯（`audit_entries`）。
 - 所有后台写操作经 `AuditService` 落审计日志。
-
-## 安装与运行（需本机 PHP ≥ 8.2 + Composer）
-
-```bash
-cd ziwei-miniprogram/admin
-composer install
-cp .env.example .env
-php artisan key:generate
-# 配置 .env 中 DB_*
-php artisan migrate
-php artisan serve          # http://localhost:8000/admin
-```
-
-> 注：本目录为 Laravel 应用根。标准引导文件（`artisan` / `public/index.php` / `bootstrap/app.php`）
-> 已包含；`config/` 沿用 Laravel 默认。首次 `composer install` 会拉入 laravel/framework、livewire/livewire、livewire/flux、laravel/sanctum。
 
 ## 目录结构
 
 ```
 admin/
 ├── app/
-│   ├── Http/Middleware/RoleMiddleware.php
+│   ├── Http/{Controllers/Auth/LoginController, Middleware/RoleMiddleware}
 │   ├── Livewire/        # AdminDashboard / ReviewQueue / MeritLedger / AuditLog
 │   ├── Models/          # User / ReviewItem / MeritTxn / AuditEntry
 │   └── Services/        # ReviewService / MeritService / AuditService
-├── database/migrations/ # 4 个迁移（角色 / 审核 / 功德 / 审计）
-├── resources/
-│   ├── css/admin.css    # 设计令牌（小程序同源）
-│   └── views/           # layouts/app + livewire/*
-├── routes/web.php
+├── database/{migrations, seeders, factories}
+├── public/css/admin.css # 设计令牌（小程序同源）
+├── resources/views/     # layouts/app + components/guest-layout + livewire/* + auth/login
+├── routes/web.php       # 登录 + 后台 RBAC 路由
+├── setup.sh             # 一键初始化
 └── composer.json
 ```
 
-## 下一步（P1 / P2，见 ADMIN-PLAN.md）
+> `config/`、`routes/api.php`、`tests/`、`app/Providers/` 等 Laravel 默认文件由 `setup.sh`
+> 首次从官方 `laravel/laravel` 骨架拉取，**不纳入本仓库自定义层**，避免与框架升级冲突。
+
+## 下一步（P1 / P2，见 `ADMIN-PLAN.md`）
 
 - **P1**：商城管理（SKU/折扣/限定）、文旅运营配置、数据看板。
-- **P2**：活动编排（每日命理流排期）、小程序 `mock.js` 切换真实 API（Sanctum 鉴权已留路由位）。
+- **P2**：活动编排（每日命理流排期）、小程序 `mock.js` 切换真实 API（Sanctum 鉴权路由位已留）。
