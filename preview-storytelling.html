@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星野漫游 · 视觉叙事应用预览</title>
+<style>
+  :root{
+    --bg:#f7f5f0; --card:#ffffff; --fg:#2b2622; --fg2:#998f80; --fg3:#6b6457;
+    --gold:#c8a35a; --gold-deep:#8a6a2a; --gold-soft:rgba(200,163,90,.12); --gold-tint:#f6ecd4;
+    --night1:#0B1426; --night2:#16233f; --night-grad:linear-gradient(160deg,#16233f,#0B1426);
+    --radius:18px; --shadow:0 12px 32px rgba(40,33,20,.10);
+    --serif:"Songti SC","STSong","Noto Serif SC",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+  }
+  body.dark{ --bg:#0B1426; --card:#121d33; --fg:#ece6dc; --fg2:#9da9bd; --fg3:#c2bca8;
+    --gold:#d9b66a; --gold-deep:#c8a35a; --gold-soft:rgba(217,182,106,.14); --gold-tint:#2a2418;
+    --shadow:0 14px 36px rgba(0,0,0,.5); }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);background:#e9e6df;color:var(--fg);display:flex;justify-content:center;
+    align-items:flex-start;gap:28px;padding:28px;flex-wrap:wrap}
+  body.dark{background:#05080f}
+  .stage{width:380px;background:var(--bg);border-radius:40px;overflow:hidden;box-shadow:var(--shadow);
+    position:relative;height:760px;display:flex;flex-direction:column;border:1px solid rgba(0,0,0,.06)}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 20px 6px;font-size:13px;color:var(--fg2)}
+  .topbar .acts{display:flex;gap:10px}
+  .topbar .acts span{cursor:pointer;font-size:16px;opacity:.7}
+  .screen{flex:1;overflow-y:auto;padding:0 0 80px;scroll-behavior:smooth}
+  .screen::-webkit-scrollbar{width:0}
+  /* Hero — 叙事化 */
+  .hero{background:var(--night-grad);color:#fff;padding:54px 28px 40px;border-radius:0 0 30px 30px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(2px 2px at 20% 30%,rgba(255,255,255,.7),transparent),
+    radial-gradient(1.5px 1.5px at 70% 22%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1.5px 1.5px at 45% 60%,rgba(255,255,255,.5),transparent),
+    radial-gradient(2px 2px at 84% 55%,rgba(255,255,255,.6),transparent);pointer-events:none}
+  .hero .eyebrow{font-size:12px;letter-spacing:3px;opacity:.82;font-weight:600;position:relative}
+  .hero h1{font-family:var(--serif);font-size:30px;font-weight:600;line-height:1.4;margin:12px 0 14px;
+    position:relative;letter-spacing:1px}
+  .hero .star-line{font-size:14px;opacity:.78;line-height:1.7;position:relative;max-width:280px}
+  .hero .cta{display:inline-block;margin-top:22px;background:linear-gradient(135deg,#d8b876,#b98e44);
+    color:#2a1d05;font-weight:700;font-size:14px;padding:13px 26px;border-radius:30px;position:relative}
+  .annotation{font-size:11px;color:var(--gold-deep);background:var(--gold-soft);border-radius:8px;
+    padding:7px 10px;margin:14px 18px 0;line-height:1.5}
+  /* section heading */
+  .sec-h{padding:30px 24px 6px}
+  .sec-h .ey{font-size:11px;letter-spacing:2px;font-weight:700;color:var(--gold-deep)}
+  .sec-h h2{font-family:var(--serif);font-size:23px;font-weight:600;margin-top:6px;line-height:1.3}
+  .sec-h p{font-size:13px;color:var(--fg2);margin-top:8px;line-height:1.6}
+  /* 寄愿 input-as-hero */
+  .wish{margin:16px 18px;background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);
+    border:1px solid rgba(200,163,90,.15)}
+  .wish .ph{font-family:var(--serif);font-size:17px;color:var(--fg3);line-height:1.6}
+  .wish .send{margin-top:14px;display:flex;justify-content:flex-end}
+  .wish .send b{background:linear-gradient(135deg,#d8b876,#b98e44);color:#2a1d05;font-size:13px;
+    padding:9px 20px;border-radius:24px}
+  /* 三善 cards */
+  .deeds{display:flex;gap:10px;padding:8px 18px 4px}
+  .deed{flex:1;background:var(--card);border-radius:14px;padding:14px 10px;text-align:center;
+    box-shadow:var(--shadow);border:1px solid rgba(200,163,90,.12)}
+  .deed .ic{width:30px;height:30px;margin:0 auto}
+  .deed .nm{font-size:12px;color:var(--fg3);margin-top:8px}
+  /* 每日命理流 chapter */
+  .chapter{margin:14px 18px;background:var(--card);border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow);border:1px solid rgba(200,163,90,.12);opacity:0;transform:translateY(18px);
+    transition:opacity .6s ease,transform .6s cubic-bezier(.34,1.56,.64,1)}
+  .chapter.in{opacity:1;transform:none}
+  .chapter .cv{height:120px;background:var(--night-grad);position:relative}
+  .chapter .cv::after{content:"";position:absolute;inset:0;background:
+    radial-gradient(1.5px 1.5px at 30% 40%,rgba(255,255,255,.7),transparent),
+    radial-gradient(1.5px 1.5px at 70% 60%,rgba(255,255,255,.5),transparent)}
+  .chapter .cb{padding:14px 16px 16px}
+  .chapter .ce{font-size:10px;letter-spacing:2px;color:var(--gold-deep);font-weight:700}
+  .chapter .ct{font-family:var(--serif);font-size:17px;font-weight:600;margin-top:4px}
+  .chapter .cs{font-size:12.5px;color:var(--fg2);margin-top:6px;line-height:1.6}
+  .chapter .cact{margin-top:10px;font-size:12px;color:var(--gold-deep);font-weight:600}
+  /* icon system strip */
+  .icons{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:10px 18px 4px}
+  .ico{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .ico svg{width:30px;height:30px}
+  .ico span{font-size:9px;color:var(--fg2)}
+  /* tab bar */
+  .tabbar{position:absolute;bottom:0;left:0;right:0;display:flex;background:var(--bg);
+    border-top:1px solid rgba(200,163,90,.15);padding:8px 0 6px}
+  .tabbar .tb{flex:1;text-align:center;color:var(--fg2);font-size:10px}
+  .tabbar .tb.on{color:var(--gold-deep)}
+  .tabbar .tb svg{width:22px;height:22px;display:block;margin:0 auto 3px}
+  .tabbar .tb.center svg{width:26px;height:26px}
+  /* side notes */
+  .notes{width:300px;font-size:13px;line-height:1.7;color:#444}
+  .notes h3{font-family:var(--serif);font-size:18px;margin-bottom:10px;color:#2b2622}
+  body.dark .notes{color:#c2bca8}.body.dark .notes h3{color:#ece6dc}
+  .notes .blk{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 14px rgba(0,0,0,.05)}
+  body.dark .notes .blk{background:#121d33}
+  .notes .blk b{color:var(--gold-deep)}
+  .notes ol{padding-left:18px;margin:6px 0}
+  .notes li{margin:5px 0}
+  .kw{display:inline-block;background:var(--gold-soft);color:var(--gold-deep);border-radius:6px;
+    padding:1px 7px;font-size:11px;margin:2px 2px 0 0}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="topbar">
+    <span>9:41</span>
+    <span class="acts"><span onclick="document.body.classList.toggle('dark')">🌙</span><span>📶</span><span>🔋</span></span>
+  </div>
+  <div class="screen" id="screen">
+    <!-- Hero 叙事化 -->
+    <div class="hero">
+      <div class="eyebrow">星野漫游 · 每日星语</div>
+      <h1>今夜，星空<br>为你留了一盏灯</h1>
+      <div class="star-line">不必急着回答明天。先抬头，看哪一颗星，正亮着等你。</div>
+      <div class="cta">点亮今日星图 →</div>
+    </div>
+    <div class="annotation">▲ 叙事化 Hero：删段落说明，只留 eyebrow + 衬线大标题 + 一句星语。星夜满屏当主角，按钮退为配角。</div>
+
+    <!-- Act I 仰望 -->
+    <div class="sec-h">
+      <div class="ey">ACT I · 仰望</div>
+      <h2>你不是一个人<br>在仰望这片夜</h2>
+      <p>宇宙尺度里，你的心事很小，却被整片星河轻轻接住。</p>
+    </div>
+
+    <!-- Act II 连接：寄愿 input-as-hero -->
+    <div class="sec-h">
+      <div class="ey">ACT II · 连接</div>
+      <h2>写下一笔<br>星河替你收着</h2>
+    </div>
+    <div class="wish">
+      <div class="ph">此刻最想对星空说的话……</div>
+      <div class="send"><b>寄出这一笔愿</b></div>
+    </div>
+    <div class="annotation">▲ 寄愿页「输入框即英雄」：键盘升起时背景星夜虚化，唯一焦点是你的一句话。</div>
+
+    <!-- Act III 安住：三善 -->
+    <div class="sec-h">
+      <div class="ey">ACT III · 安住</div>
+      <h2>今日三善<br>安住此刻</h2>
+    </div>
+    <div class="deeds">
+      <div class="deed"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M24 10 C19 16 19 22 24 26 C29 22 29 16 24 10 Z"/><path d="M24 28 V38"/><path d="M18 38 H30"/></svg><div class="nm">点灯</div></div>
+      <div class="deed"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="10" width="20" height="28" rx="3"/><path d="M24 19 L25.4 22.6 L29 23 L25.4 23.4 L24 27 L22.6 23.4 L19 23 L22.6 22.6 Z"/></svg><div class="nm">寄愿</div></div>
+      <div class="deed"><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="24" r="4.5"/><circle cx="24" cy="24" r="4.5"/><circle cx="35" cy="24" r="4.5"/><path d="M24 9 L25 12 L28 13 L25 14 L24 17 L23 14 L20 13 L23 12 Z"/></svg><div class="nm">随喜</div></div>
+    </div>
+
+    <!-- Act IV 回访：每日命理流章节 -->
+    <div class="sec-h">
+      <div class="ey">ACT IV · 回访</div>
+      <h2>节气 × 二十八宿<br>每日一章星语</h2>
+      <p>滚动如翻一本星象书，每段淡入揭晓，读完顺手点亮或寄愿。</p>
+    </div>
+    <div class="chapter"><div class="cv"></div><div class="cb">
+      <div class="ce">大暑 · 柳宿</div><div class="ct">心静自然凉</div>
+      <div class="cs">暑气最盛时，恰恰是练心最好的时候。今夜宜少言，多观星。</div>
+      <div class="cact">顺手点亮柳宿 →</div></div></div>
+    <div class="chapter"><div class="cv"></div><div class="cb">
+      <div class="ce">大暑 · 星宿</div><div class="ct">七星指路</div>
+      <div class="cs">北斗杓柄向南，夏夜的银河横贯天顶。许一个关于方向的愿。</div>
+      <div class="cact">寄一笔愿 →</div></div></div>
+    <div class="chapter"><div class="cv"></div><div class="cb">
+      <div class="ce">大暑 · 张宿</div><div class="ct">盛极知止</div>
+      <div class="cs">万物至此皆极盛。懂得在满时收手，才是长久的安稳。</div>
+      <div class="cact">记一笔感悟 →</div></div></div>
+
+    <!-- icon system -->
+    <div class="sec-h"><div class="ey">图标系统 · 天体图谱</div><h2>一套语言<br>告别 emoji 拼凑</h2></div>
+    <div class="icons">
+      <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M24 11 L27.5 24 L24 37 L20.5 24 Z"/><circle cx="24" cy="24" r="2.2" fill="#8a6a2a" stroke="none"/></svg><span>发现</span></div>
+      <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M24 7 C16 7 11 13 11 20 C11 29 24 41 24 41 C24 41 37 29 37 20 C37 13 32 7 24 7 Z"/><circle cx="24" cy="20" r="5"/></svg><span>文旅</span></div>
+      <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 17 H34 L31.5 40 H16.5 Z"/><path d="M19 17 V13 A5 5 0 0 1 29 13 V17"/></svg><span>商城</span></div>
+      <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="17" r="7"/><path d="M11 41 C11 32 17 28 24 28 C31 28 37 32 37 41"/></svg><span>我的</span></div>
+      <div class="ico"><svg viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5 L26.5 21.5 L43 24 L26.5 26.5 L24 43 L21.5 26.5 L5 24 L21.5 21.5 Z"/></svg><span>星野</span></div>
+    </div>
+  </div>
+  <!-- tab bar -->
+  <div class="tabbar">
+    <div class="tb"><svg viewBox="0 0 48 48" fill="none" stroke="#8a6a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M24 11 L27.5 24 L24 37 L20.5 24 Z"/></svg>发现</div>
+    <div class="tb"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M24 7 C16 7 11 13 11 20 C11 29 24 41 24 41 C24 41 37 29 37 20 C37 13 32 7 24 7 Z"/><circle cx="24" cy="20" r="5"/></svg>文旅</div>
+    <div class="tb center on"><svg viewBox="0 0 48 48" fill="none" stroke="#c8a35a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5 L26.5 21.5 L43 24 L26.5 26.5 L24 43 L21.5 26.5 L5 24 L21.5 21.5 Z"/></svg>星野</div>
+    <div class="tb"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 17 H34 L31.5 40 H16.5 Z"/><path d="M19 17 V13 A5 5 0 0 1 29 13 V17"/></svg>商城</div>
+    <div class="tb"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="17" r="7"/><path d="M11 41 C11 32 17 28 24 28 C31 28 37 32 37 41"/></svg>我的</div>
+  </div>
+</div>
+
+<div class="notes">
+  <h3>视觉叙事方案 · 应用说明</h3>
+  <div class="blk">
+    <b>精髓迁移</b><br>
+    删到只剩故事 → 主角当英雄 → 留白与字体扛情绪 → 滚动当节奏。本预览把这套用在四幕：仰望→连接→安住→回访。
+  </div>
+  <div class="blk">
+    <b>Hero 改了什么</b>
+    <ol>
+      <li>删掉说明段落，只留一句利益句</li>
+      <li>衬线大字做"传统"厚重感</li>
+      <li>eyebrow 小标签定调</li>
+      <li>星夜满屏当主角，CTA 退配角</li>
+    </ol>
+  </div>
+  <div class="blk">
+    <b>每日命理流 = 最佳叙事载体</b><br>
+    章节式滚动：每段一个大图(星夜)+ eyebrow(节气·宿)+ 一句星语 + 一个轻行动。滚动淡入上移，像翻星象书。下方三章为示例。
+  </div>
+  <div class="blk">
+    <b>图标系统（解决"老土"）</b><br>
+    一套"天体图谱"语言：细金线 1.8、圆头、星芒点睛、统一栅格。tab/操作/状态三类共用同一视觉家族，告别 emoji 拼凑。<br>
+    <span class="kw">罗盘</span><span class="kw">定位针</span><span class="kw">购物袋</span><span class="kw">人像</span><span class="kw">四芒星</span>
+  </div>
+  <div class="blk" style="font-size:12px;color:var(--fg2)">
+    点右上 🌙 切换夜灯星夜模式，看叙事在暗色下的情绪一致性。
+  </div>
+</div>
+
+<script>
+  // 章节滚动淡入（叙事节奏）
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+  },{threshold:.2});
+  document.querySelectorAll('.chapter').forEach(c=>io.observe(c));
+  // 首屏即触发
+  setTimeout(()=>document.querySelectorAll('.chapter').forEach((c,i)=>setTimeout(()=>c.classList.add('in'),i*120)),300);
+</script>
+</body>
+</html>
