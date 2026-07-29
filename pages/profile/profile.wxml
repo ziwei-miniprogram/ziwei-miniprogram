@@ -82,6 +82,7 @@
     <view class="entry" bindtap="goPublish"><view class="e-i">✍</view><view>记一笔</view></view>
     <view class="entry" bindtap="goMerit"><view class="e-i">🪔</view><view>功德林</view></view>
     <view class="entry" bindtap="goMall"><view class="e-i">🛍</view><view>星野好物</view></view>
+    <view class="entry" bindtap="goAnchor"><view class="e-i">✦</view><view>我的锚点</view></view>
   </view>
 
   <!-- 笔记网格 -->

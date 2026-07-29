@@ -1,0 +1,256 @@
+/* pages/anchor/anchor.wxss —— 数字锚点（令牌驱动，双主题） */
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 32rpx 28rpx 60rpx;
+  box-sizing: border-box;
+}
+
+/* —— 锚点诞生 / 定星 —— */
+.hero {
+  text-align: center;
+  padding: 40rpx 24rpx 36rpx;
+  background: var(--card);
+  border: 1rpx solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+.star-mark {
+  font-size: 44rpx;
+  color: var(--gold);
+  letter-spacing: 4rpx;
+}
+.kicker {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: var(--fg-2);
+  letter-spacing: 2rpx;
+}
+.anchor-name {
+  margin-top: 12rpx;
+  font-size: 52rpx;
+  font-weight: 700;
+  color: var(--fg);
+  letter-spacing: 4rpx;
+}
+.wish {
+  margin-top: 14rpx;
+  font-size: 30rpx;
+  color: var(--gold-deep);
+  font-style: italic;
+}
+.page.dark .wish { color: var(--gold); }
+.foot {
+  margin-top: 16rpx;
+  font-size: 22rpx;
+  color: var(--fg-2);
+  line-height: 1.6;
+}
+
+/* —— 区块标题 —— */
+.sec-t {
+  margin: 36rpx 8rpx 16rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--fg-3);
+  letter-spacing: 1rpx;
+}
+
+/* —— 沉星记录 —— */
+.stars { display: flex; flex-direction: column; gap: 14rpx; }
+.star-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 22rpx;
+  background: var(--card);
+  border: 1rpx solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.dot {
+  width: 16rpx; height: 16rpx;
+  border-radius: 50%;
+  margin-right: 18rpx;
+  background: var(--gold);
+  flex: none;
+}
+.dot.lamp { background: var(--gold-deep); }
+.dot.return { background: var(--success); }
+.dot.deed { background: #b98e44; }
+.sl { flex: 1; font-size: 26rpx; color: var(--fg); }
+.sd { font-size: 22rpx; color: var(--fg-2); }
+.empty {
+  padding: 28rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--fg-2);
+  line-height: 1.7;
+  background: var(--bg-elev);
+  border-radius: var(--radius-sm);
+}
+
+/* —— 归锚卡片 —— */
+.return-card {
+  margin-top: 36rpx;
+  padding: 28rpx;
+  background: var(--card);
+  border: 1rpx solid var(--border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+.rc-t { font-size: 30rpx; font-weight: 600; color: var(--fg); }
+.rc-s { margin-top: 8rpx; font-size: 22rpx; color: var(--fg-2); line-height: 1.6; }
+
+/* —— 按钮 —— */
+.btn {
+  margin-top: 22rpx;
+  width: 100%;
+  height: 84rpx;
+  line-height: 84rpx;
+  border: none;
+  border-radius: 999rpx;
+  background: var(--gold-grad);
+  color: #1a1a1a;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.btn::after { border: none; }
+.btn-done { background: var(--gold-soft); color: var(--fg-2); }
+.btn-lamp {
+  margin-top: 28rpx;
+  width: 100%;
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14rpx;
+  border: 1rpx solid var(--gold);
+  border-radius: 999rpx;
+  background: var(--bg-elev);
+  color: var(--gold-deep);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.page.dark .btn-lamp { color: var(--gold); }
+.btn-lamp::after { border: none; }
+.btn-ghost {
+  margin-top: 14rpx;
+  width: 100%;
+  height: 72rpx;
+  line-height: 72rpx;
+  border: none;
+  background: transparent;
+  color: var(--fg-2);
+  font-size: 26rpx;
+}
+.btn-ghost::after { border: none; }
+
+/* —— 长明灯灯火标记（CSS 绘制，无 emoji）—— */
+.lamp-ic {
+  width: 56rpx; height: 56rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, #ffe9b0 0%, #f3c969 38%, #c8a35a 72%, #8a6a2a 100%);
+  box-shadow: 0 0 22rpx rgba(200,163,90,.55);
+  animation: flicker 2.4s ease-in-out infinite;
+  flex: none;
+}
+.lamp-ic.sm { width: 38rpx; height: 38rpx; box-shadow: 0 0 14rpx rgba(200,163,90,.45); }
+.lamp-ic.lit { box-shadow: 0 0 38rpx rgba(217,182,106,.8); }
+@keyframes flicker {
+  0%, 100% { transform: scale(1); opacity: .92; }
+  45% { transform: scale(1.06); opacity: 1; }
+  70% { transform: scale(.97); opacity: .85; }
+}
+
+/* —— 已点亮的灯 —— */
+.deeds { margin-top: 8rpx; }
+.deed-card {
+  padding: 22rpx 24rpx;
+  background: var(--card);
+  border: 1rpx solid var(--border);
+  border-radius: var(--radius-sm);
+  margin-bottom: 14rpx;
+}
+.dl { display: flex; align-items: center; gap: 12rpx; font-size: 26rpx; color: var(--fg); font-weight: 600; }
+.dm { margin-top: 8rpx; font-size: 22rpx; color: var(--fg-2); }
+
+/* —— 免责声明 —— */
+.disclaimer {
+  margin-top: 40rpx;
+  font-size: 20rpx;
+  color: var(--fg-2);
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* —— 长明灯流程遮罩 —— */
+.mask {
+  position: fixed; inset: 0;
+  background: rgba(11,20,38,.55);
+  display: flex; align-items: flex-end;
+  z-index: 50;
+}
+.sheet {
+  width: 100%;
+  background: var(--bg);
+  border-radius: 36rpx 36rpx 0 0;
+  padding: 40rpx 32rpx calc(40rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+.lamp-vis { text-align: center; margin-bottom: 16rpx; }
+.lamp-title { text-align: center; font-size: 32rpx; font-weight: 700; color: var(--fg); }
+.lamp-sub { text-align: center; margin-top: 10rpx; font-size: 24rpx; color: var(--fg-2); line-height: 1.7; }
+.deed-opt {
+  display: flex; align-items: center; gap: 18rpx;
+  margin-top: 22rpx;
+  padding: 24rpx;
+  background: var(--card);
+  border: 1rpx solid var(--border);
+  border-radius: var(--radius);
+}
+.deed-opt.on { border-color: var(--gold); box-shadow: var(--shadow-md); }
+.do-body { flex: 1; }
+.do-t { font-size: 28rpx; font-weight: 600; color: var(--fg); }
+.do-s { margin-top: 6rpx; font-size: 22rpx; color: var(--fg-2); }
+.price { font-size: 30rpx; font-weight: 700; color: var(--gold-deep); }
+.page.dark .price { color: var(--gold); }
+.lamp-note {
+  margin-top: 22rpx;
+  padding: 18rpx 20rpx;
+  font-size: 22rpx;
+  color: var(--fg-2);
+  line-height: 1.7;
+  background: var(--gold-soft);
+  border-radius: var(--radius-sm);
+}
+.lamp-note .b { color: var(--gold-deep); font-weight: 600; }
+.page.dark .lamp-note .b { color: var(--gold); }
+.pay-amt {
+  text-align: center;
+  margin: 28rpx 0;
+  font-size: 56rpx;
+  font-weight: 800;
+  color: var(--gold-deep);
+}
+.page.dark .pay-amt { color: var(--gold); }
+.gift {
+  text-align: center;
+  margin: 18rpx 0 6rpx;
+  font-size: 24rpx;
+  color: var(--success);
+}
+
+/* —— 回音时间线 —— */
+.timeline { margin-top: 18rpx; display: flex; flex-direction: column; }
+.tl { display: flex; gap: 18rpx; padding: 14rpx 0; }
+.tl-dot {
+  width: 18rpx; height: 18rpx;
+  border-radius: 50%;
+  margin-top: 8rpx;
+  background: var(--border);
+  flex: none;
+}
+.tl.on .tl-dot { background: var(--gold); box-shadow: 0 0 12rpx rgba(200,163,90,.6); }
+.tl-body { flex: 1; }
+.tl-t { font-size: 26rpx; font-weight: 600; color: var(--fg); }
+.tl-d { margin-top: 4rpx; font-size: 22rpx; color: var(--fg-2); line-height: 1.6; }
+.tl:not(.on) .tl-t { color: var(--fg-2); }

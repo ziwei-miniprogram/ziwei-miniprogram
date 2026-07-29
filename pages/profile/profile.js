@@ -140,6 +140,7 @@ Page({
   goSpace() { wx.switchTab({ url: '/pages/space/space' }); },
   goMerit() { wx.navigateTo({ url: '/pages/merit/merit' }); },
   goMall() { wx.switchTab({ url: '/pages/mall/mall' }); },
+  goAnchor() { wx.navigateTo({ url: '/pages/anchor/anchor' }); },
   goMessage() { wx.navigateTo({ url: '/pages/message/message' }); },
   goPublish() { wx.navigateTo({ url: '/pages/publish/publish' }); },
   openNote(e) { wx.navigateTo({ url: '/pages/note/note?id=' + e.currentTarget.dataset.id }); },

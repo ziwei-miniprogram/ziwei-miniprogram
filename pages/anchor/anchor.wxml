@@ -1,0 +1,102 @@
+<view class="page {{theme}}">
+
+  <!-- 锚点诞生 / 定星 -->
+  <view class="hero">
+    <view class="star-mark">✦</view>
+    <view class="kicker">数字锚点 · 你的定星</view>
+    <view class="anchor-name">{{anchor.name}}</view>
+    <view class="wish">「{{anchor.wish}}」</view>
+    <view class="foot">与你绑定，不可转让 —— 它是一颗定星，不是商品</view>
+  </view>
+
+  <!-- 沉星记录 -->
+  <view class="sec-t">沉星 · 你投注的痕迹</view>
+  <view class="stars">
+    <view wx:for="{{stars}}" wx:key="at" class="star-item">
+      <view class="dot {{item.type}}"></view>
+      <view class="sl">{{item.label}}</view>
+      <view class="sd">{{item.date}}</view>
+    </view>
+    <view wx:if="{{stars.length === 0}}" class="empty">立愿、三善、守护、点亮 —— 每一次都会在这里沉下一层星光</view>
+  </view>
+
+  <!-- 归锚仪式（每日保温层） -->
+  <view class="return-card">
+    <view class="rc-t">今夜归锚</view>
+    <view class="rc-s">每天 30 秒，让锚点仍是温的。不打卡、无惩罚。</view>
+    <button class="btn {{returnedToday ? 'btn-done' : ''}}" disabled="{{returnedToday}}" bindtap="doReturn">
+      {{returnedToday ? '今夜已归锚 ✦' : '点一盏灯 · 归锚'}}
+    </button>
+  </view>
+
+  <!-- 星愿点亮入口 -->
+  <button class="btn-lamp" bindtap="openLamp">
+    <view class="lamp-ic sm"></view>
+    <text>星愿点亮 · 让星愿落地</text>
+  </button>
+
+  <!-- 已点亮的灯 -->
+  <view wx:if="{{deeds.length}}" class="deeds">
+    <view class="sec-t">已点亮的灯</view>
+    <view wx:for="{{deeds}}" wx:key="paidAt" class="deed-card">
+      <view class="dl"><view class="lamp-ic sm"></view> {{item.temple}} · 灯位 {{item.lampNo}}</view>
+      <view class="dm">{{item.tier === '49d' ? '长明 49 日' : '长明 7 日'}} · 守护星 {{item.birthStar}}</view>
+    </view>
+  </view>
+
+  <view class="disclaimer">星愿点亮为真实供灯（寺庙长明灯）演示；功德为娱乐化正向激励，不可提现或交易，不从金钱抵扣。本平台内容均为传统文化与心理慰藉的娱乐参考。</view>
+
+  <!-- 长明灯流程遮罩 -->
+  <view class="mask" wx:if="{{showLamp}}" bindtap="closeLamp">
+    <view class="sheet" catchtap="noop">
+
+      <!-- 选择 -->
+      <block wx:if="{{lampStep === 'choose'}}">
+        <view class="lamp-vis"><view class="lamp-ic"></view></view>
+        <view class="lamp-title">你愿为星愿，点亮什么？</view>
+        <view class="deed-opt {{lampTier === '7d' ? 'on' : ''}}" bindtap="pickTier" data-k="7d">
+          <view class="lamp-ic sm"></view>
+          <view class="do-body"><view class="do-t">一盏长明灯 · 7 日</view><view class="do-s">你的星愿，在寺里亮起七天</view></view>
+          <view class="price">¥19.9</view>
+        </view>
+        <view class="deed-opt {{lampTier === '49d' ? 'on' : ''}}" bindtap="pickTier" data-k="49d">
+          <view class="lamp-ic sm"></view>
+          <view class="do-body"><view class="do-t">一盏长明灯 · 49 日</view><view class="do-s">更接近寺院真实供灯，长明更久</view></view>
+          <view class="price">¥99</view>
+        </view>
+        <view class="lamp-note">你付的是真钱，灯是真实供灯。功德是善行的<text class="b">回礼</text>，不从金钱抵扣 —— 合规如此，安心也如此。</view>
+        <button class="btn" bindtap="goPay">确认点亮 →</button>
+      </block>
+
+      <!-- 支付（模拟） -->
+      <block wx:elif="{{lampStep === 'pay'}}">
+        <view class="lamp-title">点亮一束星</view>
+        <view class="lamp-sub">{{lampTier === '49d' ? '长明 49 日' : '长明 7 日'}} · 你的星愿在寺里亮起</view>
+        <view class="pay-amt">¥{{lampPrice}}</view>
+        <view class="lamp-note">演示环境无真实扣款。真实上线将接入微信支付，且功德绝不从金钱抵扣。</view>
+        <button class="btn" bindtap="doPay">模拟支付 · 点亮</button>
+        <button class="btn-ghost" bindtap="backChoose">← 重选</button>
+      </block>
+
+      <!-- 回音 -->
+      <block wx:else>
+        <view class="lamp-vis"><view class="lamp-ic lit"></view></view>
+        <view class="lamp-title">已落地 · 灯在寺里亮着</view>
+        <view class="lamp-sub">{{lastDeed.temple}} · 灯位 {{lastDeed.lampNo}}<br/>✦ 守护星 {{lastDeed.birthStar}}</view>
+        <view class="gift">+1 功德 · 灯亮着的回礼已入锚点</view>
+        <view class="timeline">
+          <view wx:for="{{lastDeed.timeline}}" wx:key="title" class="tl {{item.done ? 'on' : ''}}">
+            <view class="tl-dot"></view>
+            <view class="tl-body">
+              <view class="tl-t">{{item.title}} · {{item.date}}</view>
+              <view class="tl-d">{{item.desc}}</view>
+            </view>
+          </view>
+        </view>
+        <button class="btn" bindtap="closeLamp">回到锚点</button>
+      </block>
+
+    </view>
+  </view>
+
+</view>

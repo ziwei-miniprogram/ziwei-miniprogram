@@ -695,9 +695,9 @@
     <b>② 真机崩溃：</b> <code>pages/message/message.js</code> 第 42 行把 tabBar 页 <code>/pages/index/index</code> 作为 <code>navigateTo</code> 目标 → 真机点该提示即报 "can not navigateTo a tabbar page"。
   </div>
   <p style="margin-top:8px"><span class="tag ok">建议</span>先修这两处再导入微信开发者工具，否则「发现页故事卡 / 底 tab 惊喜盒 / 消息提示跳转」会失效或闪退。</p>
-  <h3>星愿点亮 · 概念页</h3>
-  <p><span class="tag">概念</span>左侧新增「星愿点亮」页 — 把研讨中的 <b>精神胶囊 / 数字锚点 / 星愿点亮</b> 做成可点走的流程：锚点诞生 → 在真实寺庙点亮一盏长明灯 → 真钱支付 → 七日回响时间线。这是<b>待开发的提案</b>，尚未写进小程序本体。</p>
-  <div class="prog">完整性评分：92/100（结构完整，2 处须修）。<br/>+ 1 张概念页演示星愿点亮闭环。</div>
+  <h3>星愿点亮 · 已落地</h3>
+  <p><span class="tag ok">已落地</span>左侧「星愿点亮」流程已做进小程序本体：<b>pages/anchor</b>（数字锚点）+ <b>utils/anchor.js</b>（沉星 / 归锚 / 长明灯点亮逻辑，纯本地 mock）。概念页此处仍可点走预览；真机入口在「我的 → 我的锚点」。支付为沙箱模拟，真实上线接微信支付且功德不从金钱抵扣。</p>
+  <div class="prog">完整性评分：92/100（结构完整，2 处须修）。<br/>+ 1 张概念页演示星愿点亮闭环（已同步落地为脚手架）。</div>
 </aside>
 
 <script>
