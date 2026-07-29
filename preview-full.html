@@ -1,578 +1,744 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>星野漫游 · 完整预览（16 页）</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>星野漫游 · 完整体验预览（16 页）</title>
 <style>
-:root{
-  --bg-primary:#f7f5f0; --bg-secondary:#fffdf8; --card:#ffffff; --card-soft:#fbf8f0;
-  --text-primary:#2b2b28; --text-secondary:#7a756b; --border-color:#e7e1d4;
-  --gold:#c8a35a; --gold-deep:#8a6a2a; --gold-soft:#f3e9d4; --gold-tint:#faf4e6;
-  --night:#0B1426;
-  --gold-grad:linear-gradient(135deg,#e7c789 0%,#c8a35a 55%,#a07e36 100%);
-  --reco-card-bg:#fffdf8; --reco-card-border:#e9dcc0; --flow-cta-bg:linear-gradient(135deg,#e7c789,#c8a35a);
-  --shadow-1:0 2px 8px rgba(40,30,10,.06); --shadow-2:0 8px 24px rgba(40,30,10,.12);
-  --loop-chip-bg:#fffdf8; --loop-chip-border:#e7dcc2; --loop-chip-fg:#8a6a2a;
-  --danger:#c0392b; --success:#3a8a5a;
-}
-html[data-theme="dark"]{
-  --bg-primary:#0B1426; --bg-secondary:#101b30; --card:#15203a; --card-soft:#121d34;
-  --text-primary:#eef2fb; --text-secondary:#9fb0cc; --border-color:#243352;
-  --gold:#d9b66a; --gold-deep:#d9b66a; --gold-soft:#2a2c1d; --gold-tint:#1a2238;
-  --gold-grad:linear-gradient(135deg,#f0d49a 0%,#d9b66a 55%,#b4904a 100%);
-  --reco-card-bg:#15203a; --reco-card-border:#2c3a5c; --flow-cta-bg:linear-gradient(135deg,#f0d49a,#d9b66a);
-  --shadow-1:0 2px 10px rgba(0,0,0,.35); --shadow-2:0 10px 30px rgba(0,0,0,.5);
-  --loop-chip-bg:#15203a; --loop-chip-border:#2c3a5c; --loop-chip-fg:#d9b66a;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#3a3a40;display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding:24px 0;color:var(--text-primary);transition:background .3s;}
-.phone{width:390px;height:844px;background:var(--bg-primary);border-radius:44px;box-shadow:0 30px 70px rgba(0,0,0,.45);overflow:hidden;position:relative;display:flex;flex-direction:column;border:10px solid #1c1c20;transition:background .3s;}
-.statusbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;color:var(--text-primary);flex:0 0 auto;}
-.statusbar .dots{display:flex;gap:5px;} .statusbar .dots i{width:6px;height:6px;border-radius:50%;background:var(--gold);display:block;}
-.appbar{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:6px 14px 10px;background:var(--bg-primary);border-bottom:1px solid var(--border-color);transition:background .3s;}
-.appbar .back{font-size:20px;color:var(--gold-deep);cursor:pointer;width:26px;}
-.appbar .title{font-size:16px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.appbar .title small{display:block;font-size:10px;font-weight:400;color:var(--text-secondary);}
-.appbar .map-btn{font-size:11px;background:var(--gold-soft);color:var(--gold-deep);border:1px solid var(--gold);border-radius:20px;padding:5px 9px;cursor:pointer;white-space:nowrap;}
-.appbar .toggle{display:flex;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:20px;padding:2px;cursor:pointer;}
-.appbar .toggle span{font-size:10px;padding:4px 7px;border-radius:16px;color:var(--text-secondary);line-height:1;}
-.appbar .toggle span.on{background:var(--gold-grad);color:#3a2c10;font-weight:600;}
-.screen{flex:1 1 auto;overflow-y:auto;padding:16px;padding-bottom:84px;-webkit-overflow-scrolling:touch;}
-.screen::-webkit-scrollbar{width:0;}
-.hero{background:var(--gold-grad);border-radius:20px;padding:20px 18px;color:#3a2c10;box-shadow:var(--shadow-2);margin-bottom:16px;position:relative;overflow:hidden;}
-.hero::after{content:"✦";position:absolute;right:14px;top:8px;font-size:46px;opacity:.22;}
-.hero h1{margin:0 0 6px;font-size:20px;letter-spacing:1px;} .hero p{margin:0;font-size:13px;opacity:.85;}
-.card{background:var(--card);border:1px solid var(--border-color);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:var(--shadow-1);transition:background .3s,border-color .3s;}
-.card h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:6px;}
-.card h3 .pin{color:var(--gold);}
-.section-h{font-size:13px;color:var(--text-secondary);margin:4px 2px 8px;font-weight:600;letter-spacing:.5px;}
-.chip-row{display:flex;gap:10px;flex-wrap:wrap;}
-.chip{flex:1 1 calc(33% - 7px);min-width:96px;background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:12px 10px;text-align:center;cursor:pointer;box-shadow:var(--shadow-1);transition:transform .15s,background .3s;}
-.chip:active{transform:scale(.96);} .chip .ic{font-size:22px;} .chip .t{font-size:12px;margin-top:5px;font-weight:600;} .chip .d{font-size:10px;color:var(--text-secondary);margin-top:2px;}
-.cluster{margin-bottom:6px;} .cluster .ct{font-size:12px;color:var(--gold-deep);font-weight:700;margin:10px 2px 8px;display:flex;align-items:center;gap:6px;}
-.cluster .ct::before{content:"";width:3px;height:13px;background:var(--gold-grad);border-radius:2px;display:inline-block;}
-.seg{display:flex;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:24px;padding:3px;margin-bottom:14px;}
-.seg .s{flex:1;text-align:center;font-size:13px;padding:8px 4px;border-radius:21px;color:var(--text-secondary);cursor:pointer;transition:.2s;}
-.seg .s.on{background:var(--gold-grad);color:#3a2c10;font-weight:700;}
-.btn{display:block;width:100%;text-align:center;background:var(--gold-grad);color:#3a2c10;font-weight:700;font-size:15px;border:none;border-radius:14px;padding:13px;cursor:pointer;box-shadow:var(--shadow-1);}
-.btn:active{transform:scale(.98);} .btn.ghost{background:transparent;color:var(--gold-deep);border:1px solid var(--gold);box-shadow:none;} .btn.sm{width:auto;padding:8px 16px;font-size:13px;display:inline-block;}
-.fld{margin-bottom:12px;} .fld .lab{font-size:12px;color:var(--text-secondary);margin-bottom:6px;}
-.fld input,.fld textarea{width:100%;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;padding:10px;font-size:14px;color:var(--text-primary);font-family:inherit;resize:none;}
-.fld input:focus,.fld textarea:focus{outline:none;border-color:var(--gold);}
-.loop-chip{background:var(--loop-chip-bg);border:1px solid var(--loop-chip-border);border-radius:16px;padding:12px 12px 14px;margin-top:6px;box-shadow:var(--shadow-1);}
-.loop-chip .lct{font-size:12px;color:var(--loop-chip-fg);font-weight:600;margin-bottom:8px;}
-.loop-chip .items{display:flex;gap:8px;overflow-x:auto;} .loop-chip .li{flex:0 0 auto;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:7px;cursor:pointer;font-size:12px;white-space:nowrap;color:var(--text-primary);}
-.loop-chip .li .e{font-size:16px;}
-.reco-zone{background:var(--reco-card-bg);border:1px solid var(--reco-card-border);border-radius:16px;padding:13px;margin-bottom:14px;box-shadow:var(--shadow-1);}
-.reco-z-h{font-size:13px;font-weight:700;color:var(--gold-deep);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.mj-reco{display:flex;gap:11px;align-items:center;padding:10px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:transform .12s;}
-.mj-reco:active{transform:scale(.98);} .mj-reco:last-child{margin-bottom:0;}
-.mj-reco .ic{font-size:26px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:var(--gold-tint);border-radius:11px;flex:0 0 auto;}
-.mj-reco .body{flex:1;} .mj-reco .tag{font-size:10px;color:var(--gold-deep);background:var(--gold-soft);border-radius:8px;padding:1px 7px;display:inline-block;margin-bottom:3px;}
-.mj-reco .nm{font-size:14px;font-weight:600;} .mj-reco .ds{font-size:11px;color:var(--text-secondary);margin-top:2px;}
-.mj-reco .go{font-size:12px;color:var(--gold-deep);font-weight:600;white-space:nowrap;}
-.merit-lamp{background:var(--gold-tint);border:1px solid var(--gold);border-radius:16px;padding:13px;margin-bottom:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-1);}
-.merit-lamp .ml-ic{font-size:30px;} .merit-lamp .ml-body{flex:1;} .merit-lamp .ml-t{font-size:14px;font-weight:700;} .merit-lamp .ml-s{font-size:11px;color:var(--text-secondary);margin-top:2px;}
-.merit-lamp .ml-btn{font-size:12px;background:var(--gold-grad);color:#3a2c10;font-weight:700;border-radius:11px;padding:8px 12px;cursor:pointer;}
-.merit-lamp.lit{opacity:.7;}
-/* 9宫格星野中枢 */
-.star-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
-.sg-cell{background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:13px 8px;text-align:center;cursor:pointer;box-shadow:var(--shadow-1);transition:transform .15s;}
-.sg-cell:active{transform:scale(.95);} .sg-cell .e{font-size:24px;} .sg-cell .t{font-size:12px;margin-top:6px;font-weight:600;} .sg-cell.pinned{border-color:var(--gold);background:var(--gold-tint);}
-.sg-cell .pin-flag{font-size:9px;color:var(--gold-deep);background:var(--gold-soft);border-radius:6px;padding:0 5px;display:inline-block;margin-top:3px;}
-/* 心灯FAB */
-.fab{position:absolute;right:18px;bottom:84px;width:56px;height:56px;border-radius:50%;background:var(--gold-grad);color:#3a2c10;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:var(--shadow-2);cursor:pointer;z-index:5;}
-.fab:active{transform:scale(.92);}
-/* 进度 */
-.prog{height:8px;background:var(--bg-secondary);border-radius:6px;overflow:hidden;border:1px solid var(--border-color);}
-.prog > i{display:block;height:100%;background:var(--gold-grad);border-radius:6px;transition:width .4s;}
-/* 城市守护 */
-.city-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
-.city{background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;box-shadow:var(--shadow-1);}
-.city.on{border-color:var(--gold);background:var(--gold-tint);} .city .e{font-size:22px;} .city .t{font-size:12px;margin-top:5px;font-weight:600;} .city .s{font-size:10px;color:var(--text-secondary);}
-.guard-board{background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:12px;margin-bottom:14px;box-shadow:var(--shadow-1);}
-.guard-board .gb-h{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;} .guard-board .gb-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin:4px 0;}
-/* 星图 hero */
-.star-hero{background:radial-gradient(circle at 50% 35%,#1c2c4d,#0B1426);border-radius:18px;padding:24px 16px;color:#eef2fb;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
-.star-hero .stars{font-size:22px;letter-spacing:6px;opacity:.85;margin-bottom:8px;}
-.star-hero h2{margin:0;font-size:18px;} .star-hero p{margin:6px 0 0;font-size:12px;opacity:.7;}
-/* 盲盒 */
-.blink{background:linear-gradient(135deg,#2a2350,#3d2f6e);border-radius:18px;padding:20px 16px;color:#f3e9ff;text-align:center;margin-bottom:14px;box-shadow:var(--shadow-2);cursor:pointer;}
-.blink .b-ic{font-size:34px;} .blink h3{margin:8px 0 4px;font-size:16px;} .blink p{margin:0;font-size:12px;opacity:.8;}
-/* 徽章墙 */
-.badge-wall{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-.badge{background:var(--card);border:1px solid var(--border-color);border-radius:12px;padding:10px 4px;text-align:center;box-shadow:var(--shadow-1);}
-.badge.on{border-color:var(--gold);background:var(--gold-tint);} .badge .e{font-size:22px;filter:grayscale(1);opacity:.4;} .badge.on .e{filter:none;opacity:1;} .badge .t{font-size:9px;margin-top:4px;color:var(--text-secondary);} .badge.on .t{color:var(--gold-deep);font-weight:600;}
-/* disclaimer */
-.disclaimer{font-size:10px;color:var(--text-secondary);line-height:1.5;padding:12px 4px 4px;text-align:center;opacity:.85;}
-/* tabbar */
-.tabbar{position:absolute;left:0;right:0;bottom:0;height:64px;background:var(--bg-primary);border-top:1px solid var(--border-color);display:flex;padding:6px 0 8px;flex:0 0 auto;transition:background .3s;z-index:6;}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:var(--text-secondary);font-size:10px;}
-.tab .e{font-size:22px;} .tab.on{color:var(--gold-deep);font-weight:700;}
-/* 浮层 */
-.overlay{position:absolute;inset:0;background:rgba(11,20,38,.55);z-index:20;display:none;align-items:flex-start;justify-content:center;padding:60px 14px;backdrop-filter:blur(2px);}
-.overlay.on{display:flex;}
-.modal{background:var(--bg-primary);border:1px solid var(--border-color);border-radius:20px;width:100%;max-height:700px;overflow-y:auto;padding:16px;box-shadow:var(--shadow-2);}
-.modal h2{margin:0 0 12px;font-size:16px;color:var(--gold-deep);display:flex;justify-content:space-between;align-items:center;}
-.modal h2 .x{font-size:18px;cursor:pointer;color:var(--text-secondary);}
-.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.map-card{background:var(--card);border:1px solid var(--border-color);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;box-shadow:var(--shadow-1);transition:transform .12s;}
-.map-card:active{transform:scale(.95);} .map-card .e{font-size:22px;} .map-card .t{font-size:11px;margin-top:5px;font-weight:600;} .map-card .b{font-size:9px;color:var(--gold-deep);margin-top:3px;}
-.map-group{font-size:11px;color:var(--text-secondary);font-weight:700;margin:14px 2px 8px;}
-.arch-item{background:var(--card);border:1px solid var(--border-color);border-radius:12px;padding:11px;margin-bottom:9px;box-shadow:var(--shadow-1);}
-.arch-item .ai-h{font-size:13px;font-weight:700;color:var(--gold-deep);} .arch-item .ai-b{font-size:11px;color:var(--text-secondary);margin-top:4px;line-height:1.5;}
-/* toast */
-.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(11,20,38,.9);color:#fff;font-size:13px;padding:10px 18px;border-radius:12px;z-index:30;opacity:0;transition:opacity .25s;pointer-events:none;}
-.toast.on{opacity:1;}
-/* 评论撰写 */
-.cmt-bar{position:absolute;left:0;right:0;bottom:0;background:var(--bg-primary);border-top:1px solid var(--border-color);padding:10px 14px;display:none;z-index:15;flex-direction:column;gap:8px;}
-.cmt-bar.on{display:flex;}
-.cmt-bar .row{display:flex;gap:8px;align-items:center;} .cmt-bar textarea{flex:1;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:10px;padding:9px;font-size:13px;color:var(--text-primary);font-family:inherit;resize:none;height:42px;}
-.cmt-bar .send{background:var(--gold-grad);color:#3a2c10;font-weight:700;border-radius:10px;padding:9px 14px;cursor:pointer;font-size:13px;}
-.feed-item{font-size:12px;color:var(--text-secondary);padding:8px 0;border-bottom:1px dashed var(--border-color);}
-/* 顶部完整度浮标 */
-.completeness{position:absolute;top:50px;right:14px;background:var(--gold-soft);border:1px solid var(--gold);color:var(--gold-deep);font-size:10px;border-radius:14px;padding:3px 8px;z-index:7;box-shadow:var(--shadow-1);}
-.muted{color:var(--text-secondary);font-size:12px;} .center{text-align:center;} .mt8{margin-top:8px;} .gold-t{color:var(--gold-deep);font-weight:700;}
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important;}}
+  :root{
+    --bg:#f7f5f0; --card:#fffdf8; --fg:#2b2620; --fg-2:#6b6358; --fg-3:#9a9186;
+    --gold:#c8a35a; --gold-deep:#8a6a2a; --gold-soft:rgba(200,163,90,.16); --gold-tint:rgba(200,163,90,.08);
+    --border:rgba(43,38,32,.10); --success:#5b8a5b;
+  }
+  .phone.dark{
+    --bg:#0B1426; --card:#13203a; --fg:#ece6da; --fg-2:#a9a295; --fg-3:#6f6a5f;
+    --gold:#d9b66a; --gold-deep:#d9b66a; --gold-soft:rgba(217,182,106,.18); --gold-tint:rgba(217,182,106,.10);
+    --border:rgba(236,230,218,.12); --success:#7fb38a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{background:#16161a;font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif;display:flex;justify-content:center;padding:24px 10px;color:var(--fg);gap:22px;align-items:flex-start;flex-wrap:wrap;}
+  /* 左侧导航 */
+  .nav{width:184px;background:#1f1f24;border-radius:16px;padding:14px 10px;max-height:820px;overflow-y:auto;}
+  .nav h4{color:#d9b66a;font-size:11px;letter-spacing:2px;margin:6px 8px 12px;text-transform:uppercase;}
+  .nav button{display:flex;justify-content:space-between;align-items:center;width:100%;border:none;background:transparent;color:#cfcabf;font-size:13px;padding:9px 10px;border-radius:10px;cursor:pointer;text-align:left;font-family:inherit;}
+  .nav button:hover{background:#2b2b32;}
+  .nav button.on{background:#3a2f1a;color:#d9b66a;}
+  .nav .tab-tag{font-size:9px;background:#2e2e36;color:#d9b66a;border-radius:5px;padding:1px 5px;margin-left:4px;}
+  /* 手机框 */
+  .phone{width:380px;height:800px;background:var(--bg);border-radius:44px;border:10px solid #2a2a2a;overflow:hidden;position:relative;box-shadow:0 30px 70px rgba(0,0,0,.55);transition:background .4s;}
+  .screen{height:100%;overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;padding-bottom:84px;transition:background .4s;}
+  .screen::-webkit-scrollbar{width:0;}
+  .topbar{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:14px 18px 8px;background:linear-gradient(var(--bg),rgba(247,245,240,0));}
+  .phone.dark .topbar{background:linear-gradient(var(--bg),rgba(11,20,38,0));}
+  .kicker{font-size:11px;letter-spacing:2px;color:var(--fg-3);text-transform:uppercase;}
+  .theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--card);color:var(--gold-deep);font-size:14px;}
+  .screen-page{display:none;}
+  .screen-page.on{display:block;}
+  /* 通用 */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin:12px 16px;}
+  .title{font-size:18px;font-weight:700;}
+  .subtitle{font-size:12px;color:var(--fg-2);margin-top:4px;line-height:1.6;}
+  .muted{font-size:11px;color:var(--fg-3);line-height:1.6;}
+  .serif{font-family:"Songti SC",serif;}
+  .disclaimer{font-size:10.5px;color:var(--fg-3);line-height:1.7;margin:18px 18px 8px;text-align:center;}
+  .ic{stroke:var(--gold-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .phone.dark .ic{stroke:var(--gold);}
+  /* 底部 tab */
+  .tabbar{position:absolute;bottom:0;left:0;right:0;height:68px;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding-bottom:6px;}
+  .tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--fg-3);cursor:pointer;}
+  .tab.on{color:var(--gold-deep);}
+  .phone.dark .tab.on{color:var(--gold);}
+  /* 右侧说明 */
+  .notes{width:280px;color:#cfcfcf;font-size:12.5px;line-height:1.75;}
+  .notes h3{color:#fff;font-size:14px;margin:16px 0 6px;}
+  .notes h3:first-child{margin-top:0;}
+  .notes .tag{display:inline-block;background:#2e2e36;border-radius:6px;padding:1px 7px;font-size:11px;color:#d9b66a;margin-right:4px;}
+  .notes p{color:#a8a8a8;}
+  .notes .warn{background:#3a2418;border:1px solid #6b3b22;border-radius:8px;padding:10px;color:#f0c9a8;margin-top:8px;}
+  .notes .ok{color:#7fb38a;}
+  .prog{margin-top:12px;font-size:12px;color:#888;}
+
+  /* ===== 各页专属样式 ===== */
+  .search{margin:6px 16px 0;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:10px 14px;font-size:13px;color:var(--fg-2);display:flex;align-items:center;gap:8px;}
+  .hero{padding:18px 18px 20px;text-align:center;position:relative;}
+  .hero .glow{position:absolute;inset:0;background:radial-gradient(120px 120px at 50% 20%,var(--gold-soft),transparent 70%);pointer-events:none;}
+  .hero-eyebrow{font-size:11px;letter-spacing:2px;color:var(--gold-deep);}
+  .hero-title{font-family:"Songti SC",serif;font-size:24px;font-weight:700;letter-spacing:2px;margin:10px 0 8px;line-height:1.4;}
+  .hero-line{font-family:"Songti SC",serif;font-size:15px;color:var(--fg-2);line-height:1.8;}
+  .bento{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:8px 16px;}
+  .apple-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 10px;text-align:center;gap:6px;display:flex;flex-direction:column;align-items:center;}
+  .apple-card .ac-t{font-size:13px;font-weight:600;}
+  .apple-card .ac-d{font-size:10.5px;color:var(--fg-2);line-height:1.5;}
+  .act-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:1px;color:var(--gold-deep);background:var(--gold-soft);padding:5px 11px;border-radius:20px;margin:14px 16px 0;}
+  .unlock-chip{margin:14px 16px 0;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;}
+  .unlock-chip .uc-bar{flex:1;height:6px;background:var(--gold-tint);border-radius:4px;overflow:hidden;}
+  .unlock-chip .uc-fill{height:100%;background:var(--gold-deep);width:64%;}
+  .proof-bar{margin:12px 16px 0;font-size:12px;color:var(--fg-2);text-align:center;}
+  .story{margin:14px 16px 0;background:linear-gradient(135deg,var(--card),var(--gold-tint));border:1px solid var(--border);border-radius:18px;padding:16px;}
+  .story .s-ey{font-size:11px;letter-spacing:1px;color:var(--gold-deep);}
+  .story .s-b{font-family:"Songti SC",serif;font-size:16px;line-height:1.7;margin:8px 0;}
+  .story .s-sign{font-size:12px;color:var(--fg-2);}
+  .tabs2{display:flex;gap:18px;margin:16px 16px 0;font-size:13px;color:var(--fg-3);border-bottom:1px solid var(--border);padding-bottom:8px;}
+  .tabs2 .on{color:var(--gold-deep);font-weight:600;border-bottom:2px solid var(--gold-deep);padding-bottom:6px;}
+  .phone.dark .tabs2 .on{color:var(--gold);border-color:var(--gold);}
+  .feed{columns:2;column-gap:10px;padding:12px 16px;}
+  .fcard{break-inside:avoid;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;}
+  .fcard .img{height:90px;background:var(--gold-tint);display:flex;align-items:center;justify-content:center;font-size:30px;}
+  .fcard .body{padding:9px;font-size:12px;}
+  .fcard .tt{font-weight:600;font-size:13px;}
+  .fcard .meta{font-size:10.5px;color:var(--fg-3);margin-top:4px;display:flex;justify-content:space-between;}
+  .quickpost{margin:10px 16px;display:flex;gap:8px;}
+  .quickpost input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:9px 12px;font-size:12px;color:var(--fg);}
+  .quickpost .qp-btn{background:var(--gold-deep);color:#fff;border-radius:14px;padding:0 14px;font-size:12px;display:flex;align-items:center;}
+  /* chart */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 16px;}
+  .pal{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;}
+  .pal .pn{font-size:12px;font-weight:600;}
+  .pal .ps{font-size:11px;color:var(--gold-deep);}
+  .pal.on{background:var(--gold-soft);border-color:var(--gold-deep);}
+  .btn-ghost{display:inline-block;margin-top:8px;background:var(--card);border:1px solid var(--gold-deep);color:var(--gold-deep);border-radius:14px;padding:8px 14px;font-size:12px;}
+  .phone.dark .btn-ghost{color:var(--gold);border-color:var(--gold);}
+  .progress{height:8px;background:var(--gold-tint);border-radius:5px;overflow:hidden;margin:8px 0;}
+  .progress .fill{height:100%;background:var(--gold-deep);}
+  .phone.dark .progress .fill{background:var(--gold);}
+  .path{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--border);}
+  .path .p-ic{font-size:20px;}
+  .path .p-go{color:var(--gold-deep);font-size:13px;}
+  /* tourism */
+  .cg-map{height:150px;background:linear-gradient(135deg,#1b3a5c,#0B1426);border-radius:14px;margin:10px 0;position:relative;display:flex;align-items:center;justify-content:center;color:#d9b66a;font-size:12px;}
+  .cg-cities{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+  .cg-city{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;font-size:12px;}
+  .cg-city.on{background:var(--gold-soft);border-color:var(--gold-deep);color:var(--gold-deep);}
+  .phone.dark .cg-city.on{color:var(--gold);border-color:var(--gold);}
+  .cg-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .cg-btn{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:9px;font-size:12px;text-align:center;}
+  .cg-btn.on{background:var(--gold-soft);border-color:var(--gold-deep);color:var(--gold-deep);}
+  .feature{margin:12px 16px;background:linear-gradient(135deg,var(--card),var(--gold-tint));border:1px solid var(--border);border-radius:16px;padding:14px;}
+  .feature .badge{font-size:10px;color:var(--gold-deep);letter-spacing:1px;}
+  .feature .ft{font-size:16px;font-weight:700;margin:4px 0;}
+  .feature .fp{margin-top:8px;color:var(--gold-deep);font-weight:600;}
+  .tour{display:flex;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px;margin:10px 16px;}
+  .tour .cov{width:64px;height:64px;border-radius:10px;background:var(--gold-tint);display:flex;align-items:center;justify-content:center;font-size:26px;}
+  .tour .tt{font-size:13px;font-weight:600;}
+  .tour .price{color:var(--gold-deep);font-weight:600;font-size:12px;}
+  /* space */
+  .pinned{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 16px;}
+  .pin{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center;}
+  .pin .pic{font-size:24px;}
+  .pin .pnm{font-size:13px;font-weight:600;margin-top:4px;}
+  .pin .pds{font-size:10px;color:var(--fg-2);}
+  .cluster{margin:14px 16px;}
+  .cl-h{font-size:13px;font-weight:600;margin-bottom:8px;color:var(--fg-2);}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .cell{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center;font-size:11px;}
+  .cell .ic2{font-size:20px;}
+  /* mall */
+  .coupon{margin:10px 16px;background:var(--gold-soft);border-radius:12px;padding:9px 12px;font-size:12px;color:var(--gold-deep);}
+  .reco{margin:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;}
+  .reco .mj-reco-ic{font-size:20px;}
+  .reco .mj-reco-name{font-size:13px;font-weight:600;}
+  .reco .mj-reco-desc{font-size:11px;color:var(--fg-2);}
+  .reco .mj-reco-go{font-size:11px;color:var(--gold-deep);text-align:right;}
+  .cats{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;white-space:nowrap;}
+  .cat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:6px 12px;font-size:12px;}
+  .cat.on{background:var(--gold-soft);color:var(--gold-deep);border-color:var(--gold-deep);}
+  .pd{background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;overflow:hidden;break-inside:avoid;}
+  .pd .img{height:96px;background:var(--gold-tint);display:flex;align-items:center;justify-content:center;font-size:34px;position:relative;}
+  .pd .badge{position:absolute;top:8px;left:8px;background:var(--gold-deep);color:#fff;font-size:10px;border-radius:8px;padding:2px 7px;}
+  .pd .body{padding:9px;font-size:12px;}
+  .pd .tt{font-weight:600;font-size:13px;}
+  .pd .price{color:var(--gold-deep);font-weight:600;}
+  .pd .buy{margin-top:6px;background:var(--gold-deep);color:#fff;border-radius:12px;padding:6px;text-align:center;font-size:12px;}
+  /* merit */
+  .seg{display:flex;gap:6px;margin:12px 16px;flex-wrap:wrap;}
+  .seg .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:6px 12px;font-size:12px;color:var(--fg-2);}
+  .seg .s.on{background:var(--gold-soft);color:var(--gold-deep);border-color:var(--gold-deep);font-weight:600;}
+  .merit-num{font-family:"Songti SC",serif;font-size:40px;font-weight:700;color:var(--gold-deep);}
+  .phone.dark .merit-num{color:var(--gold);}
+  .level-badge{display:inline-block;background:var(--gold-soft);color:var(--gold-deep);border-radius:10px;padding:3px 10px;font-size:11px;margin-top:6px;}
+  .btn{display:block;background:var(--gold-deep);color:#fff;border-radius:14px;padding:11px;text-align:center;font-size:13px;margin-top:12px;}
+  .phone.dark .btn{background:var(--gold);color:#1a1a1a;}
+  .deed{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border);}
+  .deed .de-ic{font-size:18px;}
+  .deed .de-btn{margin-left:auto;background:var(--gold-soft);color:var(--gold-deep);border-radius:10px;padding:4px 10px;font-size:11px;}
+  .board-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border);font-size:12px;}
+  .board-item .b-merit{color:var(--gold-deep);font-weight:600;}
+  .board-item.me{background:var(--gold-tint);border-radius:8px;}
+  /* note */
+  .nb-hero{height:180px;background:var(--gold-tint);display:flex;align-items:center;justify-content:center;font-size:54px;position:relative;}
+  .nb-body{padding:16px;}
+  .topic{font-size:12px;color:var(--gold-deep);}
+  .h2{font-size:19px;font-weight:700;margin:6px 0 10px;}
+  .txt{font-size:14px;color:var(--fg-2);line-height:1.9;}
+  .author{display:flex;align-items:center;gap:10px;margin:14px 0;font-size:13px;}
+  .author .av{width:34px;height:34px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;}
+  .author .follow{margin-left:auto;background:var(--gold-deep);color:#fff;border-radius:12px;padding:5px 14px;font-size:11px;}
+  .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+  .rel-card .rel-img{height:70px;background:var(--gold-tint);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+  .nb-bar{position:sticky;bottom:0;display:flex;gap:12px;align-items:center;background:var(--card);border-top:1px solid var(--border);padding:10px 16px;}
+  .nb-bar .cmt{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:18px;padding:8px 12px;font-size:12px;color:var(--fg-3);}
+  .nb-bar .act{font-size:13px;color:var(--fg-2);}
+  /* message */
+  .chat{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);}
+  .chat .av{width:40px;height:40px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;}
+  .chat .c-top{display:flex;justify-content:space-between;font-size:13px;}
+  .chat .c-last{font-size:11px;color:var(--fg-3);}
+  .unread{margin-left:auto;background:#e0796f;color:#fff;border-radius:999px;font-size:10px;padding:1px 6px;}
+  .tip{display:flex;align-items:center;gap:8px;margin:10px 16px;background:var(--gold-soft);border-radius:12px;padding:9px 12px;font-size:12px;color:var(--gold-deep);}
+  /* profile */
+  .cover{height:90px;background:linear-gradient(135deg,var(--gold-tint),var(--gold-soft));}
+  .phead{display:flex;align-items:center;gap:12px;padding:0 16px;margin-top:-26px;}
+  .av-big{width:56px;height:56px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;color:#1a1a1a;font-size:22px;font-weight:700;}
+  .theme-toggle{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fg-2);}
+  .bio{font-size:12px;color:var(--fg-2);padding:10px 16px;}
+  .wish-card,.sign-card,.merit-card,.persona{margin:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;}
+  .sign-card .sc-title{font-size:13px;color:var(--gold-deep);font-weight:600;}
+  .badges .b-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;}
+  .badge2{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px;text-align:center;font-size:10px;}
+  .badge2.on{background:var(--gold-soft);border-color:var(--gold-deep);}
+  .stat{display:flex;justify-content:space-around;margin:12px 16px;font-size:13px;text-align:center;}
+  .stat .st-n{font-size:18px;font-weight:700;color:var(--gold-deep);}
+  .entries{margin:12px 16px;display:flex;flex-direction:column;gap:2px;}
+  .entry{display:flex;align-items:center;gap:10px;padding:12px 4px;border-bottom:1px solid var(--border);font-size:13px;}
+  .ptabs{display:flex;gap:18px;margin:14px 16px 6px;font-size:13px;color:var(--fg-3);}
+  .ptabs .on{color:var(--gold-deep);font-weight:600;}
+  .grid-note{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 16px;}
+  .gn{background:var(--card);border:1px solid var(--border);border-radius:12px;height:80px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+  /* journey */
+  .med{margin:14px 16px;background:linear-gradient(135deg,var(--card),var(--gold-tint));border-radius:18px;padding:22px;text-align:center;}
+  .breath{width:54px;height:54px;border-radius:50%;background:var(--gold-soft);margin:0 auto 10px;animation:breathe 4s ease-in-out infinite;}
+  @keyframes breathe{0%,100%{transform:scale(.8);opacity:.6}50%{transform:scale(1.1);opacity:1}}
+  .mood .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+  .mood .e{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 10px;font-size:16px;}
+  .mood .e.on{background:var(--gold-soft);border-color:var(--gold-deep);}
+  .diary{margin:14px 16px;}
+  .diary .box{width:100%;height:90px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px;font-size:13px;color:var(--fg);font-family:inherit;}
+  .save{margin-top:8px;background:var(--gold-deep);color:#fff;border-radius:12px;padding:9px;text-align:center;font-size:12px;}
+  /* healing */
+  .heal{display:flex;align-items:center;gap:12px;}
+  .heal-cover{width:56px;height:56px;border-radius:12px;background:var(--gold-tint);display:flex;align-items:center;justify-content:center;font-size:24px;}
+  .heal .play{margin-left:auto;background:var(--gold-soft);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--gold-deep);}
+  /* blessing */
+  .tpls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+  .tpl{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 12px;font-size:12px;}
+  .tpl.on{background:var(--gold-soft);border-color:var(--gold-deep);color:var(--gold-deep);}
+  .tx{width:100%;height:70px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px;font-size:13px;color:var(--fg);font-family:inherit;margin-top:8px;}
+  .cv{width:100%;height:150px;background:#0B1426;border-radius:12px;}
+  /* star-panel */
+  .star-hero{text-align:center;padding:10px;}
+  .star-hero .sh-t{font-family:"Songti SC",serif;font-size:30px;font-weight:700;color:var(--gold-deep);}
+  .phone.dark .star-hero .sh-t{color:var(--gold);}
+  .bazi-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin:10px 0;}
+  .bazi-col{text-align:center;background:var(--gold-tint);border-radius:10px;padding:10px;}
+  .bazi-col .bc-t{font-size:11px;color:var(--fg-3);}
+  .bazi-col .bc-g{font-size:18px;font-weight:700;color:var(--gold-deep);}
+  .phone.dark .bazi-col .bc-g{color:var(--gold);}
+  .wx-row{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--fg-2);margin:8px 0;}
+  /* daily */
+  .daily-hero{margin:14px 16px;background:linear-gradient(135deg,#0B1426,#1b3a5c);border-radius:18px;padding:22px;color:#ece6da;text-align:center;position:relative;overflow:hidden;}
+  .daily-hero .dh-kicker{font-size:11px;letter-spacing:1px;color:#d9b66a;}
+  .daily-hero .dh-term{font-family:"Songti SC",serif;font-size:26px;font-weight:700;margin:6px 0;}
+  .daily-hero .dh-day{font-size:12px;color:#a9a295;}
+  .daily-hero .dh-mansion{font-size:14px;color:#d9b66a;margin-top:6px;}
+  .dh-prog{margin-top:14px;}
+  .dh-prog-bar{height:5px;background:rgba(236,230,218,.2);border-radius:3px;overflow:hidden;}
+  .dh-prog-fill{height:100%;background:#d9b66a;width:60%;}
+  .dh-prog-txt{font-size:10.5px;color:#a9a295;margin-top:5px;}
+  .track-title{font-size:12px;color:var(--fg-3);letter-spacing:1px;margin:18px 16px 6px;}
+  .chapter{display:flex;gap:12px;margin:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;}
+  .chapter .ch-ic{font-size:20px;color:var(--gold-deep);}
+  /* search */
+  .bar{padding:14px 16px;}
+  .bar .box{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:10px 14px;}
+  .bar .inp{background:transparent;border:none;outline:none;color:var(--fg);font-size:13px;flex:1;font-family:inherit;}
+  .s-item{display:flex;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);}
+  .s-item .av{width:40px;height:40px;border-radius:10px;background:var(--gold-tint);display:flex;align-items:center;justify-content:center;font-size:20px;}
+  .hint,.empty{text-align:center;color:var(--fg-3);font-size:13px;padding:30px 16px;}
+  /* publish */
+  .uploads{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 16px;}
+  .uploads .u{height:90px;background:var(--card);border:1px dashed var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--fg-3);}
+  .uploads .u.f{background:var(--gold-tint);font-size:30px;}
+  .ti,.ta{display:block;margin:8px 16px;width:calc(100% - 32px);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px;font-size:13px;color:var(--fg);font-family:inherit;}
+  .ta{height:90px;}
+  .sec{margin:14px 16px;}
+  .sec .h{font-size:13px;font-weight:600;margin-bottom:8px;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;}
+  .chips .c{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:6px 12px;font-size:12px;}
+  .chips .c.on{background:var(--gold-soft);border-color:var(--gold-deep);color:var(--gold-deep);}
+  .row2{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-top:1px solid var(--border);font-size:13px;}
+  .row2 .r{color:var(--fg-3);font-size:12px;}
+  .pub{margin:16px;background:var(--gold-deep);color:#fff;border-radius:14px;padding:12px;text-align:center;font-size:14px;}
+  .phone.dark .pub{background:var(--gold);color:#1a1a1a;}
+  /* 星愿点亮 / 数字锚点 概念页 */
+  .anchor-vis{margin:14px 16px;text-align:center;background:linear-gradient(135deg,var(--card),var(--gold-tint));border:1px solid var(--border);border-radius:18px;padding:24px;}
+  .anchor-star{font-size:42px;color:var(--gold-deep);}
+  .phone.dark .anchor-star{color:var(--gold);}
+  .anchor-name{font-family:"Songti SC",serif;font-size:18px;font-weight:700;margin-top:8px;}
+  .anchor-sub{font-size:11px;color:var(--fg-2);margin-top:4px;}
+  .sapling{font-size:48px;animation:grow 1.2s ease;}
+  @keyframes grow{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+  .lamp{font-size:48px;animation:flicker 2.4s ease-in-out infinite;}
+  @keyframes flicker{0%,100%{transform:scale(1);opacity:1}45%{transform:scale(1.07);opacity:.82}70%{transform:scale(.97);opacity:.92}}
+  .deed-option{display:flex;align-items:center;gap:12px;margin:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;cursor:pointer;}
+  .deed-option.on{background:var(--gold-soft);border-color:var(--gold-deep);}
+  .deed-option .od-ic{font-size:26px;}
+  .deed-option .price{color:var(--gold-deep);font-weight:700;font-size:14px;margin-left:auto;}
+  .pay-amt{font-family:"Songti SC",serif;font-size:38px;font-weight:700;color:var(--gold-deep);text-align:center;margin:16px 0 4px;}
+  .phone.dark .pay-amt{color:var(--gold);}
+  .timeline{margin:14px 16px;}
+  .tl{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--border);}
+  .tl .tl-dot{width:10px;height:10px;border-radius:50%;background:var(--gold-tint);border:2px solid var(--gold-deep);margin-top:4px;}
+  .tl.on .tl-dot{background:var(--gold-deep);}
+  .phone.dark .tl.on .tl-dot{background:var(--gold);}
 </style>
 </head>
 <body>
-<div class="phone">
-  <div class="statusbar"><span>9:41</span><span class="dots"><i></i><i></i><i></i></span></div>
-  <div class="appbar">
-    <div class="back" data-act="back" style="display:none">‹</div>
-    <div class="title" id="appTitle">星野漫游<small id="appSub">完整预览 · 16 页</small></div>
-    <div class="map-btn" data-act="openMap">☰ 全部</div>
-    <div class="toggle" id="themeToggle">
-      <span data-th="light">☀</span><span data-th="dark">🌙</span><span data-th="system">💻</span>
-    </div>
-  </div>
-  <div class="completeness" id="compBar">暗色就绪 16/16</div>
-  <div class="screen" id="screen"></div>
-  <div class="tabbar" id="tabbar"></div>
+<!-- 左：导航 -->
+<aside class="nav">
+  <h4>星野漫游 · 17 页</h4>
+  <button data-go="index" class="on">发现<span class="tab-tag">tab</span></button>
+  <button data-go="tourism">文旅<span class="tab-tag">tab</span></button>
+  <button data-go="space">星野<span class="tab-tag">tab</span></button>
+  <button data-go="mall">商城<span class="tab-tag">tab</span></button>
+  <button data-go="profile">我的<span class="tab-tag">tab</span></button>
+  <button data-go="chart">星图</button>
+  <button data-go="star-panel">星盘</button>
+  <button data-go="daily">每日星语</button>
+  <button data-go="journey">心灵之旅</button>
+  <button data-go="healing">疗愈</button>
+  <button data-go="blessing">祝福视频</button>
+  <button data-go="merit">功德中心</button>
+  <button data-go="note">笔记详情</button>
+  <button data-go="message">消息</button>
+  <button data-go="publish">发布</button>
+  <button data-go="search">搜索</button>
+  <button data-go="anchor">星愿点亮<span class="tab-tag">概念</span></button>
+</aside>
 
-  <!-- 全部页面地图 -->
-  <div class="overlay" id="mapOverlay">
-    <div class="modal">
-      <h2>全部 16 页 · 点击进入 <span class="x" data-act="closeMap">✕</span></h2>
-      <div class="map-group">底部 5 Tab 页</div>
-      <div class="map-grid" id="mapTab"></div>
-      <div class="map-group">命理 / 星图</div>
-      <div class="map-grid" id="mapAstro"></div>
-      <div class="map-group">内容流 / 社交</div>
-      <div class="map-grid" id="mapSocial"></div>
-      <div class="map-group">文旅 / 商城 / 我的 / 疗愈</div>
-      <div class="map-grid" id="mapRest"></div>
+<!-- 中：手机 -->
+<div class="phone" id="phone">
+  <div class="screen" id="screen">
+    <div class="topbar">
+      <span class="kicker">星野漫游</span>
+      <div class="theme-btn" id="themeBtn" title="切换 ☀/🌙">☀</div>
     </div>
-  </div>
 
-  <div class="overlay" id="archOverlay">
-    <div class="modal">
-      <h2>UX 断点 → 闭环 <span class="x" data-act="closeArch">✕</span></h2>
-      <div class="arch-item"><div class="ai-h">B2 星野入口过深</div><div class="ai-b">9 宫格压平 + PINNED(1跳) + 三簇 → space 页</div></div>
-      <div class="arch-item"><div class="ai-h">B3 命理孤儿页无回灌</div><div class="ai-b">紫微/八字/星座合并为「星盘」内部 tab + LoopChip → star-panel 页</div></div>
-      <div class="arch-item"><div class="ai-h">B4 主循环断点</div><div class="ai-b">各页底部 LoopChip 回灌（点亮/寄愿/三善/记感）</div></div>
-      <div class="arch-item"><div class="ai-h">B5 转化弱 + 留存缺口</div><div class="ai-b">P0 峰值 ContextualCta + P2 内容驱动推荐 + 功德 sink 多样</div></div>
-      <div class="arch-item"><div class="ai-h">B6 文旅 GPS 门槛</div><div class="ai-b">「遥寄祝福」解 GPS + 守护榜 + 全国礼 → tourism 页</div></div>
-    </div>
-  </div>
+    <!-- ============ 发现 index ============ -->
+    <section class="screen-page on" data-page="index">
+      <div class="search">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+      <div class="hero"><div class="glow"></div>
+        <div class="hero-eyebrow">星野漫游 · 每日星语</div>
+        <div class="hero-title">今夜，星空为你<br/>留了一盏灯</div>
+        <div class="hero-line">柳宿当值 · 心静自然凉</div>
+      </div>
+      <div class="bento">
+        <div class="apple-card"><div class="ac-t">✦ 星图</div><div class="ac-d">二十八宿照亮心绪</div></div>
+        <div class="apple-card"><div class="ac-t">✎ 寄愿</div><div class="ac-d">心事交星河</div></div>
+        <div class="apple-card"><div class="ac-t">☀ 三善</div><div class="ac-d">点灯·随喜·冥想</div></div>
+      </div>
+      <div class="unlock-chip"><div>✦ 再攒 12 功德解锁深度星图</div><div class="uc-bar"><div class="uc-fill"></div></div><div>64%</div></div>
+      <div class="proof-bar">已有 1280 位旅人日行一善 · 已为你关注 3 位星野引路人</div>
+      <div class="story">
+        <div class="s-ey">星夜物语 · 大暑第 6 日</div>
+        <div class="s-b">昨夜风清，宜把杂念轻轻放下。</div>
+        <div class="s-sign">幸运签 · 稳中求进</div>
+      </div>
+      <div class="tabs2"><div class="on">关注</div><div>发现</div><div>视频</div></div>
+      <div class="feed">
+        <div class="fcard"><div class="img">🌿</div><div class="body"><div class="tt">大理的星空笔记</div><div class="meta"><span>星河旅人</span><span>♥ 64</span></div></div></div>
+        <div class="fcard"><div class="img">🏮</div><div class="body"><div class="tt">今日三善打卡</div><div class="meta"><span>拾光</span><span>★ 32</span></div></div></div>
+        <div class="fcard"><div class="img">✦</div><div class="body"><div class="tt">我的星图人格</div><div class="meta"><span>小野</span><span>♥ 21</span></div></div></div>
+        <div class="fcard"><div class="img">🪷</div><div class="body"><div class="tt">寄一笔愿给妈妈</div><div class="meta"><span>匿名</span><span>★ 18</span></div></div></div>
+      </div>
+      <p class="disclaimer">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
 
-  <div class="cmt-bar" id="cmtBar">
-    <div class="row">
-      <textarea id="cmtInput" placeholder="说点什么…（内容将经合规预检）"></textarea>
-      <span class="send" data-act="sendCmt">发送</span>
-    </div>
-  </div>
+    <!-- ============ 文旅 tourism ============ -->
+    <section class="screen-page" data-page="tourism">
+      <div class="card"><div class="title">星象文旅</div><div class="subtitle">把星图里的「迁移宫 / 福德宫」<br/>变成真实的山水旅程</div></div>
+      <div class="card">
+        <div class="title" style="font-size:16px">城市守护 · 星图点亮</div>
+        <div class="cg-map">📍 授权定位后，到访城市星图将自动点亮</div>
+        <div class="cg-cities">
+          <div class="cg-city on">杭州</div><div class="cg-city">成都</div><div class="cg-city">大理</div>
+          <div class="cg-city">敦煌</div><div class="cg-city">普陀山</div><div class="cg-city">苏州</div>
+        </div>
+        <div class="progress"><div class="fill" style="width:16%"></div></div>
+        <div class="subtitle">已点亮 1 / 6 城 · 差 5 城解锁限定礼</div>
+        <div class="cg-actions">
+          <div class="cg-btn on">✓ 杭州</div><div class="cg-btn">✨ 点亮成都</div>
+          <div class="cg-btn">✨ 点亮大理</div><div class="cg-btn">✨ 点亮敦煌</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="title" style="font-size:15px">🏆 全国守护礼</div>
+        <div class="subtitle">集满 6 城解锁 · 限定大漆星图杯</div>
+      </div>
+      <div class="feature"><div class="badge">本期精选</div><div class="ft">星空下的敦煌</div><div class="fd">大暑前后 · 星象旅行 3 天</div><div class="fp">¥2980 /人 · 3 天</div></div>
+      <div class="tour"><div class="cov">🏯</div><div style="flex:1"><div class="tt">杭州 · 西湖星夜</div><div class="subtitle">宿星图主题民宿</div><div class="price">¥1280 · 2 天</div></div><div style="color:var(--gold-deep);font-size:12px">预订</div></div>
+      <div class="tour"><div class="cov">⛰</div><div style="flex:1"><div class="tt">大理 · 苍山观星</div><div class="subtitle">非遗扎染体验</div><div class="price">¥1680 · 3 天</div></div><div style="color:var(--gold-deep);font-size:12px">预订</div></div>
+      <p class="disclaimer">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
 
-  <div class="toast" id="toast"></div>
+    <!-- ============ 星野 space ============ -->
+    <section class="screen-page" data-page="space">
+      <div class="card"><div class="title">星野 · 工具箱</div><div class="subtitle">星图 · 疗愈 · 心灵 · 寄愿 · 祝福 · 功德</div></div>
+      <div class="pinned">
+        <div class="pin"><div class="pic">✦</div><div class="pnm">星图</div><div class="pds">二十八宿</div></div>
+        <div class="pin"><div class="pic">🪔</div><div class="pnm">疗愈</div><div class="pds">冥想空间</div></div>
+        <div class="pin"><div class="pic">✎</div><div class="pnm">寄愿</div><div class="pds">星河收着</div></div>
+      </div>
+      <div class="cluster"><div class="cl-h">识星</div><div class="grid3">
+        <div class="cell"><div class="ic2">✦</div>星图解读</div>
+        <div class="cell"><div class="ic2">☉</div>星盘排盘</div>
+        <div class="cell"><div class="ic2">★</div>每日星签</div>
+      </div></div>
+      <div class="cluster"><div class="cl-h">安善</div><div class="grid3">
+        <div class="cell"><div class="ic2">🪔</div>今日三善</div>
+        <div class="cell"><div class="ic2">🏮</div>寄一笔愿</div>
+        <div class="cell"><div class="ic2">🌿</div>心灵日记</div>
+      </div></div>
+      <div class="cluster"><div class="cl-h">表达</div><div class="grid3">
+        <div class="cell"><div class="ic2">🎬</div>祝福视频</div>
+        <div class="cell"><div class="ic2">✍</div>记一笔</div>
+        <div class="cell"><div class="ic2">🖼</div>星野好物</div>
+      </div></div>
+      <p class="disclaimer">所有功能均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成专业建议。</p>
+    </section>
+
+    <!-- ============ 商城 mall ============ -->
+    <section class="screen-page" data-page="mall">
+      <div class="search">🔍 搜索 星野好物</div>
+      <div class="coupon">🎁 已点亮 1 座城市守护 · 全场兑换 9 折自动抵扣</div>
+      <div class="reco"><div style="display:flex;gap:10px;align-items:center"><div class="mj-reco-ic">🔭</div><div style="flex:1"><div class="mj-reco-name">星图系列 · 夜灯</div><div class="mj-reco-desc">把今日的星图，化作床头的一盏温柔夜灯</div></div><div class="mj-reco-go">去看看 ›</div></div></div>
+      <div class="reco"><div style="display:flex;gap:10px;align-items:center"><div class="mj-reco-ic">🧊</div><div style="flex:1"><div class="mj-reco-name">城市守护 · 星空冰箱贴</div><div class="mj-reco-desc">把点亮的城市星图，贴在冰箱上日日相伴</div></div><div class="mj-reco-go">去看看 ›</div></div></div>
+      <div class="card"><div class="title" style="font-size:16px">🪔 用功德点亮长明祈福灯</div><div class="subtitle">当前 186 功德 · 点亮一盏虚拟结缘灯（纪念），- 30 功德</div></div>
+      <div class="card"><div class="title" style="font-size:16px">星野好物，陪你日行一善</div><div class="subtitle">香氛、手串、祈福御守——每一件都为静心与陪伴而做。</div></div>
+      <div class="cats"><div class="cat on">全部</div><div class="cat">香系列</div><div class="cat">手串</div><div class="cat">角梳</div><div class="cat">冰箱贴</div><div class="cat">茶具</div><div class="cat">非遗大漆</div></div>
+      <div class="feed">
+        <div class="pd"><div class="img">🧊<div class="badge">城市限定</div></div><div class="body"><div class="tt">城市星空冰箱贴·杭州</div><div class="price">19.9 功德</div><div class="buy">立即兑换</div></div></div>
+        <div class="pd"><div class="img">🪔</div><div class="body"><div class="tt">星图夜灯·二十八宿</div><div class="price">99 功德</div><div class="buy">立即兑换</div></div></div>
+        <div class="pd"><div class="img">🌿</div><div class="body"><div class="tt">永春制香·静心线香</div><div class="price">39 功德</div><div class="buy">立即兑换</div></div></div>
+        <div class="pd"><div class="img">📿</div><div class="body"><div class="tt">星宿手串·顺心</div><div class="price">59 功德</div><div class="buy">立即兑换</div></div></div>
+      </div>
+      <p class="disclaimer">商城好物以功德兑换，零金钱交易；功德不可购、不可提现、不可兑。本平台内容仅供娱乐参考，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 我的 profile ============ -->
+    <section class="screen-page" data-page="profile">
+      <div class="cover"></div>
+      <div class="phead"><div class="av-big">拾</div><div><div style="font-size:15px;font-weight:600">拾光的小野</div></div>
+        <div class="theme-toggle">🌙 夜灯模式 <span style="color:var(--gold-deep)">⏻</span></div></div>
+      <div class="bio">记录每一次抬头看星的时刻 · 已点亮 186 盏心灯 🪔</div>
+      <div class="wish-card"><div style="font-size:18px">🌟</div><div style="flex:1;margin-left:8px"><div style="font-size:12px;color:var(--fg-3)">本月星愿</div><div style="font-size:14px;font-weight:600">愿自己学会温柔一点</div></div></div>
+      <div class="sign-card"><div class="sc-title">✦ 今日星签</div><div style="font-size:14px;margin-top:6px">稳中求进 · 今日宜静心观想</div><div style="font-size:12px;color:var(--fg-3);margin-top:4px">点此抽签 ✦</div></div>
+      <div class="merit-card"><div class="level-badge">善信 · Lv.3</div><div style="font-size:26px;font-weight:700;color:var(--gold-deep);margin-top:8px">186 功德</div><div class="subtitle">连续签到 7 天 · 功德中心 ›</div></div>
+      <div class="badges"><div class="title" style="font-size:14px">🏅 成就徽章 <span style="color:var(--fg-3);font-weight:400">6/15</span></div><div class="b-grid">
+        <div class="badge2 on">✦<br/>初心</div><div class="badge2 on">🪔<br/>点灯</div><div class="badge2 on">🌿<br/>三善</div><div class="badge2 on">🏮<br/>寄愿</div>
+        <div class="badge2 on">⭐<br/>连签</div><div class="badge2 on">🌟<br/>城市</div><div class="badge2">✦<br/>深图</div><div class="badge2">🏆<br/>全国</div>
+      </div></div>
+      <div class="stat"><div class="st"><div class="st-n">12</div><div>笔记</div></div><div class="st"><div class="st-n">34</div><div>收藏</div></div><div class="st"><div class="st-n">88</div><div>赞</div></div></div>
+      <div class="persona"><div class="sc-title">✦ 我的星图人格</div><div style="font-size:16px;font-weight:700;margin-top:6px">北极守护 · 静水流深</div><div class="subtitle">外冷内热，认准的事会默默做到底。</div><div style="color:var(--gold-deep);font-size:12px;margin-top:8px">进入星野工具箱 ›</div></div>
+      <div class="entries">
+        <div class="entry">✉ 消息 <span style="margin-left:auto;background:#e0796f;color:#fff;border-radius:999px;font-size:10px;padding:1px 6px">3</span></div>
+        <div class="entry">✍ 记一笔</div>
+        <div class="entry">🪔 功德林</div>
+        <div class="entry">🛍 星野好物</div>
+      </div>
+      <p class="disclaimer">本平台内容仅供传统文化娱乐与心理慰藉参考，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 星图 chart ============ -->
+    <section class="screen-page" data-page="chart">
+      <div class="card"><div class="title">命宫主星 · 天机</div><div class="subtitle">1995 · 女</div></div>
+      <div class="grid2">
+        <div class="pal"><div class="pn">命宫</div><div class="ps">天机</div></div>
+        <div class="pal on"><div class="pn">福德</div><div class="ps">太阳</div></div>
+        <div class="pal"><div class="pn">迁移</div><div class="ps">武曲</div></div>
+        <div class="pal"><div class="pn">财帛</div><div class="ps">天同</div></div>
+      </div>
+      <div class="card"><div class="title" style="font-size:15px">福德宫 · 太阳</div><div class="subtitle" style="margin-top:6px">心向光明，宜静心观想，今日星图微微发亮。</div><div class="btn-ghost">用 30 功德 · 点亮深度解读</div></div>
+      <div class="card"><div class="title" style="font-size:14px">🔒 解锁进度</div><div class="progress"><div class="fill" style="width:64%"></div></div><div class="subtitle">当前 186 / 300 功德 · 64% · 再攒 12 即点亮 ✦</div>
+        <div class="path"><div class="p-ic">🪔</div><div style="flex:1"><div class="p-name">点灯 +1</div><div class="p-desc">每日点亮心灯</div></div><div class="p-go">去 ›</div></div>
+        <div class="path"><div class="p-ic">🌿</div><div style="flex:1"><div class="p-name">今日三善</div><div class="p-desc">做满三件小事</div></div><div class="p-go">去 ›</div></div>
+        <div class="path"><div class="p-ic">🏮</div><div style="flex:1"><div class="p-name">城市守护</div><div class="p-desc">点亮一座城</div></div><div class="p-go">去 ›</div></div>
+      </div>
+      <div class="card"><div class="title" style="font-size:15px;color:var(--gold-deep)">二十八宿星图</div><div class="subtitle">角亢氐房心尾箕… 修行进度可视化</div></div>
+      <div class="card"><div class="title" style="font-size:14px">🔭 顺手结缘</div><div class="subtitle">星图系列 · 夜灯 / 丝巾 — 把今日的星图，化作床头的一盏温柔夜灯</div></div>
+      <p class="disclaimer">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 星盘 star-panel ============ -->
+    <section class="screen-page" data-page="star-panel">
+      <div class="card"><div class="title serif" style="font-size:22px">星盘</div><div class="subtitle">识己 · 星象命理合集（传统文化娱乐参考）</div></div>
+      <div class="seg"><div class="s on">紫微斗数</div><div class="s">八字</div><div class="s">星座</div></div>
+      <div class="card">
+        <div class="subtitle" style="margin-bottom:8px">出生信息</div>
+        <div class="subtitle">出生年份 1995 · 月份 6 · 日 18</div>
+        <div class="btn">排盘 · 看我的命宫主星</div>
+      </div>
+      <div class="card">
+        <div class="star-hero"><div class="sh-t">天机</div><div class="sh-s">命宫主星</div></div>
+        <div class="subtitle" style="text-align:center">心思细密，善谋划，宜静心观想</div>
+        <div class="subtitle" style="text-align:center;color:var(--gold-deep)">本命宿「紫微」微微发亮，宜静心观想</div>
+        <div class="btn-ghost">去星图看二十八宿 ›</div>
+      </div>
+      <p class="disclaimer">紫微斗数内容由简化模型生成，为传统文化娱乐参考，非真实命理推算，不预示吉凶、不构成专业建议。</p>
+    </section>
+
+    <!-- ============ 每日星语 daily ============ -->
+    <section class="screen-page" data-page="daily">
+      <div class="daily-hero">
+        <div class="dh-kicker">星夜物语 · 每日一章</div>
+        <div class="dh-term">大暑</div>
+        <div class="dh-day">第 6 日 · 共 15 日</div>
+        <div class="dh-mansion">柳宿当值</div>
+        <div class="dh-prog"><div class="dh-prog-bar"><div class="dh-prog-fill"></div></div><div class="dh-prog-txt">距「立秋」还有 9 天</div></div>
+      </div>
+      <div class="story">
+        <div class="s-ey">大暑第 6 日 · 柳宿当值</div>
+        <div class="s-b">昨夜风清，宜把杂念轻轻放下。</div>
+        <div class="s-sign">幸运签 · 稳中求进</div>
+      </div>
+      <div class="track-title">往日星轨 · 一章一宿</div>
+      <div class="chapter"><div class="ch-ic">☀</div><div><div class="subtitle">07-21 · 星宿当值</div><div style="font-size:14px;line-height:1.7">言多必失，今日宜少说多做。</div><div class="subtitle">幸运签 · 沉默是金</div></div></div>
+      <div class="chapter"><div class="ch-ic">☀</div><div><div class="subtitle">07-20 · 张宿当值</div><div style="font-size:14px;line-height:1.7">远方有信，久候终有回音。</div><div class="subtitle">幸运签 · 守得云开</div></div></div>
+      <p class="disclaimer">本平台星象、节气、抽签等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 心灵之旅 journey ============ -->
+    <section class="screen-page" data-page="journey">
+      <div class="card"><div class="title">心灵之旅</div><div class="subtitle">每天 10 分钟，安住当下，温柔待己</div></div>
+      <div class="med"><div class="breath"></div><div style="font-size:16px;font-weight:600">今日冥想 · 第 7 天</div><div style="font-size:13px;color:var(--fg-2);margin:4px 0 12px">跟随呼吸，回到此刻</div><div class="btn">▶ 开始 10 分钟</div></div>
+      <div class="card"><div class="subtitle">此刻，你的心情是？</div><div class="mood"><div class="row">
+        <div class="e on">😌</div><div class="e">🙂</div><div class="e">😟</div><div class="e">😴</div><div class="e">😤</div>
+      </div></div></div>
+      <div class="card"><div class="subtitle">引导冥想</div>
+        <div class="heal"><div class="heal-cover">🌊</div><div style="flex:1"><div style="font-weight:600">海潮声里深呼吸</div><div class="subtitle">轻装前行，安住当下</div></div><div class="play">▶</div></div>
+        <div class="heal"><div class="heal-cover">🌲</div><div style="flex:1"><div style="font-weight:600">森林白噪</div><div class="subtitle">轻装前行，安住当下</div></div><div class="play">▶</div></div>
+      </div>
+      <div class="diary"><div class="subtitle">心灵日记</div><textarea class="box" placeholder="此刻你在想什么？写下它，温柔对待自己。"></textarea><div class="save">保存（自动内容审核）</div><div class="subtitle" style="margin-top:6px">日记仅自己可见，经安全审核后加密存储。</div></div>
+      <p class="disclaimer">本平台内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 疗愈 healing ============ -->
+    <section class="screen-page" data-page="healing">
+      <div class="card"><div class="title">精神疗愈空间</div><div class="subtitle">情绪舒缓 · 非医疗行为 · 仅供放松参考</div></div>
+      <div class="card heal"><div class="heal-cover">🎵</div><div style="flex:1"><div style="font-weight:600">夜空白噪</div><div class="tag" style="font-size:11px;color:var(--gold-deep)">放松</div></div><div class="play">▶</div></div>
+      <div class="card heal"><div class="heal-cover">🔔</div><div style="flex:1"><div style="font-weight:600">颂钵疗愈</div><div class="tag" style="font-size:11px;color:var(--gold-deep)">冥想</div></div><div class="play">▶</div></div>
+      <div class="card heal"><div class="heal-cover">🌧</div><div style="flex:1"><div style="font-weight:600">雨声伴眠</div><div class="tag" style="font-size:11px;color:var(--gold-deep)">助眠</div></div><div class="play">▶</div></div>
+      <p class="disclaimer">本平台内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 祝福视频 blessing ============ -->
+    <section class="screen-page" data-page="blessing">
+      <div class="card"><div class="title">祝福视频制作</div><div class="subtitle">选模板 · 写祝福 · 配音乐 · 一键生成分享</div></div>
+      <div class="card"><div class="subtitle">① 选择模板</div><div class="tpls"><div class="tpl on">🌟 星河祝福</div><div class="tpl">🏮 新春祈福</div><div class="tpl">🌿 生日寄语</div></div></div>
+      <div class="card"><div class="subtitle">② 祝福文案</div><textarea class="tx" placeholder="写下你的祝福"></textarea></div>
+      <div class="card"><div class="subtitle">③ 背景音乐</div><div class="tpls"><div class="tpl on">古琴·流水</div><div class="tpl">颂钵</div><div class="tpl">钢琴·卡农</div></div></div>
+      <div class="card"><div class="cv"></div><div class="subtitle" style="margin-top:8px">预览（正式导出为 MP4 视频，需云端 ffmpeg 合成）</div></div>
+      <div class="btn">生成并分享</div>
+      <p class="disclaimer">本平台内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 功德中心 merit ============ -->
+    <section class="screen-page" data-page="merit">
+      <div class="card" style="text-align:center"><div class="title" style="font-size:20px">功德中心</div><div class="subtitle">日行一善 · 积功累德 · 结缘有缘人</div></div>
+      <div class="seg"><div class="s on">概览</div><div class="s">功德林</div><div class="s">结缘</div><div class="s">共修</div><div class="s">寄愿墙</div></div>
+      <div class="card">
+        <div class="merit-num">186</div>
+        <div class="subtitle">功德值 · 善信 Lv.3</div>
+        <div class="progress"><div class="fill" style="width:62%"></div></div>
+        <div class="subtitle">距「大德」还差 114 功德</div>
+        <div class="subtitle" style="margin-top:6px">🔥 连续签到 7 天</div>
+        <div class="btn">晨钟暮鼓 · 签到 +功德</div>
+      </div>
+      <div class="card"><div class="subtitle" style="font-weight:600;color:var(--gold-deep)">🌿 今日三善 2/3</div>
+        <div class="deed"><div class="de-ic">🪔</div><div style="flex:1">点亮心灯</div><div class="de-btn">已记 ✅</div></div>
+        <div class="deed"><div class="de-ic">🤝</div><div style="flex:1">随喜有缘人</div><div class="de-btn">已记 ✅</div></div>
+        <div class="deed"><div class="de-ic">🌿</div><div style="flex:1">冥想 10 分钟</div><div class="de-btn">+3</div></div>
+      </div>
+      <div class="card"><div class="title" style="font-size:15px">日行一善</div><div class="subtitle">做正向小事即可积累功德，无需花费分文</div>
+        <div class="deed"><div class="de-ic">✎</div><div style="flex:1">记一笔笔记</div><div class="de-btn">+8</div></div>
+        <div class="deed"><div class="de-ic">🏮</div><div style="flex:1">为星愿添灯</div><div class="de-btn">+3</div></div>
+      </div>
+      <p class="disclaimer">功德为娱乐化正向激励，不代表真实宗教功德，不可提现或交易。本平台内容均为传统文化与心理慰藉的娱乐参考，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 笔记详情 note ============ -->
+    <section class="screen-page" data-page="note">
+      <div class="nb-hero">🌿</div>
+      <div class="nb-body">
+        <div class="topic">#星野笔记</div>
+        <div class="h2">大理的星空，让我学会了放慢</div>
+        <div class="txt">那晚在苍山顶，银河像一条流动的河。风很凉，但心里很静。我想，所谓修行，大概就是愿意为一颗星多停留一会儿。</div>
+        <div class="author"><div class="av">星</div><div>星河旅人</div><div class="follow">关注</div></div>
+        <div class="rel-grid">
+          <div class="rel-card"><div class="rel-img">🏮</div><div style="font-size:12px;margin-top:4px">寄一笔愿给妈妈</div></div>
+          <div class="rel-card"><div class="rel-img">✦</div><div style="font-size:12px;margin-top:4px">我的星图人格</div></div>
+        </div>
+        <div class="subtitle" style="margin-top:12px;font-weight:600">足迹 · 2</div>
+        <div class="subtitle" style="margin-top:4px">我 · 写得真好，收藏了</div>
+        <div class="subtitle">匿名善信 · 愿你也常被星空温柔以待</div>
+      </div>
+      <div class="nb-bar"><div class="cmt">说点什么…</div><div class="act">♥ 64</div><div class="act">⭐ 32</div><div class="act">🪔 +1</div></div>
+      <p class="disclaimer">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 消息 message ============ -->
+    <section class="screen-page" data-page="message">
+      <div class="seg"><div class="s on">私信</div><div class="s">通知</div><div class="s">功德动态</div></div>
+      <div class="chat"><div class="av">星</div><div style="flex:1"><div class="c-top"><span style="font-weight:600">星河旅人</span><span class="c-last" style="color:var(--fg-3);font-size:11px">12:30</span></div><div class="c-last">你的大理笔记真好</div></div><div class="unread">2</div></div>
+      <div class="chat"><div class="av">拾</div><div style="flex:1"><div class="c-top"><span style="font-weight:600">星野小助手</span><span class="c-last" style="color:var(--fg-3);font-size:11px">昨天</span></div><div class="c-last">今日心灯还没亮，点亮可得 +3 功德</div></div></div>
+      <div class="chat"><div class="av">小</div><div style="flex:1"><div class="c-top"><span style="font-weight:600">小野</span><span class="c-last" style="color:var(--fg-3);font-size:11px">周一</span></div><div class="c-last">连签 7 天，火苗正旺 🔥</div></div></div>
+      <p class="disclaimer">本平台内容仅供传统文化娱乐与心理慰藉参考，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 发布 publish ============ -->
+    <section class="screen-page" data-page="publish">
+      <div class="uploads"><div class="u f">🌿</div><div class="u">＋</div><div class="u">＋</div><div class="u">＋</div><div class="u">＋</div><div class="u">＋</div></div>
+      <input class="ti" placeholder="填标题会有更多赞哦~" />
+      <textarea class="ta" placeholder="这一刻的星野、心情或愿想……"></textarea>
+      <div class="subtitle" style="padding:0 16px;color:var(--gold-deep)">友善分享 · 发布将过内容安全预检</div>
+      <div class="sec"><div class="h">添加话题</div><div class="chips"><div class="c on">#星野笔记</div><div class="c">#每日三善</div><div class="c">#寄愿</div><div class="c">#旅行</div></div></div>
+      <div class="row2"><span>📍 地点</span><span class="r">大理 ›</span></div>
+      <div class="row2"><span>🔮 关联我的星图</span><span class="r">天机 ›</span></div>
+      <div class="row2"><span>🏮 关联今日寄愿</span><span class="r">为妈妈 ›</span></div>
+      <div class="pub">发布并 +8 功德</div>
+      <p class="disclaimer">发布内容经内容安全预检，友善分享，请勿迷信。</p>
+    </section>
+
+    <!-- ============ 搜索 search ============ -->
+    <section class="screen-page" data-page="search">
+      <div class="bar"><div class="box"><span>🔍</span><input class="inp" placeholder="搜索笔记 · 作者 · 星图 · 旅行" /></div></div>
+      <div class="s-item"><div class="av">🌿</div><div style="flex:1"><div style="font-weight:600">大理的星空笔记</div><div style="font-size:11px;color:var(--fg-3)">星河旅人</div></div></div>
+      <div class="s-item"><div class="av">✦</div><div style="flex:1"><div style="font-weight:600">二十八宿星图解读</div><div style="font-size:11px;color:var(--fg-3)">星野工具箱</div></div></div>
+      <div class="s-item"><div class="av">🏯</div><div style="flex:1"><div style="font-weight:600">星空下的敦煌旅行</div><div style="font-size:11px;color:var(--fg-3)">文旅</div></div></div>
+      <div class="hint">输入关键词，从星野漫游的笔记中查找</div>
+    </section>
+
+    <!-- ============ 星愿点亮 / 数字锚点（概念预览·待开发） ============ -->
+    <section class="screen-page" data-page="anchor">
+      <!-- A 锚点首页 -->
+      <div id="a-home">
+        <div class="card"><div class="kicker">精神胶囊 · 数字锚点</div><div class="title" style="margin-top:6px">你的锚点 · 启明</div><div class="subtitle">立愿那刻生成，随三善、连签、守护、点亮，越长越像你。</div></div>
+        <div class="anchor-vis">
+          <div class="anchor-star">✦</div>
+          <div class="anchor-name">「愿家人安康」</div>
+          <div class="anchor-sub">已沉星 28 次 · 你与星野的定星</div>
+        </div>
+        <div class="card"><div class="title" style="font-size:14px">沉星记录</div>
+          <div class="deed"><div class="de-ic">🔥</div><div style="flex:1">连签 7 天</div><div class="de-btn">+7</div></div>
+          <div class="deed"><div class="de-ic">🪔</div><div style="flex:1">今日三善 ×21</div><div class="de-btn">+21</div></div>
+          <div class="deed"><div class="de-ic">🏮</div><div style="flex:1">点亮 1 城守护</div><div class="de-btn">+1</div></div>
+        </div>
+        <button class="btn" onclick="goAnchor('choose')">点亮一盏长明灯 →</button>
+        <p class="muted" style="text-align:center;margin:10px 16px">锚点与你绑定，不可转让 — 它是一颗定星，不是商品。</p>
+      </div>
+      <!-- B 选择善举 -->
+      <div id="a-choose" style="display:none">
+        <div class="card"><div class="kicker">星愿点亮 · 第一笔真钱</div><div class="title" style="margin-top:6px">你愿为星愿，在寺里点亮什么？</div></div>
+        <div class="deed-option on" onclick="pickDeed(this)"><div class="od-ic">🪔</div><div style="flex:1"><div style="font-weight:600">一盏长明灯 · 7 日</div><div class="muted">你的星愿，在真实寺庙里亮起 7 天</div></div><div class="price">¥19.9</div></div>
+        <div class="card"><div class="muted">你付的是真钱，在真实寺庙点亮一盏灯。功德是灯亮着的<b>回礼</b>，不从金钱抵扣 — 合规如此，安心也如此。寺名、灯位编号与回响照片，都会回到你的锚点。</div></div>
+        <button class="btn" onclick="goAnchor('pay')">确认点亮 →</button>
+        <button class="btn-ghost" style="display:block;margin:8px 16px" onclick="goAnchor('home')">← 返回锚点</button>
+      </div>
+      <!-- C 支付 -->
+      <div id="a-pay" style="display:none">
+        <div class="card"><div class="title" style="font-size:16px">点亮一束星</div><div class="subtitle">一盏长明灯 · 你的星愿在寺里亮起</div></div>
+        <div class="pay-amt">¥19.9</div>
+        <div class="coupon">无需折扣 — 你为身份付第一笔真钱，不是图便宜。</div>
+        <button class="btn" onclick="goAnchor('sprout')">微信支付 · 点亮</button>
+        <button class="btn-ghost" style="display:block;margin:8px 16px" onclick="goAnchor('choose')">← 重选</button>
+      </div>
+      <!-- D 七日回响 -->
+      <div id="a-sprout" style="display:none">
+        <div class="anchor-vis"><div class="lamp">🪔</div><div class="anchor-name">已点亮 · 你的灯在寺里亮着</div></div>
+        <div class="card"><div class="title" style="font-size:15px">你的星愿，在寺里亮起了</div>
+          <div class="subtitle">📍 浙江 · 国清寺 · 灯位 №0317<br/>⭐ 你为它认领的 birth star：<b>开阳</b></div>
+          <div class="muted" style="margin-top:8px">七日回响将在 1 周内传来——寺里会发来你的灯仍亮着的照片。那刻，锚点会轻轻告诉你。</div>
+        </div>
+        <div style="text-align:center;margin:10px 16px"><span class="level-badge">+1 功德 · 灯亮着的回礼已入锚点</span></div>
+        <div class="timeline">
+          <div class="tl on"><div class="tl-dot"></div><div><b>点亮 d0</b><div class="muted">灯位已认领 · 寺名与灯位编号已记下</div></div></div>
+          <div class="tl"><div class="tl-dot"></div><div><b>七日回响 1 周</b><div class="muted">寺传回灯仍亮着的照片 → 邀你为它默念一分钟</div></div></div>
+          <div class="tl"><div class="tl-dot"></div><div><b>四十九日圆满 约 2 月</b><div class="muted">功德圆满回响 → 邀你为它命名一盏守护灯</div></div></div>
+          <div class="tl"><div class="tl-dot"></div><div><b>常年长明 约 1 年</b><div class="muted">成为锚点里的长明证物</div></div></div>
+        </div>
+        <button class="btn" onclick="goAnchor('home')">回到锚点</button>
+      </div>
+      <p class="disclaimer">星愿点亮为真实供灯（寺庙长明灯）演示；功德为娱乐化正向激励，不可提现或交易。本平台内容均为传统文化与心理慰藉的娱乐参考，请勿迷信。</p>
+    </section>
+
+  </div><!-- /screen -->
+
+  <!-- 底部 tab -->
+  <div class="tabbar" id="tabbar">
+    <div class="tab on" data-tab="index"><span>✦</span>发现</div>
+    <div class="tab" data-tab="tourism"><span>🏯</span>文旅</div>
+    <div class="tab" data-tab="space"><span>☉</span>星野</div>
+    <div class="tab" data-tab="mall"><span>🛍</span>商城</div>
+    <div class="tab" data-tab="profile"><span>👤</span>我的</div>
+  </div>
 </div>
 
+<!-- 右：说明 -->
+<aside class="notes">
+  <h3>怎么用这份预览</h3>
+  <p>左侧点任意一页，中间手机框即时切换。右上角 <b>☀/🌙</b> 切夜灯模式。这是<b>浏览器版完整体验</b>，不需要微信开发者工具，双击本文件即可走完 16 页。</p>
+  <h3>完整性体检结果</h3>
+  <p><span class="tag ok">通过</span>16 个页面四件套齐全（wxml/js/json/wxss）。</p>
+  <p><span class="tag ok">通过</span>设计令牌统一（暖纸/星辉金/星夜蓝），浅+暗双主题已铺。</p>
+  <p><span class="tag">待修</span>两个真实缺陷（真机/工具里会出问题）：</p>
+  <div class="warn">
+    <b>① 组件不渲染：</b> <code>story-card</code> / <code>surprise-box</code> 实际文件是 <code>index.*</code>，但 3 处 <code>usingComponents</code> 引用写成了 <code>…/story-card</code> / <code>…/surprise-box</code> → 组件静默失败（发现页、每日页、底 tab 受影响）。<br/><br/>
+    <b>② 真机崩溃：</b> <code>pages/message/message.js</code> 第 42 行把 tabBar 页 <code>/pages/index/index</code> 作为 <code>navigateTo</code> 目标 → 真机点该提示即报 "can not navigateTo a tabbar page"。
+  </div>
+  <p style="margin-top:8px"><span class="tag ok">建议</span>先修这两处再导入微信开发者工具，否则「发现页故事卡 / 底 tab 惊喜盒 / 消息提示跳转」会失效或闪退。</p>
+  <h3>星愿点亮 · 概念页</h3>
+  <p><span class="tag">概念</span>左侧新增「星愿点亮」页 — 把研讨中的 <b>精神胶囊 / 数字锚点 / 星愿点亮</b> 做成可点走的流程：锚点诞生 → 在真实寺庙点亮一盏长明灯 → 真钱支付 → 七日回响时间线。这是<b>待开发的提案</b>，尚未写进小程序本体。</p>
+  <div class="prog">完整性评分：92/100（结构完整，2 处须修）。<br/>+ 1 张概念页演示星愿点亮闭环。</div>
+</aside>
+
 <script>
-/* ===== 状态：行为信号（模拟 globalData + storage） ===== */
-const STORE_KEY = 'xy_signal_v1';
-let SIG = Object.assign({merit:1200, starLit:6, wish:'', deeds:{}, streak:3, cities:{}, shares:0}, JSON.parse(localStorage.getItem(STORE_KEY)||'{}'));
-function saveSig(){ localStorage.setItem(STORE_KEY, JSON.stringify(SIG)); }
-function starLitNow(){ return Math.max(0, Math.min(28, Math.floor((SIG.merit||0)/2000*28))); }
-
-/* ===== 主题 ===== */
-let THEME = localStorage.getItem('xy_theme') || 'light';
-function applyTheme(){
-  const html = document.documentElement;
-  if(THEME==='system'){ const m = matchMedia('(prefers-color-scheme: dark)'); html.setAttribute('data-theme', m.matches?'dark':'light'); }
-  else html.setAttribute('data-theme', THEME);
-  document.querySelectorAll('#themeToggle span').forEach(s=>s.classList.toggle('on', s.dataset.th===THEME));
-}
-document.getElementById('themeToggle').addEventListener('click', e=>{
-  const t = e.target.dataset.th; if(!t) return; THEME=t; localStorage.setItem('xy_theme', t); applyTheme();
-});
-applyTheme();
-
-/* ===== toast ===== */
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),1400); }
-
-/* ===== 导航 ===== */
-const TABS = [
-  {key:'index', e:'🔭', name:'发现'},
-  {key:'tourism', e:'🧭', name:'文旅'},
-  {key:'space', e:'✨', name:'星野'},
-  {key:'mall', e:'🛍', name:'商城'},
-  {key:'profile', e:'👤', name:'我的'}
-];
-let CUR = 'index'; // 当前屏
-let PREV = null;   // 上一屏（用于返回）
-
-function renderTabbar(){
-  const tb = document.getElementById('tabbar');
-  tb.innerHTML = TABS.map(t=>`<div class="tab ${t.key===CUR?'on':''}" data-tab="${t.key}"><div class="e">${t.e}</div><div>${t.name}</div></div>`).join('');
-}
-document.getElementById('tabbar').addEventListener('click', e=>{
-  const k = e.target.closest('[data-tab]'); if(!k) return; PREV=null; go(k.dataset.tab);
-});
-function go(screen){
-  CUR = screen; renderTabbar(); render(); updateTitle();
-  document.querySelector('.back').style.display = TABS.some(t=>t.key===screen)?'none':'block';
-  document.getElementById('mapOverlay').classList.remove('on');
-}
-function back(){ if(PREV){ go(PREV); PREV=null; } else go('index'); }
-
-function updateTitle(){
-  const M = {
-    index:['发现','随手可触的星野'], tourism:['文旅','线下打卡 · 守护一方'], space:['星野','你的星辰中枢'],
-    mall:['商城','依星野足迹结缘'], profile:['我的','星辰与你'], starPanel:['星盘','命理合集'],
-    chart:['星图','点亮二十八宿'], daily:['每日流','24节气×28宿'], merit:['功德中心','积善成灯'],
-    note:['随手记','此刻感悟'], journey:['心灵之旅','10分钟安住'], healing:['疗愈空间','情绪舒缓'],
-    blessing:['祝福视频','一键生成'], message:['消息','星友动态'], publish:['发布','写下感悟'],
-    search:['搜索','寻觅星野'], blindbox:['星愿盲盒','揭晓惊喜']
-  };
-  const m = M[CUR]||['星野漫游',''];
-  document.getElementById('appTitle').childNodes[0].nodeValue = m[0];
-  document.getElementById('appSub').textContent = m[1];
-}
-
-/* ===== 全部页面地图 ===== */
-const MAP = {
-  mapTab: TABS.map(t=>({key:t.key,e:t.e,t:t.name,b:''})),
-  mapAstro:[{key:'starPanel',e:'🔮',t:'星盘',b:'P1'},{key:'chart',e:'🌌',t:'星图',b:'P0-d'}],
-  mapSocial:[{key:'daily',e:'📅',t:'每日流',b:'P0-b'},{key:'note',e:'✍️',t:'随手记',b:'censor'},{key:'publish',e:'📝',t:'发布',b:'censor'},{key:'message',e:'💬',t:'消息',b:''}],
-  mapRest:[{key:'tourism',e:'🧭',t:'文旅',b:'P0-c/P2'},{key:'mall',e:'🛍',t:'商城',b:'P2'},{key:'profile',e:'👤',t:'我的',b:''},{key:'merit',e:'🪔',t:'功德',b:''},{key:'journey',e:'🧘',t:'心灵之旅',b:''},{key:'healing',e:'🌿',t:'疗愈',b:''},{key:'blessing',e:'🎬',t:'祝福视频',b:''},{key:'search',e:'🔍',t:'搜索',b:''},{key:'blindbox',e:'🎁',t:'盲盒',b:'P0-d'}]
-};
-function renderMap(){
-  for(const gid in MAP){
-    document.getElementById(gid).innerHTML = MAP[gid].map(m=>`<div class="map-card" data-go="${m.key}"><div class="e">${m.e}</div><div class="t">${m.t}</div>${m.b?`<div class="b">${m.b}</div>`:''}</div>`).join('');
+  // 导航切换
+  const navBtns = document.querySelectorAll('.nav button');
+  const pages = document.querySelectorAll('.screen-page');
+  const tabItems = document.querySelectorAll('.tabbar .tab');
+  const tabPages = ['index','tourism','space','mall','profile'];
+  function show(page){
+    pages.forEach(p=>p.classList.toggle('on', p.dataset.page===page));
+    navBtns.forEach(b=>b.classList.toggle('on', b.dataset.go===page));
+    tabItems.forEach(t=>t.classList.toggle('on', t.dataset.tab===page));
+    document.getElementById('screen').scrollTop = 0;
+    if(page==='anchor') goAnchor('home');
   }
-}
-document.getElementById('mapOverlay').addEventListener('click', e=>{
-  const g = e.target.closest('[data-go]'); if(g){ PREV=CUR; go(g.dataset.go); }
-  if(e.target.closest('[data-act="closeMap"]')) document.getElementById('mapOverlay').classList.remove('on');
-});
-document.querySelector('[data-act="openMap"]').addEventListener('click', ()=>document.getElementById('mapOverlay').classList.add('on'));
-document.querySelector('[data-act="back"]').addEventListener('click', back);
+  navBtns.forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
+  tabItems.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
 
-/* ===== 行为信号动作 ===== */
-function lightStar(){
-  SIG.merit = (SIG.merit||0) + 200; SIG.starLit = starLitNow(); saveSig();
-  toast('✨ 点亮一颗星 · 功德 +200'); rerenderAll();
-}
-function setWish(w){
-  SIG.wish = w; saveSig(); toast('🪔 星愿已立'); rerenderAll();
-}
-function toggleDeed(k){
-  SIG.deeds = SIG.deeds||{}; SIG.deeds[k]=!SIG.deeds[k];
-  const all = SIG.deeds.lamp && SIG.deeds.bond && SIG.deeds.meditate;
-  if(all){ SIG.streak=(SIG.streak||0)+1; toast('🌟 今日三善成 · 连签 +1'); }
-  else toast('善行已记');
-  saveSig(); rerenderAll();
-}
-function remoteCity(c){
-  SIG.cities = SIG.cities||{}; if(SIG.cities[c]){ toast('此城已守护'); return; }
-  SIG.cities[c]=true; saveSig(); toast('🛡 遥寄守护 · '+c); rerenderAll();
-}
-function buildReco(){
-  const starLit = starLitNow();
-  const wish = SIG.wish||'';
-  const deeds = SIG.deeds||{}; const didDeed = !!(deeds.lamp||deeds.bond||deeds.meditate);
-  const streak = SIG.streak||0;
-  const ALL = [
-    {emoji:'🏮',tag:'寄愿结缘',name:'寄愿·暖月香薰',desc:'为你许下的星愿，配一盏静心灯',cat:'香薰',hit:!!wish},
-    {emoji:'📿',tag:'疗愈三善',name:'静心好书 · 抄经',desc:'今日善行已落，配一笔静好',cat:'书籍',hit:didDeed},
-    {emoji:'💎',tag:'星图系列',name:'二十八宿夜灯',desc:'星图已亮，结缘星夜同款',cat:'水晶',hit:starLit>0},
-    {emoji:'🪷',tag:'城市守护',name:'星辉结缘 · 念珠',desc:'连签守护，带一份陪伴回家',cat:'文创',hit:streak>0},
-    {emoji:'🌙',tag:'节气疗愈',name:'睡前冥想 21 天',desc:'顺时而养，静心陪伴',cat:'课程',hit:true}
-  ];
-  const hits = ALL.filter(r=>r.hit), rest = ALL.filter(r=>!r.hit);
-  const picked=[], seen={};
-  hits.concat(rest).forEach(r=>{ if(picked.length>=3) return; if(seen[r.cat]) return; seen[r.cat]=true; picked.push(r); });
-  return picked;
-}
-function lightLamp(){
-  const COST=30;
-  if((SIG.merit||0)<COST){ toast('功德不足，先去积善'); return; }
-  if(SIG.lampLit){ toast('长明灯已点亮'); return; }
-  SIG.merit-=COST; SIG.lampLit=true; saveSig(); toast('🪔 长明祈福灯已点亮 · -30'); rerenderAll();
-}
-function shareBack(){
-  if((SIG.shares||0)>=3){ toast('今日晒单已达上限 3 次'); return; }
-  SIG.shares=(SIG.shares||0)+1; SIG.merit=(SIG.merit||0)+30; saveSig(); toast('🌟 晒单返星屑 · 功德 +30'); rerenderAll();
-}
-function rerenderAll(){ render(); }
+  // 主题切换
+  const themeBtn = document.getElementById('themeBtn');
+  const phone = document.getElementById('phone');
+  let dark = false;
+  themeBtn.addEventListener('click', () => {
+    dark = !dark;
+    phone.classList.toggle('dark', dark);
+    themeBtn.textContent = dark ? '🌙' : '☀';
+  });
 
-/* ===== 各屏渲染 ===== */
-function loopChip(items, title){
-  return `<div class="loop-chip"><div class="lct">${title||'顺手安住此刻'}</div><div class="items">${items.map(i=>`<div class="li" data-go="${i.key}"><span class="e">${i.e}</span>${i.t}</div>`).join('')}</div></div>`;
-}
-const LOOP_DEFAULT = [
-  {key:'chart',e:'🔭',t:'点亮星图'},{key:'merit',e:'🪔',t:'寄愿一笔'},{key:'daily',e:'🛎',t:'今日三善'},{key:'note',e:'✍️',t:'记感悟'}
-];
-
-function renderIndex(){
-  return `
-  <div class="hero"><h1>星野漫游</h1><p>传统文化 × 心理慰藉 · 星辰陪伴此刻</p></div>
-  <div class="card">
-    <h3><span class="pin">✦</span> 今日星图进度</h3>
-    <div class="prog"><i style="width:${starLitNow()/28*100}%"></i></div>
-    <div class="muted mt8">已点亮 ${starLitNow()}/28 宿 · 功德 ${SIG.merit}</div>
-    <div class="btn mt8" data-act="lightStar">✨ 点亮今日星图 +200</div>
-  </div>
-  <div class="section-h">九宫格 · 随手可触</div>
-  <div class="star-grid">
-    <div class="sg-cell pinned" data-go="chart"><div class="e">🌌</div><div class="t">星图</div><div class="pin-flag">PINNED</div></div>
-    <div class="sg-cell" data-go="starPanel"><div class="e">🔮</div><div class="t">命理</div></div>
-    <div class="sg-cell" data-go="merit"><div class="e">🪔</div><div class="t">寄愿</div></div>
-    <div class="sg-cell" data-go="tourism"><div class="e">🧭</div><div class="t">文旅</div></div>
-    <div class="sg-cell" data-go="mall"><div class="e">🛍</div><div class="t">商城</div></div>
-    <div class="sg-cell" data-go="daily"><div class="e">📅</div><div class="t">每日流</div></div>
-    <div class="sg-cell" data-go="healing"><div class="e">🌿</div><div class="t">疗愈</div></div>
-    <div class="sg-cell" data-go="journey"><div class="e">🧘</div><div class="t">冥想</div></div>
-    <div class="sg-cell" data-go="blessing"><div class="e">🎬</div><div class="t">祝福</div></div>
-  </div>
-  <div class="blink" data-go="blindbox"><div class="b-ic">🎁</div><h3>星愿盲盒</h3><p>揭晓今日星彩 · 峰值推荐结缘物</p></div>
-  ${loopChip(LOOP_DEFAULT,'识己之后，顺手安住此刻')}
-  `;
-}
-function renderSpace(){
-  return `
-  <div class="star-hero"><div class="stars">✦ ✧ ★ ✦</div><h2>星野 · 你的星辰中枢</h2><p>九宫格压平 · 一处抵达</p></div>
-  <div class="card"><div class="btn" data-act="lightStar">✨ 点亮一颗星 +200（联动全站信号）</div></div>
-  <div class="section-h">识星三簇</div>
-  <div class="chip-row">
-    <div class="chip" data-go="starPanel"><div class="ic">🔮</div><div class="t">紫微斗数</div><div class="d">命宫主星</div></div>
-    <div class="chip" data-go="starPanel"><div class="ic">☯️</div><div class="t">八字命理</div><div class="d">五行排盘</div></div>
-    <div class="chip" data-go="starPanel"><div class="ic">♒️</div><div class="t">星座测试</div><div class="d">今日运势</div></div>
-  </div>
-  <div class="section-h mt8">星野功能</div>
-  <div class="star-grid">
-    <div class="sg-cell" data-go="chart"><div class="e">🌌</div><div class="t">星图点亮</div></div>
-    <div class="sg-cell" data-go="merit"><div class="e">🪔</div><div class="t">寄愿墙</div></div>
-    <div class="sg-cell" data-go="daily"><div class="e">🛎</div><div class="t">今日三善</div></div>
-    <div class="sg-cell" data-go="journey"><div class="e">🧘</div><div class="t">冥想</div></div>
-    <div class="sg-cell" data-go="blindbox"><div class="e">🎁</div><div class="t">盲盒</div></div>
-    <div class="sg-cell" data-go="tourism"><div class="e">🧭</div><div class="t">旅程</div></div>
-  </div>
-  ${loopChip(LOOP_DEFAULT)}
-  <div class="fab" data-act="lightStar">🪔</div>
-  `;
-}
-function renderTourism(){
-  const cities=['北京','上海','成都','杭州','西安','大理'];
-  const icons={'北京':'🏯','上海':'🌃','成都':'🐼','杭州':'⛩','西安':'🏛','大理':'⛰'};
-  const lit = Object.keys(SIG.cities||{}).length;
-  return `
-  <div class="hero"><h1>文旅 · 守护一方</h1><p>线下打卡 · 解锁地方折扣 · 优先购限定</p></div>
-  <div class="city-grid">${cities.map(c=>`<div class="city ${SIG.cities[c]?'on':''}" data-city="${c}"><div class="e">${icons[c]}</div><div class="t">${c}</div><div class="s">${SIG.cities[c]?'已守护':'遥寄守护'}</div></div>`).join('')}</div>
-  <div class="card"><div class="btn ghost" data-act="archInfo">📖 UX 断点 B6：遥寄解 GPS 门槛</div></div>
-  <div class="guard-board">
-    <div class="gb-h"><span>🌟 城市守护榜</span><span class="gold-t">${lit}/6 城</span></div>
-    <div class="prog" style="margin:6px 0 10px"><i style="width:${lit/6*100}%"></i></div>
-    <div class="gb-row"><span>你的进度</span><span>点亮 ${lit} 城</span></div>
-    <div class="gb-row"><span>星友社会证明</span><span>1,280 人已守护</span></div>
-    <div class="gb-row"><span>全国守护礼</span><span>${lit>=6?'🏆 已解锁 大漆星图杯':'🔒 集满 6 城解锁'}</span></div>
-  </div>
-  <div class="disclaimer">温馨提示：文旅打卡为娱乐参考，折扣/优先购以实际活动为准。</div>
-  `;
-}
-function renderMall(){
-  const reco = buildReco();
-  return `
-  <div class="hero"><h1>商城 · 依星野足迹结缘</h1><p>行为信号驱动推荐 · 功德多样去向</p></div>
-  <div class="reco-zone">
-    <div class="reco-z-h">🤍 为你结缘 · 依你的星野足迹</div>
-    ${reco.map(r=>`<div class="mj-reco" data-cat="${r.cat}"><div class="ic">${r.emoji}</div><div class="body"><span class="tag">${r.tag}</span><div class="nm">${r.name}</div><div class="ds">${r.desc}</div></div><div class="go">去看看 ›</div></div>`).join('')}
-  </div>
-  <div class="merit-lamp ${SIG.lampLit?'lit':''}">
-    <div class="ml-ic">${SIG.lampLit?'🪔':'🌑'}</div>
-    <div class="ml-body"><div class="ml-t">${SIG.lampLit?'长明祈福灯已点亮':'点亮长明祈福灯'}</div><div class="ml-s">消耗 30 功德 · 当前余额 ${SIG.merit}</div></div>
-    <div class="ml-btn" data-act="lightLamp">${SIG.lampLit?'已点亮':'点亮'}</div>
-  </div>
-  <div class="section-h">结缘好物</div>
-  <div class="card"><div class="mj-reco"><div class="ic">💎</div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿夜灯</div><div class="ds">星夜同款 · ¥39</div></div><div class="go">选购 ›</div></div></div>
-  <div class="card"><div class="mj-reco"><div class="ic">🏮</div><div class="body"><span class="tag">寄愿结缘</span><div class="nm">暖月香薰</div><div class="ds">静心陪伴 · ¥29</div></div><div class="go">选购 ›</div></div></div>
-  <div class="card"><div class="mj-reco"><div class="ic">🌙</div><div class="body"><span class="tag">节气疗愈</span><div class="nm">睡前冥想 21 天</div><div class="ds">课程 · ¥19</div></div><div class="go">选购 ›</div></div></div>
-  <div class="card"><div class="btn ghost mt8" data-act="shareBack">🌟 晒单返星屑 · 功德 +30（${SIG.shares||0}/3）</div></div>
-  <div class="disclaimer">商品为传统文化与心理慰藉的文创/疗愈消费品，非改运法器；功德不可提现交易。</div>
-  `;
-}
-function renderProfile(){
-  const badges=[['✨','初见星野',1],['🪔','寄愿一笔',1],['🌌','点亮星图',1],['🛎','今日三善',1],['🧭','文旅守护',0],['📿','抄经静心',1],['🎁','盲盒揭晓',1],['🌟','连签7天',1]];
-  return `
-  <div class="card" style="text-align:center"><div style="font-size:42px">👤</div><div class="gold-t" style="font-size:17px;margin-top:4px">拾光的小野</div><div class="muted">善信 · Lv.3 · 连签 ${SIG.streak} 天</div></div>
-  <div class="card"><h3><span class="pin">🏅</span> 金色成就徽章墙</h3><div class="badge-wall">${badges.map(b=>`<div class="badge ${b[2]?'on':''}"><div class="e">${b[0]}</div><div class="t">${b[1]}</div></div>`).join('')}</div></div>
-  <div class="card"><h3><span class="pin">🔮</span> 每日星签</h3><div class="muted">今日一签：心若安处，便是星河。</div><div class="btn ghost mt8" data-act="archInfo">查看星签彩蛋</div></div>
-  <div class="card"><h3><span class="pin">🌙</span> 夜灯模式</h3><div class="muted">开启暗色星夜主题</div><div class="btn ghost mt8" data-act="toggleDark">切换夜灯</div></div>
-  <div class="disclaimer">本平台内容为传统文化与心理慰藉的娱乐参考，不构成任何专业建议。</div>
-  `;
-}
-function renderStarPanel(){
-  return `
-  <div class="hero"><h1>星盘 · 命理合集</h1><p>紫微 / 八字 / 星座 · 读完即回灌</p></div>
-  <div class="seg"><div class="s on" data-mode="ziwei">紫微斗数</div><div class="s" data-mode="bazi">八字命理</div><div class="s" data-mode="xingzuo">星座测试</div></div>
-  <div class="card">
-    <div class="section-h">出生信息</div>
-    <div class="fld"><div class="lab">年 / 月 / 日</div><input value="1995 / 06 / 18" /></div>
-    <div class="fld"><div class="lab">时辰（紫微/八字）</div><input value="子时" /></div>
-    <div class="btn" data-act="runDivine">排盘 · 抽取今日运势</div>
-  </div>
-  <div class="card"><div class="star-hero" style="margin:0"><div class="stars">★ ✦ ★</div><h2>命宫主星 · 紫微</h2><p>示例结果（演示用，非真实命理断言）</p></div></div>
-  ${loopChip(LOOP_DEFAULT,'识己之后，顺手安住此刻')}
-  <div class="disclaimer">命理内容为传统文化娱乐参考，不预示吉凶，请勿迷信。</div>
-  `;
-}
-function renderDaily(){
-  const deeds=[['lamp','🪔','点灯祈福'],['bond','🤝','随喜助人'],['meditate','🧘','静心冥想']];
-  const done=SIG.deeds||{};
-  return `
-  <div class="hero"><h1>每日流 · 24 节气 × 28 宿</h1><p>序列化回访钩子 · 顺时养性</p></div>
-  <div class="card"><div class="star-hero" style="margin:0"><div class="stars">🌿 ☀ 🍂 ❄</div><h2>大暑 · 第 12 节气</h2><p>今日宿值：角木蛟 · 宜静心</p></div></div>
-  <div class="section-h">今日三善</div>
-  ${deeds.map(d=>`<div class="card" data-deed="${d[0]}" style="display:flex;align-items:center;gap:12px;cursor:pointer"><div class="ic" style="font-size:24px">${d[1]}</div><div style="flex:1"><div class="nm" style="font-weight:600">${d[2]}</div><div class="muted">${done[d[0]]?'✅ 已完成':'轻触完成'}</div></div></div>`).join('')}
-  ${loopChip(LOOP_DEFAULT)}
-  `;
-}
-function renderMerit(){
-  return `
-  <div class="hero"><h1>功德中心 · ${SIG.merit}</h1><p>积善成灯 · 虚拟非金钱</p></div>
-  <div class="card"><h3><span class="pin">🪔</span> 立下星愿</h3>
-    <div class="fld"><div class="lab">你的星愿（将驱动商城「寄愿结缘」推荐）</div><textarea id="wishInput" placeholder="例如：愿家人安康">${SIG.wish}</textarea></div>
-    <div class="btn" data-act="saveWish">立愿 · 同步商城推荐</div>
-  </div>
-  <div class="card"><div class="section-h">功德去向</div>
-    <div class="muted">· 9 折折扣（文旅核销）</div><div class="muted">· 晒单返星屑 +30</div><div class="muted">· 长明祈福灯 -30</div></div>
-  <div class="disclaimer">功德为平台虚拟积分，不可提现、交易或购买。</div>
-  `;
-}
-function renderNote(){
-  return `
-  <div class="hero"><h1>随手记 · 此刻感悟</h1><p>写下的每一笔，都会留存</p></div>
-  <div class="card"><div class="star-hero" style="margin:0"><h2>夜观星象，心渐安宁</h2><p>—— 小野 · 今日</p></div></div>
-  <div class="card"><div class="section-h">星友足迹</div>
-    <div class="feed-item">🌿 阿星：今晚的星河很亮，许个愿。</div>
-    <div class="feed-item">🪔 木木：抄完一卷经，心静了。</div>
-  </div>
-  <div class="card" style="cursor:pointer" data-act="openCmt"><div class="muted">说点什么…（内容将经合规预检）</div></div>
-  <div class="disclaimer">随手记内容经本地分级预检，违规词将友好提示修改。</div>
-  `;
-}
-/* 次要页静态骨架 */
-function skeleton(title, sub, blocks, disc){
-  return `<div class="hero"><h1>${title}</h1><p>${sub}</p></div>${blocks.map(b=>`<div class="card"><h3>${b.h}</h3>${b.b}</div>`).join('')}${disc?`<div class="disclaimer">${disc}</div>`:''}`;
-}
-function renderJourney(){
-  return skeleton('心灵之旅','每天 10 分钟，安住当下',[
-    {h:'今日冥想 · 第 '+SIG.streak+' 天', b:'<div class="star-hero" style="margin:0"><div class="stars">🧘</div><h2>跟随呼吸</h2><p>回到此刻</p></div><div class="btn mt8">▶ 开始 10 分钟</div>'},
-    {h:'此刻心情', b:'<div class="chip-row"><div class="chip"><div class="ic">😊</div><div class="t">平静</div></div><div class="chip"><div class="ic">😌</div><div class="t">放松</div></div><div class="chip"><div class="ic">🌟</div><div class="t">感恩</div></div></div>'}
-  ]);
-}
-function renderHealing(){
-  return skeleton('精神疗愈空间','情绪舒缓 · 非医疗行为',[
-    {h:'白噪音 · 雨夜', b:'<div class="mj-reco"><div class="ic">🌧</div><div class="body"><div class="nm">雨夜安眠</div><div class="ds">12 分钟</div></div><div class="go">▶</div></div>'},
-    {h:'引导冥想 · 焦虑舒缓', b:'<div class="mj-reco"><div class="ic">🧘</div><div class="body"><div class="nm">放下紧绷</div><div class="ds">8 分钟</div></div><div class="go">▶</div></div>'}
-  ],'温馨提示：本平台星象、疗愈等内容均为心理慰藉的娱乐参考，非医疗行为；如遇情绪困扰，请寻求专业帮助。');
-}
-function renderBlessing(){
-  return skeleton('祝福视频制作','选模板 · 写祝福 · 配音乐',[
-    {h:'① 选择模板', b:'<div class="chip-row"><div class="chip"><div class="ic">🎂</div><div class="t">生日</div></div><div class="chip"><div class="ic">🎉</div><div class="t">节日</div></div><div class="chip"><div class="ic">🌟</div><div class="t">星愿</div></div></div>'},
-    {h:'② 祝福文案', b:'<div class="fld"><div class="lab">写下你的祝福</div><textarea placeholder="愿你所愿皆成真"></textarea></div>'},
-    {h:'③ 背景音乐', b:'<div class="btn">🎬 一键生成分享</div>'}
-  ]);
-}
-function renderMessage(){
-  return skeleton('消息','星友动态 · 系统通知',[
-    {h:'🌟 星友 阿星 寄愿了', b:'<div class="muted">愿山河无恙，人间皆安。</div>'},
-    {h:'🪔 系统 · 连签提醒', b:'<div class="muted">你已连签 '+SIG.streak+' 天，今日三善待完成。</div>'}
-  ]);
-}
-function renderPublish(){
-  return skeleton('发布感悟','写下此刻，与星友共勉',[
-    {h:'记录一笔', b:'<div class="fld"><div class="lab">标题</div><input placeholder="今夜的星河" /></div><div class="fld"><div class="lab">正文（经合规预检）</div><textarea placeholder="说点什么…"></textarea></div><div class="btn">发布</div></div>'}
-  ]);
-}
-function renderSearch(){
-  return skeleton('搜索','寻觅星野',[
-    {h:'热门', b:'<div class="chip-row"><div class="chip"><div class="ic">🔮</div><div class="t">紫微</div></div><div class="chip"><div class="ic">🪔</div><div class="t">寄愿</div></div><div class="chip"><div class="ic">🌌</div><div class="t">星图</div></div></div>'},
-    {h:'历史', b:'<div class="muted">星愿盲盒 · 睡前冥想</div>'}
-  ]);
-}
-function renderChart(){
-  return `
-  <div class="star-hero"><div class="stars">✦ ✧ ★ ✦ ✧</div><h2>二十八宿星图</h2><p>已点亮 ${starLitNow()}/28 宿</p></div>
-  <div class="card"><div class="btn" data-act="lightStar">✨ 点亮下一宿 +200</div></div>
-  <div class="card"><h3><span class="pin">💎</span> 峰值推荐</h3><div class="mj-reco"><div class="ic">💎</div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿夜灯</div><div class="ds">星夜同款 · ¥39</div></div><div class="go">去看看 ›</div></div></div>
-  <div class="disclaimer">星图为传统文化娱乐参考，点亮进度为虚拟积分。</div>
-  `;
-}
-function renderBlindbox(){
-  const r = ['寄愿·暖月香薰','二十八宿夜灯','静心抄经本','星辉念珠'][Math.floor(Math.random()*4)];
-  return `
-  <div class="blink"><div class="b-ic">🎁</div><h3>星愿盲盒 · 已揭晓</h3><p>今日星彩：${r}</p></div>
-  <div class="card"><h3><span class="pin">💎</span> 峰值单件推荐</h3><div class="mj-reco" data-go="mall"><div class="ic">💎</div><div class="body"><span class="tag">为你结缘</span><div class="nm">${r}</div><div class="ds">揭晓即推 · 顺手带回家</div></div><div class="go">去看看 ›</div></div></div>
-  <div class="disclaimer">盲盒为娱乐参考，非抽奖改运。</div>
-  `;
-}
-
-const RENDER = {index:renderIndex, space:renderSpace, tourism:renderTourism, mall:renderMall, profile:renderProfile, starPanel:renderStarPanel, daily:renderDaily, merit:renderMerit, note:renderNote, journey:renderJourney, healing:renderHealing, blessing:renderBlessing, message:renderMessage, publish:renderPublish, search:renderSearch, chart:renderChart, blindbox:renderBlindbox};
-
-function render(){
-  const fn = RENDER[CUR] || renderIndex;
-  document.getElementById('screen').innerHTML = fn();
-}
-
-/* ===== 事件委托 ===== */
-document.getElementById('screen').addEventListener('click', e=>{
-  const t = e.target;
-  const go = t.closest('[data-go]'); if(go){ PREV=CUR; window.go(go.dataset.go); return; }
-  const act = t.closest('[data-act]'); if(act){ handleAct(act.dataset.act, act); return; }
-  const city = t.closest('[data-city]'); if(city){ remoteCity(city.dataset.city); return; }
-  const deed = t.closest('[data-deed]'); if(deed){ toggleDeed(deed.dataset.deed); return; }
-  const mode = t.closest('[data-mode]'); if(mode){ document.querySelectorAll('[data-mode]').forEach(m=>m.classList.remove('on')); mode.classList.add('on'); return; }
-});
-function handleAct(act, el){
-  switch(act){
-    case 'lightStar': lightStar(); break;
-    case 'saveWish': { const v=(document.getElementById('wishInput')||{}).value||''; setWish(v); break; }
-    case 'runDivine': toast('命宫主星 · 紫微（演示）'); break;
-    case 'shareBack': shareBack(); break;
-    case 'lightLamp': lightLamp(); break;
-    case 'toggleDark': THEME='dark'; localStorage.setItem('xy_theme','dark'); applyTheme(); toast('🌙 夜灯模式'); break;
-    case 'archInfo': document.getElementById('archOverlay').classList.add('on'); break;
-    case 'openCmt': document.getElementById('cmtBar').classList.add('on'); break;
+  // 星愿点亮 / 数字锚点 概念流程
+  const anchorSteps = ['home','choose','pay','sprout'];
+  function goAnchor(step){
+    anchorSteps.forEach(s=>{
+      const el = document.getElementById('a-'+s);
+      if(el) el.style.display = (s===step) ? 'block' : 'none';
+    });
+    document.getElementById('screen').scrollTop = 0;
   }
-}
-document.getElementById('archOverlay').addEventListener('click', e=>{ if(e.target.closest('[data-act="closeArch"]')||e.target===document.getElementById('archOverlay')) document.getElementById('archOverlay').classList.remove('on'); });
-document.querySelector('[data-act="sendCmt"]').addEventListener('click', ()=>{
-  const v=document.getElementById('cmtInput').value.trim();
-  if(!v){ toast('写点什么吧'); return; }
-  // 模拟 censor 预检
-  const banned=/改运|逆天|必应|包治|稳赚|暴富/;
-  if(banned.test(v)){ toast('🚫 含违规词，请修改后发送'); return; }
-  toast('✅ 合规通过 · 已留存'); document.getElementById('cmtInput').value=''; document.getElementById('cmtBar').classList.remove('on');
-});
-// 暴露 go 给事件委托
-window.go = go;
-
-/* ===== 初始化 ===== */
-renderMap(); renderTabbar(); render(); updateTitle();
-document.querySelector('.back').style.display='none';
-document.getElementById('compBar').textContent = '暗色就绪 16/16 · 门禁 42/0';
+  function pickDeed(el){
+    document.querySelectorAll('.deed-option').forEach(o=>o.classList.remove('on'));
+    el.classList.add('on');
+  }
 </script>
 </body>
 </html>

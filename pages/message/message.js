@@ -49,7 +49,13 @@ Page({
   switchSeg(e) { this.setData({ seg: e.currentTarget.dataset.s }); },
   openMeritItem(e) {
     const route = e.currentTarget.dataset.route;
-    if (route) wx.navigateTo({ url: route });
+    if (!route) return;
+    const tabPages = ['/pages/index/index', '/pages/tourism/tourism', '/pages/space/space', '/pages/mall/mall', '/pages/profile/profile'];
+    if (tabPages.indexOf(route) >= 0) {
+      wx.switchTab({ url: route });
+    } else {
+      wx.navigateTo({ url: route });
+    }
   },
   openChat() { wx.showToast({ title: '打开会话（演示）', icon: 'none' }); }
 });
