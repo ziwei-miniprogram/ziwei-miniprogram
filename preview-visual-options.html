@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>星野漫游 · 首页视觉方向对照稿（未改动代码）</title>
+<style>
+  :root{
+    --paper:#f7f5f0; --gold:#c8a35a; --gold-l:#e0c489; --night:#0B1426;
+    --ink:#23211c; --ink-soft:#6b6557; --line:#e7e1d5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#ece8df;color:var(--ink);padding:28px 18px 60px;}
+  h1{font-size:20px;font-weight:600;letter-spacing:.5px;text-align:center;}
+  .sub{text-align:center;color:var(--ink-soft);font-size:13px;margin:6px 0 4px;}
+  .warn{text-align:center;font-size:12px;color:#9a6b2f;background:#f6efdf;border:1px solid #ecd9ad;border-radius:8px;max-width:760px;margin:10px auto 24px;padding:8px 12px;}
+  .grid{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;align-items:flex-start;}
+  .col{flex:0 0 auto;}
+  .col h2{font-size:14px;font-weight:600;margin-bottom:4px;}
+  .col .note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;min-height:54px;max-width:300px;margin-bottom:10px;}
+  .col .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;margin-bottom:8px;}
+  .tag.fix{background:#fdecea;color:#b03a2e;}
+  .tag.try{background:#eaf3ea;color:#3a7d44;}
+  .tag.reco{background:#f6efdf;color:#9a6b2f;}
+  .phone{width:300px;height:580px;border-radius:38px;border:10px solid #1c1c1e;background:var(--paper);overflow:hidden;position:relative;box-shadow:0 18px 40px rgba(0,0,0,.18);}
+  .screen{height:100%;overflow-y:auto;padding:16px 14px 20px;}
+  .screen::-webkit-scrollbar{display:none;}
+
+  /* 通用区块 */
+  .search{display:flex;align-items:center;gap:6px;background:#fff;border-radius:20px;padding:9px 14px;font-size:12px;color:var(--ink-soft);border:1px solid var(--line);}
+  .hero{border-radius:18px;padding:16px;margin-top:12px;}
+  .eyebrow{font-size:10.5px;letter-spacing:2px;opacity:.8;}
+  .bt{font-family:"Songti SC",serif;font-size:19px;font-weight:600;margin:6px 0 4px;line-height:1.35;}
+  .bl{font-size:11.5px;opacity:.85;line-height:1.5;}
+  .wbox{display:flex;justify-content:flex-end;font-size:10px;margin-top:8px;opacity:.85;}
+  .cal{margin-top:10px;font-size:10px;opacity:.8;}
+  .lamp{margin-top:12px;text-align:center;font-size:12px;padding:9px;border-radius:12px;}
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
+  .q{text-align:center;font-size:11px;}
+  .q .ic{width:40px;height:40px;margin:0 auto 4px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .bento{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px;}
+  .bc{border-radius:14px;padding:13px;}
+  .bc .t{font-size:13.5px;font-weight:600;}
+  .bc .d{font-size:11px;opacity:.8;margin-top:3px;line-height:1.5;}
+  .unlock{border-radius:14px;padding:11px;margin-top:14px;}
+  .ubar{height:6px;border-radius:4px;background:#00000012;margin-top:8px;overflow:hidden;}
+  .ufill{height:100%;background:var(--gold);width:62%;}
+  .proof{font-size:10.5px;opacity:.75;margin-top:10px;line-height:1.5;}
+
+  /* ===== 方向 A：现状（含问题标注） ===== */
+  .a .hero{background:linear-gradient(160deg,#fbf7ec,#f1e9d6);border:1px solid var(--line);}
+  .a .q .ic{background:#f3ecdb;border:1px solid var(--line);}
+  .a .bc{background:#fff;border:1px solid var(--line);}
+  .a .lamp{background:#f3ecdb;color:#7a5b22;}
+  .a .unlock{background:#fff;border:1px solid var(--line);}
+  .a .emoji{font-size:18px;}
+
+  /* ===== 方向 B：极简留白（Apple 风） ===== */
+  .b .screen{background:#fbfaf7;}
+  .b .hero{background:transparent;padding:14px 4px;}
+  .b .eyebrow{color:var(--gold);}
+  .b .bt{font-size:22px;letter-spacing:.5px;}
+  .b .bl{color:var(--ink-soft);}
+  .b .wbox{color:var(--ink-soft);}
+  .b .cal{color:var(--ink-soft);}
+  .b .lamp{background:var(--gold);color:#1c1c1e;font-weight:600;box-shadow:0 6px 16px rgba(200,163,90,.3);}
+  .b .q .ic{background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.06);}
+  .b .q{color:var(--ink-soft);}
+  .b .bc{background:#fff;box-shadow:0 6px 20px rgba(0,0,0,.05);border:none;}
+  .b .bc .t{color:var(--ink);}
+  .b .unlock{background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.04);}
+  .b .ufill{background:var(--gold);}
+
+  /* ===== 方向 C：星图叙事（深空仪式感，推荐） ===== */
+  .c .screen{background:var(--night);color:#eef0f4;}
+  .c .search{background:#16203a;border-color:#2a3760;color:#9fb0d0;}
+  .c .hero{background:radial-gradient(120% 90% at 50% 0%,#1c2b52 0%,#0B1426 70%);border:1px solid #2a3760;}
+  .c .eyebrow{color:var(--gold-l);}
+  .c .bt{color:#f4f1e8;}
+  .c .bl{color:#b9c4dc;}
+  .c .wbox{color:#9fb0d0;}
+  .c .cal{color:#9fb0d0;}
+  .c .lamp{background:linear-gradient(90deg,var(--gold),var(--gold-l));color:#1c1c1e;font-weight:600;}
+  .c .quick .ic{background:#16203a;border:1px solid #2a3760;color:var(--gold-l);}
+  .c .q{color:#c4cee2;}
+  .c .bc{background:#141d34;border:1px solid #2a3760;}
+  .c .bc .t{color:#f4f1e8;}
+  .c .bc .d{color:#9fb0d0;}
+  .c .unlock{background:#141d34;border:1px solid #2a3760;color:#eef0f4;}
+  .c .proof{color:#8fa0c0;}
+  .starfield{position:absolute;inset:0;pointer-events:none;}
+  .starfield i{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--gold-l);opacity:.7;}
+
+  .footer{text-align:center;font-size:12px;color:var(--ink-soft);margin-top:34px;line-height:1.7;max-width:760px;margin-left:auto;margin-right:auto;}
+  .footer b{color:var(--ink);}
+</style>
+</head>
+<body>
+  <h1>星野漫游 · 首页视觉方向对照稿</h1>
+  <div class="sub">仅用于挑选方向 · 未改动任何小程序代码（遵循设计铁律②：先出对照稿，选定后再动代码）</div>
+  <div class="warn">现状问题（方向 A 中标红处）：① 引导层与空状态仍用 🔭🏯✉👤🪷 等 emoji，拉低质感，且与同页已统一的 &lt;astro&gt; SVG 图标体系冲突（铁律①去 emoji 未落实）；② 卡片边框偏重、层级平；③ 缺少"星夜仪式感"的视觉锚点。</div>
+
+  <div class="grid">
+
+    <!-- 方向 A：现状 -->
+    <div class="col">
+      <span class="tag fix">现状 · 含问题</span>
+      <h2>方向 A — 当前线上样</h2>
+      <div class="note">保留现有结构与暖纸令牌。如实呈现 emoji 图标、较重卡片边框、偏平淡的层级。用作 baseline 对照，便于你直观看到"哪里拉低质感"。</div>
+      <div class="phone a">
+        <div class="screen">
+          <div class="search">⌕ 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+          <div class="hero">
+            <div class="eyebrow">星野漫游 · 每日星语</div>
+            <div class="bt">今夜，星空为你留了一盏灯</div>
+            <div class="bl">天权星临，宜静心，忌焦躁。</div>
+            <div class="wbox">☀ 杭州 · 24° 晴</div>
+            <div class="cal">农历六月初八 · 小暑</div>
+            <div class="lamp">🪔 点亮今日心灯 · +1 功德</div>
+          </div>
+          <div class="quick">
+            <div class="q"><div class="ic">✦</div>星野</div>
+            <div class="q"><div class="ic">⛰</div>文旅</div>
+            <div class="q"><div class="ic">✉</div>寄愿</div>
+            <div class="q"><div class="ic">🪔</div>功德</div>
+          </div>
+          <div class="bento">
+            <div class="bc"><div class="t">点亮星图</div><div class="d">二十八宿，照亮今日心绪</div></div>
+            <div class="bc"><div class="t">寄一笔愿</div><div class="d">把心事交给星河，慢慢安放</div></div>
+            <div class="bc"><div class="t">今日三善</div><div class="d">点灯 · 随喜 · 冥想，积微成光</div></div>
+          </div>
+          <div class="unlock">
+            <div>✦ 距深度解读 62%</div>
+            <div class="ubar"><div class="ufill"></div></div>
+          </div>
+          <div class="proof">已有 1280 位旅人正在星野日行一善</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 方向 B：极简留白 -->
+    <div class="col">
+      <span class="tag try">方案 · 极简留白</span>
+      <h2>方向 B — Apple 风留白</h2>
+      <div class="note">更大字号与留白、去掉卡片边框改柔阴影、单一金色强调、图标统一为 ✦/线性 SVG（去 emoji）。克制、干净，但仪式感偏弱。</div>
+      <div class="phone b">
+        <div class="screen">
+          <div class="search">⌕ 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+          <div class="hero">
+            <div class="eyebrow">星野漫游 · 每日星语</div>
+            <div class="bt">今夜，星空为你留了一盏灯</div>
+            <div class="bl">天权星临，宜静心，忌焦躁。</div>
+            <div class="wbox">☀ 杭州 · 24° 晴</div>
+            <div class="cal">农历六月初八 · 小暑</div>
+            <div class="lamp">点亮今日心灯 · +1 功德</div>
+          </div>
+          <div class="quick">
+            <div class="q"><div class="ic">✦</div>星野</div>
+            <div class="q"><div class="ic">✦</div>文旅</div>
+            <div class="q"><div class="ic">✦</div>寄愿</div>
+            <div class="q"><div class="ic">✦</div>功德</div>
+          </div>
+          <div class="bento">
+            <div class="bc"><div class="t">点亮星图</div><div class="d">二十八宿，照亮今日心绪</div></div>
+            <div class="bc"><div class="t">寄一笔愿</div><div class="d">把心事交给星河，慢慢安放</div></div>
+            <div class="bc"><div class="t">今日三善</div><div class="d">点灯 · 随喜 · 冥想，积微成光</div></div>
+          </div>
+          <div class="unlock">
+            <div>✦ 距深度解读 62%</div>
+            <div class="ubar"><div class="ufill"></div></div>
+          </div>
+          <div class="proof">已有 1280 位旅人正在星野日行一善</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 方向 C：星图叙事（推荐） -->
+    <div class="col">
+      <span class="tag reco">推荐 · 星图叙事</span>
+      <h2>方向 C — 深空仪式感</h2>
+      <div class="note">Hero 用深空径向渐变 + 金色星点场 + 星图母题，文字转浅色；图标全 SVG/✦ 去 emoji；卡片深蓝描边。最贴合"安心的地方 + 星夜仪式"定位，与长明灯/锚点语言统一。</div>
+      <div class="phone c">
+        <div class="screen">
+          <div class="starfield"><i style="left:18%;top:6%"></i><i style="left:62%;top:3%"></i><i style="left:80%;top:11%"></i><i style="left:40%;top:9%"></i><i style="left:28%;top:14%"></i><i style="left:72%;top:16%"></i></div>
+          <div class="search">⌕ 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+          <div class="hero">
+            <div class="eyebrow">星野漫游 · 每日星语</div>
+            <div class="bt">今夜，星空为你留了一盏灯</div>
+            <div class="bl">天权星临，宜静心，忌焦躁。</div>
+            <div class="wbox">☀ 杭州 · 24° 晴</div>
+            <div class="cal">农历六月初八 · 小暑</div>
+            <div class="lamp">点亮今日心灯 · +1 功德</div>
+          </div>
+          <div class="quick">
+            <div class="q"><div class="ic">✦</div>星野</div>
+            <div class="q"><div class="ic">✦</div>文旅</div>
+            <div class="q"><div class="ic">✦</div>寄愿</div>
+            <div class="q"><div class="ic">✦</div>功德</div>
+          </div>
+          <div class="bento">
+            <div class="bc"><div class="t">点亮星图</div><div class="d">二十八宿，照亮今日心绪</div></div>
+            <div class="bc"><div class="t">寄一笔愿</div><div class="d">把心事交给星河，慢慢安放</div></div>
+            <div class="bc"><div class="t">今日三善</div><div class="d">点灯 · 随喜 · 冥想，积微成光</div></div>
+          </div>
+          <div class="unlock">
+            <div>✦ 距深度解读 62%</div>
+            <div class="ubar"><div class="ufill"></div></div>
+          </div>
+          <div class="proof">已有 1280 位旅人正在星野日行一善</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    三版共用设计令牌：暖纸 <b>#f7f5f0</b> · 星辉金 <b>#c8a35a</b> · 星夜蓝 <b>#0B1426</b>。<br/>
+    <b>请挑选一个方向</b>（A 仅作 baseline 对照，不建议落地）。选定后，我会据此：① 把同页 emoji 全替换为 astro SVG / ✦；② 按所选方向重做首页 Hero + 快捷入口 + Bento 层级；③ 再逐页推广到其余 15 页。<br/>
+    不批量改、不铺样式——先定方向，再动手。
+  </div>
+</body>
+</html>
