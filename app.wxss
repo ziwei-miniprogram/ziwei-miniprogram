@@ -81,7 +81,7 @@ page, .page {
   border-radius: var(--radius-lg);
   padding: 28rpx;
   margin: 20rpx 0;
-  box-shadow: var(--shadow-1), var(--shadow-2);
+  box-shadow: var(--shadow-sm);
   border: 1rpx solid var(--border);
   color: var(--fg);
 }
@@ -345,7 +345,7 @@ page, .page {
   border-radius: var(--radius-lg);
   padding: 32rpx;
   margin: 20rpx 24rpx;
-  box-shadow: var(--shadow-1), var(--shadow-2);
+  box-shadow: var(--shadow-sm);
   border: 1rpx solid var(--border);
   color: var(--fg);
 }
@@ -370,7 +370,7 @@ page, .page {
   color: #f3ead4;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-1), var(--shadow-2);
+  box-shadow: var(--shadow-sm);
 }
 .u-hero-night .u-glow {
   position: absolute; top: -60rpx; right: -50rpx;
@@ -454,9 +454,9 @@ page, .page {
 
 /* P1-5 星野小提示 */
 .tips { margin: 8rpx 0 18rpx; }
-.tip-h { font-size: 24rpx; color: var(--gold-deep); margin: 6rpx 4rpx; }
-.tip { display: flex; align-items: center; gap: 12rpx; background: var(--card); border: 1rpx solid rgba(200,163,90,.22); border-radius: 14rpx; padding: 18rpx 20rpx; margin-bottom: 10rpx; }
-.tip-ic { font-size: 30rpx; }
+.tip-h { font-size: 22rpx; letter-spacing: 2rpx; color: var(--gold-deep); margin: 6rpx 4rpx 12rpx; }
+.tip { display: flex; align-items: center; gap: 14rpx; background: transparent; border: 1rpx solid var(--border); border-radius: 14rpx; padding: 18rpx 20rpx; margin-bottom: 10rpx; }
+.tip-ic { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex: none; }
 .tip-t { flex: 1; font-size: 25rpx; color: var(--fg-3); }
 .tip-arrow { color: var(--gold-deep); font-size: 30rpx; }
 
@@ -514,7 +514,7 @@ page, .page {
   border: 1rpx solid var(--border);
   border-radius: 28rpx;
   padding: 26rpx 24rpx;
-  box-shadow: var(--shadow-1), var(--shadow-2);
+  box-shadow: var(--shadow-sm);
 }
 .ub-ic { font-size: 44rpx; line-height: 1; }
 .ub-t { font-size: 28rpx; font-weight: 700; color: var(--fg); margin-top: 14rpx; }
@@ -534,3 +534,27 @@ page, .page {
   .u-spring { transition: none; }
   .u-spring:active { transform: none; }
 }
+
+/* ===== 方向 B 共享工具类（极简留白 · 全页统一）=====
+   所有页面复用，确保「大留白 / 细金线 / 克制」语言一致，避免逐页重复翻车。
+   页头三段式优先用 .u-section + .u-eyebrow + .u-h2 + .u-lede（已在上方定义）。 */
+.hair { height: 1rpx; background: var(--border); margin: 24rpx 0; }
+.hair-tight { height: 1rpx; background: var(--border); margin: 14rpx 0; }
+
+/* 空状态：以 ✦ 取代 emoji（全局统一，on-brand） */
+.empty-soft .em-mark { font-size: 64rpx; color: var(--gold); }
+.empty-soft .em-emoji { font-size: 64rpx; color: var(--gold); } /* 兼容旧 class，建议改用 .em-mark+✦ */
+.empty-soft .em-tt { margin-top: 16rpx; font-size: 30rpx; color: var(--fg); font-weight: 700; }
+.empty-soft .em-sub { margin-top: 10rpx; font-size: 24rpx; color: var(--fg-2); line-height: 1.7; }
+
+/* 通用图标格（astro 图标居中的圆形/方形底，B 风格） */
+.ic-cell {
+  width: 72rpx; height: 72rpx; border-radius: 50%;
+  background: var(--bg-elev); display: flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.ic-cell.round { border-radius: 24rpx; }
+
+/* 页头三段式容器（配合 .u-eyebrow/.u-h2/.u-lede，container 已给侧边距） */
+.b-head { margin: 44rpx 0 12rpx; }
+.b-head.tight { margin: 28rpx 0 8rpx; }

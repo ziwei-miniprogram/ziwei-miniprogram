@@ -26,11 +26,11 @@ function buildReco(app) {
   const streak = app.globalData.streak || 0;
 
   const ALL = [
-    { emoji: '🏮', tag: '寄愿结缘', name: '寄愿·暖月香薰', desc: '为你许下的星愿，配一盏静心灯', cat: '香薰', hit: !!wish },
-    { emoji: '📿', tag: '疗愈三善', name: '静心好书 · 抄经', desc: '今日善行已落，配一笔静好', cat: '书籍', hit: didDeed },
-    { emoji: '💎', tag: '星图系列', name: '二十八宿夜灯', desc: '星图已亮，结缘星夜同款', cat: '水晶', hit: starLit > 0 },
-    { emoji: '🪷', tag: '城市守护', name: '星辉结缘 · 念珠', desc: '连签守护，带一份陪伴回家', cat: '文创', hit: streak > 0 },
-    { emoji: '🌙', tag: '节气疗愈', name: '睡前冥想 21 天', desc: '顺时而养，静心陪伴', cat: '课程', hit: true }
+    { icon: 'lamp', tag: '寄愿结缘', name: '寄愿·暖月香薰', desc: '为你许下的星愿，配一盏静心灯', cat: '香薰', hit: !!wish },
+    { icon: 'calm', tag: '疗愈三善', name: '静心好书 · 抄经', desc: '今日善行已落，配一笔静好', cat: '书籍', hit: didDeed },
+    { icon: 'chart', tag: '星图系列', name: '二十八宿夜灯', desc: '星图已亮，结缘星夜同款', cat: '水晶', hit: starLit > 0 },
+    { icon: 'tourism', tag: '城市守护', name: '星辉结缘 · 念珠', desc: '连签守护，带一份陪伴回家', cat: '文创', hit: streak > 0 },
+    { icon: 'solar', tag: '节气疗愈', name: '睡前冥想 21 天', desc: '顺时而养，静心陪伴', cat: '课程', hit: true }
   ];
   const hits = ALL.filter(r => r.hit);
   const rest = ALL.filter(r => !r.hit);
@@ -208,11 +208,11 @@ Page({
     if (!r.ok) return;
     const app = getApp();
     if (app.addMerit) app.addMerit(r.returned);
-    whimsy.burst(this, { text: '星屑已归位 +' + r.returned + ' 功德', emoji: '✨' });
+    whimsy.burst(this, { text: '星屑已归位 +' + r.returned + ' 功德', emoji: '✦' });
     this.refreshShared();
     this.buildList();
     wx.showModal({
-      title: '晒单完成 ✨',
+      title: '晒单完成 ✦',
       content: `你分享的「${p.title}」已点亮更多星友的守护。星屑回馈 +${r.returned} 功德已到账。\n回到星图继续打卡，集齐 6 城解锁全国守护礼～`,
       confirmText: '去星图',
       cancelText: '留在本页',
@@ -246,7 +246,7 @@ Page({
         if (r.confirm && app.spendMerit(MERIT_LAMP_COST)) {
           wx.showToast({ title: `已点亮 · -${MERIT_LAMP_COST} 功德`, icon: 'none' });
           social.log(`用 ${MERIT_LAMP_COST} 功德点亮了长明祈福灯`, '/pages/mall/mall');
-          whimsy.burst(this, { text: '祈福灯长明 ✨', emoji: '🪔' });
+          whimsy.burst(this, { text: '祈福灯长明', emoji: '✦' });
           try { wx.setStorageSync('merit_lamp_lit', true); } catch (e) {}
           this.setData({ meritBalance: app.globalData.merit, meritLampLit: true });
         }

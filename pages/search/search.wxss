@@ -3,22 +3,20 @@
 .bar { padding: 8rpx 0 18rpx; }
 .box {
   display: flex; align-items: center; gap: 14rpx;
-  background: var(--card); border: 1rpx solid var(--border); border-radius: 999rpx;
+  background: transparent; border: 1rpx solid var(--border); border-radius: 999rpx;
   padding: 16rpx 26rpx;
 }
-.ic { font-size: 28rpx; }
+.ic { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex: none; }
 .inp { flex: 1; font-size: 28rpx; color: var(--fg); }
 
-.empty { text-align: center; padding: 90rpx 40rpx; }
-.em { font-size: 64rpx; }
-.em-tt { font-size: 28rpx; color: var(--fg); margin-top: 18rpx; }
-.em-sub { font-size: 23rpx; color: var(--fg-2); margin-top: 8rpx; }
-
-.list { display: flex; flex-direction: column; gap: 16rpx; }
+/* 方向 B：列表去卡片底色，靠细线分隔 */
+.list { display: flex; flex-direction: column; }
 .item {
   display: flex; align-items: center; gap: 22rpx;
-  background: var(--card); border: 1rpx solid var(--border); border-radius: 20rpx;
-  padding: 20rpx 24rpx;
+  background: transparent; border: none;
+  border-bottom: 1rpx solid var(--border);
+  border-radius: 0;
+  padding: 24rpx 4rpx;
 }
 .item:active { background: var(--bg-elev); }
 .av {

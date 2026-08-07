@@ -26,7 +26,11 @@
     bind:tap="goIndex" />
 
   <!-- 往日星轨：章节式滚动叙事（淡入上移 + 统一结构：eyebrow·宿 + 一句星语 + 签） -->
-  <view class="track-title">往日星轨 · 一章一宿</view>
+  <view class="b-head">
+    <view class="u-eyebrow">往日星轨</view>
+    <view class="u-h2 serif">一章一宿</view>
+  </view>
+  <view class="hair"></view>
   <view class="track">
     <view class="chapter {{inList[index] ? 'in' : ''}}" id="ch{{index}}" wx:for="{{past}}" wx:key="date">
       <view class="ch-ic"><astro name="solar" size="32" theme="{{theme}}"/></view>
@@ -41,5 +45,5 @@
   <view class="disclaimer">温馨提示：本平台星象、节气、抽签等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</view>
 
   <!-- LoopChip：读完星语，送回主循环（解 B4） -->
-  <loop-chip items="{{loopItems}}" title="看完星语，顺手做一件" />
+  <loop-chip items="{{loopItems}}" title="看完星语，顺手做一件" theme="{{theme}}" />
 </view>

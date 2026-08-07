@@ -8,7 +8,7 @@
   color: #f3ead4;
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-1, 0 2rpx 8rpx rgba(0,0,0,.05)), var(--shadow-2, 0 12rpx 32rpx rgba(0,0,0,.08));
+  box-shadow: var(--shadow-sm, 0 4rpx 18rpx rgba(40,33,20,.05));
 }
 .story-hover { filter: brightness(1.06); }
 .u-glow {
@@ -17,7 +17,7 @@
   background: radial-gradient(circle, rgba(200,163,90,.4), transparent 70%);
 }
 .s-head { display: flex; align-items: center; gap: 16rpx; position: relative; }
-.s-motif { width: 48rpx; height: 48rpx; flex: none; }
+.s-motif { width: 34px; height: 34px; flex: none; display: flex; align-items: center; justify-content: center; }
 .s-host { font-size: 24rpx; color: var(--gold, #c8a35a); letter-spacing: 1rpx; }
 .s-body {
   font-size: 30rpx; line-height: 1.9; margin-top: 18rpx;

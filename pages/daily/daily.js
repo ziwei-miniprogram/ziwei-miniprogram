@@ -32,10 +32,10 @@ Page({
     const progress = ch.termLen > 0 ? Math.min(100, Math.round(ch.termDay / ch.termLen * 100)) : 0;
     // LoopChip（UX 架构 P0-b，解 B4 死胡同）：把读完星语的用户送回主循环
     const loopItems = [
-      { icon: '🔭', label: '点亮今日星图', url: '/pages/chart/chart' },
-      { icon: '🪔', label: '寄愿一笔', url: '/pages/merit/merit?tab=wish' },
-      { icon: '🛎', label: '今日三善', url: '/pages/merit/merit' },
-      { icon: '✍️', label: '记一笔感悟', url: '/pages/note/note' }
+      { icon: 'chart', label: '点亮今日星图', url: '/pages/chart/chart' },
+      { icon: 'wish', label: '寄愿一笔', url: '/pages/merit/merit?tab=wish' },
+      { icon: 'deeds', label: '今日三善', url: '/pages/merit/merit' },
+      { icon: 'note', label: '记一笔感悟', url: '/pages/note/note' }
     ];
     this.setData({ chapter: ch, past: past, progress: progress, loopItems: loopItems, inList: [] });
     const self = this;

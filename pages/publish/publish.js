@@ -2,7 +2,8 @@ const { check, advice } = require('../../utils/censor.js');
 const social = require('../../utils/social.js');
 const whimsy = require('../../utils/whimsy.js');
 
-const EMOJIS = ['🌌', '🔮', '🍃', '🏮', '🏜️', '🌙', '🌿', '♌', '🪔', '⭐'];
+// 封面图标池：值为站内 astro 图标名（components/icon/icon），发布后由信息流统一渲染为 SVG
+const ICONS = ['star', 'chart', 'wish', 'lamp', 'journey', 'solar', 'calm', 'blessing', 'merit', 'note'];
 const BGS = [
   'linear-gradient(140deg,#2b2b4e,#4a4a7a)',
   'linear-gradient(140deg,#3a3660,#6a5f96)',
@@ -15,7 +16,7 @@ const BGS = [
 Page({
   behaviors: [require('../../behaviors/themeable.js')],
   data: {
-    imgs: ['🌌', '🏔'],
+    imgs: ['star', 'journey'],
     topics: ['星图旅行', '苍山', '心灵之旅', '疗愈', '寄愿', '共修'],
     picked: { '星图旅行': true, '苍山': true },
     title: '',
@@ -59,14 +60,14 @@ Page({
     }
     // 写入发现流（本地持久化，首页会自动拼到顶部）
     const id = 900000 + Math.floor(Math.random() * 90000);
-    const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    const icon = ICONS[Math.floor(Math.random() * ICONS.length)];
     const bg = BGS[Math.floor(Math.random() * BGS.length)];
     const topicKeys = Object.keys(this.data.picked);
     const topic = topicKeys[0] || '星图旅行';
     const note = {
       id, title: title || body.slice(0, 12), body,
       author: '拾光的小野', likes: 0, collects: 0, topic,
-      h: 200 + Math.floor(Math.random() * 60), emoji, bg, mine: true, t: '刚刚'
+      h: 200 + Math.floor(Math.random() * 60), icon, bg, mine: true, t: '刚刚'
     };
     let arr = [];
     try { arr = wx.getStorageSync('my_publishes'); } catch (e) {}

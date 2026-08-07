@@ -32,7 +32,7 @@
         <view class="sb-btn" bindtap="onClaim">收下星礼</view>
       </view>
       <!-- 峰值 ContextualCta（UX 架构 P0-d，解 B5）：收下星礼后顺手结缘 -->
-      <contextual-reco wx:if="{{reco}}" emoji="{{reco.emoji}}" tag="{{reco.tag}}" name="{{reco.name}}" desc="{{reco.desc}}" url="{{reco.url}}" cta="{{reco.cta}}" />
+      <contextual-reco wx:if="{{reco}}" icon="{{reco.icon}}" tag="{{reco.tag}}" name="{{reco.name}}" desc="{{reco.desc}}" url="{{reco.url}}" cta="{{reco.cta}}" />
       <view class="sb-close" bindtap="onClose">先收着，稍后再拆</view>
     </view>
   </view>

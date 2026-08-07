@@ -6,19 +6,19 @@ const daily = require('../../utils/daily-content.js');
 
 // 盲盒揭晓峰值情境推荐（UX 架构 P0-d，解 B5）：按当日节气映射一件顺时结缘物
 const TERM_RECO = {
-  '夏至': { emoji: '☀️', name: '节气香 · 夏至长明', desc: '白昼最长，心灯亦长明' },
-  '小暑': { emoji: '🌿', name: '节气香 · 小暑静气', desc: '暑气渐盛，先静一口气' },
-  '大暑': { emoji: '🌿', name: '节气香 · 大暑清宁', desc: '一味线香，安住当下燥热' },
-  '立秋': { emoji: '🍂', name: '节气香 · 立秋收心', desc: '把夏日的喧闹，收进一支香里' },
-  '处暑': { emoji: '🍂', name: '节气香 · 处暑清凉', desc: '暑气止息，心亦清凉' },
-  '白露': { emoji: '🌼', name: '节气香 · 白露润心', desc: '露从今夜白，香自静中生' }
+  '夏至': { icon: 'solar', name: '节气香 · 夏至长明', desc: '白昼最长，心灯亦长明' },
+  '小暑': { icon: 'calm', name: '节气香 · 小暑静气', desc: '暑气渐盛，先静一口气' },
+  '大暑': { icon: 'calm', name: '节气香 · 大暑清宁', desc: '一味线香，安住当下燥热' },
+  '立秋': { icon: 'calm', name: '节气香 · 立秋收心', desc: '把夏日的喧闹，收进一支香里' },
+  '处暑': { icon: 'calm', name: '节气香 · 处暑清凉', desc: '暑气止息，心亦清凉' },
+  '白露': { icon: 'calm', name: '节气香 · 白露润心', desc: '露从今夜白，香自静中生' }
 };
 function buildReco(box) {
   const m = TERM_RECO[box.term];
   const base = { tag: '星礼结缘', url: '/pages/mall/mall', cta: '去结缘' };
   if (m) return Object.assign(base, m);
   return Object.assign(base, {
-    emoji: '🪔',
+    icon: 'lamp',
     name: box.term + ' · 顺时结缘物',
     desc: '把今日星礼的祝福，带一件回家'
   });

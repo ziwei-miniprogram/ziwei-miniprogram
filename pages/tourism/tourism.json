@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "contextual-reco": "/components/contextual-reco/contextual-reco"
+    "contextual-reco": "/components/contextual-reco/contextual-reco",
+    "astro": "/components/icon/icon"
   },
   "navigationBarTitleText": "文旅研学"
 }

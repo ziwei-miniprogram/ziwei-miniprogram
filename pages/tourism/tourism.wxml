@@ -15,17 +15,17 @@
     <!-- P1 GPS 自动打卡：地图 + 附近检测 -->
     <view class="cg-map-wrap">
       <map class="cg-map" latitude="{{mapLat}}" longitude="{{mapLng}}" scale="4" markers="{{markers}}" show-location></map>
-      <view class="cg-detect" bindtap="detectNearby">📍 检测附近城市（自动点亮）</view>
+      <view class="cg-detect" bindtap="detectNearby">检测附近城市（自动点亮）</view>
       <view class="cg-map-tip">授权定位后，到访城市星图将自动点亮</view>
-      <view class="cg-remote" bindtap="remoteCheckInCity">🏮 遥寄祝福（不在当地也能守护）</view>
+      <view class="cg-remote" bindtap="remoteCheckInCity"><astro name="lamp" size="28" theme="{{theme}}"/> 遥寄祝福（不在当地也能守护）</view>
     </view>
 
     <!-- 城市星图：已点亮高亮（虚高起点由进度条体现）-->
     <view class="cg-cities">
       <view class="cg-city {{checkedMap[item.id] ? 'on' : ''}}" wx:for="{{cities}}" wx:key="id">
-        <text class="cg-star">{{item.star}}</text>
+        <astro class="cg-star" name="{{item.star}}" size="40" theme="{{theme}}"/>
         <text class="cg-name">{{item.name}}</text>
-        <view class="cg-done" wx:if="{{checkedMap[item.id]}}">{{remoteMap[item.id] ? '🏮 遥寄点亮' : '已点亮'}}</view>
+        <view class="cg-done" wx:if="{{checkedMap[item.id]}}">{{remoteMap[item.id] ? '遥寄点亮' : '已点亮'}}</view>
       </view>
     </view>
 
@@ -36,7 +36,7 @@
 
     <!-- P2：全国守护礼（集满 6 城解锁）-->
     <view class="cg-nation {{allReward.done ? 'on' : ''}}">
-      <text class="cn-emoji">{{allReward.done ? '🏆' : '🔒'}}</text>
+      <astro class="cn-emoji" name="{{allReward.done ? 'award' : 'star'}}" size="40" theme="{{theme}}"/>
       <view class="cn-body">
         <view class="cn-t">{{allReward.rewardName}}</view>
         <view class="cn-d">{{allReward.rewardDesc}}</view>
@@ -47,16 +47,16 @@
     <view class="cg-actions">
       <view class="cg-btn" wx:for="{{cities}}" wx:key="id"
         data-city="{{item.id}}" bindtap="checkInCity">
-        {{checkedMap[item.id] ? '✓ ' + item.name : '✨ 点亮' + item.name}}
+        {{checkedMap[item.id] ? '✓ ' + item.name : '点亮' + item.name}}
       </view>
     </view>
 
     <!-- 默认偏置解锁的奖励提示 -->
-    <view class="cg-reward" wx:if="{{hasReward}}">🎁 已解锁城市守护折扣 + 限定优先购资格（24h）</view>
+    <view class="cg-reward" wx:if="{{hasReward}}">已解锁城市守护折扣 + 限定优先购资格（24h）</view>
   </view>
 
   <!-- 峰值 ContextualCta（UX 架构 P0-d，解 B5）：点亮城市后顺手结缘 -->
-  <contextual-reco emoji="🧊" tag="点亮城市后 · 顺手结缘" name="城市守护 · 星空冰箱贴" desc="把点亮的城市星图，贴在冰箱上日日相伴" url="/pages/mall/mall" cta="去结缘" />
+  <contextual-reco icon="tourism" tag="点亮城市后 · 顺手结缘" name="城市守护 · 星空冰箱贴" desc="把点亮的城市星图，贴在冰箱上日日相伴" url="/pages/mall/mall" cta="去结缘" />
 
   <!-- P2：城市守护榜（本地社会证明，从众驱动复访打卡）-->
   <view class="guard-board">
@@ -65,9 +65,9 @@
       <view class="gb-s">点亮一座城，汇入星野守护</view>
     </view>
     <view class="gb-self">
-      <text class="gb-self-emoji">🌟</text>
+      <astro class="gb-self-emoji" name="star" size="30" theme="{{theme}}"/>
       <text class="gb-self-t">你已点亮 <text class="gb-self-n">{{guardSelf}}</text> / {{total}} 城</text>
-      <text class="gb-self-tail" wx:if="{{guardAllDone}}">· 全国守护礼已解锁 🏆</text>
+      <text class="gb-self-tail" wx:if="{{guardAllDone}}">· 全国守护礼已解锁</text>
       <text class="gb-self-tail" wx:else>· 还差 {{allReward.remain}} 城</text>
     </view>
     <view class="gb-others">已有 <text class="gb-others-n">{{guardOthers}}</text> 位星友点亮过这些城</view>
@@ -94,7 +94,7 @@
   <!-- 线路列表 -->
   <view class="list">
     <view class="card" wx:for="{{tours}}" wx:key="id">
-      <view class="cov {{item.g}}">{{item.cover}}</view>
+      <view class="cov {{item.g}}"><astro name="{{item.cover}}" size="64" theme="{{theme}}"/></view>
       <view class="info">
         <view class="tt">{{item.title}}</view>
         <view class="ds">{{item.desc}}</view>

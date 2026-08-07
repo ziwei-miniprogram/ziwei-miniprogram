@@ -167,7 +167,7 @@ App({
       returnGift = true;
       social.log('心灯续火 · 续火礼 +2 功德，欢迎回来', '/pages/merit/merit');
       wx.showModal({
-        title: '心灯已续火 🔥',
+        title: '心灯已续火',
         content: '你的心灯曾熄了一阵，如今又亮了。续火礼 +2 功德已记入——明天也记得来点灯呀～',
         confirmText: '好的',
         showCancel: false
@@ -179,7 +179,7 @@ App({
     if (msBonus) {
       gain += msBonus;
       milestone = { streak: this.globalData.streak, bonus: msBonus };
-      social.log(`连签 ${this.globalData.streak} 天 · 里程碑礼 +${msBonus} 功德 🎉`, '/pages/merit/merit');
+      social.log(`连签 ${this.globalData.streak} 天 · 里程碑礼 +${msBonus} 功德`, '/pages/merit/merit');
     }
     this.globalData.lastCheckin = d;
     this.globalData.merit += gain;

@@ -19,7 +19,11 @@
 
   <view wx:if="{{seg==='notice'}}">
     <view class="notice" wx:for="{{notices}}" wx:key="id">
-      <view class="n-icon">{{item.type==='like'?'♡':item.type==='collect'?'⭐':'👤'}}</view>
+      <view class="n-icon">
+        <text wx:if="{{item.type==='like'}}" class="n-glyph">♥</text>
+        <text wx:elif="{{item.type==='collect'}}" class="n-glyph">★</text>
+        <astro wx:else name="share" size="28" theme="{{theme}}"/>
+      </view>
       <view class="n-body">
         <view class="n-text">{{item.text}}</view>
         <view class="n-time">{{item.time}}</view>
@@ -32,12 +36,16 @@
     <view class="tips" wx:if="{{tips.length}}">
       <view class="tip-h">✦ 星野小提示</view>
       <view class="tip" wx:for="{{tips}}" wx:key="text" data-route="{{item.route}}" bindtap="openMeritItem">
-        <text class="tip-ic">{{item.icon}}</text>
+        <astro class="tip-ic" name="{{item.icon}}" size="28" theme="{{theme}}"/>
         <text class="tip-t">{{item.text}}</text>
         <text class="tip-arrow">›</text>
       </view>
     </view>
-    <view class="m-head">🪔 你的善意轨迹</view>
+    <view class="b-head tight">
+      <view class="u-eyebrow">功德动态</view>
+      <view class="u-h2 serif">你的善意轨迹</view>
+    </view>
+    <view class="hair"></view>
     <view class="merit-item {{item.route ? 'link' : ''}}" wx:for="{{meritFeed}}" wx:key="id" data-route="{{item.route}}" bindtap="openMeritItem">
       <view class="m-dot"></view>
       <view class="m-text">{{item.text}}</view>

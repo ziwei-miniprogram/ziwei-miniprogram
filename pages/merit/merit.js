@@ -98,7 +98,7 @@ Page({
   // 因果日报：把今日善行讲成一个小故事
   buildDaily(app) {
     const streak = app.globalData.streak;
-    const flame = streak >= 7 ? '🔥'.repeat(3) : streak >= 3 ? '🔥'.repeat(2) : '🔥';
+    const flame = streak >= 7 ? '✦✦✦' : streak >= 3 ? '✦✦' : '✦';
     return {
       flame,
       streak,
@@ -121,7 +121,7 @@ Page({
     // P1-1 连签里程碑庆祝
     if (r.milestone) {
       wx.showModal({
-        title: '连签里程碑 🎉',
+        title: '连签里程碑 ✦',
         content: `你已连续签到 ${r.milestone.streak} 天，星野为你献上里程碑礼 +${r.milestone.bonus} 功德。灯火不熄，前路有光。`,
         confirmText: '继续行善',
         showCancel: false
@@ -134,7 +134,7 @@ Page({
     const key = e.currentTarget.dataset.key;
     const app = getApp();
     const done = app.getDailyDeeds();
-    if (done[key]) { wx.showToast({ title: '今日已记 ✅', icon: 'none' }); return; }
+    if (done[key]) { wx.showToast({ title: '今日已记', icon: 'none' }); return; }
     const deed = merit.DEEDS.find(d => d.key === key);
     if (!deed) return;
     const before = app.globalData.level;

@@ -6,10 +6,10 @@
   background: var(--reco-card-bg, var(--card));
   border: 1rpx solid var(--reco-card-border, rgba(200,163,90,.28));
   border-radius: 24rpx;
-  box-shadow: var(--shadow-1);
+  box-shadow: var(--shadow-sm);
 }
 .reco-hover { background: var(--gold-soft); }
-.reco-ic { font-size: 48rpx; flex: none; }
+.reco-ic { width: 72rpx; height: 72rpx; border-radius: 24rpx; background: var(--gold-soft); display: flex; align-items: center; justify-content: center; flex: none; }
 .reco-body { flex: 1; min-width: 0; }
 .reco-tag {
   display: inline-block; font-size: 20rpx; color: var(--gold-deep);

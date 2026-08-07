@@ -1,7 +1,7 @@
 <view class="story" bindtap="onTap" hover-class="story-hover">
   <view class="u-glow"></view>
   <view class="s-head">
-    <image class="s-motif" src="{{motifSrc}}" mode="aspectFit"></image>
+    <astro class="s-motif" name="{{motifName}}" size="34" theme="{{theme}}"/>
     <view class="s-host">{{host}}</view>
   </view>
   <view class="s-body serif">{{body}}</view>

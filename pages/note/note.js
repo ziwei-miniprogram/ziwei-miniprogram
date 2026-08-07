@@ -9,7 +9,7 @@ function loadMine(id) {
       const m = arr.find(n => n.id === id);
       if (m) {
         return {
-          id: m.id, title: m.title, emoji: m.emoji, bg: m.bg, body: m.body || '',
+          id: m.id, title: m.title, icon: m.icon || 'note', bg: m.bg, body: m.body || '',
           author: { name: m.author, avatar: (m.author || '拾')[0] },
           likes: m.likes, collects: m.collects, topic: m.topic
         };

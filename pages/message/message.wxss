@@ -14,12 +14,16 @@
 .unread { min-width: 34rpx; height: 34rpx; border-radius: 999rpx; background: var(--danger); color: #fff; font-size: 20rpx; display: flex; align-items: center; justify-content: center; padding: 0 8rpx; }
 
 .notice { display: flex; align-items: center; gap: 20rpx; padding: 26rpx 32rpx; border-bottom: 1rpx solid var(--border); }
-.n-icon { width: 72rpx; height: 72rpx; border-radius: 50%; background: var(--bg-elev); display: flex; align-items: center; justify-content: center; font-size: 34rpx; }
+.n-icon { width: 72rpx; height: 72rpx; border-radius: 50%; background: var(--bg-elev); display: flex; align-items: center; justify-content: center; }
+.n-glyph { font-size: 32rpx; color: var(--gold-deep); }
 .n-body { flex: 1; }
 .n-text { font-size: 27rpx; color: var(--fg); line-height: 1.5; }
 .n-time { font-size: 22rpx; color: var(--fg-2); margin-top: 6rpx; }
 
-.m-head { padding: 30rpx 32rpx 10rpx; font-size: 28rpx; font-weight: 600; color: var(--fg); }
+/* 方向 B：本页 .page 无侧边距，页头三段式与细线单独补边距 */
+.tips { padding: 0 32rpx; }
+.b-head { padding: 0 32rpx; }
+.hair { margin: 14rpx 32rpx 6rpx; }
 .merit-item { display: flex; align-items: center; gap: 18rpx; padding: 20rpx 32rpx; }
 .merit-item.link { cursor: pointer; }
 .merit-item.link:active { background: var(--bg-elev); }

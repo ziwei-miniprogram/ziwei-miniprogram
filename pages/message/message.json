@@ -1,6 +1,9 @@
 {
   "navigationBarTitleText": "消息",
-  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarBackgroundColor": "#f7f5f0",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#ffffff"
+  "backgroundColor": "#f7f5f0",
+  "usingComponents": {
+    "astro": "/components/icon/icon"
+  }
 }

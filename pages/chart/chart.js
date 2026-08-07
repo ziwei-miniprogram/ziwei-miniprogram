@@ -11,9 +11,9 @@ const DEEP_TEXT =
 
 // 三条明路：把「付费墙」变为「成长线」——一键直达可攒功德的地方。
 const ROUTES = [
-  { act: 'lamp', icon: '🪔', name: '点亮一盏心灯', desc: '寄愿墙 · +1 功德' },
-  { act: 'checkin', icon: '🛎', name: '完成每日签到', desc: '功德林 · +3 功德' },
-  { act: 'publish', icon: '✍️', name: '发布一篇感悟', desc: '记一笔 · +8 功德' }
+  { act: 'lamp', icon: 'wish', name: '点亮一盏心灯', desc: '寄愿墙 · +1 功德' },
+  { act: 'checkin', icon: 'solar', name: '完成每日签到', desc: '功德林 · +3 功德' },
+  { act: 'publish', icon: 'note', name: '发布一篇感悟', desc: '记一笔 · +8 功德' }
 ];
 
 Page({
@@ -80,7 +80,7 @@ Page({
     const ok = app.spendMerit(spent);
     if (ok) {
       this.setData({ unlocked: true, merit: app.globalData.merit });
-      whimsy.burst(this, { text: whimsy.COPY.success.unlock, emoji: '🌟' });
+      whimsy.burst(this, { text: whimsy.COPY.success.unlock, emoji: '✦' });
     }
   },
   // 三条路径直达对应页面（操作完成后返回此页，进度自动刷新）

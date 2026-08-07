@@ -26,12 +26,12 @@
 
   <!-- 解锁进度 + 三条成长路径（把墙变成长线） -->
   <view class="card" wx:if="{{!unlocked}}">
-    <view class="lock-head">🔒 解锁进度</view>
+    <view class="lock-head">解锁进度</view>
     <view class="progress"><view class="fill" style="width:{{progress}}%"></view></view>
     <view class="progress-txt">当前 {{merit}} / {{cost}} 功德 · {{progress}}%<text wx:if="{{near && !unlocked}}" class="pt-near"> · 再攒 {{toUnlock}} 即点亮 ✦</text></view>
     <view class="paths">
       <view class="path" wx:for="{{routes}}" wx:key="act" data-act="{{item.act}}" bindtap="onRoute">
-        <view class="p-ic">{{item.icon}}</view>
+        <astro class="p-ic" name="{{item.icon}}" size="34" theme="{{theme}}"/>
         <view class="p-info">
           <view class="p-name">{{item.name}}</view>
           <view class="p-desc">{{item.desc}}</view>
@@ -50,7 +50,7 @@
   <star-map lit="{{starLit}}" glow="{{starGlow}}" theme="{{theme}}"/>
 
   <!-- 峰值 ContextualCta（UX 架构 P0-d，L4）：星图点亮后顺手结缘 -->
-  <contextual-reco emoji="🔭" tag="星图点亮后 · 顺手结缘" name="星图系列 · 夜灯 / 丝巾" desc="把今日的星图，化作床头的一盏温柔夜灯" url="/pages/mall/mall" cta="去结缘" />
+  <contextual-reco icon="star" tag="星图点亮后 · 顺手结缘" name="星图系列 · 夜灯 / 丝巾" desc="把今日的星图，化作床头的一盏温柔夜灯" url="/pages/mall/mall" cta="去结缘" />
 </view>
 <heart-lamp/>
 <template is="whimsyFx"/>

@@ -5,7 +5,7 @@ Page({
   data: {
     streak: 3,
     log: '',
-    moods: ['😣', '😔', '😌', '🙂', '😊'],
+    moods: ['低落', '平静', '舒缓', '愉悦', '释然'],
     moodSel: 2,
     meditations: healings,
     theme: 'light'

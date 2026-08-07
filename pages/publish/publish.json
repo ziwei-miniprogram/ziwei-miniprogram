@@ -1,6 +1,9 @@
 {
+  "usingComponents": {
+    "astro": "/components/icon/icon"
+  },
   "navigationBarTitleText": "记一笔",
-  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarBackgroundColor": "#f7f5f0",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#ffffff"
+  "backgroundColor": "#f7f5f0"
 }

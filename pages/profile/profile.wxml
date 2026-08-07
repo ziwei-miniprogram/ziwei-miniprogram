@@ -9,16 +9,16 @@
     </view>
     <!-- 夜灯模式切换 -->
     <view class="theme-toggle">
-      <text class="tt-ic">{{theme==='dark' ? '🌙' : '🌞'}}</text>
+      <astro class="tt-ic" name="{{theme==='dark' ? 'calm' : 'solar'}}" size="30" theme="{{theme}}"/>
       <view class="tt-label" bindtap="toggleTheme">夜灯模式</view>
       <switch checked="{{theme==='dark'}}" bindchange="toggleTheme" color="#c8a35a" class="tt-switch"/>
     </view>
   </view>
-  <view class="bio">记录每一次抬头看星的时刻 · 已点亮 186 盏心灯 🪔</view>
+  <view class="bio">记录每一次抬头看星的时刻 · 已点亮 186 盏心灯</view>
 
   <!-- 本月星愿（P0-3 星愿承诺） -->
   <view class="wish-card" wx:if="{{myWish}}">
-    <text class="w-emoji">🌟</text>
+    <astro class="w-emoji" name="wish" size="36" theme="{{theme}}"/>
     <view class="w-body">
       <view class="w-t">本月星愿</view>
       <view class="w-v">{{myWish}}</view>
@@ -45,10 +45,10 @@
 
   <!-- 金色成就徽章墙 -->
   <view class="badges">
-    <view class="b-title">🏅 成就徽章 <text class="b-count">{{badgeCount}}/{{badges.length}}</text></view>
+    <view class="b-title"><astro name="award" size="28" theme="{{theme}}"/> 成就徽章 <text class="b-count">{{badgeCount}}/{{badges.length}}</text></view>
     <view class="b-grid">
       <view class="badge {{item.unlocked ? 'on' : ''}}" wx:for="{{badges}}" wx:key="key">
-        <view class="b-ic">{{item.icon}}</view>
+        <astro class="b-ic" name="{{item.icon}}" size="40" theme="{{theme}}"/>
         <view class="b-nm">{{item.name}}</view>
         <view class="b-desc">{{item.desc}}</view>
       </view>
@@ -76,12 +76,13 @@
   <!-- 快捷入口：消息移入（消息已移出底 tab）；记一笔补位原居中发布入口 -->
   <view class="entries">
     <view class="entry" bindtap="goMessage">
-      <view class="e-i">✉</view><view>消息</view>
+      <view class="e-i"><astro name="msg" size="40" theme="{{theme}}"/></view><view>消息</view>
       <view wx:if="{{unread>0}}" style="min-width:28rpx;height:28rpx;padding:0 6rpx;border-radius:999rpx;background:#e0796f;color:#fff;font-size:18rpx;line-height:28rpx;text-align:center;margin-left:auto;">{{unread>99?'99+':unread}}</view>
     </view>
-    <view class="entry" bindtap="goPublish"><view class="e-i">✍</view><view>记一笔</view></view>
-    <view class="entry" bindtap="goMerit"><view class="e-i">🪔</view><view>功德林</view></view>
-    <view class="entry" bindtap="goMall"><view class="e-i">🛍</view><view>星野好物</view></view>
+    <view class="entry" bindtap="goPublish"><view class="e-i"><astro name="note" size="40" theme="{{theme}}"/></view><view>记一笔</view></view>
+    <view class="entry" bindtap="goMerit"><view class="e-i"><astro name="lamp" size="40" theme="{{theme}}"/></view><view>功德林</view></view>
+    <view class="entry" bindtap="goMall"><view class="e-i"><astro name="merit" size="40" theme="{{theme}}"/></view><view>星野好物</view></view>
+    <view class="entry" bindtap="goAnchor"><view class="e-i"><astro name="heart" size="40" theme="{{theme}}"/></view><view>我的锚点</view></view>
   </view>
 
   <!-- 笔记网格 -->
@@ -92,7 +93,8 @@
   </view>
   <view class="grid">
     <view class="g" wx:for="{{notes}}" wx:key="id" data-id="{{item.id}}" bindtap="openNote" style="background:{{item.bg}};position:relative;">
-      {{item.emoji}}  <view class="g-tt">{{item.title}}</view>
+      <astro class="g-ic" name="{{item.icon || 'note'}}" size="44" theme="dark"/>
+      <view class="g-tt">{{item.title}}</view>
       <view wx:if="{{item.mine}}" style="position:absolute;right:10rpx;top:10rpx;background:rgba(200,163,90,.92);color:#fff;font-size:16rpx;padding:2rpx 10rpx;border-radius:999rpx;">我的</view>
     </view>
   </view>

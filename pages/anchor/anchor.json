@@ -2,7 +2,7 @@
   "usingComponents": {
     "astro": "/components/icon/icon"
   },
-  "navigationBarTitleText": "我的",
+  "navigationBarTitleText": "我的锚点",
   "navigationBarBackgroundColor": "#f7f5f0",
   "navigationBarTextStyle": "black",
   "backgroundColor": "#f7f5f0"

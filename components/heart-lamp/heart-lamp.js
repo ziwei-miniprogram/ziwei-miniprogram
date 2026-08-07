@@ -16,12 +16,12 @@ Component({
     // 星野快捷 BottomSheet（UX 架构 P0-a，解 B2：高频 6 项 1 跳）
     quickOpen: false,
     quickItems: [
-      { icon: '🔭', label: '星图', url: '/pages/chart/chart' },
-      { icon: '🪔', label: '寄愿', url: '/pages/merit/merit?tab=wish' },
-      { icon: '🌿', label: '三善', url: '/pages/merit/merit' },
-      { icon: '🪔', label: '点灯', action: 'lamp' },
-      { icon: '🛎', label: '签到', action: 'checkin' },
-      { icon: '✍️', label: '记一笔', action: 'publish' }
+      { icon: 'chart', label: '星图', url: '/pages/chart/chart' },
+      { icon: 'wish', label: '寄愿', url: '/pages/merit/merit?tab=wish' },
+      { icon: 'deeds', label: '三善', url: '/pages/merit/merit' },
+      { icon: 'lamp', label: '点灯', action: 'lamp' },
+      { icon: 'solar', label: '签到', action: 'checkin' },
+      { icon: 'note', label: '记一笔', action: 'publish' }
     ]
   },
 
@@ -99,7 +99,7 @@ Component({
       if (page && page.setData) {
         whimsy.afterMerit(page, before, after, res.gain, 'checkin');
         whimsy.stardust(page, { x: '85%', y: '82%' });
-        if (res.milestone) whimsy.burst(page, { text: `连签 ${res.milestone.streak} 天 · 里程碑 +${res.milestone.bonus} 🎉`, emoji: '🏆' });
+        if (res.milestone) whimsy.burst(page, { text: `连签 ${res.milestone.streak} 天 · 里程碑 +${res.milestone.bonus}` });
       }
       this.sync();
     },

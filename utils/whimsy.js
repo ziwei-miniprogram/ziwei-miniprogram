@@ -60,8 +60,8 @@ const COPY = {
   bond: ['随喜一份善意 · +1 功德', '缘起于此 · +1 功德'],
   group: ['共修打卡 · 功德 +10', '众善同行 · 功德 +10'],
   // 行为助推文案（P1）
-  milestone: ['连签里程碑 · 灯火更盛 🎉', '日拱一卒 · 连签有成 ✨'],
-  deed: ['今日一善已记 ✅', '善念落定 · 三善又成一 ✦'],
+  milestone: ['连签里程碑 · 灯火更盛', '日拱一卒 · 连签有成'],
+  deed: ['今日一善已记', '善念落定 · 三善又成一 ✦'],
   tip: ['星野小提示 · 与你同行', '拾光小语 · 慢慢来'],
   // 成功态
   success: {
@@ -117,7 +117,7 @@ function burst(page, opts) {
   const item = {
     id: ++_seq,
     text: opts.text || '+1 功德',
-    emoji: opts.emoji || '✨',
+    emoji: opts.emoji || '✦',
     x: opts.x != null ? opts.x : (38 + Math.random() * 24) + '%',
     dur: 1500
   };
@@ -137,7 +137,7 @@ function afterMerit(page, before, after, gain, kind) {
   if (kind && COPY[map[kind]]) title = pick(COPY[map[kind]]);
   else title = pick(COPY.merit);
   if (gain && title.charAt(title.length - 1) === '+') title = title + gain + ' 功德';
-  burst(page, { text: title, emoji: '🌟' });
+  burst(page, { text: title, emoji: '✦' });
   if (after && before && after.name && before.name && after.name !== before.name) {
     levelUp(page, after.name);
   }
@@ -158,7 +158,7 @@ function rainbow(page) {
   if (!page || !page.setData) return;
   page.setData({ rainbow: true });
   setTimeout(function () { page.setData({ rainbow: false }); }, 6000);
-  burst(page, { text: '星河贯通 · 你唤醒了星图', emoji: '🌈' });
+  burst(page, { text: '星河贯通 · 你唤醒了星图', emoji: '✦' });
 }
 
 // 随机首页祝福语

@@ -7,8 +7,8 @@ function buildPool() {
   let pub = [];
   try { pub = wx.getStorageSync('my_publishes'); } catch (e) {}
   if (!Array.isArray(pub)) pub = [];
-  const mine = pub.map(p => ({ id: p.id, emoji: p.emoji, bg: p.bg, title: p.title, mine: true }));
-  const def = profileNotes.map(n => ({ id: n.id, emoji: n.emoji, bg: n.bg, title: n.title, mine: false }));
+  const mine = pub.map(p => ({ id: p.id, icon: p.icon || 'note', bg: p.bg, title: p.title, mine: true }));
+  const def = profileNotes.map(n => ({ id: n.id, icon: n.icon, bg: n.bg, title: n.title, mine: false }));
   return mine.concat(def);
 }
 
@@ -31,21 +31,21 @@ function buildBadges(app) {
   const streak = app.globalData.streak;
   const hasSign = !!wx.getStorageSync('star_sign');
   const list = [
-    { key: 'chuguang', icon: '🌟', name: '初光', unlocked: m > 0 || !!wx.getStorageSync('first_launch'), desc: whimsy.badgeLine('chuguang', '初遇星野，光自此始') },
-    { key: 'streak3', icon: '🔥', name: '三日火', unlocked: streak >= 3, desc: whimsy.badgeLine('streak3', '三日不断，灯火初成') },
-    { key: 'streak7', icon: '🪔', name: '七日明', unlocked: streak >= 7, desc: whimsy.badgeLine('streak7', '七日相续，心灯长明') },
-    { key: 'streak14', icon: '✨', name: '双七', unlocked: streak >= 14, desc: whimsy.badgeLine('streak14', '两周不辍，辉光渐盛') },
-    { key: 'streak21', icon: '🌟', name: '廿一', unlocked: streak >= 21, desc: whimsy.badgeLine('streak21', '廿一日行，已成习惯') },
-    { key: 'streak30', icon: '🌕', name: '月灯', unlocked: streak >= 30, desc: whimsy.badgeLine('streak30', '满月一轮，灯不曾熄') },
-    { key: 'jushi', icon: '🪷', name: '居士', unlocked: m >= 150, desc: whimsy.badgeLine('jushi', '善行百五，居士初成') },
-    { key: 'xiushi', icon: '🔮', name: '修士', unlocked: m >= 400, desc: whimsy.badgeLine('xiushi', '功德四百，修行有得') },
-    { key: 'xingzhe', icon: '🌌', name: '行者', unlocked: m >= 900, desc: whimsy.badgeLine('xingzhe', '九百星程，步履不停') },
-    { key: 'dade', icon: '👑', name: '大德', unlocked: m >= 2000, desc: whimsy.badgeLine('dade', '两千功德，大德之风') },
-    { key: 'sanshan', icon: '🌿', name: '三善', unlocked: deedCount >= 3, desc: whimsy.badgeLine('sanshan', '日行三善，福虽未至祸已远') },
-    { key: 'jiyuan', icon: '🤝', name: '结缘', unlocked: follows > 0, desc: whimsy.badgeLine('jiyuan', '结一份善缘，星桥已连') },
-    { key: 'gongxiu', icon: '🔥', name: '共修', unlocked: m >= 30, desc: whimsy.badgeLine('gongxiu', '众善同行，灯火相照') },
-    { key: 'jibi', icon: '✍️', name: '记一笔', unlocked: pub.length > 0, desc: whimsy.badgeLine('jibi', '一笔落成，星野添光') },
-    { key: 'xingqian', icon: '🎴', name: '星签', unlocked: hasSign, desc: whimsy.badgeLine('xingqian', '一签在手，今日有语') }
+    { key: 'chuguang', icon: 'star', name: '初光', unlocked: m > 0 || !!wx.getStorageSync('first_launch'), desc: whimsy.badgeLine('chuguang', '初遇星野，光自此始') },
+    { key: 'streak3', icon: 'streak', name: '三日火', unlocked: streak >= 3, desc: whimsy.badgeLine('streak3', '三日不断，灯火初成') },
+    { key: 'streak7', icon: 'lamp', name: '七日明', unlocked: streak >= 7, desc: whimsy.badgeLine('streak7', '七日相续，心灯长明') },
+    { key: 'streak14', icon: 'star', name: '双七', unlocked: streak >= 14, desc: whimsy.badgeLine('streak14', '两周不辍，辉光渐盛') },
+    { key: 'streak21', icon: 'streak', name: '廿一', unlocked: streak >= 21, desc: whimsy.badgeLine('streak21', '廿一日行，已成习惯') },
+    { key: 'streak30', icon: 'calm', name: '月灯', unlocked: streak >= 30, desc: whimsy.badgeLine('streak30', '满月一轮，灯不曾熄') },
+    { key: 'jushi', icon: 'blessing', name: '居士', unlocked: m >= 150, desc: whimsy.badgeLine('jushi', '善行百五，居士初成') },
+    { key: 'xiushi', icon: 'chart', name: '修士', unlocked: m >= 400, desc: whimsy.badgeLine('xiushi', '功德四百，修行有得') },
+    { key: 'xingzhe', icon: 'journey', name: '行者', unlocked: m >= 900, desc: whimsy.badgeLine('xingzhe', '九百星程，步履不停') },
+    { key: 'dade', icon: 'award', name: '大德', unlocked: m >= 2000, desc: whimsy.badgeLine('dade', '两千功德，大德之风') },
+    { key: 'sanshan', icon: 'deeds', name: '三善', unlocked: deedCount >= 3, desc: whimsy.badgeLine('sanshan', '日行三善，福虽未至祸已远') },
+    { key: 'jiyuan', icon: 'share', name: '结缘', unlocked: follows > 0, desc: whimsy.badgeLine('jiyuan', '结一份善缘，星桥已连') },
+    { key: 'gongxiu', icon: 'merit', name: '共修', unlocked: m >= 30, desc: whimsy.badgeLine('gongxiu', '众善同行，灯火相照') },
+    { key: 'jibi', icon: 'note', name: '记一笔', unlocked: pub.length > 0, desc: whimsy.badgeLine('jibi', '一笔落成，星野添光') },
+    { key: 'xingqian', icon: 'wish', name: '星签', unlocked: hasSign, desc: whimsy.badgeLine('xingqian', '一签在手，今日有语') }
   ];
   return list;
 }
@@ -108,7 +108,7 @@ Page({
     this.syncTheme();
     const tb = this.getTabBar && this.getTabBar();
     if (tb) tb.setData({ theme: next });
-    wx.showToast({ title: next === 'dark' ? '夜灯已亮 🌙' : '回到暖纸 ☀', icon: 'none' });
+    wx.showToast({ title: next === 'dark' ? '夜灯已亮' : '回到暖纸', icon: 'none' });
   },
 
   // 每日星签：每日一签，次日可再抽
@@ -140,6 +140,7 @@ Page({
   goSpace() { wx.switchTab({ url: '/pages/space/space' }); },
   goMerit() { wx.navigateTo({ url: '/pages/merit/merit' }); },
   goMall() { wx.switchTab({ url: '/pages/mall/mall' }); },
+  goAnchor() { wx.navigateTo({ url: '/pages/anchor/anchor' }); },
   goMessage() { wx.navigateTo({ url: '/pages/message/message' }); },
   goPublish() { wx.navigateTo({ url: '/pages/publish/publish' }); },
   openNote(e) { wx.navigateTo({ url: '/pages/note/note?id=' + e.currentTarget.dataset.id }); },

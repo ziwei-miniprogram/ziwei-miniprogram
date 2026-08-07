@@ -24,7 +24,7 @@ Page({
       id: it.id,
       title: it.title || it.body || '',
       author: it.author || '拾光的小野',
-      emoji: it.emoji || '🌌',
+      icon: it.icon || 'star',
       bg: it.bg || 'linear-gradient(140deg,#2b2b4e,#4a4a7a)'
     }));
     const r = all.filter(it =>

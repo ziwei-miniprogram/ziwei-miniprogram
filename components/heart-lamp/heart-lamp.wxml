@@ -2,9 +2,9 @@
 <view class="hl-root">
   <view class="hl {{theme}} {{deedDoneAll ? 'all-done' : ''}}" bindtap="onTap" hover-class="hl-hover" role="button" aria-label="心灯快捷入口">
     <view class="hl-ring"></view>
-    <text class="hl-emoji">{{checkedIn ? '🪔' : '🕯'}}</text>
+    <astro class="hl-emoji" name="{{checkedIn ? 'lamp' : 'calm'}}" size="40" theme="{{theme}}"/>
     <text class="hl-num">{{merit}}</text>
-    <view wx:if="{{streak>=3}}" class="hl-streak">🔥{{streak}}</view>
+    <view wx:if="{{streak>=3}}" class="hl-streak"><astro name="streak" size="20" theme="{{theme}}"/>{{streak}}</view>
     <!-- 本日三善已成：金色呼吸小标，强化日常仪式感 -->
     <view wx:if="{{deedDoneAll}}" class="hl-deed">三善成</view>
   </view>
@@ -15,7 +15,7 @@
       <view class="qs-title">星野快捷</view>
       <view class="qs-grid">
         <view class="qs-item" wx:for="{{quickItems}}" wx:key="label" data-item="{{item}}" bindtap="quickGo">
-          <text class="qs-ic">{{item.icon}}</text>
+          <astro class="qs-ic" name="{{item.icon}}" size="44" theme="{{theme}}"/>
           <text class="qs-tx">{{item.label}}</text>
         </view>
       </view>

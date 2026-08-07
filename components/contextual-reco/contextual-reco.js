@@ -1,9 +1,10 @@
 // components/contextual-reco — 峰值单件情境化结缘推荐（解 B5，L3/L4 转化）
-// 用法：<contextual-reco emoji="🪔" tag="星礼结缘" name="..." desc="..." url="/pages/mall/mall" cta="去结缘" />
+// 用法：<contextual-reco icon="lamp" theme="light" tag="星礼结缘" name="..." desc="..." url="/pages/mall/mall" cta="去结缘" />
 // 在情绪峰值（盲盒揭晓 / 星图点亮 / 文旅打卡）插入单件推荐，把用户送进结缘闭环，而非甩去商城 tab。
 Component({
   properties: {
-    emoji: { type: String, value: '🪔' },
+    icon: { type: String, value: 'lamp' },
+    theme: { type: String, value: 'light' },
     tag: { type: String, value: '' },
     name: { type: String, value: '' },
     desc: { type: String, value: '' },

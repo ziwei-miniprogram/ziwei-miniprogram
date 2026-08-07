@@ -1,40 +1,45 @@
 <import src="/utils/whimsy.wxml"/>
-<view class="container page {{theme}}">
-  <view class="card">
-    <view class="title">祝福视频制作</view>
-    <view class="subtitle">选模板 · 写祝福 · 配音乐 · 一键生成分享</view>
+<view class="page {{theme}}">
+  <view class="b-head">
+    <view class="u-eyebrow">寄一段祝福</view>
+    <view class="u-h2">祝福卡</view>
+    <view class="u-lede">选节令 · 写祝语 · 生成一张可分享的星野卡面</view>
   </view>
+  <view class="hair"></view>
 
-  <view class="card">
-    <view class="subtitle">① 选择模板</view>
+  <view class="sec">
+    <view class="s-h">① 选择节令</view>
     <view class="tpls">
       <view wx:for="{{templates}}" wx:key="key"
         class="tpl {{tpl === index ? 'on' : ''}}"
         data-index="{{index}}" bindtap="pickTpl">
-        {{item.emoji}} {{item.name}}
+        <astro class="tpl-ic" name="{{item.icon}}" size="26" theme="{{theme}}"/>
+        <text>{{item.name}}</text>
       </view>
     </view>
   </view>
 
-  <view class="card">
-    <view class="subtitle">② 祝福文案</view>
+  <view class="sec">
+    <view class="s-h">② 祝福文案</view>
     <textarea class="tx" value="{{text}}" bindinput="onText" maxlength="40" placeholder="写下你的祝福" />
   </view>
 
-  <view class="card">
-    <view class="subtitle">③ 背景音乐</view>
+  <view class="sec">
+    <view class="s-h">③ 背景音乐</view>
     <view class="tpls">
       <view wx:for="{{musics}}" wx:key="*this"
         class="tpl {{music === index ? 'on' : ''}}"
         data-index="{{index}}" bindtap="pickMusic">
-        {{item}}
+        <text>{{item}}</text>
       </view>
     </view>
   </view>
 
-  <view class="card preview">
+  <view class="hair"></view>
+
+  <view class="preview">
     <canvas type="2d" id="cv" class="cv"></canvas>
-    <view class="muted">预览（正式导出为 MP4 视频，需云端 ffmpeg 合成）</view>
+    <view class="cv-note">预览 · 正式导出为 MP4 需云端合成</view>
   </view>
 
   <view class="btn" bindtap="generate">生成并分享</view>

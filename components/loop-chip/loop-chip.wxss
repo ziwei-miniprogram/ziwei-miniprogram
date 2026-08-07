@@ -1,17 +1,21 @@
 /* loop-chip：页底下一步芯片，令牌驱动，明暗自适应（解 B4 叶子页死胡同） */
-.loop-wrap { margin: 28rpx 24rpx 8rpx; }
-.loop-title { font-size: 24rpx; color: var(--fg-2); margin: 4rpx 0 14rpx; }
+/* 方向 B · 极简留白：去底色、细线边、克制字重 */
+.loop-wrap { margin: 40rpx 24rpx 8rpx; }
+.loop-title {
+  font-size: 22rpx; letter-spacing: 3rpx; color: var(--fg-2);
+  margin: 0 0 18rpx;
+}
 .loop-row { display: flex; flex-wrap: wrap; gap: 16rpx; }
 .loop-chip {
-  display: inline-flex; align-items: center; gap: 10rpx;
-  padding: 18rpx 26rpx;
-  background: var(--bg-elev);
-  border: 1rpx solid var(--loop-chip-border, rgba(200,163,90,.4));
+  display: inline-flex; align-items: center; gap: 12rpx;
+  padding: 16rpx 28rpx;
+  background: transparent;
+  border: 1rpx solid var(--loop-chip-border, var(--border));
   border-radius: 999rpx;
   font-size: 26rpx; color: var(--loop-chip-fg, var(--fg));
   line-height: 1.2; margin: 0;
 }
 .loop-chip::after { border: none; } /* 去掉 button 默认边框 */
 .lc-hover { transform: scale(.96); background: var(--gold-soft); }
-.lc-ic { font-size: 30rpx; }
-.lc-tx { font-weight: 600; }
+.lc-ic { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex: none; }
+.lc-tx { font-weight: 500; }

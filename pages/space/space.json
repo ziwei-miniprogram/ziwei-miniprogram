@@ -1,4 +1,9 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "星野 · 工具箱"
+  "usingComponents": {
+    "astro": "/components/icon/icon"
+  },
+  "navigationBarTitleText": "星野 · 工具箱",
+  "navigationBarBackgroundColor": "#f7f5f0",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f7f5f0"
 }

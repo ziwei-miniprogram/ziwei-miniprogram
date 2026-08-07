@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>星野漫游 · 全站预览（方向 B：极简留白）</title>
+<style>
+  :root{
+    --bg:#f7f5f0; --bg-elev:#fffdf8; --card:#ffffff; --fg:#2b2622; --fg-2:#998f80; --fg-3:#6b6457;
+    --border:rgba(138,127,109,.18); --gold:#c8a35a; --gold-deep:#8a6a2a; --gold-soft:rgba(200,163,90,.12);
+    --gold-tint:#f6ecd4; --success:#5e9788; --danger:#e0796f; --shadow-sm:0 4px 18px rgba(40,33,20,.05);
+    --gold-grad:linear-gradient(135deg,#d8b876,#b98e44 62%,#caa45c); --night-grad:linear-gradient(160deg,#16233f,#0B1426);
+  }
+  body.dark{
+    --bg:#0B1426; --bg-elev:#121d33; --card:#121d33; --fg:#ece6dc; --fg-2:#9da9bd; --fg-3:#c2bca8;
+    --border:rgba(200,180,140,.16); --gold:#d9b66a; --gold-deep:#c8a35a; --gold-soft:rgba(217,182,106,.14);
+    --gold-tint:#2a2418; --success:#6fb3a3; --danger:#e08a80; --shadow-sm:0 4px 18px rgba(0,0,0,.42);
+    --gold-grad:linear-gradient(135deg,#e6c789,#c79a4e 62%,#d8b66a); --night-grad:linear-gradient(160deg,#16233f,#0B1426);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#e9e4da;color:var(--fg);}
+  body.dark{background:#060b15;}
+
+  /* 布局：左侧页面导航 + 居中手机预览 */
+  .layout{display:flex;min-height:100vh;}
+  .nav{position:sticky;top:0;align-self:flex-start;height:100vh;overflow:auto;width:188px;padding:18px 12px;background:var(--bg-elev);border-right:1px solid var(--border);}
+  .nav h4{font-size:11px;letter-spacing:2px;color:var(--fg-2);margin:6px 8px 12px;font-weight:700;}
+  .nav button{display:block;width:100%;text-align:left;background:transparent;border:none;color:var(--fg-3);font-size:13px;padding:9px 12px;border-radius:10px;cursor:pointer;margin-bottom:2px;}
+  .nav button:hover{background:var(--gold-soft);color:var(--fg);}
+  .nav button.on{background:var(--gold-soft);color:var(--gold-deep);font-weight:700;}
+  body.dark .nav button.on{color:var(--gold);}
+  .nav .themebtn{margin-top:14px;border:1px solid var(--border);border-radius:999px;text-align:center;color:var(--fg-2);}
+
+  .stage{flex:1;display:flex;justify-content:center;padding:24px 16px 60px;}
+  .phone{width:100%;max-width:430px;min-height:100vh;background:var(--bg);padding-bottom:40px;position:relative;border-radius:22px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.12);}
+  body.dark .phone{box-shadow:0 10px 40px rgba(0,0,0,.6);}
+  .topbar{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);}
+  .topbar .pg{font-size:13px;color:var(--fg-2);font-weight:700;}
+  .toggle{border:1px solid var(--border);background:var(--bg-elev);color:var(--fg-2);border-radius:999px;padding:6px 14px;font-size:12px;cursor:pointer;}
+  .ic{display:inline-flex;color:var(--gold-deep);vertical-align:middle;}
+  body.dark .ic{color:var(--gold);}
+  .serif{font-family:"Source Han Serif SC","Songti SC",serif;}
+
+  /* 共享 B 词汇 */
+  .search{margin:8px 28px;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;height:46px;display:flex;align-items:center;gap:10px;padding:0 22px;color:var(--fg-2);font-size:14px;}
+  .b-head{margin:36px 28px 8px;} .b-head.tight{margin:18px 28px 4px;}
+  .u-eyebrow{font-size:11px;letter-spacing:3px;font-weight:700;color:var(--gold-deep);}
+  body.dark .u-eyebrow{color:var(--gold);}
+  .u-h2{font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1.3;margin:8px 0 0;}
+  .u-lede{font-size:14px;line-height:1.7;color:var(--fg-2);margin-top:8px;}
+  .u-section{margin:36px 28px 8px;}
+  .hair{height:1px;background:var(--border);margin:18px 28px;}
+  .hair-tight{height:1px;background:var(--border);margin:6px 0;}
+  .tip{font-size:11px;color:var(--fg-2);margin:16px 28px;line-height:1.6;}
+  .tips{border:1px solid var(--border);border-radius:14px;margin:14px 28px;padding:14px;}
+  .tip-h{font-size:12px;font-weight:700;color:var(--gold-deep);margin-bottom:8px;}
+  body.dark .tip-h{color:var(--gold);}
+  .tip-i{display:flex;align-items:center;gap:10px;font-size:13px;padding:7px 0;border-top:1px solid var(--border);color:var(--fg-3);}
+  .tip-i:first-of-type{border-top:none;}
+
+  .empty-soft{text-align:center;padding:42px 30px;color:var(--fg-2);}
+  .empty-soft .em-mark{font-size:30px;color:var(--gold-deep);}
+  body.dark .empty-soft .em-mark{color:var(--gold);}
+  .empty-soft .em-tt{font-size:15px;font-weight:700;margin-top:10px;color:var(--fg);}
+  .empty-soft .em-sub{font-size:13px;line-height:1.7;margin-top:6px;}
+
+  .tabs{display:flex;gap:26px;padding:14px 32px 12px;border-bottom:1px solid var(--border);margin-top:8px;overflow:auto;}
+  .tab,.t{font-size:15px;color:var(--fg-2);position:relative;padding-bottom:8px;white-space:nowrap;cursor:pointer;}
+  .tab.on,.t.on{color:var(--fg);font-weight:700;}
+  .tab.on::after,.t.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:22px;height:4px;border-radius:4px;background:var(--gold);}
+
+  .card{background:var(--card);border-radius:18px;padding:18px 16px;margin:14px 28px;box-shadow:var(--shadow-sm);border:1px solid var(--border);}
+  .disclaimer{margin:24px 28px 30px;padding:14px 16px;font-size:11.5px;line-height:1.7;color:var(--fg-2);background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;}
+
+  .btn{display:block;margin:18px 28px;padding:14px;border-radius:999px;border:1px solid var(--gold);color:var(--gold-deep);text-align:center;font-size:15px;font-weight:700;background:transparent;cursor:pointer;}
+  body.dark .btn{color:var(--gold);}
+  .btn-done{background:var(--gold-soft);border-color:transparent;color:var(--fg-2);}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--fg-2);}
+
+  .sec{margin:20px 28px;} .s-h{font-size:15px;font-weight:700;margin-bottom:12px;}
+  .row{display:flex;align-items:center;gap:14px;padding:16px 28px;border-top:1px solid var(--border);}
+  .row .rb{flex:1;} .row .nm{font-size:15px;} .row .ds{font-size:12px;color:var(--fg-2);margin-top:3px;}
+  .row .arrow{color:var(--gold-deep);font-size:18px;} body.dark .row .arrow{color:var(--gold);}
+  .row .r{margin-left:auto;color:var(--fg-2);font-size:13px;}
+
+  .u-bento{display:flex;gap:12px;margin-top:18px;}
+  .u-card{flex:1;min-width:0;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px 14px;box-shadow:var(--shadow-sm);}
+  .ub-t{font-size:15px;font-weight:700;margin-top:10px;} .ub-d{font-size:12px;line-height:1.6;color:var(--fg-2);margin-top:5px;}
+
+  .pinned{display:flex;margin:8px 28px 0;gap:0;}
+  .pin{flex:1;text-align:center;padding:18px 8px;border-right:1px solid var(--border);}
+  .pin:last-child{border-right:none;}
+  .pnm{font-size:14px;font-weight:700;margin-top:10px;} .pds{font-size:11px;color:var(--fg-2);margin-top:3px;}
+  .cluster{margin:6px 0;} .cl-h{font-size:12px;letter-spacing:2px;color:var(--gold-deep);font-weight:700;padding:16px 28px 2px;}
+  body.dark .cl-h{color:var(--gold);}
+
+  .hero{margin:8px 22px 22px;border-radius:26px;padding:30px 26px;color:#f6eccb;background:var(--night-grad);position:relative;overflow:hidden;}
+  .hero .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 18% 22%,rgba(255,255,255,.85),transparent),radial-gradient(2px 2px at 68% 16%,rgba(255,255,255,.7),transparent),radial-gradient(2px 2px at 86% 56%,rgba(255,255,255,.6),transparent),radial-gradient(2px 2px at 40% 78%,rgba(255,255,255,.7),transparent);opacity:.75;}
+  .hero-inner{position:relative;z-index:2;}
+  .hero-eyebrow{font-size:11px;letter-spacing:3px;opacity:.82;font-weight:600;margin-bottom:10px;}
+  .b-title{font-size:25px;font-weight:700;letter-spacing:1px;line-height:1.42;margin-top:4px;}
+  .b-line{font-size:15px;opacity:.9;margin-top:10px;line-height:1.6;}
+  .hero-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:22px;}
+  .hm-solar{display:block;font-size:14px;opacity:.95;} .hm-lunar{display:block;font-size:12px;opacity:.8;margin-top:4px;}
+  .hw-temp{display:block;font-size:24px;font-weight:700;line-height:1;text-align:right;} .hw-cond{font-size:12px;opacity:.8;text-align:right;margin-top:4px;}
+  .lamp{margin-top:22px;display:inline-flex;align-items:center;gap:8px;background:rgba(246,236,203,.16);border:1px solid rgba(246,236,203,.4);padding:10px 20px;border-radius:999px;font-size:14px;cursor:pointer;}
+
+  .yiji{margin:0 28px;padding:18px 4px;}
+  .yj-row{display:flex;align-items:baseline;gap:14px;} .yj-k{font-size:14px;font-weight:700;flex:none;width:20px;text-align:center;}
+  .yj-k.yi{color:var(--success);} .yj-k.ji{color:var(--danger);} .yj-v{font-size:14px;line-height:1.6;}
+
+  .cal{margin:6px 28px 0;} .cal-head{font-size:13px;color:var(--fg-2);margin-bottom:12px;}
+  .cal-week{display:flex;} .cal-week span{flex:1;text-align:center;font-size:11px;color:var(--fg-2);opacity:.7;}
+  .cal-grid{display:flex;flex-wrap:wrap;} .cal-d{width:14.285%;text-align:center;display:flex;flex-direction:column;align-items:center;padding:9px 0;border-radius:8px;}
+  .cal-d.dim{opacity:.3;} .cal-d.today{background:var(--gold-soft);}
+  .cal-d.today .cd-num{color:var(--gold-deep);font-weight:700;} body.dark .cal-d.today .cd-num{color:var(--gold);}
+  .cd-num{font-size:13px;} .cd-lu{font-size:9px;color:var(--fg-2);opacity:.7;margin-top:3px;}
+
+  .quick{display:flex;padding:8px 28px;gap:12px;}
+  .q{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--fg-3);padding:14px 0;border-radius:16px;}
+  .q-ic{width:54px;height:54px;border-radius:50%;background:var(--bg-elev);display:flex;align-items:center;justify-content:center;}
+
+  .unlock{margin:24px 28px 0;display:flex;align-items:center;gap:12px;padding:4px 0;}
+  .uc-l{font-size:13px;color:var(--fg-3);white-space:nowrap;} .uc-bar{flex:1;height:6px;background:rgba(138,127,109,.2);border-radius:6px;overflow:hidden;}
+  .uc-fill{height:100%;width:42%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));border-radius:6px;} .uc-r{font-size:12px;color:var(--gold-deep);font-weight:700;min-width:36px;text-align:right;}
+
+  .story{margin:24px 28px 0;border-radius:20px;padding:22px;background:var(--night-grad);color:#f3ead4;position:relative;overflow:hidden;}
+  .story .s-glow{position:absolute;top:-40px;right:-30px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(200,163,90,.4),transparent 70%);}
+  .story .s-eyebrow{font-size:11px;letter-spacing:2px;opacity:.85;} .story .s-body{font-size:15px;line-height:1.7;margin-top:10px;}
+  .story .s-sign{font-size:12px;opacity:.7;margin-top:12px;} .story .s-act{margin-top:14px;display:inline-block;font-size:13px;color:var(--gold);border:1px solid rgba(217,182,106,.5);padding:7px 16px;border-radius:999px;}
+
+  .feed{display:flex;gap:12px;padding:18px 18px 0;} .col{flex:1;}
+  .card .img{width:100%;height:120px;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#3b3a5c,#5b5a82);border-radius:14px 14px 0 0;}
+  .card .img .ic{opacity:.85;color:#e9e2ff;}
+  .card .body{padding:12px 14px 14px;} .card .tt{font-size:14px;line-height:1.45;}
+  .card .meta{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:var(--fg-2);}
+  .card .av{width:20px;height:20px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold-deep);}
+  .card .nm{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+
+  /* 各页补充 */
+  .sec-t{font-size:13px;letter-spacing:1px;color:var(--gold-deep);font-weight:700;margin:22px 28px 8px;} body.dark .sec-t{color:var(--gold);}
+  .kicker{font-size:11px;letter-spacing:3px;opacity:.82;font-weight:600;} .anchor-name{font-size:26px;font-weight:700;margin-top:8px;}
+  .wish{font-size:16px;margin-top:10px;line-height:1.6;} .foot{font-size:12px;opacity:.75;margin-top:10px;line-height:1.6;}
+  .star-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);}
+  .star-item .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex:none;} .star-item .sl{flex:1;font-size:14px;} .star-item .sd{font-size:12px;color:var(--fg-2);}
+  .return-card{margin:18px 28px;padding:18px;border:1px solid var(--border);border-radius:18px;text-align:center;}
+  .rc-t{font-size:16px;font-weight:700;} .rc-s{font-size:13px;color:var(--fg-2);margin-top:6px;line-height:1.6;}
+  .btn-lamp{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 28px;padding:14px;border-radius:999px;border:1px solid var(--gold);color:var(--gold-deep);font-weight:700;font-size:15px;cursor:pointer;} body.dark .btn-lamp{color:var(--gold);}
+  .lamp-ic{width:26px;height:26px;border-radius:50%;background:var(--night-grad);flex:none;} .lamp-ic.sm{width:18px;height:18px;}
+  .deed-card{margin:12px 28px;padding:14px;border:1px solid var(--border);border-radius:14px;} .dl{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;} .dm{font-size:12px;color:var(--fg-2);margin-top:6px;}
+
+  .tpls{display:flex;gap:10px;flex-wrap:wrap;} .tpl{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px;border:1px solid var(--border);border-radius:14px;font-size:12px;color:var(--fg-3);min-width:84px;}
+  .tpl.on{border-color:var(--gold);color:var(--fg);} .tpl-ic{color:var(--gold-deep);} body.dark .tpl-ic{color:var(--gold);}
+  .tx{width:100%;min-height:90px;background:var(--bg-elev);border:1px solid var(--border);border-radius:14px;padding:14px;font-size:14px;color:var(--fg);font-family:inherit;}
+  .preview{margin:18px 28px;text-align:center;} .cv{width:240px;height:320px;border:1px solid var(--border);border-radius:16px;background:var(--bg-elev);display:inline-flex;align-items:center;justify-content:center;color:var(--fg-2);font-size:13px;}
+  .cv-note{font-size:11px;color:var(--fg-2);margin-top:8px;}
+
+  .uploads{display:flex;gap:10px;flex-wrap:wrap;padding:18px 28px;} .u{width:78px;height:78px;border-radius:14px;background:var(--night-grad);display:flex;align-items:center;justify-content:center;color:#f6eccb;font-size:26px;}
+  .ti,.ta{display:block;width:calc(100% - 56px);margin:8px 28px;background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--fg);font-family:inherit;}
+  .ta{min-height:90px;} .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 28px;} .c{padding:7px 14px;border:1px solid var(--border);border-radius:999px;font-size:13px;color:var(--fg-3);} .c.on{border-color:var(--gold);color:var(--gold-deep);} body.dark .c.on{color:var(--gold);}
+  .pub{display:block;margin:18px 28px;padding:14px;border-radius:999px;border:1px solid var(--gold);color:var(--gold-deep);text-align:center;font-weight:700;font-size:15px;cursor:pointer;} body.dark .pub{color:var(--gold);}
+
+  .hero-card{text-align:center;} .merit-num{font-size:40px;font-weight:800;color:var(--gold-deep);} body.dark .merit-num{color:var(--gold);} .merit-label{font-size:13px;color:var(--fg-2);margin-top:2px;}
+  .level-badge{display:inline-block;margin-top:10px;padding:5px 14px;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .level-badge{color:var(--gold);}
+  .subtitle{font-size:13px;color:var(--fg-2);line-height:1.6;} .progress{height:8px;background:rgba(138,127,109,.2);border-radius:8px;overflow:hidden;margin-top:10px;} .progress-in{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));border-radius:8px;}
+  .streak{display:flex;align-items:center;gap:8px;justify-content:center;font-size:13px;color:var(--fg-2);margin-top:12px;}
+  .d-head{font-size:14px;font-weight:700;margin-bottom:8px;} .d-head2{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin-bottom:8px;} .d-count{color:var(--gold-deep);} body.dark .d-count{color:var(--gold);}
+  .d-text{font-size:13px;line-height:1.7;color:var(--fg-2);} .d-sub{font-size:12px;color:var(--fg-2);margin-bottom:8px;}
+  .deed{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);} .de-name{flex:1;font-size:14px;} .de-btn{padding:7px 14px;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .de-btn{color:var(--gold);} .de-btn.de-done{background:var(--gold-soft);border-color:transparent;color:var(--fg-2);}
+  .title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;margin-bottom:8px;} .cities{display:flex;flex-wrap:wrap;gap:8px;} .city{padding:6px 12px;border:1px solid var(--border);border-radius:999px;font-size:13px;color:var(--fg-3);}
+  .action{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);} .a-name{font-size:14px;} .a-desc{font-size:12px;color:var(--fg-2);margin-top:2px;} .a-btn{padding:7px 14px;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .a-btn{color:var(--gold);}
+  .chip{padding:6px 14px;border:1px solid var(--border);border-radius:999px;font-size:13px;color:var(--fg-3);} .chip.on{border-color:var(--gold);color:var(--gold-deep);} body.dark .chip.on{color:var(--gold);}
+  .board-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--border);} .bh-king{font-size:15px;font-weight:700;color:var(--gold-deep);} body.dark .bh-king{color:var(--gold);} .bh-anon{font-size:12px;color:var(--fg-2);}
+  .board-head2{display:flex;font-size:12px;color:var(--fg-2);padding:8px 0;} .board-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--border);font-size:14px;} .b-rank{width:26px;text-align:center;font-weight:700;color:var(--gold-deep);} body.dark .b-rank{color:var(--gold);} .b-name{font-size:14px;} .b-region{font-size:11px;color:var(--fg-2);} .b-merit{font-weight:700;} .b-level{font-size:12px;color:var(--fg-2);} .board-item.me{background:var(--gold-soft);border-radius:10px;padding:12px 10px;}
+  .muted{font-size:12px;color:var(--fg-2);margin:14px 28px;}
+  .bond{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);} .a-done{background:var(--gold-soft);border-color:transparent;color:var(--fg-2);}
+  .group-remind{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg-2);}
+  .wish-compose{margin:14px 28px;padding:18px;border:1px solid var(--border);border-radius:18px;background:var(--night-grad);color:#f3ead4;} .wc-eyebrow{font-size:11px;letter-spacing:2px;opacity:.8;} .wc-input{width:100%;min-height:70px;margin-top:10px;background:rgba(255,255,255,.06);border:1px solid rgba(246,236,203,.3);border-radius:12px;padding:12px;color:#f3ead4;font-family:inherit;font-size:14px;}
+  .wc-send{display:inline-block;margin-top:10px;padding:9px 18px;border:1px solid rgba(217,182,106,.5);border-radius:999px;font-size:13px;color:var(--gold);} .wish-text{font-size:14px;line-height:1.7;margin-top:8px;} .lamp{color:#f6eccb;}
+
+  .coupon-strip,.priority-strip{margin:12px 28px 0;padding:10px 14px;border-radius:12px;font-size:13px;}
+  .coupon-strip{background:var(--gold-soft);color:var(--gold-deep);} body.dark .coupon-strip{color:var(--gold);} .priority-strip{background:rgba(224,121,111,.12);color:var(--danger);}
+  .reco-z{margin:14px 28px;} .reco-z-h{font-size:13px;color:var(--gold-deep);font-weight:700;margin-bottom:8px;} body.dark .reco-z-h{color:var(--gold);}
+  .mj-reco{display:flex;align-items:center;gap:12px;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:10px;box-shadow:var(--shadow-sm);}
+  .mj-reco-tag{font-size:11px;color:var(--gold-deep);} body.dark .mj-reco-tag{color:var(--gold);} .mj-reco-name{font-size:15px;font-weight:700;margin-top:2px;} .mj-reco-desc{font-size:12px;color:var(--fg-2);margin-top:2px;} .mj-reco-go{margin-left:auto;font-size:13px;color:var(--gold-deep);} body.dark .mj-reco-go{color:var(--gold);}
+  .merit-lamp{display:flex;align-items:center;gap:12px;margin:14px 28px;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);}
+  .ml-t{font-size:14px;font-weight:700;} .ml-s{font-size:12px;color:var(--fg-2);margin-top:3px;} .ml-btn{margin-left:auto;padding:8px 16px;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .ml-btn{color:var(--gold);}
+  .mall-hero{margin:18px 28px 8px;} .mall-h2{font-size:22px;font-weight:700;margin-top:6px;} .mall-lede{font-size:13px;color:var(--fg-2);margin-top:6px;line-height:1.6;}
+  .cats{display:flex;gap:10px;padding:14px 28px;overflow:auto;} .cat{padding:7px 16px;border:1px solid var(--border);border-radius:999px;font-size:13px;color:var(--fg-3);white-space:nowrap;} .cat.on{border-color:var(--gold);color:var(--gold-deep);} body.dark .cat.on{color:var(--gold);}
+  .pd{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
+  .pd .img{height:120px;display:flex;align-items:center;justify-content:center;position:relative;} .pd .img .ic{color:#f6eccb;} .badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-size:10px;padding:2px 8px;border-radius:999px;}
+  .pd .body{padding:12px 14px;} .pd .tt{font-size:14px;} .pd .pr{display:flex;align-items:center;gap:8px;margin-top:8px;} .price{color:var(--gold-deep);font-weight:700;font-size:14px;} body.dark .price{color:var(--gold);} .mtag{font-size:11px;color:var(--success);} .sl{font-size:11px;color:var(--fg-2);margin-top:4px;}
+  .buy{margin-top:10px;padding:9px;text-align:center;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .buy{color:var(--gold);} .share-btn{margin-top:8px;padding:8px;text-align:center;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--fg-2);} .share-btn.done{background:var(--gold-soft);border-color:transparent;color:var(--gold-deep);}
+
+  .cover{height:120px;background:var(--night-grad);} .head{display:flex;align-items:center;gap:12px;padding:16px 28px;margin-top:-40px;}
+  .av{width:64px;height:64px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--gold-deep);border:3px solid var(--bg);} body.dark .av{color:var(--gold);}
+  .h-info{flex:1;} .name{font-size:18px;font-weight:700;} .edit{font-size:12px;color:var(--fg-2);margin-top:2px;}
+  .theme-toggle{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--fg-2);}
+  .bio{font-size:13px;color:var(--fg-2);margin:8px 28px 0;line-height:1.6;}
+  .wish-card{display:flex;gap:12px;margin:16px 28px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);} .w-t{font-size:12px;color:var(--gold-deep);} body.dark .w-t{color:var(--gold);} .w-v{font-size:15px;font-weight:700;margin-top:4px;}
+  .sign-card{margin:16px 28px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);} .sc-title{font-size:13px;font-weight:700;color:var(--gold-deep);} body.dark .sc-title{color:var(--gold);} .sc-tip{font-size:13px;line-height:1.6;margin-top:8px;} .sc-line{font-size:14px;line-height:1.6;margin-top:6px;} .sc-foot,.sc-empty{font-size:12px;color:var(--fg-2);margin-top:8px;}
+  .merit-card{margin:16px 28px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);} .lv{font-size:12px;color:var(--gold-deep);} body.dark .lv{color:var(--gold);} .mt{font-size:14px;margin-top:6px;} .m-num{font-size:20px;font-weight:800;color:var(--gold-deep);} body.dark .m-num{color:var(--gold);} .go{font-size:13px;color:var(--fg-2);margin-top:6px;}
+  .badges{margin:16px 28px;} .b-title{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:700;} .b-count{font-size:12px;color:var(--fg-2);font-weight:400;}
+  .b-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;} .badge{border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center;color:var(--fg-3);} .badge.on{color:var(--fg);background:var(--gold-soft);} .b-nm{font-size:13px;font-weight:700;margin-top:8px;} .b-desc{font-size:10px;color:var(--fg-2);margin-top:3px;}
+  .stat{display:flex;margin:16px 28px;padding:14px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);} .st{flex:1;text-align:center;} .st-n{display:block;font-size:18px;font-weight:700;} .st-l{font-size:12px;color:var(--fg-2);}
+  .persona{margin:16px 28px;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);} .p-name{font-size:18px;font-weight:700;margin-top:8px;} .p-desc{font-size:13px;color:var(--fg-2);line-height:1.6;margin-top:6px;} .p-traits{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;} .trait{padding:5px 12px;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--fg-3);} .p-btn{margin-top:12px;font-size:13px;color:var(--gold-deep);} body.dark .p-btn{color:var(--gold);}
+  .entries{display:flex;flex-wrap:wrap;gap:10px;margin:16px 28px;} .entry{display:flex;flex-direction:column;align-items:center;gap:6px;width:18%;min-width:54px;font-size:12px;color:var(--fg-3);} .e-i{width:46px;height:46px;border-radius:50%;background:var(--bg-elev);display:flex;align-items:center;justify-content:center;}
+  .ptabs{display:flex;gap:24px;padding:14px 32px 10px;border-bottom:1px solid var(--border);} .pt{font-size:14px;color:var(--fg-2);position:relative;padding-bottom:6px;cursor:pointer;} .pt.on{color:var(--fg);font-weight:700;} .pt.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:18px;height:4px;border-radius:4px;background:var(--gold);}
+  .grid{display:flex;flex-wrap:wrap;gap:12px;padding:16px 28px;} .g{width:calc(33.333% - 8px);aspect-ratio:1;border-radius:14px;padding:12px;position:relative;display:flex;flex-direction:column;justify-content:flex-end;color:#f6eccb;} .g-tt{font-size:12px;font-weight:600;margin-top:6px;}
+
+  .seg{display:flex;gap:24px;padding:14px 32px 10px;border-bottom:1px solid var(--border);} .s{font-size:14px;color:var(--fg-2);position:relative;padding-bottom:6px;cursor:pointer;} .s.on{color:var(--fg);font-weight:700;} .s.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:18px;height:4px;border-radius:4px;background:var(--gold);}
+  .chat{display:flex;align-items:center;gap:12px;padding:14px 28px;border-top:1px solid var(--border);} .c-body{flex:1;} .c-top{display:flex;justify-content:space-between;} .c-name{font-size:14px;font-weight:700;} .c-time{font-size:11px;color:var(--fg-2);} .c-last{font-size:13px;color:var(--fg-2);margin-top:3px;} .unread{min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--danger);color:#fff;font-size:11px;line-height:22px;text-align:center;}
+  .notice{display:flex;align-items:center;gap:12px;padding:14px 28px;border-top:1px solid var(--border);} .n-icon{width:36px;height:36px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--gold-deep);} body.dark .n-icon{color:var(--gold);} .n-text{font-size:14px;flex:1;line-height:1.5;} .n-time{font-size:11px;color:var(--fg-2);}
+  .merit-item{display:flex;align-items:center;gap:12px;padding:14px 28px;border-top:1px solid var(--border);} .m-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);} .m-text{flex:1;font-size:14px;} .m-time{font-size:11px;color:var(--fg-2);} .m-arrow{color:var(--gold-deep);} body.dark .m-arrow{color:var(--gold);}
+
+  .nb-hero{height:200px;display:flex;align-items:center;justify-content:center;color:#f6eccb;position:relative;} .dots{position:absolute;bottom:12px;display:flex;gap:6px;} .dots .d{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);} .dots .d.on{background:#fff;}
+  .nb-body{padding:20px 28px;} .topic{font-size:12px;color:var(--gold-deep);} body.dark .topic{color:var(--gold);} .h2{font-size:22px;font-weight:700;margin-top:6px;} .txt{font-size:14px;line-height:1.8;color:var(--fg-2);margin-top:12px;}
+  .author{display:flex;align-items:center;gap:10px;margin-top:18px;} .author .av{width:40px;height:40px;font-size:16px;} .nm{font-size:14px;font-weight:700;} .follow{margin-left:auto;font-size:13px;color:var(--gold-deep);} body.dark .follow{color:var(--gold);}
+  .rel{margin-top:22px;} .rel-h{font-size:15px;font-weight:700;margin-bottom:10px;} .rel-grid{display:flex;gap:12px;} .rel-card{flex:1;} .rel-img{height:90px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#f6eccb;} .rel-tt{font-size:12px;margin-top:6px;line-height:1.4;}
+  .cmt-list-h{font-size:14px;font-weight:700;margin-top:18px;} .cmt-item{display:flex;gap:10px;margin-top:12px;} .cmt-av{width:34px;height:34px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gold-deep);} body.dark .cmt-av{color:var(--gold);} .cmt-name{font-size:13px;font-weight:700;} .cmt-text{font-size:13px;color:var(--fg-2);margin-top:2px;}
+  .nb-bar{display:flex;align-items:center;gap:12px;padding:14px 28px;border-top:1px solid var(--border);position:sticky;bottom:0;background:var(--bg);} .cmt{flex:1;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;padding:10px 16px;font-size:13px;color:var(--fg-2);} .act{font-size:13px;color:var(--fg-2);display:flex;align-items:center;gap:4px;}
+
+  .bar{display:flex;padding:14px 28px;} .box{flex:1;display:flex;align-items:center;gap:10px;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;padding:0 18px;height:44px;color:var(--fg-2);}
+  .list{margin:8px 28px;} .item{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);} .item .av{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#f6eccb;} .info{flex:1;} .tt{font-size:14px;} .au{font-size:12px;color:var(--fg-2);margin-top:2px;} .hint{text-align:center;font-size:13px;color:var(--fg-2);margin:40px 28px;}
+
+  .palaces{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;} .palace{border:1px solid var(--border);border-radius:12px;padding:12px 6px;text-align:center;background:var(--card);} .palace.on{background:var(--gold-soft);border-color:var(--gold);} .p-name{font-size:12px;font-weight:700;} .p-star{font-size:11px;color:var(--gold-deep);margin-top:4px;} body.dark .p-star{color:var(--gold);}
+  .lock-head{font-size:13px;font-weight:700;margin-bottom:8px;} .progress-txt{font-size:12px;color:var(--fg-2);margin-top:8px;} .paths{margin-top:12px;} .path{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--border);} .p-info{flex:1;} .p-go{font-size:13px;color:var(--gold-deep);} body.dark .p-go{color:var(--gold);}
+  .deep-title{font-size:16px;font-weight:700;} .deep-text{font-size:13px;line-height:1.7;color:var(--fg-2);margin-top:8px;}
+  .reco-mini{display:flex;align-items:center;gap:12px;margin:14px 28px;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);} .reco-mini .p-info{flex:1;} .reco-mini .p-name{font-size:14px;font-weight:700;} .reco-mini .p-desc{font-size:12px;color:var(--fg-2);margin-top:3px;} .reco-mini .p-go{font-size:13px;color:var(--gold-deep);} body.dark .reco-mini .p-go{color:var(--gold);}
+
+  .head-t{font-size:22px;font-weight:700;} .head-s{font-size:13px;color:var(--fg-2);margin-top:6px;line-height:1.6;}
+  .city-guard{margin:14px 28px;padding:16px;border:1px solid var(--border);border-radius:18px;background:var(--card);box-shadow:var(--shadow-sm);} .cg-t{font-size:16px;font-weight:700;} .cg-s{font-size:12px;color:var(--fg-2);margin-top:4px;}
+  .cg-map-wrap{margin-top:12px;padding:12px;background:var(--bg-elev);border:1px solid var(--border);border-radius:12px;text-align:center;color:var(--fg-2);font-size:12px;line-height:1.6;}
+  .cg-detect{margin-top:8px;padding:8px;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .cg-detect{color:var(--gold);}
+  .cg-cities{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;} .cg-city{display:flex;flex-direction:column;align-items:center;gap:4px;width:30%;padding:10px 4px;border:1px solid var(--border);border-radius:12px;font-size:12px;color:var(--fg-3);} .cg-city.on{background:var(--gold-soft);border-color:var(--gold);color:var(--fg);}
+  .cg-bar{height:8px;background:rgba(138,127,109,.2);border-radius:8px;overflow:hidden;margin-top:12px;} .cg-fill{height:100%;width:33%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));border-radius:8px;}
+  .cg-tip{font-size:12px;color:var(--fg-2);margin-top:8px;text-align:center;} .cg-nation{display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px;background:var(--gold-soft);border-radius:12px;} .cn-t{font-size:14px;font-weight:700;} .cn-d{font-size:12px;color:var(--fg-2);margin-top:2px;}
+  .cg-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;} .cg-btn{padding:8px 14px;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--fg-3);} .cg-reward{font-size:12px;color:var(--success);margin-top:10px;text-align:center;}
+  .guard-board{margin:16px 28px;} .gb-head .gb-t{font-size:16px;font-weight:700;} .gb-s{font-size:12px;color:var(--fg-2);margin-top:4px;} .gb-self{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:12px;} .gb-self-n{font-weight:700;color:var(--gold-deep);} body.dark .gb-self-n{color:var(--gold);} .gb-others{font-size:12px;color:var(--fg-2);margin-top:6px;} .gb-foot{font-size:12px;color:var(--fg-2);margin-top:6px;line-height:1.6;}
+  .filters{display:flex;gap:8px;padding:12px 28px;overflow:auto;} .feature{border:1px solid var(--border);border-radius:16px;margin:12px 28px;padding:16px;background:var(--card);box-shadow:var(--shadow-sm);} .feature .badge{display:inline-block;background:var(--gold);color:#fff;font-size:10px;padding:2px 8px;border-radius:999px;} .ft{font-size:18px;font-weight:700;margin-top:10px;} .fd{font-size:13px;color:var(--fg-2);line-height:1.6;margin-top:6px;} .fm{display:flex;gap:8px;margin-top:8px;} .tag{font-size:11px;color:var(--gold-deep);border:1px solid var(--gold);border-radius:999px;padding:2px 10px;} body.dark .tag{color:var(--gold);} .fp{display:flex;align-items:baseline;gap:6px;margin-top:10px;} .fp .p{font-size:18px;font-weight:700;color:var(--gold-deep);} body.dark .fp .p{color:var(--gold);} .fp .d{font-size:12px;color:var(--fg-2);}
+  .list .card{display:flex;align-items:center;gap:12px;margin:12px 0;} .cov{width:84px;height:84px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#f6eccb;background:linear-gradient(140deg,#3b3a5c,#5b5a82);} .info{flex:1;} .info .tt{font-size:15px;font-weight:700;} .info .ds{font-size:12px;color:var(--fg-2);margin-top:4px;line-height:1.5;} .tg{display:inline-block;font-size:11px;color:var(--gold-deep);border:1px solid var(--gold);border-radius:999px;padding:1px 8px;margin-top:6px;} body.dark .tg{color:var(--gold);} .info .meta{margin-top:6px;} .book{padding:8px 14px;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .book{color:var(--gold);}
+
+  .med{margin:14px 28px;padding:24px;border-radius:20px;background:var(--night-grad);color:#f3ead4;text-align:center;position:relative;overflow:hidden;} .med .breath{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(200,163,90,.3),transparent 70%);} .med .tt{font-size:18px;font-weight:700;position:relative;} .med .sd{font-size:13px;opacity:.85;margin-top:6px;position:relative;} .med .btn{margin:16px auto 0;max-width:200px;background:rgba(246,236,203,.16);border:1px solid rgba(246,236,203,.4);color:#f6eccb;position:relative;}
+  .mood{margin:16px 28px;} .mood .ml{font-size:14px;font-weight:700;margin-bottom:10px;} .mood .row{display:flex;gap:8px;padding:0;border:none;flex-wrap:wrap;} .e{padding:8px 14px;border:1px solid var(--border);border-radius:999px;font-size:13px;color:var(--fg-3);} .e.on{border-color:var(--gold);color:var(--gold-deep);background:var(--gold-soft);} body.dark .e.on{color:var(--gold);}
+  .meditations .card{display:flex;align-items:center;gap:12px;} .meditations .ci{color:var(--gold-deep);} body.dark .meditations .ci{color:var(--gold);} .meditations .ct{flex:1;} .meditations .ti{font-size:14px;font-weight:700;} .meditations .ds{font-size:12px;color:var(--fg-2);margin-top:2px;} .meditations .ty{font-size:12px;color:var(--fg-2);}
+  .diary{margin:16px 28px;} .dt{font-size:15px;font-weight:700;margin-bottom:10px;} .box{width:100%;min-height:90px;background:var(--bg-elev);border:1px solid var(--border);border-radius:14px;padding:14px;font-size:14px;color:var(--fg);font-family:inherit;} .save{display:inline-block;margin-top:10px;padding:9px 18px;border:1px solid var(--gold);border-radius:999px;font-size:13px;color:var(--gold-deep);} body.dark .save{color:var(--gold);} .note{font-size:11px;color:var(--fg-2);margin-top:8px;line-height:1.6;}
+
+  .daily-hero{margin:8px 22px 20px;border-radius:24px;padding:28px 24px;background:var(--night-grad);color:#f3ead4;position:relative;overflow:hidden;}
+  .dh-kicker{font-size:11px;letter-spacing:3px;opacity:.82;font-weight:600;} .dh-term{font-size:32px;font-weight:700;margin-top:8px;} .dh-day{font-size:13px;opacity:.85;margin-top:8px;} .dh-mansion{font-size:14px;opacity:.9;margin-top:4px;} .dh-season{font-size:13px;opacity:.8;margin-top:4px;line-height:1.6;}
+  .dh-prog{margin-top:18px;} .dh-prog-bar{height:6px;background:rgba(246,236,203,.2);border-radius:6px;overflow:hidden;} .dh-prog-fill{height:100%;width:64%;background:linear-gradient(90deg,#d8b876,#caa45c);border-radius:6px;} .dh-prog-txt{font-size:11px;opacity:.85;margin-top:6px;}
+  .track{margin:0 28px;} .chapter{display:flex;gap:14px;padding:16px 0;border-top:1px solid var(--border);} .ch-ic{color:var(--gold-deep);flex:none;} body.dark .ch-ic{color:var(--gold);} .ch-eyebrow{font-size:12px;color:var(--fg-2);} .ch-line{font-size:14px;line-height:1.6;margin-top:6px;} .ch-sign{font-size:12px;color:var(--gold-deep);margin-top:6px;} body.dark .ch-sign{color:var(--gold);}
+
+  .screen{display:none;} .screen.active{display:block;}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="nav">
+    <h4>方向 B · 全站预览</h4>
+    <button data-go="index" class="on">发现首页</button>
+    <button data-go="anchor">定星锚点</button>
+    <button data-go="space">星野工具箱</button>
+    <button data-go="blessing">祝福卡</button>
+    <button data-go="publish">发布感悟</button>
+    <button data-go="merit">功德中心</button>
+    <button data-go="mall">星野好物</button>
+    <button data-go="profile">我的</button>
+    <button data-go="message">消息</button>
+    <button data-go="note">笔记详情</button>
+    <button data-go="search">搜索</button>
+    <button data-go="chart">星图解读</button>
+    <button data-go="tourism">星象文旅</button>
+    <button data-go="journey">心灵之旅</button>
+    <button data-go="daily">星夜物语</button>
+    <button class="themebtn" onclick="toggleTheme()">切换 深 / 浅</button>
+  </nav>
+
+  <div class="stage">
+    <div class="phone">
+      <div class="topbar"><span class="pg" id="pgName">发现首页</span><button class="toggle" onclick="toggleTheme()">深 / 浅</button></div>
+
+      <!-- ============ 发现首页 ============ -->
+      <section class="screen active" data-screen="index">
+        <div class="search"><span class="ic" data-icon="search" data-size="16"></span> 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+        <div class="hero">
+          <div class="stars"></div>
+          <div class="hero-inner">
+            <div class="hero-eyebrow">每日星语</div>
+            <div class="b-title serif">今夜，星空为你留了一盏灯</div>
+            <div class="b-line">今日节气 · 立秋</div>
+            <div class="hero-meta">
+              <div class="hm-l"><span class="hm-solar">8月1日 周六</span><span class="hm-lunar">丙午年 · 六月十九</span></div>
+              <div class="hm-weather"><span class="hw-temp">23°</span><span class="hw-cond">晴夜 · 杭州</span></div>
+            </div>
+            <div class="lamp"><span class="ic" data-icon="lamp" data-size="20"></span> 点亮今日心灯 · +1 功德</div>
+          </div>
+        </div>
+        <div class="yiji">
+          <div class="yj-row"><span class="yj-k yi">宜</span><span class="yj-v">祭祀 · 出行 · 纳财 · 安床</span></div>
+          <div class="hair"></div>
+          <div class="yj-row"><span class="yj-k ji">忌</span><span class="yj-v">动土 · 安葬 · 词讼</span></div>
+        </div>
+        <div class="quick">
+          <div class="q"><span class="q-ic ic" data-icon="star" data-size="26"></span>星野</div>
+          <div class="q"><span class="q-ic ic" data-icon="tourism" data-size="26"></span>文旅</div>
+          <div class="q"><span class="q-ic ic" data-icon="wish" data-size="26"></span>寄愿</div>
+          <div class="q"><span class="q-ic ic" data-icon="lamp" data-size="26"></span>功德</div>
+        </div>
+        <div class="u-section">
+          <div class="u-eyebrow">日行一善 · 三步成习</div>
+          <div class="u-h2">抬头看星，落笔安心</div>
+          <div class="u-lede">把每一天的小仪式，安放进星河里。</div>
+          <div class="u-bento">
+            <div class="u-card"><span class="ic" data-icon="chart" data-size="28"></span><div class="ub-t">点亮星图</div><div class="ub-d">二十八宿，照亮今日心绪</div></div>
+            <div class="u-card"><span class="ic" data-icon="wish" data-size="28"></span><div class="ub-t">寄一笔愿</div><div class="ub-d">把心事交给星河，慢慢安放</div></div>
+            <div class="u-card"><span class="ic" data-icon="deeds" data-size="28"></span><div class="ub-t">今日三善</div><div class="ub-d">点灯 · 随喜 · 冥想，积微成光</div></div>
+          </div>
+        </div>
+        <div class="unlock">
+          <div class="uc-l">✦ 距深度解读还差 18 功德</div>
+          <div class="uc-bar"><div class="uc-fill"></div></div>
+          <div class="uc-r">42%</div>
+        </div>
+        <div class="story">
+          <div class="s-glow"></div>
+          <div class="s-eyebrow">星夜物语 · 每日一信</div>
+          <div class="s-body">立秋将至，风开始有了方向。今夜适合把未说的话，写进一盏灯里。</div>
+          <div class="s-sign">—— 星野寄来的信</div>
+          <div class="s-act">读今夜的完整星语 →</div>
+        </div>
+        <div class="tabs">
+          <div class="t on">关注</div><div class="t">发现</div><div class="t">视频</div>
+        </div>
+        <div class="feed">
+          <div class="col">
+            <div class="card"><div class="img"><span class="ic" data-icon="star" data-size="34"></span></div><div class="body"><div class="tt">把今天的好心情，折成一颗小星</div><div class="meta"><span class="av">野</span><span class="nm">拾光的小野</span></div></div></div>
+            <div class="card"><div class="img"><span class="ic" data-icon="star" data-size="34"></span></div><div class="body"><div class="tt">立秋前夜，给远方的你点一盏灯</div><div class="meta"><span class="av">林</span><span class="nm">林间小驻</span></div></div></div>
+          </div>
+          <div class="col">
+            <div class="card"><div class="img"><span class="ic" data-icon="star" data-size="34"></span></div><div class="body"><div class="tt">三件小事，凑成一整天的光</div><div class="meta"><span class="av">川</span><span class="nm">川页</span></div></div></div>
+            <div class="card"><div class="img"><span class="ic" data-icon="star" data-size="34"></span></div><div class="body"><div class="tt">夜跑时抬头，居然看见了猎户</div><div class="meta"><span class="av">星</span><span class="nm">星野旅人</span></div></div></div>
+          </div>
+        </div>
+        <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</div>
+      </section>
+
+      <!-- ============ 定星锚点 ============ -->
+      <section class="screen" data-screen="anchor">
+        <div class="hero">
+          <div class="stars"></div>
+          <div class="hero-inner">
+            <div class="kicker">数字锚点 · 你的定星</div>
+            <div class="anchor-name">启明</div>
+            <div class="wish">「愿家人平安，自己也从容」</div>
+            <div class="foot">与你绑定，不可转让 —— 它是一颗定星，不是商品</div>
+          </div>
+        </div>
+        <div class="hair"></div>
+        <div class="sec-t">沉星 · 你投注的痕迹</div>
+        <div class="star-item"><div class="dot"></div><div class="sl">立愿 · 写下本月星愿</div><div class="sd">7月20日</div></div>
+        <div class="star-item"><div class="dot"></div><div class="sl">三善 · 今日三件小事</div><div class="sd">7月28日</div></div>
+        <div class="star-item"><div class="dot"></div><div class="sl">归锚 · 点灯保温</div><div class="sd">7月29日</div></div>
+        <div class="return-card">
+          <div class="rc-t">今夜归锚</div>
+          <div class="rc-s">每天 30 秒，让锚点仍是温的。不打卡、无惩罚。</div>
+          <div class="btn">点一盏灯 · 归锚</div>
+        </div>
+        <div class="btn-lamp"><span class="lamp-ic sm"></span> 星愿点亮 · 让星愿落地</div>
+        <div class="sec-t">已点亮的灯</div>
+        <div class="deed-card"><div class="dl"><span class="lamp-ic sm"></span> 灵隐寺 · 灯位 0317</div><div class="dm">长明 49 日 · 守护星 文曲</div></div>
+        <div class="disclaimer">星愿点亮为真实供灯（寺庙长明灯）演示；功德为娱乐化正向激励，不可提现或交易，不从金钱抵扣。本平台内容均为传统文化与心理慰藉的娱乐参考。</div>
+      </section>
+
+      <!-- ============ 星野工具箱 ============ -->
+      <section class="screen" data-screen="space">
+        <div class="b-head">
+          <div class="u-eyebrow">全部工具</div>
+          <div class="u-h2">星野工具箱</div>
+          <div class="u-lede">识星 · 安善 · 表达 —— 三簇归位，常用的三处直接在上面</div>
+        </div>
+        <div class="hair"></div>
+        <div class="pinned">
+          <div class="pin"><span class="ic" data-icon="chart" data-size="34"></span><div class="pnm">星图</div><div class="pds">深度星象解读</div></div>
+          <div class="pin"><span class="ic" data-icon="wish" data-size="34"></span><div class="pnm">寄愿</div><div class="pds">心愿与灯</div></div>
+          <div class="pin"><span class="ic" data-icon="deeds" data-size="34"></span><div class="pnm">三善</div><div class="pds">日行一善</div></div>
+        </div>
+        <div class="cluster">
+          <div class="cl-h">识星</div>
+          <div class="hair-tight"></div>
+          <div class="row"><span class="ic" data-icon="star" data-size="30"></span><div class="rb"><div class="nm">紫微斗数</div><div class="ds">命宫主星</div></div><div class="arrow">→</div></div>
+          <div class="row"><span class="ic" data-icon="solar" data-size="30"></span><div class="rb"><div class="nm">八字命理</div><div class="ds">五行排盘</div></div><div class="arrow">→</div></div>
+          <div class="row"><span class="ic" data-icon="chart" data-size="30"></span><div class="rb"><div class="nm">星座测试</div><div class="ds">今日运势</div></div><div class="arrow">→</div></div>
+        </div>
+        <div class="cluster">
+          <div class="cl-h">安善</div>
+          <div class="hair-tight"></div>
+          <div class="row"><span class="ic" data-icon="calm" data-size="30"></span><div class="rb"><div class="nm">疗愈</div><div class="ds">呼吸与冥想</div></div><div class="arrow">→</div></div>
+          <div class="row"><span class="ic" data-icon="journey" data-size="30"></span><div class="rb"><div class="nm">心灵之旅</div><div class="ds">正念行走</div></div><div class="arrow">→</div></div>
+          <div class="row"><span class="ic" data-icon="blessing" data-size="30"></span><div class="rb"><div class="nm">祝福卡</div><div class="ds">星夜祝福</div></div><div class="arrow">→</div></div>
+        </div>
+        <div class="cluster">
+          <div class="cl-h">表达</div>
+          <div class="hair-tight"></div>
+          <div class="row"><span class="ic" data-icon="share" data-size="30"></span><div class="rb"><div class="nm">发布感悟</div><div class="ds">记一笔</div></div><div class="arrow">→</div></div>
+          <div class="row"><span class="ic" data-icon="note" data-size="30"></span><div class="rb"><div class="nm">我的笔记</div><div class="ds">星夜随笔</div></div><div class="arrow">→</div></div>
+        </div>
+        <div class="tip">所有功能均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成专业建议。</div>
+      </section>
+
+      <!-- ============ 祝福卡 ============ -->
+      <section class="screen" data-screen="blessing">
+        <div class="b-head">
+          <div class="u-eyebrow">寄一段祝福</div>
+          <div class="u-h2">祝福卡</div>
+          <div class="u-lede">选节令 · 写祝语 · 生成一张可分享的星野卡面</div>
+        </div>
+        <div class="hair"></div>
+        <div class="sec">
+          <div class="s-h">① 选择节令</div>
+          <div class="tpls">
+            <div class="tpl on"><span class="tpl-ic ic" data-icon="star" data-size="26"></span>生日快乐</div>
+            <div class="tpl"><span class="tpl-ic ic" data-icon="lamp" data-size="26"></span>新年大吉</div>
+            <div class="tpl"><span class="tpl-ic ic" data-icon="heart" data-size="26"></span>百年好合</div>
+            <div class="tpl"><span class="tpl-ic ic" data-icon="wish" data-size="26"></span>平安喜乐</div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="s-h">② 祝福文案</div>
+          <textarea class="tx">愿岁岁平安，年年喜乐</textarea>
+        </div>
+        <div class="sec">
+          <div class="s-h">③ 背景音乐</div>
+          <div class="tpls">
+            <div class="tpl on">星河慢板</div><div class="tpl">夜灯低语</div><div class="tpl">风过松林</div>
+          </div>
+        </div>
+        <div class="hair"></div>
+        <div class="preview">
+          <div class="cv">卡面预览 · 四芒星 + 主题色</div>
+          <div class="cv-note">预览 · 正式导出为 MP4 需云端合成</div>
+        </div>
+        <div class="btn">生成并分享</div>
+        <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</div>
+      </section>
+
+      <!-- ============ 发布感悟 ============ -->
+      <section class="screen" data-screen="publish">
+        <div class="uploads">
+          <div class="u"><span class="ic" data-icon="star" data-size="52"></span></div>
+          <div class="u"><span class="ic" data-icon="journey" data-size="52"></span></div>
+          <div class="u">＋</div><div class="u">＋</div><div class="u">＋</div><div class="u">＋</div>
+        </div>
+        <input class="ti" placeholder="填标题会有更多赞哦~"/>
+        <textarea class="ta" placeholder="这一刻的星野、心情或愿想……"></textarea>
+        <div style="font-size:12px;color:var(--fg-2);padding:6px 28px 0;">友善分享 · 发布将过内容安全预检</div>
+        <div class="sec">
+          <div class="s-h">添加话题</div>
+          <div class="chips">
+            <div class="c on">#星野夜话</div><div class="c">#三善打卡</div><div class="c">#旅行见星</div><div class="c">#疗愈时刻</div>
+          </div>
+        </div>
+        <div class="sec">
+          <div class="row"><span class="ic row-ic" data-icon="tourism" data-size="28"></span><text>地点</text><text class="r">杭州西湖 ›</text></div>
+          <div class="row"><span class="ic row-ic" data-icon="chart" data-size="28"></span><text>关联我的星图</text><text class="r">命宫·文曲 ▾</text></div>
+          <div class="row"><span class="ic row-ic" data-icon="wish" data-size="28"></span><text>关联今日寄愿</text><text class="r">为妈妈 ›</text></div>
+        </div>
+        <div class="pub">发布并 +8 功德</div>
+      </section>
+
+      <!-- ============ 功德中心 ============ -->
+      <section class="screen" data-screen="merit">
+        <div class="b-head">
+          <div class="u-eyebrow">日行一善 · 结缘有缘人</div>
+          <div class="u-h2 serif">功德中心</div>
+          <div class="u-lede">功德为娱乐化的正向激励，不可提现、不可交易。</div>
+        </div>
+        <div class="hair"></div>
+        <div class="tabs">
+          <div class="tab on">概览</div><div class="tab">功德林</div><div class="tab">结缘</div><div class="tab">共修</div><div class="tab">寄愿墙</div>
+        </div>
+        <div class="card hero-card">
+          <div class="merit-num">186</div>
+          <div class="merit-label">功德值</div>
+          <div class="level-badge">拾星者 · Lv.7</div>
+          <div class="subtitle">距「引灯人」还差 64 功德</div>
+          <div class="progress"><div class="progress-in" style="width:74%"></div></div>
+          <div class="streak"><span class="ic" data-icon="streak" data-size="22"></span> 连续签到 23 天</div>
+          <div class="btn">晨钟暮鼓 · 签到 +功德</div>
+        </div>
+        <div class="card">
+          <div class="d-head">✦ 因果日报</div>
+          <div class="d-text">今日你点亮了心灯，也为远方的她添了一盏。善意像星，会彼此映照。</div>
+        </div>
+        <div class="card deeds">
+          <div class="d-head2"><span class="ic" data-icon="deeds" data-size="26"></span> 今日三善 <span class="d-count">2/3</span></div>
+          <div class="d-sub">做满三件小事，今日心安 ✦</div>
+          <div class="deed"><span class="ic" data-icon="lamp" data-size="34"></span><div class="de-name">点亮今日心灯</div><div class="de-btn de-done">已记 ✓</div></div>
+          <div class="deed"><span class="ic" data-icon="wish" data-size="34"></span><div class="de-name">寄一笔愿</div><div class="de-btn de-done">已记 ✓</div></div>
+          <div class="deed"><span class="ic" data-icon="deeds" data-size="34"></span><div class="de-name">随喜有缘人</div><div class="de-btn">+1</div></div>
+        </div>
+        <div class="card">
+          <div class="title"><span class="ic" data-icon="tourism" data-size="26"></span> 我点亮的城</div>
+          <div class="cities"><text class="city">杭州</text><text class="city">大理</text><text class="city">成都</text></div>
+        </div>
+        <div class="card">
+          <div class="title">日行一善</div>
+          <div class="subtitle">做正向小事即可积累功德，无需花费分文</div>
+          <div class="action"><span class="ic" data-icon="calm" data-size="40"></span><div style="flex:1"><div class="a-name">冥想十分钟</div><div class="a-desc">安住此刻，温柔待己</div></div><div class="a-btn">+1</div></div>
+          <div class="action"><span class="ic" data-icon="share" data-size="40"></span><div style="flex:1"><div class="a-name">分享一句星语</div><div class="a-desc">让善意流动</div></div><div class="a-btn">+2</div></div>
+        </div>
+        <div class="disclaimer">功德为娱乐化正向激励，不代表真实宗教功德，不可提现或交易。本平台内容均为传统文化与心理慰藉的娱乐参考，请勿迷信。</div>
+      </section>
+
+      <!-- ============ 星野好物 ============ -->
+      <section class="screen" data-screen="mall">
+        <div class="search"><span class="ic" data-icon="search" data-size="26"></span> 搜索 星野好物</div>
+        <div class="coupon-strip">已点亮 3 座城市守护 · 全场兑换 9 折自动抵扣</div>
+        <div class="reco-z">
+          <div class="reco-z-h">为你结缘 · 依你的星野足迹</div>
+          <div class="mj-reco"><span class="ic mj-reco-ic" data-icon="lamp" data-size="42"></span><div class="mj-reco-body"><div class="mj-reco-tag">星图点亮后</div><div class="mj-reco-name">长明祈福灯</div><div class="mj-reco-desc">把今日的星图，化作床头的一盏温柔夜灯</div></div><div class="mj-reco-go">去看看 ›</div></div>
+          <div class="mj-reco"><span class="ic mj-reco-ic" data-icon="tourism" data-size="42"></span><div class="mj-reco-body"><div class="mj-reco-tag">点亮城市后</div><div class="mj-reco-name">城市守护 · 星空冰箱贴</div><div class="mj-reco-desc">把点亮的城市星图，贴在冰箱上日日相伴</div></div><div class="mj-reco-go">去看看 ›</div></div>
+        </div>
+        <div class="merit-lamp"><span class="ic ml-ic" data-icon="lamp" data-size="40"></span><div class="ml-body"><div class="ml-t">用功德点亮长明祈福灯</div><div class="ml-s">当前 186 功德 · 点亮一盏虚拟结缘灯（纪念），- 30 功德</div></div><div class="ml-btn">点亮</div></div>
+        <div class="mall-hero">
+          <div class="u-eyebrow">结缘好物 · 依你而选</div>
+          <div class="mall-h2">星野好物，陪你日行一善</div>
+          <div class="mall-lede">香氛、手串、祈福御守——每一件都为静心与陪伴而做。</div>
+        </div>
+        <div class="cats">
+          <div class="cat on">全部</div><div class="cat">香氛</div><div class="cat">手串</div><div class="cat">御守</div><div class="cat">冰箱贴</div><div class="cat">杯具</div>
+        </div>
+        <div class="feed">
+          <div class="col">
+            <div class="pd"><div class="img" style="background:linear-gradient(140deg,#5b5a82,#3b3a5c)"><span class="ic" data-icon="lamp" data-size="72"></span><div class="badge">限定</div></div><div class="body"><div class="tt">长明祈福夜灯</div><div class="pr"><text class="price">120 功德</text><text class="mtag">+3 回礼</text></div><div class="sl">已结缘 1.2k</div><div class="buy">立即兑换</div><div class="share-btn">晒单 +5 功德</div></div></div>
+            <div class="pd"><div class="img" style="background:linear-gradient(140deg,#7a6a4f,#4f4330)"><span class="ic" data-icon="merit" data-size="72"></span></div><div class="body"><div class="tt">功德御守挂件</div><div class="pr"><text class="price">80 功德</text></div><div class="sl">已结缘 860</div><div class="buy">立即兑换</div></div></div>
+          </div>
+          <div class="col">
+            <div class="pd"><div class="img" style="background:linear-gradient(140deg,#4f6a7a,#2f4350)"><span class="ic" data-icon="tourism" data-size="72"></span></div><div class="body"><div class="tt">城市守护冰箱贴</div><div class="pr"><text class="price">60 功德</text><text class="mtag">城市限定</text></div><div class="sl">已结缘 540</div><div class="buy">立即兑换</div></div></div>
+            <div class="pd"><div class="img" style="background:linear-gradient(140deg,#6a4f5a,#3f2f38)"><span class="ic" data-icon="blessing" data-size="72"></span></div><div class="body"><div class="tt">星夜祝福香氛</div><div class="pr"><text class="price">100 功德</text></div><div class="sl">已结缘 720</div><div class="buy">立即兑换</div></div></div>
+          </div>
+        </div>
+        <div class="disclaimer">商城好物以功德兑换，零金钱交易；功德不可购、不可提现、不可兑。本平台内容仅供娱乐参考，请勿迷信。</div>
+      </section>
+
+      <!-- ============ 我的 ============ -->
+      <section class="screen" data-screen="profile">
+        <div class="cover"></div>
+        <div class="head">
+          <div class="av">拾</div>
+          <div class="h-info"><div class="name">拾光的小野</div><div class="edit">编辑资料</div></div>
+          <div class="theme-toggle"><span class="ic" data-icon="solar" data-size="30"></span><div class="tt-label">夜灯模式</div></div>
+        </div>
+        <div class="bio">记录每一次抬头看星的时刻 · 已点亮 186 盏心灯</div>
+        <div class="wish-card"><span class="ic" data-icon="wish" data-size="36"></span><div class="w-body"><div class="w-t">本月星愿</div><div class="w-v">愿家人平安，自己也从容</div></div></div>
+        <div class="sign-card">
+          <div class="sc-title">✦ 今日星签</div>
+          <div class="sc-tip">今日宜静思，不宜急决。</div>
+          <div class="sc-line">风过疏竹，不留声；雁过寒潭，不留影。</div>
+          <div class="sc-foot">每日一签 · 明日可再抽</div>
+        </div>
+        <div class="merit-card">
+          <div class="lv">拾星者 · Lv.7</div>
+          <div class="mt"><text class="m-num">186</text> 功德 · 连续签到 23 天</div>
+          <div class="go">功德中心 ›</div>
+        </div>
+        <div class="badges">
+          <div class="b-title"><span class="ic" data-icon="award" data-size="28"></span> 成就徽章 <span class="b-count">5/12</span></div>
+          <div class="b-grid">
+            <div class="badge on"><span class="ic" data-icon="streak" data-size="40"></span><div class="b-nm">连签 21</div><div class="b-desc">坚持的温度</div></div>
+            <div class="badge on"><span class="ic" data-icon="deeds" data-size="40"></span><div class="b-nm">三善满</div><div class="b-desc">日行一善</div></div>
+            <div class="badge on"><span class="ic" data-icon="tourism" data-size="40"></span><div class="b-nm">城守护</div><div class="b-desc">点亮三城</div></div>
+            <div class="badge on"><span class="ic" data-icon="lamp" data-size="40"></span><div class="b-nm">长明灯</div><div class="b-desc">星愿落地</div></div>
+            <div class="badge on"><span class="ic" data-icon="star" data-size="40"></span><div class="b-nm">观星者</div><div class="b-desc">点亮星图</div></div>
+            <div class="badge"><span class="ic" data-icon="heart" data-size="40"></span><div class="b-nm">结缘人</div><div class="b-desc">随喜十次</div></div>
+          </div>
+        </div>
+        <div class="stat">
+          <div class="st"><text class="st-n">28</text><text class="st-l">笔记</text></div>
+          <div class="st"><text class="st-n">63</text><text class="st-l">收藏</text></div>
+          <div class="st"><text class="st-n">142</text><text class="st-l">赞</text></div>
+        </div>
+        <div class="persona">
+          <div class="p-title">✦ 我的星图人格</div>
+          <div class="p-name">文曲照命 · 清夜行舟</div>
+          <div class="p-desc">你像夜里行船的人，不慌不忙，却始终朝着有光的方向。适合把心事写下来，再交给星河。</div>
+          <div class="p-traits"><text class="trait">细腻</text><text class="trait">自省</text><text class="trait">温柔</text><text class="trait">长情</text></div>
+          <div class="p-btn">进入星野工具箱 ›</div>
+        </div>
+        <div class="entries">
+          <div class="entry"><span class="e-i ic" data-icon="msg" data-size="40"></span>消息</div>
+          <div class="entry"><span class="e-i ic" data-icon="note" data-size="40"></span>记一笔</div>
+          <div class="entry"><span class="e-i ic" data-icon="lamp" data-size="40"></span>功德林</div>
+          <div class="entry"><span class="e-i ic" data-icon="merit" data-size="40"></span>星野好物</div>
+          <div class="entry"><span class="e-i ic" data-icon="heart" data-size="40"></span>我的锚点</div>
+        </div>
+        <div class="ptabs">
+          <div class="pt on">笔记</div><div class="pt">收藏</div><div class="pt">赞</div>
+        </div>
+        <div class="grid">
+          <div class="g" style="background:linear-gradient(140deg,#5b5a82,#3b3a5c)"><span class="ic g-ic" data-icon="star" data-size="44"></span><div class="g-tt">秋夜第一盏灯</div></div>
+          <div class="g" style="background:linear-gradient(140deg,#4f6a7a,#2f4350)"><span class="ic g-ic" data-icon="journey" data-size="44"></span><div class="g-tt">西湖看星记</div></div>
+          <div class="g" style="background:linear-gradient(140deg,#6a4f5a,#3f2f38)"><span class="ic g-ic" data-icon="wish" data-size="44"></span><div class="g-tt">给妈妈的愿</div></div>
+        </div>
+        <div class="disclaimer">本平台内容仅供传统文化娱乐与心理慰藉参考，请勿迷信。</div>
+      </section>
+
+      <!-- ============ 消息 ============ -->
+      <section class="screen" data-screen="message">
+        <div class="seg">
+          <div class="s on">私信</div><div class="s">通知</div><div class="s">功德动态</div>
+        </div>
+        <div class="chat"><div class="av">林</div><div class="c-body"><div class="c-top"><text class="c-name">林间小驻</text><text class="c-time">14:20</text></div><div class="c-last">你寄的那盏灯，我收到啦，谢谢 ✦</div></div><div class="unread">2</div></div>
+        <div class="chat"><div class="av">川</div><div class="c-body"><div class="c-top"><text class="c-name">川页</text><text class="c-time">昨天</text></div><div class="c-last">今晚一起云观星？</div></div></div>
+        <div class="b-head tight">
+          <div class="u-eyebrow">功德动态</div>
+          <div class="u-h2 serif">你的善意轨迹</div>
+        </div>
+        <div class="hair"></div>
+        <div class="merit-item"><div class="m-dot"></div><div class="m-text">你点亮了今日心灯 · +1 功德</div><div class="m-time">08:01</div><div class="m-arrow">›</div></div>
+        <div class="merit-item"><div class="m-dot"></div><div class="m-text">随喜了 林间小驻 · +1 功德</div><div class="m-time">昨天</div><div class="m-arrow">›</div></div>
+        <div class="merit-item"><div class="m-dot"></div><div class="m-text">连续签到 23 天 · 里程碑回礼 +5 功德</div><div class="m-time">07-28</div><div class="m-arrow">›</div></div>
+      </section>
+
+      <!-- ============ 笔记详情 ============ -->
+      <section class="screen" data-screen="note">
+        <div class="nb-hero" style="background:linear-gradient(140deg,#5b5a82,#3b3a5c)">
+          <span class="ic" data-icon="star" data-size="64"></span>
+          <div class="dots"><div class="d on"></div><div class="d"></div><div class="d"></div></div>
+        </div>
+        <div class="nb-body">
+          <div class="topic">#星野夜话</div>
+          <div class="h2">秋夜，我点亮了今年第一盏灯</div>
+          <div class="txt">立秋前夜，风里有了凉意。我把今年第一盏心灯点在窗台，看着它就那样安静地亮着——好像有什么一直陪着我。原来安心，是可以被点亮的。</div>
+          <div class="author"><div class="av">野</div><div class="nm">拾光的小野</div><div class="follow">关注</div></div>
+          <div class="rel">
+            <div class="rel-h">相关星野笔记</div>
+            <div class="rel-grid">
+              <div class="rel-card"><div class="rel-img" style="background:linear-gradient(140deg,#4f6a7a,#2f4350)"><span class="ic" data-icon="journey" data-size="36"></span></div><div class="rel-tt">西湖看星记</div></div>
+              <div class="rel-card"><div class="rel-img" style="background:linear-gradient(140deg,#6a4f5a,#3f2f38)"><span class="ic" data-icon="wish" data-size="36"></span></div><div class="rel-tt">给妈妈的愿</div></div>
+            </div>
+          </div>
+          <div class="cmt-list">
+            <div class="cmt-list-h">足迹 · 2</div>
+            <div class="cmt-item"><div class="cmt-av">我</div><div class="cmt-body"><div class="cmt-name">我 · 14:22</div><div class="cmt-text">看完有点想哭，但很温柔。</div></div></div>
+          </div>
+        </div>
+        <div class="nb-bar">
+          <div class="cmt">说点什么…</div>
+          <div class="act">♥ 36</div>
+          <div class="act">★ 12</div>
+          <div class="act"><span class="ic" data-icon="lamp" data-size="24"></span> 添灯</div>
+        </div>
+        <div class="disclaimer">本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</div>
+      </section>
+
+      <!-- ============ 搜索 ============ -->
+      <section class="screen" data-screen="search">
+        <div class="bar"><div class="box"><span class="ic" data-icon="search" data-size="28"></span><input class="inp" placeholder="搜索笔记 · 作者 · 星图 · 旅行" style="border:none;background:transparent;outline:none;flex:1;color:var(--fg);font-size:14px;"/></div></div>
+        <div class="list">
+          <div class="item"><div class="av" style="background:linear-gradient(140deg,#5b5a82,#3b3a5c)"><span class="ic" data-icon="star" data-size="36"></span></div><div class="info"><div class="tt">秋夜，我点亮了今年第一盏灯</div><div class="au">拾光的小野</div></div></div>
+          <div class="item"><div class="av" style="background:linear-gradient(140deg,#4f6a7a,#2f4350)"><span class="ic" data-icon="journey" data-size="36"></span></div><div class="info"><div class="tt">西湖看星记 · 一次正念行走</div><div class="au">川页</div></div></div>
+          <div class="item"><div class="av" style="background:linear-gradient(140deg,#6a4f5a,#3f2f38)"><span class="ic" data-icon="wish" data-size="36"></span></div><div class="info"><div class="tt">给妈妈的愿 · 一封慢信</div><div class="au">林间小驻</div></div></div>
+        </div>
+      </section>
+
+      <!-- ============ 星图解读 ============ -->
+      <section class="screen" data-screen="chart">
+        <div class="card">
+          <div class="title">丙午年 · 六月十九 · 女</div>
+          <div class="subtitle">命宫主星 · 文曲</div>
+        </div>
+        <div class="card">
+          <div class="palaces">
+            <div class="palace on"><div class="p-name">命宫</div><div class="p-star">文曲</div></div>
+            <div class="palace"><div class="p-name">兄弟</div><div class="p-star">—</div></div>
+            <div class="palace"><div class="p-name">夫妻</div><div class="p-star">太阴</div></div>
+            <div class="palace"><div class="p-name">子女</div><div class="p-star">—</div></div>
+            <div class="palace"><div class="p-name">财帛</div><div class="p-star">武曲</div></div>
+            <div class="palace"><div class="p-name">疾厄</div><div class="p-star">—</div></div>
+            <div class="palace"><div class="p-name">迁移</div><div class="p-star">天同</div></div>
+            <div class="palace"><div class="p-name">交友</div><div class="p-star">—</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="title">命宫 · 文曲</div>
+          <div class="subtitle">文曲坐命，心思细腻，善表达，宜以文字与静思安顿自己。</div>
+          <div class="btn-ghost">用 120 功德 · 点亮深度解读</div>
+        </div>
+        <div class="card">
+          <div class="lock-head">解锁进度</div>
+          <div class="progress"><div class="progress-in" style="width:64%"></div></div>
+          <div class="progress-txt">当前 186 / 290 功德 · 64% · 再攒 104 即点亮 ✦</div>
+          <div class="paths">
+            <div class="path"><span class="ic p-ic" data-icon="deeds" data-size="34"></span><div class="p-info"><div class="p-name">做满今日三善</div><div class="p-desc">+3 功德，顺手点亮</div></div><div class="p-go">去 ›</div></div>
+            <div class="path"><span class="ic p-ic" data-icon="lamp" data-size="34"></span><div class="p-info"><div class="p-name">点亮长明灯</div><div class="p-desc">星愿落地 · +1 回礼</div></div><div class="p-go">去 ›</div></div>
+          </div>
+        </div>
+        <div class="reco-mini"><span class="ic" data-icon="star" data-size="34"></span><div class="p-info"><div class="p-name">星图系列 · 夜灯 / 丝巾</div><div class="p-desc">把今日的星图，化作床头的一盏温柔夜灯</div></div><div class="p-go">去结缘 ›</div></div>
+        <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</div>
+      </section>
+
+      <!-- ============ 星象文旅 ============ -->
+      <section class="screen" data-screen="tourism">
+        <div class="head">
+          <div class="h-t">星象文旅</div>
+          <div class="h-s">把星图里的「迁移宫 / 福德宫」<br>变成真实的山水旅程</div>
+        </div>
+        <div class="city-guard">
+          <div class="cg-head"><div class="cg-t">城市守护 · 星图点亮</div><div class="cg-s">到访一座城，点亮一颗星</div></div>
+          <div class="cg-map-wrap">
+            授权定位后，到访城市星图将自动点亮
+            <div class="cg-detect">检测附近城市（自动点亮）</div>
+            <div class="cg-map-tip">授权定位后，到访城市星图将自动点亮</div>
+            <div class="cg-remote"><span class="ic" data-icon="lamp" data-size="28"></span> 遥寄祝福（不在当地也能守护）</div>
+          </div>
+          <div class="cg-cities">
+            <div class="cg-city on"><span class="ic cg-star" data-icon="star" data-size="40"></span><text class="cg-name">杭州</text><div class="cg-done">已点亮</div></div>
+            <div class="cg-city on"><span class="ic cg-star" data-icon="star" data-size="40"></span><text class="cg-name">大理</text><div class="cg-done">已点亮</div></div>
+            <div class="cg-city on"><span class="ic cg-star" data-icon="star" data-size="40"></span><text class="cg-name">成都</text><div class="cg-done">遥寄点亮</div></div>
+            <div class="cg-city"><span class="ic cg-star" data-icon="star" data-size="40"></span><text class="cg-name">西安</text></div>
+            <div class="cg-city"><span class="ic cg-star" data-icon="star" data-size="40"></span><text class="cg-name">丽江</text></div>
+            <div class="cg-city"><span class="ic cg-star" data-icon="star" data-size="40"></span><text class="cg-name">拉萨</text></div>
+          </div>
+          <div class="cg-bar"><div class="cg-fill"></div></div>
+          <div class="cg-tip">已点亮 3 / 9 城 · 差 6 城解锁限定礼</div>
+          <div class="cg-nation"><span class="ic cn-emoji" data-icon="award" data-size="40"></span><div class="cn-body"><div class="cn-t">全国守护礼 · 星空丝巾</div><div class="cn-d">集满 6 城解锁，限量优先购资格 24h</div></div></div>
+        </div>
+        <div class="reco-mini"><span class="ic" data-icon="tourism" data-size="34"></span><div class="p-info"><div class="p-name">城市守护 · 星空冰箱贴</div><div class="p-desc">把点亮的城市星图，贴在冰箱上日日相伴</div></div><div class="p-go">去结缘 ›</div></div>
+        <div class="guard-board">
+          <div class="gb-head"><div class="gb-t">城市守护榜</div><div class="gb-s">点亮一座城，汇入星野守护</div></div>
+          <div class="gb-self"><span class="ic gb-self-emoji" data-icon="star" data-size="30"></span><text class="gb-self-t">你已点亮 <text class="gb-self-n">3</text> / 9 城</text></div>
+          <div class="gb-others">已有 <text style="font-weight:700;color:var(--gold-deep)">12,480</text> 位星友点亮过这些城</div>
+          <div class="gb-foot">每点亮一座城，都是对这片山水的一次温柔守诺</div>
+        </div>
+        <div class="filters"><div class="chip on">全部</div><div class="chip">避暑</div><div class="chip">观星</div><div class="chip">祈福</div></div>
+        <div class="feature">
+          <div class="badge">本期精选</div>
+          <div class="ft">大理 · 洱海观星慢行</div>
+          <div class="fd">沿着苍山洱海，把迁移宫的漂泊，走成一场温柔的归处。</div>
+          <div class="fm"><text class="tag">避暑</text><text class="tag">大暑前后</text></div>
+          <div class="fp"><div class="p">¥1280</div><div class="d">/人 · 3 天</div></div>
+        </div>
+        <div class="list">
+          <div class="card"><div class="cov"><span class="ic" data-icon="tourism" data-size="64"></span></div><div class="info"><div class="tt">杭州 · 西湖夜灯行</div><div class="ds">湖心亭点一盏灯，对着北斗许个愿。</div><text class="tg">观星</text><div class="meta"><text class="price">¥680</text> · 2 天</div></div><div class="book">预订</div></div>
+          <div class="card"><div class="cov"><span class="ic" data-icon="journey" data-size="64"></span></div><div class="info"><div class="tt">拉萨 · 星空净土行</div><div class="ds">在高处，重新看见自己。</div><text class="tg">祈福</text><div class="meta"><text class="price">¥3200</text> · 5 天</div></div><div class="book">预订</div></div>
+        </div>
+        <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</div>
+      </section>
+
+      <!-- ============ 心灵之旅 ============ -->
+      <section class="screen" data-screen="journey">
+        <div class="b-head">
+          <div class="u-eyebrow">疗愈 · 心灵之旅</div>
+          <div class="u-h2">安住此刻</div>
+          <div class="u-lede">每天十分钟，温柔待己</div>
+        </div>
+        <div class="med">
+          <div class="breath"></div>
+          <div class="tt">今日冥想 · 第 12 天</div>
+          <div class="sd">跟随呼吸，回到此刻</div>
+          <div class="btn">▶ 开始 10 分钟</div>
+        </div>
+        <div class="mood">
+          <div class="ml">此刻，你的心情是？</div>
+          <div class="row">
+            <div class="e">平静</div><div class="e on">温柔</div><div class="e">疲惫</div><div class="e">期待</div><div class="e">空落</div>
+          </div>
+        </div>
+        <div class="sec-t">引导冥想</div>
+        <div class="card meditations">
+          <span class="ic ci" data-icon="calm" data-size="40"></span>
+          <div class="ct"><div class="ti">夜灯呼吸法</div><div class="ds">轻装前行，安住当下</div></div>
+          <div class="ty">10 min</div>
+        </div>
+        <div class="card meditations">
+          <span class="ic ci" data-icon="journey" data-size="40"></span>
+          <div class="ct"><div class="ti">正念行走</div><div class="ds">把每一步，走成回家</div></div>
+          <div class="ty">15 min</div>
+        </div>
+        <div class="diary">
+          <div class="dt">心灵日记</div>
+          <textarea class="box" placeholder="此刻你在想什么？写下它，温柔对待自己。"></textarea>
+          <div class="save">保存（自动内容审核）</div>
+          <div class="note">日记仅自己可见，经安全审核后加密存储。</div>
+        </div>
+        <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</div>
+      </section>
+
+      <!-- ============ 星夜物语 ============ -->
+      <section class="screen" data-screen="daily">
+        <div class="daily-hero">
+          <div class="u-glow"></div>
+          <div class="dh-kicker">星夜物语 · 每日一章</div>
+          <div class="dh-term serif">立秋</div>
+          <div class="dh-day">第 1 日 · 共 15 日</div>
+          <div class="dh-mansion">奎宿 当值</div>
+          <div class="dh-season">风开始有了方向，宜把未说的话，写进灯里。</div>
+          <div class="dh-prog"><div class="dh-prog-bar"><div class="dh-prog-fill"></div></div><div class="dh-prog-txt">距「处暑」还有 16 天</div></div>
+        </div>
+        <div class="story">
+          <div class="s-glow"></div>
+          <div class="s-eyebrow">星夜物语 · 奎宿</div>
+          <div class="s-body">奎宿主文章、库府。今夜适合整理心绪，把零散的念头，收进一本只属于自己的星册。</div>
+          <div class="s-sign">幸运签 · 南方有星，宜静思</div>
+          <div class="s-act">读今夜的完整星语 →</div>
+        </div>
+        <div class="b-head">
+          <div class="u-eyebrow">往日星轨</div>
+          <div class="u-h2 serif">一章一宿</div>
+        </div>
+        <div class="hair"></div>
+        <div class="track">
+          <div class="chapter"><span class="ic ch-ic" data-icon="solar" data-size="32"></span><div class="ch-body"><div class="ch-eyebrow">7月30日 · 娄宿 当值</div><div class="ch-line">夏夜将尽，星子却更亮了。你想记的事，宇宙都收着。</div><div class="ch-sign">幸运签 · 娄宿主聚众，宜会老友</div></div></div>
+          <div class="chapter"><span class="ic ch-ic" data-icon="solar" data-size="32"></span><div class="ch-body"><div class="ch-eyebrow">7月29日 · 胃宿 当值</div><div class="ch-line">胃宿主仓廪。今日宜好好吃饭，好好睡一觉。</div><div class="ch-sign">幸运签 · 胃宿主滋养，宜自煮</div></div></div>
+          <div class="chapter"><span class="ic ch-ic" data-icon="solar" data-size="32"></span><div class="ch-body"><div class="ch-eyebrow">7月28日 · 昴宿 当值</div><div class="ch-line">昴宿主留连。有些告别不必说出口，星会替你记得。</div><div class="ch-sign">幸运签 · 昴宿主细思，宜写信</div></div></div>
+        </div>
+        <div class="disclaimer">温馨提示：本平台星象、节气、抽签等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。如遇情绪困扰，请寻求专业帮助。</div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const ICONS = {
+  lamp:'<path d="M12 2l1.9 6.3L20 10l-6.1 1.7L12 18l-1.9-6.3L4 10l6.1-1.7z" fill="currentColor" stroke="none"/>',
+  wish:'<path d="M7 4h10v15H7z"/><path d="M7 4c-1.4 0-2 1-2 2s.6 2 2 2"/><path d="M17 19c1.4 0 2-1 2-2s-.6-2-2-2"/><path d="M12 7.5l.8 1.9 2 .1-1.5 1.3.5 2-1.8-1.1-1.8 1.1.5-2-1.5-1.3 2-.1z" fill="currentColor" stroke="none"/>',
+  deeds:'<circle cx="6" cy="12" r="2.1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2.1" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="2.1" fill="currentColor" stroke="none"/>',
+  chart:'<circle cx="5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="4" r="1.3" fill="currentColor" stroke="none"/><circle cx="18" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="16" r="1.3" fill="currentColor" stroke="none"/><circle cx="17" cy="17" r="1.3" fill="currentColor" stroke="none"/><path d="M5 6l7-2 6 5-9 7 8 1" stroke-width="1.1"/>',
+  star:'<path d="M12 2l2 8 8 2-8 2-2 8-2-8-8-2 8-2z" fill="currentColor" stroke="none"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>',
+  tourism:'<path d="M12 21s6.5-5.6 6.5-11A6.5 6.5 0 0 0 5.5 10c0 5.4 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+  share:'<path d="M14 9V5l7 7-7 7v-4C9 14 6 13 4 16c0-5 4-9 10-7z"/>',
+  merit:'<circle cx="12" cy="12" r="8"/><path d="M12 8l1.2 3.2L16.5 12l-3.3 1.2L12 16l-1.2-2.8L7.5 12l3.3-.8z" fill="currentColor" stroke="none"/>',
+  streak:'<path d="M12 2s5 4 5 9a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 1-5 1-8z"/>',
+  award:'<circle cx="12" cy="9" r="5"/><path d="M9 13l-2 8 5-3 5 3-2-8"/>',
+  solar:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+  msg:'<path d="M5 5h14v10H9v4l-4-4z"/>',
+  note:'<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',
+  journey:'<circle cx="6" cy="18" r="1.3" fill="currentColor" stroke="none"/><path d="M6 18c4-1 5-4 9-5s3-6 9-7"/>',
+  heart:'<path d="M12 20.5l-1.4-1.3C5.4 14.4 3 11.8 3 8.8 3 6.2 5 4.3 7.5 4.3c1.6 0 3 .8 3.7 2 .7-1.2 2.1-2 3.7-2C20 4.3 21.6 6.2 21 8.8c-2 4.5-8.6 8.4-9 11.7z"/>',
+  calm:'<path d="M4 9c2-2 4 2 6 0s4 2 6 0 4 2 4 0M4 15c2-2 4 2 6 0s4 2 6 0 4 2 4 0"/>',
+  blessing:'<rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M4 13h16M12 9v11"/><path d="M12 9c-1.5-3-5-2-5 0s3.5 1 5 0c1.5-1 5-3 5 0s-3.5 3-5 0z"/>'
+};
+function paint(el){
+  const n=el.getAttribute('data-icon'); const s=+el.getAttribute('data-size')||24;
+  if(!ICONS[n]) return;
+  el.style.width=s+'px'; el.style.height=s+'px';
+  el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:'+s+'px;height:'+s+'px">'+ICONS[n]+'</svg>';
+}
+document.querySelectorAll('[data-icon]').forEach(paint);
+
+const names={index:'发现首页',anchor:'定星锚点',space:'星野工具箱',blessing:'祝福卡',publish:'发布感悟',merit:'功德中心',mall:'星野好物',profile:'我的',message:'消息',note:'笔记详情',search:'搜索',chart:'星图解读',tourism:'星象文旅',journey:'心灵之旅',daily:'星夜物语'};
+document.querySelectorAll('.nav button[data-go]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const go=b.getAttribute('data-go');
+    document.querySelectorAll('.nav button[data-go]').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.querySelector('.screen[data-screen="'+go+'"]').classList.add('active');
+    document.getElementById('pgName').textContent=names[go]||'';
+    window.scrollTo(0,0);
+  });
+});
+function toggleTheme(){document.body.classList.toggle('dark');}
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
   <view class="loop-row">
     <button class="loop-chip" wx:for="{{items}}" wx:key="url"
       data-url="{{item.url}}" bindtap="onTap" hover-class="lc-hover">
-      <text class="lc-ic">{{item.icon}}</text>
+      <astro class="lc-ic" name="{{item.icon}}" size="26" theme="{{theme}}"/>
       <text class="lc-tx">{{item.label}}</text>
     </button>
   </view>

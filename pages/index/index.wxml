@@ -1,5 +1,6 @@
 <import src="/utils/whimsy.wxml"/>
 <view class="page {{theme}}">
+
   <!-- 入场「开窗」动画：两扇窗扉向两侧滑开，星光透入（小程序进入时播放一次） -->
   <view class="win-open" wx:if="{{winOpen}}" aria-hidden="true">
     <view class="wo-pane wo-left"></view>
@@ -14,97 +15,69 @@
     </view>
   </view>
 
-  <!-- 搜索胶囊 -->
+  <!-- 搜索胶囊（极简） -->
   <view class="search" bindtap="goSearch"><astro name="search" size="28" theme="{{theme}}"/><text>搜索 星图 · 旅行 · 疗愈 · 寄愿</text></view>
 
-  <!-- 星夜祝福 Hero（含天气 + 万年历 + 宜忌）-->
-  <view class="hero {{heroLit?'lit':''}}">
+  <!-- 星夜祝福 Hero（C：更高留白 · 宜忌内联） -->
+  <view class="hero tall {{heroLit?'lit':''}}">
     <view class="stars" bindtap="onHeroTap"></view>
-    <!-- Hero 星爆：首屏一次性放射星爆（社媒新用户浪漫感） -->
     <view class="hero-burst" wx:if="{{heroBurst}}">
       <view class="hb" wx:for="{{heroBurst}}" wx:key="id" style="--dx:{{item.dx}}rpx;--dy:{{item.dy}}rpx;"></view>
     </view>
-    <view class="hero-top">
-      <view class="hero-bless">
-        <view class="hero-eyebrow">星野漫游 · 每日星语</view>
-        <view class="b-title serif">今夜，星空为你留了一盏灯</view>
-        <view class="b-line">{{starTip}}</view>
-      </view>
-      <view class="weather" bindtap="refreshWeather">
-        <view class="w-icon">{{weather.icon}}</view>
-        <view class="w-city">{{weather.city}}</view>
-        <view class="w-temp">{{weather.temp}}</view>
-        <view class="w-cond">{{weather.cond}}</view>
-      </view>
-    </view>
-    <view class="hero-mid">
-      <view class="lunar">
-        <text class="l-solar">{{solar}}</text>
-        <text class="l-lunar">{{lunar}}</text>
-      </view>
-      <view class="tip">✦ {{starTip}}</view>
-    </view>
-    <view class="mini-cal">
-      <view class="mc-head">{{cal.month}}</view>
-      <view class="mc-week">
-        <text>一</text><text>二</text><text>三</text><text>四</text><text>五</text><text>六</text><text>日</text>
-      </view>
-      <view class="mc-grid">
-        <view class="mc-d {{d.dim?'dim':''}} {{d.today?'today':''}}" wx:for="{{cal.days}}" wx:key="index" data-d="{{d.d}}" bindtap="pickDay">
-          <text class="mc-num">{{d.d}}</text>
-          <text class="mc-lu">{{d.lunarShort}}</text>
+    <view class="hero-inner">
+      <view class="hero-eyebrow">每日星语</view>
+      <view class="b-title serif">今夜，星空为你留了一盏灯</view>
+      <view class="poetic" wx:if="{{selYiJi.date}}">宜 {{selYiJi.yi}} ｜ 忌 {{selYiJi.ji}}</view>
+      <view class="hero-meta">
+        <view class="hm-l">
+          <text class="hm-solar">{{solar}}</text>
+          <text class="hm-lunar">{{lunar}}</text>
+        </view>
+        <view class="hm-weather" bindtap="refreshWeather">
+          <text class="hw-temp">{{weather.temp}}</text>
+          <text class="hw-cond">{{weather.cond}} · {{weather.city}}</text>
         </view>
       </view>
-      <view class="mc-yiji" wx:if="{{selYiJi.date}}">
-        <view class="yj-head">{{selYiJi.date}} · {{selYiJi.lunar}} <text wx:if="{{selYiJi.term}}" class="yj-term">{{selYiJi.term}}</text> · {{selYiJi.jianChu}}</view>
-        <view class="yj-row"><text class="yj-yi">宜</text>{{selYiJi.yi}}</view>
-        <view class="yj-row"><text class="yj-ji">忌</text>{{selYiJi.ji}}</view>
-      </view>
-    </view>
-    <view class="lamp" bindtap="lightLamp"><astro name="lamp" size="30" theme="{{theme}}"/> 点亮今日心灯 · +1 功德</view>
-  </view>
-
-  <!-- 快捷入口 -->
-  <view class="quick">
-    <view class="q" bindtap="goSpace"><astro class="q-ic" name="star" size="36" theme="{{theme}}"/><view>星野</view></view>
-    <view class="q" bindtap="goTourism"><astro class="q-ic" name="tourism" size="36" theme="{{theme}}"/><view>文旅</view></view>
-    <view class="q" bindtap="goWish"><astro class="q-ic" name="wish" size="36" theme="{{theme}}"/><view>寄愿</view></view>
-    <view class="q" bindtap="goMerit"><astro class="q-ic" name="lamp" size="36" theme="{{theme}}"/><view>功德</view></view>
-  </view>
-
-  <!-- Apple 风特性展示：三大支柱（宽留白 + 大字号 + 柔影） -->
-  <view class="u-section">
-    <view class="u-eyebrow">日行一善 · 三步成习</view>
-    <view class="u-h2">抬头看星，落笔安心</view>
-    <view class="u-lede">把每一天的小仪式，安放进星河里。</view>
-    <view class="u-bento">
-      <view class="u-apple-card u-spring" bindtap="goChart">
-        <astro class="ub-ic" name="chart" size="44" theme="{{theme}}"/>
-        <view class="ub-t">点亮星图</view>
-        <view class="ub-d">二十八宿，照亮今日心绪</view>
-      </view>
-      <view class="u-apple-card u-spring" bindtap="goWish">
-        <astro class="ub-ic" name="wish" size="44" theme="{{theme}}"/>
-        <view class="ub-t">寄一笔愿</view>
-        <view class="ub-d">把心事交给星河，慢慢安放</view>
-      </view>
-      <view class="u-apple-card u-spring" bindtap="goMerit">
-        <astro class="ub-ic" name="deeds" size="44" theme="{{theme}}"/>
-        <view class="ub-t">今日三善</view>
-        <view class="ub-d">点灯 · 随喜 · 冥想，积微成光</view>
-      </view>
+      <view class="lamp" bindtap="lightLamp"><astro name="lamp" size="30" theme="{{theme}}"/> 点亮今日心灯 · +1 功德</view>
     </view>
   </view>
 
-  <!-- 距深度解读进度 + 社会证明（P0-2 / P0-4） -->
+  <!-- 今日仪式 · 极简竖流（合并原快捷入口 + 三步成习） -->
+  <view class="ritual">
+    <view class="rstep" bindtap="lightLamp">
+      <view class="r-ic"><astro name="lamp" size="22" theme="{{theme}}"/></view>
+      <view class="r-main">
+        <view class="r-t">① 点亮心灯</view>
+        <view class="r-d">今日份的小仪式，从一盏灯开始。</view>
+      </view>
+      <view class="r-badge">{{checkedIn ? '已点亮' : '+1 功德'}}</view>
+    </view>
+    <view class="rstep" bindtap="goWish">
+      <view class="r-ic"><astro name="wish" size="22" theme="{{theme}}"/></view>
+      <view class="r-main">
+        <view class="r-t">② 寄一笔愿</view>
+        <view class="r-d">把心事交给星河，慢慢安放。</view>
+      </view>
+      <view class="r-arrow">→</view>
+    </view>
+    <view class="rstep" bindtap="goMerit">
+      <view class="r-ic"><astro name="deeds" size="22" theme="{{theme}}"/></view>
+      <view class="r-main">
+        <view class="r-t">③ 今日三善</view>
+        <view class="r-d">点灯 · 随喜 · 冥想，积微成光。</view>
+      </view>
+      <view class="r-arrow">→</view>
+    </view>
+  </view>
+
+  <!-- 距深度解读进度（一条细线） -->
   <view class="unlock-chip" bindtap="goChart">
     <view class="uc-l">✦ {{unlockHint}}</view>
     <view class="uc-bar"><view class="uc-fill" style="width:{{unlockPct}}%"></view></view>
     <view class="uc-r">{{unlockPct}}%</view>
   </view>
-  <view class="proof-bar"><astro name="streak" size="26" theme="{{theme}}"/> 已有 {{socialProof}} 位旅人正在星野日行一善 · 已为你关注 3 位星野引路人</view>
 
-  <!-- 星夜物语 · 每日视觉叙事入口（标杆组件：母题=夜，双主题 + 线性 SVG） -->
+  <!-- 星夜物语 · 每日视觉叙事入口 -->
   <story-card
     wx:if="{{story}}"
     host="{{story.host}}"
@@ -114,6 +87,17 @@
     motif="{{story.motif}}"
     theme="{{theme}}"
     bind:tap="onStoryTap" />
+
+  <!-- 本周星历（周条，替代原完整万年历；点击仍可取该日宜忌） -->
+  <view class="cal-week-strip">
+    <view class="cws-head">{{cal.month}}</view>
+    <view class="strip">
+      <view class="sday {{d.today?'today':''}} {{d.dim?'dim':''}}" wx:for="{{week}}" wx:key="index" data-d="{{d.d}}" data-y="{{d.yy}}" data-m="{{d.mm}}" bindtap="pickDay">
+        <view class="sd">{{d.d}}</view>
+        <view class="sl">{{d.lunarShort}}</view>
+      </view>
+    </view>
+  </view>
 
   <!-- 顶 Tab（吸顶） -->
   <view class="tabs-wrap">
@@ -145,7 +129,7 @@
     <view class="feed">
       <view class="col">
         <view class="card" wx:for="{{fLeft}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
-          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}"><astro class="img-ic" name="{{item.icon || 'star'}}" size="56" theme="dark"/><view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
           <view class="body">
             <view class="tt">{{item.title}}</view>
             <view class="meta">
@@ -160,7 +144,7 @@
       </view>
       <view class="col">
         <view class="card" wx:for="{{fRight}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
-          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}"><astro class="img-ic" name="{{item.icon || 'star'}}" size="56" theme="dark"/><view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
           <view class="body">
             <view class="tt">{{item.title}}</view>
             <view class="meta">
@@ -175,7 +159,7 @@
       </view>
     </view>
     <view wx:if="{{following.length===0}}" class="empty">
-      <view class="em-emoji">🪷</view>
+      <view class="em-mark">✦</view>
       <view class="em-tt">还没有关注的人</view>
       <view class="em-sub">{{emptyFollow}}</view>
     </view>
@@ -183,7 +167,7 @@
 
   <!-- 发现分屏 -->
   <block wx:elif="{{tab===1}}">
-    <!-- P1-6 快捷发布：随手记一笔 -->
+    <!-- 随手记一笔 -->
     <view class="quickpost">
       <input class="qp-input" placeholder="随手记一笔，星野为你留痕…" value="{{quickText}}" bindinput="quickInput" confirm-type="发送" bindconfirm="quickPost"/>
       <view class="qp-btn" bindtap="quickPost">记一笔 +8</view>
@@ -201,7 +185,7 @@
     <view class="feed">
       <view class="col">
         <view class="card" wx:for="{{left}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
-          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}"><astro class="img-ic" name="{{item.icon || 'star'}}" size="56" theme="dark"/><view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
           <view class="body">
             <view class="tt">{{item.title}}</view>
             <view class="meta">
@@ -216,7 +200,7 @@
       </view>
       <view class="col">
         <view class="card" wx:for="{{right}}" wx:key="id" data-id="{{item.noteId}}" bindtap="openNote">
-          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}">{{item.emoji}}<view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
+          <view class="img" style="height:{{item.h}}rpx;background:{{item.bg}}"><astro class="img-ic" name="{{item.icon || 'star'}}" size="56" theme="dark"/><view wx:if="{{item.mine}}" class="mine-flag">我的</view></view>
           <view class="body">
             <view class="tt">{{item.title}}</view>
             <view class="meta">
@@ -237,7 +221,7 @@
     <view class="vfeed">
       <view class="vcard" wx:for="{{videos}}" wx:key="id" bindtap="openVideo">
         <view class="v-cover" style="background:{{item.bg}}">
-          <text class="v-emoji">{{item.cover}}</text>
+          <astro class="v-ic" name="star" size="72" theme="{{theme}}"/>
           <view class="v-play">▶</view>
           <view class="v-dur">{{item.dur}}</view>
           <view class="v-topic">{{item.topic}}</view>
@@ -265,16 +249,16 @@
       <view class="g-title serif">欢迎来到拾光驿·星野漫游</view>
       <view class="g-sub">五个空间，陪你抬头看星</view>
       <view class="g-grid">
-        <view class="g-item"><view class="g-ic">🔭</view><view class="g-t">发现</view><view class="g-d">每日祝福 · 内容流</view></view>
-        <view class="g-item"><view class="g-ic">✦</view><view class="g-t">星野</view><view class="g-d">星图 · 疗愈 · 寄愿</view></view>
-        <view class="g-item"><view class="g-ic">🏯</view><view class="g-t">文旅</view><view class="g-d">星象旅行</view></view>
-        <view class="g-item"><view class="g-ic">✉</view><view class="g-t">消息</view><view class="g-d">动态 · 社交</view></view>
-        <view class="g-item"><view class="g-ic">👤</view><view class="g-t">我的</view><view class="g-d">功德 · 资产</view></view>
+        <view class="g-item"><astro class="g-ic" name="search" size="34" theme="{{theme}}"/><view class="g-t">发现</view><view class="g-d">每日祝福 · 内容流</view></view>
+        <view class="g-item"><astro class="g-ic" name="star" size="34" theme="{{theme}}"/><view class="g-t">星野</view><view class="g-d">星图 · 疗愈 · 寄愿</view></view>
+        <view class="g-item"><astro class="g-ic" name="tourism" size="34" theme="{{theme}}"/><view class="g-t">文旅</view><view class="g-d">星象旅行</view></view>
+        <view class="g-item"><astro class="g-ic" name="msg" size="34" theme="{{theme}}"/><view class="g-t">消息</view><view class="g-d">动态 · 社交</view></view>
+        <view class="g-item"><astro class="g-ic" name="heart" size="34" theme="{{theme}}"/><view class="g-t">我的</view><view class="g-d">功德 · 资产</view></view>
       </view>
       <view class="g-wish-t">立一个本月星愿（可选）</view>
       <view class="g-wishes">
         <view class="gw {{myWish===item.k?'on':''}}" wx:for="{{wishes}}" wx:key="k" data-k="{{item.k}}" bindtap="onWish">
-          <text class="gw-emoji">{{item.emoji}}</text><text class="gw-t">{{item.t}}</text>
+          <astro class="gw-ic" name="{{item.icon}}" size="28" theme="{{theme}}"/><text class="gw-t">{{item.t}}</text>
         </view>
       </view>
       <view class="g-btn" bindtap="finishGuide">开始今天的仪式 · 点亮心灯 +1 功德</view>

@@ -1,7 +1,7 @@
 .page { padding: 24rpx 32rpx 60rpx; }
 .uploads { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16rpx; }
-.u { aspect-ratio: 1; border-radius: 20rpx; background: var(--bg-elev); display: flex; align-items: center; justify-content: center; font-size: 60rpx; color: var(--fg-2); border: 1rpx dashed var(--border); }
-.u.f { background: linear-gradient(140deg, #e0c489, var(--gold)); color: #fff; border: 0; }
+.u { aspect-ratio: 1; border-radius: 16rpx; background: transparent; display: flex; align-items: center; justify-content: center; font-size: 44rpx; color: var(--fg-3, var(--fg-2)); border: 1rpx dashed var(--border); }
+.u.f { background: linear-gradient(140deg, #3a3660, #6a5f96); border: 0; }
 
 .ti { font-size: 32rpx; font-weight: 700; margin: 30rpx 0 16rpx; width: 100%; color: var(--fg); }
 .ta { width: 100%; height: 240rpx; font-size: 30rpx; line-height: 1.7; color: var(--fg); }
@@ -9,10 +9,11 @@
 .sec { margin-top: 34rpx; border-top: 1rpx solid var(--border); padding-top: 28rpx; }
 .sec .h { font-size: 24rpx; color: var(--fg-2); margin-bottom: 18rpx; }
 .chips { display: flex; flex-wrap: wrap; gap: 16rpx; }
-.c { font-size: 26rpx; padding: 14rpx 26rpx; border-radius: 999rpx; background: var(--bg-elev); color: var(--fg-2); }
-.c.on { background: var(--gold-tint); color: var(--gold-deep); font-weight: 600; }
+.c { font-size: 26rpx; padding: 14rpx 26rpx; border-radius: 999rpx; background: transparent; border: 1rpx solid var(--border); color: var(--fg-2); }
+.c.on { border-color: var(--gold); color: var(--gold-deep); font-weight: 600; }
 
-.row { display: flex; align-items: center; font-size: 28rpx; color: var(--fg); padding: 26rpx 0; border-bottom: 1rpx solid var(--border); }
+.row { display: flex; align-items: center; gap: 14rpx; font-size: 28rpx; color: var(--fg); padding: 26rpx 0; border-bottom: 1rpx solid var(--border); }
+.row-ic { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex: none; }
 .row .r { margin-left: auto; color: var(--fg-2); font-size: 26rpx; }
 
-.pub { margin-top: 48rpx; background: var(--gold); color: #fff; border: 0; border-radius: 999rpx; height: 96rpx; font-size: 32rpx; font-weight: 600; }
+.pub { margin-top: 48rpx; background: transparent; color: var(--gold-deep); border: 1rpx solid var(--gold); border-radius: 999rpx; height: 96rpx; line-height: 96rpx; font-size: 30rpx; letter-spacing: 2rpx; font-weight: 600; }

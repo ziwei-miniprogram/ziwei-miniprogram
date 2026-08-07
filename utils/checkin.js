@@ -15,12 +15,12 @@ const NEAR_RADIUS = 1500;               // P1：到访判定半径（米），�
 // 文旅城市（与 mock.cityLights / tours 调性呼应；接后端后可由接口替换）
 // lat/lng 为城市中心近似坐标，用于 P1 GPS 自动打卡的距离判定
 const CITIES = [
-  { id: 'hangzhou', name: '杭州', star: '🌊', desc: '西湖星垂，断桥灯暖', lat: 30.2741, lng: 120.1551 },
-  { id: 'chengdu', name: '成都', star: '🍃', desc: '锦官城静，茶馆灯长', lat: 30.5728, lng: 106.5516 },
-  { id: 'dali', name: '大理', star: '🏔️', desc: '苍山雪映，洱海星移', lat: 25.6065, lng: 100.2676 },
-  { id: 'dunhuang', name: '敦煌', star: '🏜️', desc: '大漠星河，飞天灯列', lat: 40.1421, lng: 94.6618 },
-  { id: 'putuoshan', name: '普陀山', star: '🏮', desc: '莲岛潮音，寄愿灯明', lat: 30.0108, lng: 122.3947 },
-  { id: 'suzhou', name: '苏州', star: '🪷', desc: '园林灯影，水巷星移', lat: 31.2989, lng: 120.5853 }
+  { id: 'hangzhou', name: '杭州', star: 'tourism', desc: '西湖星垂，断桥灯暖', lat: 30.2741, lng: 120.1551 },
+  { id: 'chengdu', name: '成都', star: 'calm', desc: '锦官城静，茶馆灯长', lat: 30.5728, lng: 106.5516 },
+  { id: 'dali', name: '大理', star: 'tourism', desc: '苍山雪映，洱海星移', lat: 25.6065, lng: 100.2676 },
+  { id: 'dunhuang', name: '敦煌', star: 'tourism', desc: '大漠星河，飞天灯列', lat: 40.1421, lng: 94.6618 },
+  { id: 'putuoshan', name: '普陀山', star: 'lamp', desc: '莲岛潮音，寄愿灯明', lat: 30.0108, lng: 122.3947 },
+  { id: 'suzhou', name: '苏州', star: 'blessing', desc: '园林灯影，水巷星移', lat: 31.2989, lng: 120.5853 }
 ];
 const TOTAL = CITIES.length;
 
@@ -75,7 +75,7 @@ function remoteCheckIn(cityId) {
   if (isChecked(cityId)) return { ok: false, reason: 'already' };
   return checkIn(cityId, { remote: true });
 }
-// 某城是否以「遥寄」方式点亮（用于 UI 标记 🏮）
+// 某城是否以「遥寄」方式点亮（用于 UI 标记：astro lamp 图标）
 function isRemote(cityId) {
   return !!(load().remote[cityId]);
 }

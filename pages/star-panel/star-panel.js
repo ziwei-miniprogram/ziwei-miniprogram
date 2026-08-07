@@ -25,10 +25,10 @@ Page({
     ziwei: null, bazi: null, xz: null,
     // 回灌闭环（解 B3）
     loopItems: [
-      { icon: '🔭', label: '点亮今日星图', url: '/pages/chart/chart' },
-      { icon: '🪔', label: '寄愿一笔', url: '/pages/merit/merit?tab=wish' },
-      { icon: '🛎', label: '今日三善', url: '/pages/merit/merit' },
-      { icon: '✍️', label: '记一笔感悟', url: '/pages/note/note' }
+      { icon: 'chart', label: '点亮今日星图', url: '/pages/chart/chart' },
+      { icon: 'wish', label: '寄愿一笔', url: '/pages/merit/merit?tab=wish' },
+      { icon: 'deeds', label: '今日三善', url: '/pages/merit/merit' },
+      { icon: 'note', label: '记一笔感悟', url: '/pages/note/note' }
     ]
   },
   onLoad(q) {

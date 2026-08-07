@@ -27,6 +27,22 @@ function buildCalendar(year, month, today) {
   return cells;
 }
 
+// 本周星历（周一起始，7 格，含跨月 dim 与今日高亮 + 农历小字 + 真实年月，供 pickDay 取宜忌）
+function weekStrip(year, month, today) {
+  const now = new Date(year, month - 1, today);
+  const dow = (now.getDay() + 6) % 7; // 周一=0
+  const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - dow);
+  const arr = [];
+  for (let i = 0; i < 7; i++) {
+    const dt = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + i);
+    const yy = dt.getFullYear(), mm = dt.getMonth() + 1, d = dt.getDate();
+    const isCur = (yy === year && mm === month && d === today);
+    const L = getLunar(yy, mm, d);
+    arr.push({ d, yy, mm, dim: mm !== month, today: isCur, lunarShort: L.term || L.dayCn });
+  }
+  return arr;
+}
+
 // 把瀑布流分成左右两列（模拟 masonry）
 function splitColumns(list) {
   const left = [], right = [];
@@ -38,13 +54,13 @@ function splitColumns(list) {
 function weatherFor(date) {
   const seed = date.getFullYear() * 372 + date.getMonth() * 31 + date.getDate();
   const pool = [
-    { temp: '22°', cond: '晴夜', icon: '🌙' },
-    { temp: '24°', cond: '多云', icon: '⛅' },
-    { temp: '19°', cond: '小雨', icon: '🌧' },
-    { temp: '26°', cond: '晴', icon: '☀' },
-    { temp: '21°', cond: '微风', icon: '🍃' },
-    { temp: '18°', cond: '阵雨', icon: '🌦' },
-    { temp: '23°', cond: '阴', icon: '☁' }
+    { temp: '22°', cond: '晴夜' },
+    { temp: '24°', cond: '多云' },
+    { temp: '19°', cond: '小雨' },
+    { temp: '26°', cond: '晴' },
+    { temp: '21°', cond: '微风' },
+    { temp: '18°', cond: '阵雨' },
+    { temp: '23°', cond: '阴' }
   ];
   return pool[seed % pool.length];
 }
@@ -96,11 +112,12 @@ Page({
     showTop: false,
     // 星夜祝福 Hero（含天气 + 万年历）
     heroBlessing: ['愿你所行皆坦途', '所念皆如愿'],
-    weather: { city: '杭州', temp: '23°', cond: '晴夜', icon: '🌙' },
+    weather: { city: '杭州', temp: '23°', cond: '晴夜' },
     solar: '7月23日 周四',
     lunar: '丙午年 · 六月初十',
     starTip: '今日星象 · 心静则明',
     cal: { month: '2026 年 7 月', days: [] },
+    week: [],
     // 选中日宜忌（默认今日）
     selYiJi: { date: '', lunar: '', term: '', jianChu: '', yi: '', ji: '' },
     merit: 0,
@@ -113,10 +130,10 @@ Page({
     unlockHint: '',
     socialProof: '12,800+',
     wishes: [
-      { k: '平静', emoji: '🌿', t: '内心平静' },
-      { k: '连接', emoji: '🤝', t: '与人连接' },
-      { k: '成长', emoji: '🌱', t: '持续成长' },
-      { k: '善行', emoji: '🪔', t: '日行一善' }
+      { k: '平静', icon: 'calm', t: '内心平静' },
+      { k: '连接', icon: 'share', t: '与人连接' },
+      { k: '成长', icon: 'solar', t: '持续成长' },
+      { k: '善行', icon: 'deeds', t: '日行一善' }
     ],
     myWish: '',
     // —— 愉悦体验状态位 ——
@@ -147,6 +164,7 @@ Page({
     const selYiJi = { date: `${m}月${d}日`, lunar: L.fullCn, term: L.term, jianChu: L.jianChu, yi: L.yi, ji: L.ji };
     this.setData({
       today: d, calYear: y, calMonth: m, solar, lunar: L.fullCn, starTip, cal,
+      week: weekStrip(y, m, d),
       weather: { city: '杭州', ...w }, selYiJi
     });
     // 首启：预置默认关注（3 位星野引路人），打破社交冷启动
@@ -172,7 +190,7 @@ Page({
     // P0-1 进度虚高起点：新用户「星辉初光 +10」的星光反馈（一次性）
     if (app.globalData.welcomeGift) {
       const self = this;
-      setTimeout(() => { whimsy.burst(self, { text: whimsy.COPY.welcome, emoji: '🌟' }); }, 900);
+      setTimeout(() => { whimsy.burst(self, { text: whimsy.COPY.welcome, emoji: '✦' }); }, 900);
       app.globalData.welcomeGift = false;
     }
     const self = this;
@@ -220,7 +238,7 @@ Page({
   // 重建三栏列表：拼接已发布笔记 + 注入社交状态 + 实时计数
   buildLists() {
     const pub = getPublished().map(p => ({
-      id: p.id, emoji: p.emoji, bg: p.bg, title: p.title, author: p.author,
+      id: p.id, icon: p.icon || 'note', bg: p.bg, title: p.title, author: p.author,
       likes: p.likes, collects: p.collects, topic: p.topic, h: p.h, noteId: p.id, mine: true
     }));
     const feedAll = pub.concat(feed).map(toCard);
@@ -241,11 +259,12 @@ Page({
 
   switchTab(e) { this.setData({ tab: Number(e.currentTarget.dataset.i) }); },
 
-  // 点击日历某天，展示该日宜忌
+  // 点击本周星历某天，展示该日宜忌（支持跨月，取真实年月）
   pickDay(e) {
     const d = Number(e.currentTarget.dataset.d);
     if (!d) return;
-    const y = this.data.calYear, m = this.data.calMonth;
+    const y = Number(e.currentTarget.dataset.y) || this.data.calYear;
+    const m = Number(e.currentTarget.dataset.m) || this.data.calMonth;
     const L = getLunar(y, m, d);
     this.setData({
       selYiJi: { date: `${m}月${d}日`, lunar: L.fullCn, term: L.term, jianChu: L.jianChu, yi: L.yi, ji: L.ji }
@@ -324,7 +343,7 @@ Page({
     this.setData({ merit: app.globalData.merit, level: after, checkedIn: true });
     whimsy.afterMerit(this, before, after, r.gain, 'checkin');
     // P1-1 连签里程碑飘星
-    if (r.milestone) whimsy.burst(this, { text: `连签 ${r.milestone.streak} 天 · 里程碑 +${r.milestone.bonus} 🎉`, emoji: '🏆' });
+    if (r.milestone) whimsy.burst(this, { text: `连签 ${r.milestone.streak} 天 · 里程碑 +${r.milestone.bonus}`, emoji: '✦' });
   },
   // 彩蛋：连点 Hero 星空 ×5 → 星河贯通（彩虹星模式）
   onHeroTap() {
@@ -375,7 +394,6 @@ Page({
       });
       return;
     }
-    const emojis = ['🌌', '🔮', '🍃', '🏮', '🌙', '🌿', '🪔', '⭐'];
     const bgs = [
       'linear-gradient(140deg,#2b2b4e,#4a4a7a)',
       'linear-gradient(140deg,#3a3660,#6a5f96)',
@@ -387,7 +405,7 @@ Page({
     const note = {
       id, title: text.slice(0, 20), body: text, author: '拾光的小野',
       likes: 0, collects: 0, topic: '随手记', h: 200 + Math.floor(Math.random() * 60),
-      emoji: emojis[Math.floor(Math.random() * emojis.length)],
+      icon: 'note',
       bg: bgs[Math.floor(Math.random() * bgs.length)], mine: true, t: '刚刚'
     };
     let arr = [];

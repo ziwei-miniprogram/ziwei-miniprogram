@@ -1,27 +1,31 @@
 <view class="page {{theme}}">
-  <view class="hd">
-    <view class="h-t">星野 · 工具箱</view>
-    <view class="h-s">星图 · 疗愈 · 心灵 · 寄愿 · 祝福 · 功德</view>
+  <view class="b-head">
+    <view class="u-eyebrow">全部工具</view>
+    <view class="u-h2">星野工具箱</view>
+    <view class="u-lede">识星 · 安善 · 表达 —— 三簇归位，常用的三处直接在上面</view>
   </view>
+  <view class="hair"></view>
 
-  <!-- 高频常驻：Top3 动作 1 跳直达（解 B2 深井） -->
+  <!-- 高频常驻：Top3 动作 1 跳直达 -->
   <view class="pinned">
     <view class="pin" wx:for="{{pinned}}" wx:key="key" data-url="{{item.url}}" bindtap="go">
-      <image class="pic" src="{{item.icon}}" mode="aspectFit" />
+      <astro class="pic" name="{{item.icon}}" size="34" theme="{{theme}}"/>
       <view class="pnm">{{item.name}}</view>
       <view class="pds">{{item.desc}}</view>
     </view>
   </view>
 
-  <!-- 分簇：识星 / 安善 / 表达 -->
+  <!-- 分簇：识星 / 安善 / 表达，单列行式 -->
   <view class="cluster" wx:for="{{clusters}}" wx:for-item="c" wx:key="name">
     <view class="cl-h">{{c.name}}</view>
-    <view class="grid">
-      <view class="cell" wx:for="{{c.items}}" wx:for-item="item" wx:key="key" data-url="{{item.url}}" bindtap="go">
-        <image class="ic" src="{{item.icon}}" mode="aspectFit" />
+    <view class="hair-tight"></view>
+    <view class="row" wx:for="{{c.items}}" wx:for-item="item" wx:key="key" data-url="{{item.url}}" bindtap="go">
+      <astro class="ic" name="{{item.icon}}" size="30" theme="{{theme}}"/>
+      <view class="rb">
         <view class="nm">{{item.name}}</view>
         <view class="ds">{{item.desc}}</view>
       </view>
+      <view class="arrow">→</view>
     </view>
   </view>
 

@@ -36,7 +36,8 @@
 .pt.on { color: var(--fg); font-weight: 700; border-bottom: 4rpx solid var(--gold); }
 
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8rpx; padding: 8rpx 36rpx 0; }
-.g { aspect-ratio: 1; border-radius: 16rpx; display: flex; align-items: flex-end; padding: 14rpx; font-size: 50rpx; color: #fff; position: relative; }
+.g { aspect-ratio: 1; border-radius: 16rpx; display: flex; align-items: center; justify-content: center; padding: 14rpx; color: #fff; position: relative; }
+.g-ic { opacity: .92; }
 .g-tt { position: absolute; left: 14rpx; bottom: 14rpx; right: 14rpx; font-size: 22rpx; color: #fff; text-shadow: 0 1rpx 4rpx rgba(0,0,0,.5); }
 
 /* 收藏 / 赞 空状态 */
@@ -46,7 +47,7 @@
 
 /* 夜灯模式切换 */
 .theme-toggle { display: flex; align-items: center; gap: 14rpx; padding: 0 36rpx; margin-top: -34rpx; justify-content: flex-end; }
-.tt-ic { font-size: 32rpx; }
+.tt-ic { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; flex: none; }
 .tt-label { font-size: 24rpx; color: var(--fg-3); }
 .tt-switch { transform: scale(.78); }
 
@@ -60,11 +61,11 @@
 
 /* 金色成就徽章墙 */
 .badges { margin: 24rpx 36rpx 0; }
-.b-title { font-size: 28rpx; font-weight: 700; color: var(--fg); }
+.b-title { font-size: 28rpx; font-weight: 700; color: var(--fg); display: flex; align-items: center; gap: 10rpx; }
 .b-count { font-size: 22rpx; color: var(--gold-deep); margin-left: 8rpx; }
 .b-grid { display: flex; flex-wrap: wrap; gap: 18rpx; margin-top: 18rpx; }
 .badge { width: calc(25% - 14rpx); display: flex; flex-direction: column; align-items: center; gap: 8rpx; padding: 18rpx 0; border-radius: 20rpx; background: var(--bg-elev); border: 1rpx solid var(--border); opacity: .5; filter: grayscale(.7); }
 .badge.on { opacity: 1; filter: none; background: linear-gradient(140deg, var(--gold-tint), var(--gold-soft)); border-color: rgba(200,163,90,.4); box-shadow: 0 4rpx 14rpx rgba(200,163,90,.25); }
-.b-ic { font-size: 44rpx; }
+.b-ic { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
 .b-nm { font-size: 21rpx; color: var(--fg); }
 .b-desc { font-size: 17rpx; color: var(--fg-2); line-height: 1.3; text-align: center; padding: 0 6rpx; }

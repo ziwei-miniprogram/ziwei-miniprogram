@@ -1,8 +1,10 @@
 <view class="page {{theme}} container">
-  <view class="hd">
-    <view class="h-t serif">星盘</view>
-    <view class="h-s">识己 · 星象命理合集（传统文化娱乐参考）</view>
+  <view class="b-head">
+    <view class="u-eyebrow">识己 · 星象命理</view>
+    <view class="u-h2 serif">星盘</view>
+    <view class="u-lede">紫微、八字、星座三册合一，皆为传统文化的娱乐参考。</view>
   </view>
+  <view class="hair"></view>
 
   <!-- 内部 tab：三命理模式合一（解 B3 孤儿页合并） -->
   <view class="seg">
@@ -86,6 +88,6 @@
   </block>
 
   <!-- 回灌闭环：看完命理顺手做一件，送回主循环（解 B3） -->
-  <loop-chip items="{{loopItems}}" title="识己之后，顺手安住此刻" />
+  <loop-chip items="{{loopItems}}" title="识己之后，顺手安住此刻" theme="{{theme}}" />
 </view>
-<heart-lamp />
+<heart-lamp theme="{{theme}}" />

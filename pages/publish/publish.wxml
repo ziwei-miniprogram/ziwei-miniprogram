@@ -1,7 +1,7 @@
 <import src="/utils/whimsy.wxml"/>
 <view class="page {{theme}}">
   <view class="uploads">
-    <view class="u f" wx:for="{{imgs}}" wx:key="*this">{{item}}</view>
+    <view class="u f" wx:for="{{imgs}}" wx:key="*this"><astro name="{{item}}" size="52" theme="dark"/></view>
     <view class="u" bindtap="chooseImg">＋</view>
     <view class="u">＋</view>
     <view class="u">＋</view>
@@ -21,9 +21,9 @@
   </view>
 
   <view class="sec">
-    <view class="row" bindtap="choosePlace"><text>📍 地点</text><text class="r">{{place}} ›</text></view>
-    <view class="row" bindtap="chooseStar"><text>🔮 关联我的星图</text><text class="r">{{star}} ▾</text></view>
-    <view class="row" bindtap="chooseStar"><text>🏮 关联今日寄愿</text><text class="r">为妈妈 ›</text></view>
+    <view class="row" bindtap="choosePlace"><astro class="row-ic" name="tourism" size="28" theme="{{theme}}"/><text>地点</text><text class="r">{{place}} ›</text></view>
+    <view class="row" bindtap="chooseStar"><astro class="row-ic" name="chart" size="28" theme="{{theme}}"/><text>关联我的星图</text><text class="r">{{star}} ▾</text></view>
+    <view class="row" bindtap="chooseStar"><astro class="row-ic" name="wish" size="28" theme="{{theme}}"/><text>关联今日寄愿</text><text class="r">为妈妈 ›</text></view>
   </view>
 
   <button class="pub" bindtap="publish">发布并 +8 功德</button>

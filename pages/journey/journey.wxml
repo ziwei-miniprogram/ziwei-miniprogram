@@ -1,7 +1,8 @@
 <view class="container page {{theme}}">
-  <view class="head">
-    <view class="h-t">心灵之旅</view>
-    <view class="h-s">每天 10 分钟，安住当下，温柔待己</view>
+  <view class="b-head">
+    <view class="u-eyebrow">疗愈 · 心灵之旅</view>
+    <view class="u-h2">安住此刻</view>
+    <view class="u-lede">每天十分钟，温柔待己</view>
   </view>
 
   <!-- 今日冥想 Hero -->
@@ -24,7 +25,7 @@
   <!-- 冥想列表 -->
   <view class="sec-t">引导冥想</view>
   <view class="card" wx:for="{{meditations}}" wx:key="id">
-    <view class="ci">{{item.cover}}</view>
+    <astro class="ci" name="{{item.cover}}" size="40" theme="{{theme}}"/>
     <view class="ct">
       <view class="ti">{{item.title}}</view>
       <view class="ds">轻装前行，安住当下</view>

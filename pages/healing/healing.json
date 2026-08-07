@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "astro": "/components/icon/icon"
+  },
   "navigationBarTitleText": "精神疗愈"
 }

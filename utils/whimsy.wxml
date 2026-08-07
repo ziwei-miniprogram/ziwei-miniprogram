@@ -15,7 +15,7 @@
   <!-- 晋阶庆祝卡 -->
   <view wx:if="{{levelUp}}" class="lu-mask">
     <view class="lu-card">
-      <view class="lu-emoji">🏅</view>
+      <view class="lu-emoji">✦</view>
       <view class="lu-title">功德圆满 · 晋阶</view>
       <view class="lu-name serif">{{levelUp.name}}</view>
       <view class="lu-sub">星野因你，又明亮一分</view>

@@ -1,4 +1,7 @@
 // MVP 演示数据。实际项目请由后端 / 云开发数据库提供。
+// 视觉语言（方向 B · 极简留白）：封面/图标统一用 astro 图标名（见 components/icon/icon.js），
+// 图标统一走 <astro name="..."/>（components/icon/icon），字段名 icon，取值为图标名。
+// 可用名：lamp/wish/deeds/share/merit/streak/award/solar/chart/star/search/msg/note/journey/heart/calm/blessing/tourism
 const palaza = {
   name: "示例星图",
   birth: "1990-05-20 14:30",
@@ -22,24 +25,24 @@ const palaza = {
 };
 
 const products = [
-  { id: 1, title: "紫微星象主题·天然紫水晶簇", price: 168, tag: "水晶", meritTag: "功德Lv.3 享9折", sales: "月销 320", cover: "💎", badge: "星图同款", bg: "linear-gradient(140deg,#6a8fc0,#9bb8e0)" },
-  { id: 2, title: "寄愿·暖月香薰蜡烛 静心", price: 89, tag: "香薰", meritTag: "功德 +1/单", sales: "月销 540", cover: "🕯️", badge: "", bg: "linear-gradient(140deg,#c8a35a,#e0c489)" },
-  { id: 3, title: "108 颗星辉檀木念珠", price: 128, tag: "文创", meritTag: "功德Lv.2 享95折", sales: "月销 210", cover: "📿", badge: "", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)" },
-  { id: 4, title: "十二宫游学·敦煌星图 3 日", price: 1980, tag: "线路", meritTag: "赠寄愿灯", sales: "已报名 86", cover: "🏔️", badge: "星图同款", bg: "linear-gradient(140deg,#3a3660,#6a5f96)" },
-  { id: 5, title: "《紫微星象文化入门》签名版", price: 59, tag: "书籍", meritTag: "功德 +1/单", sales: "月销 430", cover: "📖", badge: "", bg: "linear-gradient(140deg,#b9544a,#e0796f)" },
-  { id: 6, title: "睡前冥想引导卡牌 21 天", price: 79, tag: "课程", meritTag: "功德Lv.1 享9折", sales: "月销 360", cover: "🌙", badge: "", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)" }
+  { id: 1, title: "紫微星象主题·天然紫水晶簇", price: 168, tag: "水晶", meritTag: "功德Lv.3 享9折", sales: "月销 320", cover: "award", badge: "星图同款", bg: "linear-gradient(140deg,#6a8fc0,#9bb8e0)" },
+  { id: 2, title: "寄愿·暖月香薰蜡烛 静心", price: 89, tag: "香薰", meritTag: "功德 +1/单", sales: "月销 540", cover: "lamp", badge: "", bg: "linear-gradient(140deg,#c8a35a,#e0c489)" },
+  { id: 3, title: "108 颗星辉檀木念珠", price: 128, tag: "文创", meritTag: "功德Lv.2 享95折", sales: "月销 210", cover: "calm", badge: "", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)" },
+  { id: 4, title: "十二宫游学·敦煌星图 3 日", price: 1980, tag: "线路", meritTag: "赠寄愿灯", sales: "已报名 86", cover: "tourism", badge: "星图同款", bg: "linear-gradient(140deg,#3a3660,#6a5f96)" },
+  { id: 5, title: "《紫微星象文化入门》签名版", price: 59, tag: "书籍", meritTag: "功德 +1/单", sales: "月销 430", cover: "note", badge: "", bg: "linear-gradient(140deg,#b9544a,#e0796f)" },
+  { id: 6, title: "睡前冥想引导卡牌 21 天", price: 79, tag: "课程", meritTag: "功德Lv.1 享9折", sales: "月销 360", cover: "calm", badge: "", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)" }
 ];
 
 const tours = [
-  { id: 1, title: "青城山·道家养生研学", days: 3, price: 1299, cover: "⛰", desc: "太极+紫微文化+禅茶" },
-  { id: 2, title: "普陀山·寄愿静心之旅", days: 2, price: 999, cover: "🛶", desc: "观音道场+正念抄经" },
-  { id: 3, title: "终南山·隐修体验营", days: 5, price: 2599, cover: "🌿", desc: "闭关+疗愈工作坊" }
+  { id: 1, title: "青城山·道家养生研学", days: 3, price: 1299, cover: "tourism", desc: "太极+紫微文化+禅茶" },
+  { id: 2, title: "普陀山·寄愿静心之旅", days: 2, price: 999, cover: "tourism", desc: "观音道场+正念抄经" },
+  { id: 3, title: "终南山·隐修体验营", days: 5, price: 2599, cover: "calm", desc: "闭关+疗愈工作坊" }
 ];
 
 const healings = [
-  { id: 1, title: "睡前放松冥想 10 分钟", type: "音频", cover: "🌙" },
-  { id: 2, title: "焦虑舒缓·呼吸训练", type: "课程", cover: "🍃" },
-  { id: 3, title: "预约疗愈师 1v1 咨询", type: "咨询", cover: "🤝" }
+  { id: 1, title: "睡前放松冥想 10 分钟", type: "音频", cover: "calm" },
+  { id: 2, title: "焦虑舒缓·呼吸训练", type: "课程", cover: "calm" },
+  { id: 3, title: "预约疗愈师 1v1 咨询", type: "咨询", cover: "share" }
 ];
 
 // 功德林：演示榜单（昵称 + 累计功德 + 等级）。排名仅娱乐展示，可匿名。
@@ -79,44 +82,44 @@ const myBonds = [
 ];
 
 // ===== 小红书式内容流 =====
-// 发现流瀑布：每条笔记可点进 note 详情。
+// 发现流瀑布：每条笔记可点进 note 详情。emoji 字段改为 astro 名（feed 在首页以品牌星标渲染，此处保留一致性）。
 const feed = [
-  { id: 1, emoji: "🌌", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "在苍山脚下看银河，那一刻我懂了「命宫」", author: "野山星野", likes: "1.2w", topic: "星图", h: 230, noteId: 101 },
-  { id: 2, emoji: "🔮", bg: "linear-gradient(140deg,#3a3660,#6a5f96)", title: "我的紫微星图：事业宫太阳旺，但迁移宫…", author: "星图笔记", likes: "3621", topic: "星图", h: 200, noteId: 102 },
-  { id: 3, emoji: "🍃", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)", title: "焦虑时我会做的 4-7-8 呼吸法，亲测有效", author: "疗愈所", likes: "8033", topic: "疗愈", h: 250, noteId: 103 },
-  { id: 4, emoji: "🏮", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "普陀山寄愿墙，为妈妈点了一盏灯", author: "寄愿", likes: "5210", topic: "寄愿", h: 210, noteId: 104 },
-  { id: 5, emoji: "🏜️", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "十二宫游学·第③站 敦煌星图与壁画", author: "文旅", likes: "2880", topic: "文旅", h: 240, noteId: 105 },
-  { id: 6, emoji: "🌙", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)", title: "睡前冥想 10 分钟，这周终于睡好了", author: "疗愈所", likes: "6742", topic: "疗愈", h: 190, noteId: 103 },
-  { id: 7, emoji: "🏆", bg: "linear-gradient(140deg,#c8a35a,#b8945a)", title: "功德林周榜第一的姐妹，每天做了什么？", author: "功德林", likes: "9910", topic: "功德", h: 220, noteId: 106 },
-  { id: 8, emoji: "♌", bg: "linear-gradient(140deg,#d99a4e,#e8b96b)", title: "狮子座本周状态：宜专注，忌内耗", author: "星座", likes: "4155", topic: "星座", h: 200, noteId: 107 },
-  { id: 9, emoji: "🌿", bg: "linear-gradient(140deg,#7fb7a3,#bfe0d2)", title: "终南山闭关 5 天，我把手机戒了", author: "文旅", likes: "3320", topic: "文旅", h: 230, noteId: 108 },
-  { id: 10, emoji: "🪔", bg: "linear-gradient(140deg,#b9544a,#f0a89c)", title: "给陌生人的一盏灯：匿名善意的循环", author: "寄愿", likes: "7180", topic: "寄愿", h: 210, noteId: 104 }
+  { id: 1, icon: "star", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "在苍山脚下看银河，那一刻我懂了「命宫」", author: "野山星野", likes: "1.2w", topic: "星图", h: 230, noteId: 101 },
+  { id: 2, icon: "chart", bg: "linear-gradient(140deg,#3a3660,#6a5f96)", title: "我的紫微星图：事业宫太阳旺，但迁移宫…", author: "星图笔记", likes: "3621", topic: "星图", h: 200, noteId: 102 },
+  { id: 3, icon: "calm", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)", title: "焦虑时我会做的 4-7-8 呼吸法，亲测有效", author: "疗愈所", likes: "8033", topic: "疗愈", h: 250, noteId: 103 },
+  { id: 4, icon: "lamp", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "普陀山寄愿墙，为妈妈点了一盏灯", author: "寄愿", likes: "5210", topic: "寄愿", h: 210, noteId: 104 },
+  { id: 5, icon: "tourism", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "十二宫游学·第③站 敦煌星图与壁画", author: "文旅", likes: "2880", topic: "文旅", h: 240, noteId: 105 },
+  { id: 6, icon: "calm", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)", title: "睡前冥想 10 分钟，这周终于睡好了", author: "疗愈所", likes: "6742", topic: "疗愈", h: 190, noteId: 103 },
+  { id: 7, icon: "award", bg: "linear-gradient(140deg,#c8a35a,#b8945a)", title: "功德林周榜第一的姐妹，每天做了什么？", author: "功德林", likes: "9910", topic: "功德", h: 220, noteId: 106 },
+  { id: 8, icon: "solar", bg: "linear-gradient(140deg,#d99a4e,#e8b96b)", title: "狮子座本周状态：宜专注，忌内耗", author: "星座", likes: "4155", topic: "星座", h: 200, noteId: 107 },
+  { id: 9, icon: "calm", bg: "linear-gradient(140deg,#7fb7a3,#bfe0d2)", title: "终南山闭关 5 天，我把手机戒了", author: "文旅", likes: "3320", topic: "文旅", h: 230, noteId: 108 },
+  { id: 10, icon: "lamp", bg: "linear-gradient(140deg,#b9544a,#f0a89c)", title: "给陌生人的一盏灯：匿名善意的循环", author: "寄愿", likes: "7180", topic: "寄愿", h: 210, noteId: 104 }
 ];
 
 // 笔记详情（按 id 取）
 const notes = {
-  101: { id: 101, title: "在苍山脚下看银河，那一刻我懂了「命宫」", emoji: "🌌", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)",
+  101: { id: 101, title: "在苍山脚下看银河，那一刻我懂了「命宫」", icon: "star", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)",
     body: "一直觉得星图是「算命」，直到这趟旅行。向导说：「你命宫在寅，喜动中求静。」我在山顶躺了半小时，看银河斜过苍山——原来所谓命宫，是提醒我该去哪里安放自己。#星图旅行 #苍山 #心灵之旅",
     author: { name: "野山星野", avatar: "野" }, likes: "1.2w", collects: "8621", topic: "星图" },
-  102: { id: 102, title: "我的紫微星图：事业宫太阳旺，但迁移宫…", emoji: "🔮", bg: "linear-gradient(140deg,#3a3660,#6a5f96)",
+  102: { id: 102, title: "我的紫微星图：事业宫太阳旺，但迁移宫…", icon: "chart", bg: "linear-gradient(140deg,#3a3660,#6a5f96)",
     body: "排完星图发现事业宫太阳旺，适合被看见；但迁移宫有煞，远行容易纠结。师傅说：「先把眼前事做透，远方自会来。」#紫微星象 #事业 #自我探索",
     author: { name: "星图笔记", avatar: "星" }, likes: "3621", collects: "2103", topic: "星图" },
-  103: { id: 103, title: "焦虑时我会做的 4-7-8 呼吸法，亲测有效", emoji: "🍃", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)",
+  103: { id: 103, title: "焦虑时我会做的 4-7-8 呼吸法，亲测有效", icon: "calm", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)",
     body: "吸气 4 秒、憋气 7 秒、呼气 8 秒，重复 4 轮。坚持两周，睡前不再刷手机到凌晨。分享给同样内耗的你。#疗愈 #呼吸法 #焦虑舒缓",
     author: { name: "疗愈所", avatar: "疗" }, likes: "8033", collects: "6210", topic: "疗愈" },
-  104: { id: 104, title: "普陀山寄愿墙，为妈妈点了一盏灯", emoji: "🏮", bg: "linear-gradient(140deg,#b9544a,#e0796f)",
+  104: { id: 104, title: "普陀山寄愿墙，为妈妈点了一盏灯", icon: "lamp", bg: "linear-gradient(140deg,#b9544a,#e0796f)",
     body: "妈妈身体不好，我在寄愿墙写下一行字，又替墙上的陌生人添了几盏灯。善意流动的时候，自己也被照亮了。#寄愿 #普陀山 #亲情",
     author: { name: "寄愿", avatar: "愿" }, likes: "5210", collects: "3902", topic: "寄愿" },
-  105: { id: 105, title: "十二宫游学·第③站 敦煌星图与壁画", emoji: "🏜️", bg: "linear-gradient(140deg,#c8a35a,#e0c489)",
+  105: { id: 105, title: "十二宫游学·第③站 敦煌星图与壁画", icon: "tourism", bg: "linear-gradient(140deg,#c8a35a,#e0c489)",
     body: "在莫高窟看飞天，突然明白「迁移宫」画的就是走出去看世界。这趟把星图读活了。#文旅 #敦煌 #星图旅行",
     author: { name: "文旅", avatar: "旅" }, likes: "2880", collects: "1904", topic: "文旅" },
-  106: { id: 106, title: "功德林周榜第一的姐妹，每天做了什么？", emoji: "🏆", bg: "linear-gradient(140deg,#c8a35a,#b8945a)",
+  106: { id: 106, title: "功德林周榜第一的姐妹，每天做了什么？", icon: "award", bg: "linear-gradient(140deg,#c8a35a,#b8945a)",
     body: "采访了周榜第一：晨间签到、给 3 位有缘人随喜、睡前为寄愿墙添灯。她说功德不是数字，是「今天有没有对谁好一点」。#功德 #日行一善 #结缘",
     author: { name: "功德林", avatar: "德" }, likes: "9910", collects: "7201", topic: "功德" },
-  107: { id: 107, title: "狮子座本周状态：宜专注，忌内耗", emoji: "♌", bg: "linear-gradient(140deg,#d99a4e,#e8b96b)",
+  107: { id: 107, title: "狮子座本周状态：宜专注，忌内耗", icon: "solar", bg: "linear-gradient(140deg,#d99a4e,#e8b96b)",
     body: "火象本周能量在线，适合推进搁置项目；但别被别人的节奏带跑。今晚宜独处充电。#星座 #狮子座 #周运",
     author: { name: "星座", avatar: "星" }, likes: "4155", collects: "2890", topic: "星座" },
-  108: { id: 108, title: "终南山闭关 5 天，我把手机戒了", emoji: "🌿", bg: "linear-gradient(140deg,#7fb7a3,#bfe0d2)",
+  108: { id: 108, title: "终南山闭关 5 天，我把手机戒了", icon: "calm", bg: "linear-gradient(140deg,#7fb7a3,#bfe0d2)",
     body: "没有信号的第 3 天，反而听见了风。回来后把每日一善写进日程。推荐给每个被信息淹没的人。#文旅 #闭关 #疗愈",
     author: { name: "文旅", avatar: "旅" }, likes: "3320", collects: "2408", topic: "文旅" }
 };
@@ -124,7 +127,7 @@ const notes = {
 // 消息中心
 const messages = {
   sessions: [
-    { id: 1, name: "云隐山人", avatar: "云", last: "明日共修记得打卡呀 🪔", time: "10:24", unread: 2 },
+    { id: 1, name: "云隐山人", avatar: "云", last: "明日共修记得打卡呀", time: "10:24", unread: 2 },
     { id: 2, name: "一叶舟", avatar: "叶", last: "寄愿视频模板发你啦", time: "昨天", unread: 0 },
     { id: 3, name: "晚照", avatar: "照", last: "结缘帖收到，已随喜 ✦", time: "周一", unread: 0 }
   ],
@@ -142,12 +145,12 @@ const messages = {
 
 // 个人主页
 const profileNotes = [
-  { id: 101, emoji: "🌌", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "苍山银河" },
-  { id: 103, emoji: "🍃", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)", title: "呼吸法" },
-  { id: 105, emoji: "🏜️", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "敦煌" },
-  { id: 102, emoji: "🔮", bg: "linear-gradient(140deg,#3a3660,#6a5f96)", title: "事业宫" },
-  { id: 104, emoji: "🏮", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "寄愿墙" },
-  { id: 108, emoji: "🌙", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)", title: "闭关" }
+  { id: 101, icon: "star", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "苍山银河" },
+  { id: 103, icon: "calm", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)", title: "呼吸法" },
+  { id: 105, icon: "tourism", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "敦煌" },
+  { id: 102, icon: "chart", bg: "linear-gradient(140deg,#3a3660,#6a5f96)", title: "事业宫" },
+  { id: 104, icon: "lamp", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "寄愿墙" },
+  { id: 108, icon: "calm", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)", title: "闭关" }
 ];
 const personality = {
   title: "星图探索者",
@@ -166,21 +169,21 @@ const following = [
 ];
 // 关注的人的笔记流（首条为其最新动态）
 const followingFeed = [
-  { id: 21, emoji: "🌌", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "今天的银河很亮，命宫在寅的人宜动中求静", author: "野山星野", likes: "3201", topic: "星图", h: 230, noteId: 101 },
-  { id: 22, emoji: "🍃", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)", title: "今晚的冥想引导更新了，焦虑时来听", author: "疗愈所", likes: "5620", topic: "疗愈", h: 200, noteId: 103 },
-  { id: 23, emoji: "🏮", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "寄愿墙今晚很暖，替陌生人也点一盏", author: "寄愿", likes: "4180", topic: "寄愿", h: 210, noteId: 104 },
-  { id: 24, emoji: "🏜️", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "敦煌站报名过半，星图同好速来", author: "文旅", likes: "2390", topic: "文旅", h: 240, noteId: 105 },
-  { id: 25, emoji: "🌙", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)", title: "睡前 10 分钟，这周终于睡好了", author: "疗愈所", likes: "6742", topic: "疗愈", h: 190, noteId: 103 }
+  { id: 21, icon: "star", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "今天的银河很亮，命宫在寅的人宜动中求静", author: "野山星野", likes: "3201", topic: "星图", h: 230, noteId: 101 },
+  { id: 22, icon: "calm", bg: "linear-gradient(140deg,#7fb7a3,#a9d4c5)", title: "今晚的冥想引导更新了，焦虑时来听", author: "疗愈所", likes: "5620", topic: "疗愈", h: 200, noteId: 103 },
+  { id: 23, icon: "lamp", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "寄愿墙今晚很暖，替陌生人也点一盏", author: "寄愿", likes: "4180", topic: "寄愿", h: 210, noteId: 104 },
+  { id: 24, icon: "tourism", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "敦煌站报名过半，星图同好速来", author: "文旅", likes: "2390", topic: "文旅", h: 240, noteId: 105 },
+  { id: 25, icon: "calm", bg: "linear-gradient(140deg,#3b3a5c,#5b5a82)", title: "睡前 10 分钟，这周终于睡好了", author: "疗愈所", likes: "6742", topic: "疗愈", h: 190, noteId: 103 }
 ];
 
 // ===== 发现流 · 视频分屏 =====
 const videos = [
-  { id: 1, cover: "🌌", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "10 分钟睡前冥想引导｜焦虑舒缓", author: "疗愈所", dur: "10:24", plays: "8.2w", topic: "疗愈" },
-  { id: 2, cover: "🏮", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "普陀山寄愿 · 一步一灯", author: "寄愿", dur: "03:48", plays: "2.1w", topic: "寄愿" },
-  { id: 3, cover: "🌠", bg: "linear-gradient(140deg,#3a3660,#6a5f96)", title: "苍山银河延时 · 命宫与远方", author: "野山星野", dur: "01:12", plays: "12w", topic: "星图" },
-  { id: 4, cover: "🏜️", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "敦煌星图漫游 Vlog", author: "文旅", dur: "06:30", plays: "4.5w", topic: "文旅" },
-  { id: 5, cover: "🪔", bg: "linear-gradient(140deg,#b9544a,#f0a89c)", title: "给陌生人的一盏灯：善意循环", author: "寄愿", dur: "02:05", plays: "7.1w", topic: "寄愿" },
-  { id: 6, cover: "♌", bg: "linear-gradient(140deg,#d99a4e,#e8b96b)", title: "狮子座本周状态｜宜专注忌内耗", author: "星座", dur: "04:33", plays: "5.6w", topic: "星座" }
+  { id: 1, cover: "star", bg: "linear-gradient(140deg,#2b2b4e,#4a4a7a)", title: "10 分钟睡前冥想引导｜焦虑舒缓", author: "疗愈所", dur: "10:24", plays: "8.2w", topic: "疗愈" },
+  { id: 2, cover: "lamp", bg: "linear-gradient(140deg,#b9544a,#e0796f)", title: "普陀山寄愿 · 一步一灯", author: "寄愿", dur: "03:48", plays: "2.1w", topic: "寄愿" },
+  { id: 3, cover: "star", bg: "linear-gradient(140deg,#3a3660,#6a5f96)", title: "苍山银河延时 · 命宫与远方", author: "野山星野", dur: "01:12", plays: "12w", topic: "星图" },
+  { id: 4, cover: "tourism", bg: "linear-gradient(140deg,#c8a35a,#e0c489)", title: "敦煌星图漫游 Vlog", author: "文旅", dur: "06:30", plays: "4.5w", topic: "文旅" },
+  { id: 5, cover: "lamp", bg: "linear-gradient(140deg,#b9544a,#f0a89c)", title: "给陌生人的一盏灯：善意循环", author: "寄愿", dur: "02:05", plays: "7.1w", topic: "寄愿" },
+  { id: 6, cover: "solar", bg: "linear-gradient(140deg,#d99a4e,#e8b96b)", title: "狮子座本周状态｜宜专注忌内耗", author: "星座", dur: "04:33", plays: "5.6w", topic: "星座" }
 ];
 
 module.exports = {

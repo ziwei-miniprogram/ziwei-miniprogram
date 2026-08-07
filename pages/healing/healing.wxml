@@ -1,11 +1,12 @@
 <view class="container page {{theme}}">
-  <view class="card">
-    <view class="title">精神疗愈空间</view>
-    <view class="subtitle">情绪舒缓 · 非医疗行为 · 仅供放松参考</view>
+  <view class="b-head">
+    <view class="u-eyebrow">疗愈 · 精神空间</view>
+    <view class="u-h2">安顿身心</view>
+    <view class="u-lede">情绪舒缓，非医疗行为，仅供放松参考</view>
   </view>
 
   <view class="card heal" wx:for="{{healings}}" wx:key="id" data-index="{{index}}" bindtap="play">
-    <view class="heal-cover">{{item.cover}}</view>
+    <astro class="heal-cover" name="{{item.cover}}" size="48" theme="{{theme}}"/>
     <view style="flex:1">
       <view class="title" style="font-size:30rpx">{{item.title}}</view>
       <view class="tag">{{item.type}}</view>

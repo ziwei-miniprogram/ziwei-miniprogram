@@ -1,4 +1,9 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "祝福视频"
+  "usingComponents": {
+    "astro": "/components/icon/icon"
+  },
+  "navigationBarTitleText": "祝福卡",
+  "navigationBarBackgroundColor": "#f7f5f0",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f7f5f0"
 }

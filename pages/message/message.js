@@ -31,25 +31,31 @@ Page({
     if (!app || !app.globalData) { this.setData({ tips: [] }); return; }
     const tips = [];
     if (!app.checkedInToday()) {
-      tips.push({ icon: '🪔', text: '今日心灯还没亮，点亮可得 +3 功德', route: '/pages/merit/merit' });
+      tips.push({ icon: 'lamp', text: '今日心灯还没亮，点亮可得 +3 功德', route: '/pages/merit/merit' });
     }
     const toUnlock = 30 - app.globalData.merit;
     if (toUnlock > 0 && toUnlock <= 12) {
-      tips.push({ icon: '✦', text: `再攒 ${toUnlock} 功德，即可解锁深度星图解读`, route: '/pages/chart/chart' });
+      tips.push({ icon: 'chart', text: `再攒 ${toUnlock} 功德，即可解锁深度星图解读`, route: '/pages/chart/chart' });
     }
     try {
       const wish = wx.getStorageSync('my_wish');
-      if (wish) tips.push({ icon: '🌿', text: `你的星愿「${wish}」正等着你日行一善`, route: '/pages/index/index' });
+      if (wish) tips.push({ icon: 'wish', text: `你的星愿「${wish}」正等着你日行一善`, route: '/pages/index/index' });
     } catch (e) {}
     if (app.globalData.streak >= 3) {
-      tips.push({ icon: '🔥', text: `连签 ${app.globalData.streak} 天，火苗正旺，今天也来续上`, route: '/pages/merit/merit' });
+      tips.push({ icon: 'streak', text: `连签 ${app.globalData.streak} 天，星火已连成线，今天也来续上`, route: '/pages/merit/merit' });
     }
     this.setData({ tips });
   },
   switchSeg(e) { this.setData({ seg: e.currentTarget.dataset.s }); },
   openMeritItem(e) {
     const route = e.currentTarget.dataset.route;
-    if (route) wx.navigateTo({ url: route });
+    if (!route) return;
+    const tabPages = ['/pages/index/index', '/pages/tourism/tourism', '/pages/space/space', '/pages/mall/mall', '/pages/profile/profile'];
+    if (tabPages.indexOf(route) >= 0) {
+      wx.switchTab({ url: route });
+    } else {
+      wx.navigateTo({ url: route });
+    }
   },
   openChat() { wx.showToast({ title: '打开会话（演示）', icon: 'none' }); }
 });

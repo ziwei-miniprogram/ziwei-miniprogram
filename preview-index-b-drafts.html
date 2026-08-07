@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>星野漫游 · 首页（方向 B 极简留白）· 3 版布局对照稿</title>
+<style>
+  :root{
+    --bg:#f7f5f0; --bg-elev:#fffdf8; --card:#ffffff; --fg:#2b2622; --fg-2:#998f80; --fg-3:#6b6457;
+    --border:rgba(138,127,109,.18); --gold:#c8a35a; --gold-deep:#8a6a2a; --gold-soft:rgba(200,163,90,.12);
+    --gold-tint:#f6ecd4; --success:#5e9788; --danger:#e0796f; --night-grad:linear-gradient(160deg,#16233f,#0B1426);
+    --shadow:0 4px 18px rgba(40,33,20,.05);
+  }
+  body.dark{
+    --bg:#0B1426; --bg-elev:#121d33; --card:#121d33; --fg:#ece6dc; --fg-2:#9da9bd; --fg-3:#c2bca8;
+    --border:rgba(200,180,140,.16); --gold:#d9b66a; --gold-deep:#c8a35a; --gold-soft:rgba(217,182,106,.14);
+    --gold-tint:#2a2418; --success:#6fb3a3; --danger:#e08a80;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#e7e2d8;color:var(--fg);}
+  body.dark{background:#050a14;}
+  .serif{font-family:"Source Han Serif SC","Songti SC",serif;}
+  .ic{display:inline-flex;color:var(--gold-deep);}
+  body.dark .ic{color:var(--gold);}
+  .wrap{max-width:1320px;margin:0 auto;padding:28px 20px 60px;}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:6px;}
+  .head h1{font-size:22px;margin:0;letter-spacing:.5px;}
+  .head p{margin:6px 0 0;color:var(--fg-2);font-size:13px;max-width:680px;line-height:1.6;}
+  .toggle{border:1px solid var(--border);background:var(--bg-elev);color:var(--fg-2);border-radius:999px;padding:8px 18px;font-size:13px;cursor:pointer;}
+  .note{font-size:12px;color:var(--gold-deep);background:var(--gold-soft);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin:14px 0 22px;line-height:1.6;}
+  .compare{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  @media(max-width:980px){.compare{grid-template-columns:1fr;}}
+  .col{display:flex;flex-direction:column;}
+  .vtag{font-size:13px;font-weight:700;color:var(--fg);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+  .vtag .n{background:var(--gold);color:#fff;border-radius:7px;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;}
+  .vdesc{font-size:12px;color:var(--fg-2);line-height:1.6;margin-bottom:12px;min-height:54px;}
+  .phone{background:var(--bg);border-radius:34px;padding:14px 12px 26px;box-shadow:0 18px 50px rgba(20,15,5,.14);border:1px solid var(--border);position:relative;}
+  .screen{max-width:380px;margin:0 auto;background:var(--bg);border-radius:24px;overflow:hidden;padding-bottom:24px;}
+
+  /* ---- shared B primitives ---- */
+  .search{margin:6px 22px 4px;background:var(--bg-elev);border:1px solid var(--border);border-radius:999px;height:44px;display:flex;align-items:center;gap:9px;padding:0 18px;color:var(--fg-2);font-size:13px;}
+  .hero{margin:8px 18px 18px;border-radius:26px;padding:26px 22px;color:#f6eccb;background:var(--night-grad);position:relative;overflow:hidden;}
+  .hero .stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 18% 22%,rgba(255,255,255,.85),transparent),radial-gradient(2px 2px at 68% 16%,rgba(255,255,255,.7),transparent),radial-gradient(2px 2px at 86% 56%,rgba(255,255,255,.6),transparent),radial-gradient(2px 2px at 40% 78%,rgba(255,255,255,.7),transparent);opacity:.75;}
+  .hero-inner{position:relative;z-index:2;}
+  .hero-eyebrow{font-size:11px;letter-spacing:3px;opacity:.82;font-weight:600;margin-bottom:8px;}
+  .b-title{font-size:23px;font-weight:700;letter-spacing:.5px;line-height:1.4;margin-top:2px;}
+  .b-line{font-size:14px;opacity:.9;margin-top:8px;line-height:1.6;}
+  .hero-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px;}
+  .hm-solar{display:block;font-size:13px;opacity:.95;} .hm-lunar{display:block;font-size:11px;opacity:.78;margin-top:3px;}
+  .hw-temp{display:block;font-size:22px;font-weight:700;line-height:1;text-align:right;} .hw-cond{font-size:11px;opacity:.78;text-align:right;margin-top:3px;}
+  .lamp{margin-top:18px;display:inline-flex;align-items:center;gap:8px;background:rgba(246,236,203,.16);border:1px solid rgba(246,236,203,.4);padding:9px 18px;border-radius:999px;font-size:13px;}
+  .yiji{margin:0 18px;padding:14px 2px;}
+  .yj-row{display:flex;align-items:baseline;gap:12px;} .yj-k{font-size:13px;font-weight:700;flex:none;width:18px;text-align:center;}
+  .yj-k.yi{color:var(--success);} .yj-k.ji{color:var(--danger);} .yj-v{font-size:13px;line-height:1.6;}
+  .hair{height:1px;background:var(--border);margin:10px 0;}
+  .cal{margin:4px 18px 0;}
+  .cal-head{font-size:12px;color:var(--fg-2);margin-bottom:10px;}
+  .cal-week{display:flex;} .cal-week span{flex:1;text-align:center;font-size:10px;color:var(--fg-2);opacity:.7;}
+  .cal-grid{display:flex;flex-wrap:wrap;} .cal-d{width:14.285%;text-align:center;display:flex;flex-direction:column;align-items:center;padding:7px 0;border-radius:7px;}
+  .cal-d.dim{opacity:.3;} .cal-d.today{background:var(--gold-soft);} .cal-d.today .cd-num{color:var(--gold-deep);font-weight:700;}
+  .cd-num{font-size:12px;} .cd-lu{font-size:8px;color:var(--fg-2);opacity:.7;margin-top:2px;}
+  .cal-yiji{margin-top:12px;border-top:1px solid var(--border);padding-top:10px;font-size:11px;line-height:1.8;color:var(--fg-2);}
+  .cy-head{color:var(--fg);margin-bottom:4px;} .cy-term{color:var(--gold-deep);font-weight:700;}
+  .cy-yi{color:var(--success);font-weight:700;margin-right:6px;} .cy-ji{color:var(--danger);font-weight:700;margin-right:6px;}
+  .quick{display:flex;padding:6px 18px;gap:10px;}
+  .q{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--fg-3);padding:12px 0;border-radius:14px;}
+  .q-ic{width:50px;height:50px;border-radius:50%;background:var(--bg-elev);display:flex;align-items:center;justify-content:center;}
+  .u-section{margin:28px 18px 6px;}
+  .u-eyebrow{font-size:10px;letter-spacing:3px;font-weight:700;color:var(--gold-deep);}
+  .u-h2{font-size:21px;font-weight:700;letter-spacing:-.3px;line-height:1.3;margin:6px 0 0;}
+  .u-lede{font-size:13px;line-height:1.6;color:var(--fg-2);margin-top:6px;}
+  .u-bento{display:flex;gap:10px;margin-top:14px;} .u-card{flex:1;min-width:0;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 10px;box-shadow:var(--shadow);}
+  .ub-t{font-size:13px;font-weight:700;margin-top:8px;} .ub-d{font-size:11px;line-height:1.55;color:var(--fg-2);margin-top:4px;}
+  .unlock{margin:18px 18px 0;display:flex;align-items:center;gap:10px;padding:2px 0;}
+  .uc-l{font-size:12px;color:var(--fg-3);white-space:nowrap;} .uc-bar{flex:1;height:5px;background:rgba(138,127,109,.2);border-radius:6px;overflow:hidden;}
+  .uc-fill{height:100%;width:42%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));border-radius:6px;} .uc-r{font-size:11px;color:var(--gold-deep);font-weight:700;min-width:32px;text-align:right;}
+  .story{margin:18px 18px 0;border-radius:18px;padding:18px;background:var(--night-grad);color:#f3ead4;position:relative;overflow:hidden;}
+  .story .s-glow{position:absolute;top:-40px;right:-30px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(200,163,90,.4),transparent 70%);}
+  .story .s-eyebrow{font-size:10px;letter-spacing:2px;opacity:.85;} .story .s-body{font-size:14px;line-height:1.65;margin-top:8px;}
+  .story .s-sign{font-size:11px;opacity:.7;margin-top:10px;} .story .s-act{margin-top:12px;display:inline-block;font-size:12px;color:var(--gold);border:1px solid rgba(217,182,106,.5);padding:6px 14px;border-radius:999px;}
+  .tabs{display:flex;gap:24px;padding:14px 26px 10px;border-bottom:1px solid var(--border);margin-top:24px;}
+  .t{font-size:15px;color:var(--fg-2);position:relative;padding-bottom:6px;} .t.on{color:var(--fg);font-weight:700;}
+  .t.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:20px;height:4px;border-radius:4px;background:var(--gold);}
+  .feed{display:flex;gap:10px;padding:16px 14px 0;} .col2{flex:1;} .card{background:var(--card);border-radius:14px;margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);}
+  .card .img{width:100%;height:96px;display:flex;align-items:center;justify-content:center;background:linear-gradient(140deg,#3b3a5c,#5b5a82);}
+  .card .body{padding:10px 12px 12px;} .card .tt{font-size:13px;line-height:1.45;}
+  .card .meta{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:10px;color:var(--fg-2);}
+  .card .av{width:18px;height:18px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--gold-deep);}
+  .card .nm{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+  .disclaimer{margin:18px 18px 22px;padding:12px 14px;font-size:11px;line-height:1.6;color:var(--fg-2);background:var(--bg-elev);border:1px solid var(--border);border-radius:10px;}
+
+  /* ---- variant-specific ---- */
+  /* B: 信息分层 · feed 优先 */
+  .strip{display:flex;gap:6px;}
+  .sday{flex:1;text-align:center;padding:8px 0;border-radius:10px;background:var(--card);border:1px solid var(--border);}
+  .sday.today{background:var(--gold-soft);border-color:transparent;}
+  .sday .sd{font-size:13px;font-weight:600;} .sday.today .sd{color:var(--gold-deep);}
+  .sday .sl{font-size:8px;color:var(--fg-2);opacity:.7;margin-top:2px;}
+  .bento-h{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+  .bento-h .u-card{flex:0 0 42%;}
+  .today-mod{display:flex;gap:10px;margin:18px 18px 0;} .today-mod .tm-l{flex:1;} .today-mod .tm-r{flex:1.1;}
+
+  /* C: 仪式流 · 极简减法 */
+  .ritual{margin:8px 18px 0;}
+  .rstep{display:flex;gap:14px;align-items:flex-start;position:relative;padding:14px 4px;}
+  .rstep:not(:last-child)::before{content:"";position:absolute;left:23px;top:46px;bottom:-2px;width:2px;background:var(--gold-soft);}
+  .r-ic{width:46px;height:46px;border-radius:50%;background:var(--bg-elev);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex:none;}
+  .r-t{font-size:15px;font-weight:700;} .r-d{font-size:12px;color:var(--fg-2);margin-top:3px;line-height:1.55;}
+  .r-badge{margin-left:auto;align-self:center;font-size:11px;color:var(--gold-deep);background:var(--gold-soft);border-radius:999px;padding:4px 10px;}
+  .hero.tall{padding:40px 22px 34px;}
+  .hero.tall .b-title{font-size:25px;}
+  .poetic{font-size:13px;opacity:.85;line-height:1.7;margin-top:12px;font-style:italic;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>首页布局对照稿 · 方向 B 极简留白</h1>
+      <p>同一套 B 令牌（暖纸 / 星辉金 / 夜空 Hero / astro 内联图标 / 大留白 + 细金线），三种排版哲学。请挑一版，选定后我才动 <code>pages/index</code> 的 WXML/WXSS/JS。</p>
+    </div>
+    <button class="toggle" onclick="document.body.classList.toggle('dark')">切换 深 / 浅</button>
+  </div>
+  <div class="note">铁律：本文件仅为挑选用的对照稿，<b>未修改任何小程序源码</b>。三种方案均沿用现有 astro SVG 图标体系、禁 emoji；内容取自当前 index 真实数据（2026-08，立秋）。</div>
+
+  <div class="compare">
+
+    <!-- ===== 方案 A：沉浸编辑式 ===== -->
+    <div class="col">
+      <div class="vtag"><span class="n">A</span> 沉浸编辑式（B 精修版）</div>
+      <div class="vdesc">保留现有 B 全部模块顺序，强化留白与节奏。最稳、最贴近已定方向，风险最低。</div>
+      <div class="phone"><div class="screen">
+        <div class="search"><span class="ic" data-ic="search" data-sz="15"></span> 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+        <div class="hero">
+          <div class="stars"></div>
+          <div class="hero-inner">
+            <div class="hero-eyebrow">每日星语</div>
+            <div class="b-title serif">今夜，星空为你留了一盏灯</div>
+            <div class="b-line">立秋将至，风有了方向</div>
+            <div class="hero-meta">
+              <div class="hm-l"><span class="hm-solar">8月1日 周六</span><span class="hm-lunar">丙午年 · 六月十九</span></div>
+              <div class="hm-weather"><span class="hw-temp">23°</span><span class="hw-cond">晴夜 · 杭州</span></div>
+            </div>
+            <div class="lamp"><span class="ic" data-ic="lamp" data-sz="15"></span> 点亮今日心灯 · +1 功德</div>
+          </div>
+        </div>
+        <div class="yiji">
+          <div class="yj-row"><span class="yj-k yi">宜</span><span class="yj-v">祭祀 · 出行 · 纳财 · 安床</span></div>
+          <div class="hair"></div>
+          <div class="yj-row"><span class="yj-k ji">忌</span><span class="yj-v">动土 · 安葬 · 词讼</span></div>
+        </div>
+        <div class="cal">
+          <div class="cal-head">2026 年 8 月</div>
+          <div class="cal-week"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+          <div class="cal-grid" id="calA"></div>
+          <div class="cal-yiji">
+            <div class="cy-head">8月1日 · 丙午年六月十九 <span class="cy-term">立秋</span> · 闭</div>
+            <div><span class="cy-yi">宜</span>祭祀 · 出行 · 纳财 · 安床</div>
+            <div><span class="cy-ji">忌</span>动土 · 安葬 · 词讼</div>
+          </div>
+        </div>
+        <div class="quick">
+          <div class="q"><span class="q-ic ic" data-ic="star" data-sz="24"></span>星野</div>
+          <div class="q"><span class="q-ic ic" data-ic="tourism" data-sz="24"></span>文旅</div>
+          <div class="q"><span class="q-ic ic" data-ic="wish" data-sz="24"></span>寄愿</div>
+          <div class="q"><span class="q-ic ic" data-ic="lamp" data-sz="24"></span>功德</div>
+        </div>
+        <div class="u-section">
+          <div class="u-eyebrow">日行一善 · 三步成习</div>
+          <div class="u-h2">抬头看星，落笔安心</div>
+          <div class="u-lede">把每一天的小仪式，安放进星河里。</div>
+          <div class="u-bento">
+            <div class="u-card"><span class="ic" data-ic="chart" data-sz="26"></span><div class="ub-t">点亮星图</div><div class="ub-d">二十八宿，照亮今日心绪</div></div>
+            <div class="u-card"><span class="ic" data-ic="wish" data-sz="26"></span><div class="ub-t">寄一笔愿</div><div class="ub-d">把心事交给星河，慢慢安放</div></div>
+            <div class="u-card"><span class="ic" data-ic="deeds" data-sz="26"></span><div class="ub-t">今日三善</div><div class="ub-d">点灯 · 随喜 · 冥想，积微成光</div></div>
+          </div>
+        </div>
+        <div class="unlock"><div class="uc-l">✦ 距深度解读还差 18 功德</div><div class="uc-bar"><div class="uc-fill"></div></div><div class="uc-r">42%</div></div>
+        <div class="story">
+          <div class="s-glow"></div>
+          <div class="s-eyebrow">星夜物语 · 每日一信</div>
+          <div class="s-body">立秋将至，风开始有了方向。今夜适合把未说的话，写进一盏灯里。</div>
+          <div class="s-sign">—— 星野寄来的信</div>
+          <div class="s-act">读今夜的完整星语 →</div>
+        </div>
+        <div class="tabs"><div class="t on">关注</div><div class="t">发现</div><div class="t">视频</div></div>
+        <div class="feed">
+          <div class="col2"><div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">把今天的好心情，折成一颗小星</div><div class="meta"><span class="av">野</span><span class="nm">拾光的小野</span></div></div></div></div>
+          <div class="col2"><div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">三件小事，凑成一整天的光</div><div class="meta"><span class="av">川</span><span class="nm">川页</span></div></div></div></div>
+        </div>
+        <div class="disclaimer">温馨提示：本平台星象、抽签、卡牌等内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成任何专业建议，请勿迷信。</div>
+      </div></div>
+    </div>
+
+    <!-- ===== 方案 B：信息分层 · feed 优先 ===== -->
+    <div class="col">
+      <div class="vtag"><span class="n">B</span> 信息分层 · Feed 优先</div>
+      <div class="vdesc">压缩 Hero 与日历（日历降级为周条），三步成习改为横滑；把更多垂直空间让给内容流。更"原生信息流"手感。</div>
+      <div class="phone"><div class="screen">
+        <div class="search"><span class="ic" data-ic="search" data-sz="15"></span> 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+        <div class="hero">
+          <div class="stars"></div>
+          <div class="hero-inner">
+            <div class="hero-eyebrow">每日星语</div>
+            <div class="b-title serif">今夜，星空为你留了一盏灯</div>
+            <div class="hero-meta">
+              <div class="hm-l"><span class="hm-solar">8月1日 周六</span><span class="hm-lunar">丙午年 · 六月十九</span></div>
+              <div class="hm-weather"><span class="hw-temp">23°</span><span class="hw-cond">晴夜 · 杭州</span></div>
+            </div>
+            <div class="lamp"><span class="ic" data-ic="lamp" data-sz="15"></span> 点亮心灯 +1</div>
+          </div>
+        </div>
+        <div class="yiji">
+          <div class="yj-row"><span class="yj-k yi">宜</span><span class="yj-v">祭祀 · 出行 · 纳财</span></div>
+          <div class="hair"></div>
+          <div class="yj-row"><span class="yj-k ji">忌</span><span class="yj-v">动土 · 安葬 · 词讼</span></div>
+        </div>
+        <div class="quick">
+          <div class="q"><span class="q-ic ic" data-ic="star" data-sz="22"></span>星野</div>
+          <div class="q"><span class="q-ic ic" data-ic="tourism" data-sz="22"></span>文旅</div>
+          <div class="q"><span class="q-ic ic" data-ic="wish" data-sz="22"></span>寄愿</div>
+          <div class="q"><span class="q-ic ic" data-ic="lamp" data-sz="22"></span>功德</div>
+        </div>
+        <div class="u-section" style="margin-top:18px">
+          <div class="u-eyebrow">日行一善 · 三步成习</div>
+          <div class="bento-h">
+            <div class="u-card"><span class="ic" data-ic="chart" data-sz="24"></span><div class="ub-t">点亮星图</div><div class="ub-d">二十八宿，照亮心绪</div></div>
+            <div class="u-card"><span class="ic" data-ic="wish" data-sz="24"></span><div class="ub-t">寄一笔愿</div><div class="ub-d">心事交给星河</div></div>
+            <div class="u-card"><span class="ic" data-ic="deeds" data-sz="24"></span><div class="ub-t">今日三善</div><div class="ub-d">点灯·随喜·冥想</div></div>
+          </div>
+        </div>
+        <div class="today-mod">
+          <div class="tm-l">
+            <div class="cal-head">本月 · 立秋</div>
+            <div class="strip">
+              <div class="sday"><div class="sd">27</div><div class="sl">廿四</div></div>
+              <div class="sday"><div class="sd">28</div><div class="sl">廿五</div></div>
+              <div class="sday"><div class="sd">29</div><div class="sl">廿六</div></div>
+              <div class="sday"><div class="sd">31</div><div class="sl">廿八</div></div>
+              <div class="sday today"><div class="sd">1</div><div class="sl">初一</div></div>
+              <div class="sday"><div class="sd">2</div><div class="sl">初二</div></div>
+              <div class="sday"><div class="sd">3</div><div class="sl">初三</div></div>
+            </div>
+          </div>
+          <div class="tm-r">
+            <div class="story" style="margin:0">
+              <div class="s-glow"></div>
+              <div class="s-eyebrow">星夜物语</div>
+              <div class="s-body" style="font-size:12px">风开始有了方向，把未说的话写进一盏灯。</div>
+              <div class="s-act">读完整星语 →</div>
+            </div>
+          </div>
+        </div>
+        <div class="unlock"><div class="uc-l">✦ 还差 18 功德</div><div class="uc-bar"><div class="uc-fill"></div></div><div class="uc-r">42%</div></div>
+        <div class="tabs"><div class="t">关注</div><div class="t on">发现</div><div class="t">视频</div></div>
+        <div class="feed">
+          <div class="col2"><div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">立秋前夜，给远方的你点一盏灯</div><div class="meta"><span class="av">林</span><span class="nm">林间小驻</span></div></div></div>
+          <div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">夜跑时抬头，看见了猎户</div><div class="meta"><span class="av">星</span><span class="nm">星野旅人</span></div></div></div></div>
+          <div class="col2"><div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">三件小事，凑成一整天的光</div><div class="meta"><span class="av">川</span><span class="nm">川页</span></div></div></div>
+          <div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">把今天的好心情折成小星</div><div class="meta"><span class="av">野</span><span class="nm">拾光的小野</span></div></div></div></div>
+        </div>
+        <div class="disclaimer">温馨提示：本平台内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成专业建议。</div>
+      </div></div>
+    </div>
+
+    <!-- ===== 方案 C：仪式流 · 极简减法 ===== -->
+    <div class="col">
+      <div class="vtag"><span class="n">C</span> 仪式流 · 极简减法</div>
+      <div class="vdesc">把"快捷入口 + 三步成习"合并成一条连贯的「今日仪式」竖流（细金线串联），日历降为周条。最克制、最有记忆点。</div>
+      <div class="phone"><div class="screen">
+        <div class="search"><span class="ic" data-ic="search" data-sz="15"></span> 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+        <div class="hero tall">
+          <div class="stars"></div>
+          <div class="hero-inner">
+            <div class="hero-eyebrow">每日星语</div>
+            <div class="b-title serif">今夜，星空为你留了一盏灯</div>
+            <div class="poetic">宜 祭祀 · 出行 · 纳财 ｜ 忌 动土 · 安葬</div>
+            <div class="lamp"><span class="ic" data-ic="lamp" data-sz="16"></span> 点亮今日心灯 · +1 功德</div>
+          </div>
+        </div>
+        <div class="ritual">
+          <div class="rstep">
+            <div class="r-ic ic"><span class="ic" data-ic="lamp" data-sz="22"></span></div>
+            <div><div class="r-t">① 点亮心灯</div><div class="r-d">今日份的小仪式，从一盏灯开始。</div></div>
+            <div class="r-badge">+1 功德</div>
+          </div>
+          <div class="rstep">
+            <div class="r-ic ic"><span class="ic" data-ic="wish" data-sz="22"></span></div>
+            <div><div class="r-t">② 寄一笔愿</div><div class="r-d">把心事交给星河，慢慢安放。</div></div>
+          </div>
+          <div class="rstep">
+            <div class="r-ic ic"><span class="ic" data-ic="deeds" data-sz="22"></span></div>
+            <div><div class="r-t">③ 今日三善</div><div class="r-d">点灯 · 随喜 · 冥想，积微成光。</div></div>
+          </div>
+        </div>
+        <div class="story">
+          <div class="s-glow"></div>
+          <div class="s-eyebrow">星夜物语 · 每日一信</div>
+          <div class="s-body">立秋将至，风开始有了方向。今夜适合把未说的话，写进一盏灯里。</div>
+          <div class="s-sign">—— 星野寄来的信</div>
+          <div class="s-act">读今夜的完整星语 →</div>
+        </div>
+        <div class="cal" style="margin-top:16px">
+          <div class="cal-head">本月 · 立秋</div>
+          <div class="strip">
+            <div class="sday"><div class="sd">27</div><div class="sl">廿四</div></div>
+            <div class="sday"><div class="sd">28</div><div class="sl">廿五</div></div>
+            <div class="sday"><div class="sd">29</div><div class="sl">廿六</div></div>
+            <div class="sday"><div class="sd">31</div><div class="sl">廿八</div></div>
+            <div class="sday today"><div class="sd">1</div><div class="sl">初一</div></div>
+            <div class="sday"><div class="sd">2</div><div class="sl">初二</div></div>
+            <div class="sday"><div class="sd">3</div><div class="sl">初三</div></div>
+          </div>
+        </div>
+        <div class="tabs"><div class="t on">关注</div><div class="t">发现</div><div class="t">视频</div></div>
+        <div class="feed">
+          <div class="col2"><div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">把今天的好心情，折成一颗小星</div><div class="meta"><span class="av">野</span><span class="nm">拾光的小野</span></div></div></div></div>
+          <div class="col2"><div class="card"><div class="img"><span class="ic" data-ic="star" data-sz="30"></span></div><div class="body"><div class="tt">三件小事，凑成一整天的光</div><div class="meta"><span class="av">川</span><span class="nm">川页</span></div></div></div></div>
+        </div>
+        <div class="disclaimer">温馨提示：本平台内容均为传统文化与心理慰藉的娱乐参考，不预示吉凶、不构成专业建议。</div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const ICONS = {
+  lamp:'<path d="M12 2l1.9 6.3L20 10l-6.1 1.7L12 18l-1.9-6.3L4 10l6.1-1.7z" fill="currentColor" stroke="none"/>',
+  wish:'<path d="M7 4h10v15H7z"/><path d="M7 4c-1.4 0-2 1-2 2s.6 2 2 2"/><path d="M17 19c1.4 0 2-1 2-2s-.6-2-2-2"/><path d="M12 7.5l.8 1.9 2 .1-1.5 1.3.5 2-1.8-1.1-1.8 1.1.5-2-1.5-1.3 2-.1z" fill="currentColor" stroke="none"/>',
+  deeds:'<circle cx="6" cy="12" r="2.1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="2.1" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="2.1" fill="currentColor" stroke="none"/>',
+  chart:'<circle cx="5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="4" r="1.3" fill="currentColor" stroke="none"/><circle cx="18" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="16" r="1.3" fill="currentColor" stroke="none"/><circle cx="17" cy="17" r="1.3" fill="currentColor" stroke="none"/><path d="M5 6l7-2 6 5-9 7 8 1" stroke-width="1.1"/>',
+  star:'<path d="M12 2l2 8 8 2-8 2-2 8-2-8-8-2 8-2z" fill="currentColor" stroke="none"/>',
+  search:'<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>',
+  tourism:'<path d="M12 21s6.5-5.6 6.5-11A6.5 6.5 0 0 0 5.5 10c0 5.4 6.5 11 6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'
+};
+document.querySelectorAll('[data-ic]').forEach(el=>{const n=el.dataset.ic,s=+el.dataset.sz||24;el.style.width=s+'px';el.style.height=s+'px';el.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:'+s+'px;height:'+s+'px">'+ICONS[n]+'</svg>';});
+
+// 方案A 万年历：2026-08 静态网格（周一起始，今日=1 高亮）
+(function(){const g=document.getElementById('calA');if(!g)return;const first=new Date(2026,7,1);const start=(first.getDay()+6)%7;const dim=31;const prev=31;const arr=[];for(let i=0;i<42;i++){let d,dm=false;if(i<start){d=prev-start+1+i;dm=true;}else if(i>=start+dim){d=i-(start+dim)+1;dm=true;}else{d=i-start+1;}const lu=['','初一','初二','初三','初四','初五','初六','初七','初八','初九','初十','十一','十二'][d]||'';const today=d===1&&!dm;arr.push('<div class="cal-d'+(dm?' dim':'')+(today?' today':'')+'"><span class="cd-num">'+d+'</span><span class="cd-lu">'+(today?'初一':(dm?'':lu))+'</span></div>');}g.innerHTML=arr.join('');})();
+</script>
+</body>
+</html>

@@ -27,12 +27,15 @@
   0%, 100% { transform: scale(1); opacity: .5; }
   50% { transform: scale(1.12); opacity: 0; }
 }
-.hl-emoji { font-size: 40rpx; line-height: 1; }
+.hl-emoji { width: 40rpx; height: 40rpx; display: flex; align-items: center; justify-content: center; }
 .hl-num { font-size: 20rpx; color: #3a2c10; font-weight: 700; margin-top: 2rpx; }
 .hl-streak {
   position: absolute;
   top: -10rpx;
   right: -6rpx;
+  display: flex;
+  align-items: center;
+  gap: 2rpx;
   font-size: 18rpx;
   background: #fff;
   color: #c8702f;
@@ -109,7 +112,7 @@
   border: 1rpx solid var(--border, rgba(138,127,109,.18)); border-radius: 24rpx;
 }
 .qs-item:active { background: var(--gold-soft, rgba(200,163,90,.12)); }
-.qs-ic { font-size: 48rpx; }
+.qs-ic { display: flex; align-items: center; justify-content: center; width: 48rpx; height: 48rpx; }
 .qs-tx { font-size: 24rpx; color: var(--fg); font-weight: 600; }
 .qs-close {
   margin-top: 28rpx; text-align: center; font-size: 26rpx; color: var(--fg-2);

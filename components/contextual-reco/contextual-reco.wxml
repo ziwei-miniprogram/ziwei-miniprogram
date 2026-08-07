@@ -1,5 +1,5 @@
 <view class="reco" bindtap="go" hover-class="reco-hover" role="button" aria-label="情境推荐：{{name}}">
-  <view class="reco-ic">{{emoji}}</view>
+  <astro class="reco-ic" name="{{icon}}" size="36" theme="{{theme}}"/>
   <view class="reco-body">
     <view class="reco-tag" wx:if="{{tag}}">{{tag}}</view>
     <view class="reco-name">{{name}}</view>

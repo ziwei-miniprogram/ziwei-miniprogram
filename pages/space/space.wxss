@@ -1,55 +1,45 @@
-.page { padding: 24rpx 24rpx 60rpx; }
+/* 工具箱 · 方向 B：大留白 / 单列 / 细金线 / 无卡片底色 */
+.page { padding: 0 32rpx 60rpx; }
 
-.hd { padding: 16rpx 8rpx 28rpx; }
-.h-t { font-size: 38rpx; font-weight: 700; color: var(--fg); }
-.h-s { font-size: 24rpx; color: var(--fg-2); margin-top: 8rpx; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 22rpx;
-}
-
-.cell {
-  background: var(--card);
-  border: 1rpx solid var(--border);
-  border-radius: 24rpx;
-  padding: 34rpx 28rpx;
-  box-shadow: var(--shadow-sm);
-  transition: transform .15s ease;
-}
-.cell:active { transform: scale(0.97); }
-
-.ic {
-  width: 56rpx; height: 56rpx; margin-bottom: 18rpx;
-}
-.nm { font-size: 30rpx; font-weight: 600; color: var(--fg); }
-.ds { font-size: 22rpx; color: var(--fg-2); margin-top: 6rpx; }
-
-.tip {
-  margin-top: 36rpx; font-size: 21rpx; color: var(--fg-2);
-  line-height: 1.6; text-align: center;
-}
-
-/* P0-a：高频常驻（Top3 动作 1 跳直达，解 B2） */
+/* 高频常驻 Top3：一行三格，只靠细线切分，无底色无阴影 */
 .pinned {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18rpx;
-  padding: 8rpx 0 12rpx;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1rpx solid var(--border); border-radius: 16rpx;
+  overflow: hidden; margin-top: 8rpx;
 }
 .pin {
-  background: var(--card); border: 1rpx solid var(--border);
-  border-radius: 28rpx; padding: 30rpx 18rpx;
   display: flex; flex-direction: column; align-items: center;
-  box-shadow: var(--shadow-md); transition: transform .15s ease;
+  padding: 32rpx 12rpx 28rpx;
+  border-right: 1rpx solid var(--border);
 }
-.pin:active { transform: scale(.97); }
-.pic { width: 60rpx; height: 60rpx; margin-bottom: 14rpx; }
-.pnm { font-size: 28rpx; font-weight: 700; color: var(--fg); }
-.pds { font-size: 20rpx; color: var(--fg-2); margin-top: 4rpx; }
+.pin:last-child { border-right: 0; }
+.pin:active { opacity: .6; }
+.pic { width: 34px; height: 34px; margin-bottom: 14rpx; display: flex; align-items: center; justify-content: center; }
+.pnm { font-size: 27rpx; font-weight: 600; color: var(--fg); letter-spacing: 1rpx; }
+.pds { font-size: 20rpx; color: var(--fg-2); margin-top: 6rpx; }
 
-/* P0-a：分簇 */
-.cluster { margin-top: 18rpx; }
+/* 分簇 */
+.cluster { margin-top: 52rpx; }
 .cl-h {
-  font-size: 26rpx; font-weight: 700; color: var(--gold-deep);
-  margin: 18rpx 6rpx 12rpx; letter-spacing: 1rpx;
+  font-size: 20rpx; letter-spacing: 3rpx; font-weight: 700;
+  color: var(--gold-deep); margin-bottom: 4rpx;
+}
+.page.dark .cl-h { color: var(--gold); }
+
+.row {
+  display: flex; align-items: center; gap: 20rpx;
+  padding: 28rpx 4rpx;
+  border-bottom: 1rpx solid var(--border);
+}
+.row:active { opacity: .6; }
+.ic { width: 30px; height: 30px; flex: none; display: flex; align-items: center; justify-content: center; }
+.rb { flex: 1; }
+.nm { font-size: 29rpx; font-weight: 600; color: var(--fg); }
+.ds { font-size: 22rpx; color: var(--fg-2); margin-top: 6rpx; }
+.arrow { font-size: 26rpx; color: var(--gold-deep); flex: none; }
+.page.dark .arrow { color: var(--gold); }
+
+.tip {
+  margin-top: 56rpx; font-size: 21rpx; color: var(--fg-2);
+  line-height: 1.7; text-align: center;
 }

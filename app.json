@@ -15,7 +15,8 @@
     "pages/space/space",
     "pages/star-panel/star-panel",
     "pages/daily/daily",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/anchor/anchor"
   ],
   "window": {
     "navigationBarTitleText": "拾光驿·星野漫游",

@@ -1,6 +1,7 @@
 <view class="page {{theme}}">
 <view class="nb" wx:if="{{note}}">
-  <view class="nb-hero" style="background:{{note.bg}}">{{note.emoji}}
+  <view class="nb-hero" style="background:{{note.bg}}">
+    <astro class="nb-hero-ic" name="{{note.icon || 'note'}}" size="64" theme="dark"/>
     <view class="dots"><view class="d on"></view><view class="d"></view><view class="d"></view></view>
   </view>
 
@@ -19,7 +20,7 @@
       <view class="rel-h">相关星野笔记</view>
       <view class="rel-grid">
         <view class="rel-card" wx:for="{{related}}" wx:key="id" data-id="{{item.id}}" bindtap="openNote">
-          <view class="rel-img" style="background:{{item.bg}}">{{item.emoji}}</view>
+          <view class="rel-img" style="background:{{item.bg}}"><astro name="{{item.icon || 'note'}}" size="36" theme="dark"/></view>
           <view class="rel-tt">{{item.title}}</view>
         </view>
       </view>
@@ -39,8 +40,8 @@
   <view class="nb-bar">
     <view class="cmt" bindtap="openComment">说点什么…</view>
     <view class="act {{liked?'on':''}}" bindtap="toggleLike">♥ {{likeNum}}</view>
-    <view class="act {{collected?'on':''}}" bindtap="toggleCollect">⭐ {{collectNum}}</view>
-    <view class="act" bindtap="addLamp">🪔 +1</view>
+    <view class="act {{collected?'on':''}}" bindtap="toggleCollect">★ {{collectNum}}</view>
+    <view class="act" bindtap="addLamp"><astro name="lamp" size="24" theme="{{theme}}"/> 添灯</view>
   </view>
   <view class="cmt-panel" wx:if="{{showComment}}">
     <textarea class="cmt-input" placeholder="温柔地留一句话…" value="{{commentText}}" bindinput="onComment" maxlength="120" focus="{{showComment}}" />

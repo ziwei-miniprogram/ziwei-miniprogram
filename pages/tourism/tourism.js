@@ -127,9 +127,9 @@ Page({
         // status === 'checked'
         self.refreshCheckin();
         self.buildMarkers();
-        whimsy.burst(self, { text: '定位到访 · 星图自动点亮', emoji: '📍' });
+        whimsy.burst(self, { text: '定位到访 · 星图自动点亮', emoji: '✦' });
         wx.showModal({
-          title: '到访已记录 ✨',
+          title: '到访已记录',
           content: '系统定位到你在「' + r.city.name + '」附近（约 ' + r.meters + 'm），星图已自动点亮，解锁城市守护折扣 + 限定优先购资格（24h）。\n带这份守护，去星野好物挑一件伴手礼吧～',
           confirmText: '去商城',
           cancelText: '再逛逛',
@@ -152,9 +152,9 @@ Page({
     }
     this.refreshCheckin();
     this.buildMarkers();
-    whimsy.burst(this, { text: '星图已点亮 · 城市守护折扣到手', emoji: '🌟' });
+    whimsy.burst(this, { text: '星图已点亮 · 城市守护折扣到手', emoji: '✦' });
     wx.showModal({
-      title: '城已点亮 ✨',
+      title: '城已点亮',
       content: `你点亮了「${city.name}」的星图，解锁「${r.coupon.label}」与限定优先购资格（24h）。\n带这份守护，去星野好物挑一件伴手礼吧～`,
       confirmText: '去商城',
       cancelText: '再逛逛',
@@ -168,18 +168,18 @@ Page({
   remoteCheckInCity() {
     const self = this;
     const unchecked = checkin.CITIES.filter(c => !checkin.isChecked(c.id));
-    if (!unchecked.length) { wx.showToast({ title: '6 城皆已守护 ✨', icon: 'none' }); return; }
+    if (!unchecked.length) {         wx.showToast({ title: '6 城皆已守护', icon: 'none' }); return; }
     wx.showActionSheet({
-      itemList: unchecked.map(c => '🏮 遥寄 · ' + c.name),
+      itemList: unchecked.map(c => '遥寄 · ' + c.name),
       success(r) {
         const city = unchecked[r.tapIndex];
         const res = checkin.remoteCheckIn(city.id);
         if (!res.ok) { wx.showToast({ title: '这座城已点亮过', icon: 'none' }); return; }
         self.refreshCheckin();
         self.buildMarkers();
-        whimsy.burst(self, { text: '遥寄祝福 · 星图已点亮', emoji: '🏮' });
+        whimsy.burst(self, { text: '遥寄祝福 · 星图已点亮', emoji: '✦' });
         wx.showModal({
-          title: '遥寄已送达 ✨',
+          title: '遥寄已送达',
           content: `你为「${city.name}」遥寄了一盏祝福灯，星图已点亮，解锁城市守护折扣 + 限定优先购资格（24h）。带这份守护，去星野好物挑一件伴手礼吧～`,
           confirmText: '去商城',
           cancelText: '再逛逛',

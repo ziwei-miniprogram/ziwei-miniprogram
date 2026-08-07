@@ -1,4 +1,9 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "搜索"
+  "usingComponents": {
+    "astro": "/components/icon/icon"
+  },
+  "navigationBarTitleText": "搜索",
+  "navigationBarBackgroundColor": "#f7f5f0",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f7f5f0"
 }
