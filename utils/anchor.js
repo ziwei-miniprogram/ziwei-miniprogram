@@ -15,6 +15,26 @@ const LAMP_TIERS = {
   '49d': { key: '49d', days: 49, price: 99, label: '一盏长明灯 · 49 日' }
 };
 
+// 定星名真实星曜池（取自紫微十四主星，传统文化意象命名，非命理判定）。
+// 数据源：divination-engine/engine/knowledge/ziwei_stars.json（本文件内联精简子集，
+// 避免小程序跨目录依赖；接真实排盘时仅替换 genStarName 的选星维度）。
+const STAR_POOL = [
+  '紫微', '天机', '太阳', '武曲', '天同', '廉贞',
+  '天府', '太阴', '贪狼', '巨门', '天相', '天梁', '七杀', '破军'
+];
+// 意象修饰：中性诗意前缀，不构成命运暗示（合规：娱乐参考）。
+const STAR_MODS = [
+  '守夜', '照微', '栖光', '望舒', '随缘', '听涛', '安澜', '栖云', '微明', '静澜'
+];
+
+// 定星名生成：基于立愿时刻的确定性维度，从真实星曜池 + 意象修饰池组合。
+// 同一时刻生成稳定、不同时刻多样；仅为文化意象命名，不构成任何命理判定。
+function genStarName(ts) {
+  const mod = STAR_MODS[Math.abs(Math.floor(ts / 1000)) % STAR_MODS.length];
+  const star = STAR_POOL[Math.abs(Math.floor(ts / 86400000)) % STAR_POOL.length];
+  return `${mod}·${star}`;
+}
+
 function fmtDate(ts) {
   const t = new Date(ts);
   return `${t.getMonth() + 1}月${t.getDate()}日`;
@@ -38,10 +58,11 @@ function ensureBorn() {
   if (a) return a;
   let wish = '';
   try { wish = wx.getStorageSync(WISH_KEY) || ''; } catch (e) {}
+  const bornAt = Date.now();
   a = {
-    name: '启明',                 // 定星名（未来可由星图生成 / 用户命名）
+    name: genStarName(bornAt),   // 定星名：基于立愿时刻由真实星曜池生成（传统文化意象，非命理判定）
     wish: wish || '愿心有所安',
-    bornAt: Date.now(),
+    bornAt: bornAt,
     stars: [],                   // 沉星记录
     deeds: []                    // 已点亮的真实善举
   };
@@ -113,5 +134,6 @@ function getDeeds() {
 
 module.exports = {
   ensureBorn, getAnchor, isBorn, addStar, returnedToday,
-  lampTiers, lightLamp, getDeeds, buildTimeline, fmtDate
+  lampTiers, lightLamp, getDeeds, buildTimeline, fmtDate,
+  genStarName, STAR_POOL, STAR_MODS
 };
