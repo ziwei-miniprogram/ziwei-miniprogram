@@ -20,7 +20,10 @@
     "coverageThreshold": {
       "./utils/anchor.js": { "statements": 90, "branches": 85, "functions": 95, "lines": 90 },
       "./utils/censor.js": { "statements": 95, "branches": 95, "functions": 95, "lines": 95 },
-      "./utils/whimsy.js": { "statements": 85, "branches": 80, "functions": 90, "lines": 85 }
+      "./utils/whimsy.js": { "statements": 85, "branches": 80, "functions": 90, "lines": 85 },
+      "./utils/lunar.js": { "statements": 95, "branches": 90, "functions": 95, "lines": 95 },
+      "./utils/mock.js": { "statements": 100, "branches": 100, "functions": 100, "lines": 100 },
+      "./utils/social.js": { "statements": 95, "branches": 88, "functions": 95, "lines": 95 }
     }
   },
   "lint-staged": {
