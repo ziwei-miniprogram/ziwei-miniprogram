@@ -1,0 +1,27 @@
+# CODEOWNERS — 星野漫游小程序核心模块归属
+# 作用：配合 branch protection，使「经济 / 合规 / 命理」等高风险模块的合并
+#       至少经过一名核心维护者评审，杜绝 🔴 类缺陷（如 F1 未声明变量崩溃、
+#       I1 死字段）逃逸进 main。单人项目下 owner 均为核心维护者，意义在于
+#       显式界定「必须评审的关键面」，而非形式化分权。
+
+# 默认归属：全仓库
+*       @fanyunjian
+
+# 合规：内容安全预检（法律 / 平台红线，漏改即违规）
+/utils/censor.js          @fanyunjian
+
+# 经济：功德 / 锚点 / 商城（直接关联虚拟资产与支付）
+/utils/merit.js           @fanyunjian
+/utils/anchor.js          @fanyunjian
+/pages/mall/**            @fanyunjian
+/pages/merit/**           @fanyunjian
+/pages/anchor/**          @fanyunjian
+
+# 命理：传统文化娱乐化（合规敏感，须规避迷信/改运表述）
+/utils/divine.js          @fanyunjian
+/utils/lunar.js           @fanyunjian
+/utils/whimsy.js          @fanyunjian
+
+# QA / 流水线配置（门禁变更须评审，避免误伤 CI）
+/.github/workflows/**     @fanyunjian
+/package.json             @fanyunjian

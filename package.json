@@ -15,6 +15,14 @@
     "jest": "^29.7.0",
     "lint-staged": "^17.3.0"
   },
+  "jest": {
+    "collectCoverageFrom": ["utils/**/*.js"],
+    "coverageThreshold": {
+      "./utils/anchor.js": { "statements": 90, "branches": 85, "functions": 95, "lines": 90 },
+      "./utils/censor.js": { "statements": 95, "branches": 95, "functions": 95, "lines": 95 },
+      "./utils/whimsy.js": { "statements": 85, "branches": 80, "functions": 90, "lines": 85 }
+    }
+  },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
