@@ -6,10 +6,18 @@
   "scripts": {
     "lint": "eslint \"pages/**/*.js\" \"utils/**/*.js\" \"custom-tab-bar/**/*.js\" \"components/**/*.js\"",
     "test": "jest",
-    "validate": "node scripts/validate-mp.js"
+    "validate": "node scripts/validate-mp.js",
+    "prepare": "husky"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "husky": "^9.1.7"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "jest --bail --findRelatedTests"
+    ]
   }
 }
