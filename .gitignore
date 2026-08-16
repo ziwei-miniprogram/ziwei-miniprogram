@@ -25,4 +25,5 @@ Thumbs.db
 # ===== 构建 / 临时产物 =====
 dist/
 build/
+coverage/
 *.log
