@@ -26,7 +26,7 @@
                 </td>
             </tr>
         @empty
-            <tr><td colspan="5" style="color:var(--fg-2);text-align:center;padding:40rpx">队列为空 🎉</td></tr>
+            <tr><td colspan="5" style="color:var(--fg-2);text-align:center;padding:40rpx">队列为空 </td></tr>
         @endforelse
         </tbody>
     </table>

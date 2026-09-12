@@ -68,7 +68,7 @@ body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-ser
 .screen{flex:1 1 auto;overflow-y:auto;padding:16px;padding-bottom:96px;-webkit-overflow-scrolling:touch;}
 .screen::-webkit-scrollbar{width:0;}
 .hero{background:var(--gold-grad);border-radius:20px;padding:20px 18px;color:#3a2c10;box-shadow:var(--shadow-2);margin-bottom:16px;position:relative;overflow:hidden;}
-.hero::after{content:"✦";position:absolute;right:14px;top:10px;font-size:46px;opacity:.25;}
+.hero::after{content:"";position:absolute;right:14px;top:10px;font-size:46px;opacity:.25;}
 .hero h1{margin:0 0 6px;font-size:20px;letter-spacing:1px;}
 .hero p{margin:0;font-size:13px;opacity:.85;}
 .card{background:var(--card);border:1px solid var(--border-color);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:var(--shadow-1);transition:background .3s,border-color .3s;}
@@ -213,7 +213,7 @@ body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-ser
   <div class="appbar" id="appbar"></div>
   <div class="screen" id="screen"></div>
 
-  <div class="fab" data-act="openLamp" title="心灯">🪔</div>
+  <div class="fab" data-act="openLamp" title="心灯"></div>
 
   <div class="tabbar" id="tabbar"></div>
 
@@ -228,8 +228,8 @@ body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-ser
   <!-- 架构说明 -->
   <div class="modal-mask" id="archModal">
     <div class="modal">
-      <h3>体验架构 · 断点 → 闭环（P0–P2）</h3>
-      <div class="row"><b>B2 深井</b>：星野 9 宫格 → 压平为 PINNED(1跳) + CLUSTERS(三簇)，心灯 FAB 升级 BottomSheet，高频操作 1 步到位。</div>
+      <h3>体验架构 · 断点 闭环（P0–P2）</h3>
+      <div class="row"><b>B2 深井</b>：星野 9 宫格 压平为 PINNED(1跳) + CLUSTERS(三簇)，心灯 FAB 升级 BottomSheet，高频操作 1 步到位。</div>
       <div class="row"><b>B3 孤儿页</b>：紫微/八字/星座 三测试合并为「星盘」内部 seg tab，底部 LoopChip 回灌主循环，读完有去处。</div>
       <div class="row"><b>B4 死胡同</b>：每日流 / 叶子页底部加 LoopChip，送回 点亮星图 / 寄愿 / 三善 / 记一笔 主循环。</div>
       <div class="row"><b>B5 转化弱</b>：盲盒揭晓、星图点亮峰值接 ContextualCta 单件推荐；商城 P2 内容驱动推荐区 + 功德 sink 多样（长明灯/9折/晒单）。</div>
@@ -282,7 +282,7 @@ function toggleTheme(t){
 
 /* ===== 导航 ===== */
 const TABS=['space','tourism','mall','message','profile'];
-const TAB_META={space:{t:'星野',i:'🌌'},tourism:{t:'文旅',i:'🗺️'},mall:{t:'商城',i:'🛍️'},message:{t:'消息',i:'💬'},profile:{t:'我的',i:'👤'}};
+const TAB_META={space:{t:'星野',i:''},tourism:{t:'文旅',i:''},mall:{t:'商城',i:''},message:{t:'消息',i:''},profile:{t:'我的',i:''}};
 let current='space';
 let stack=[];
 function isTab(k){return TABS.indexOf(k)>=0;}
@@ -313,7 +313,7 @@ function act(a,el){
     case 'goChart':nav('chart');break;
     case 'lightStar':{
       state.merit+=200;state.litStars=Math.min(28,state.litStars+1);save();
-      burst('✨ 点亮一宿，星图 +1');render();
+      burst('点亮一宿，星图 +1');render();
       break;
     }
     case 'doDeed':{
@@ -326,7 +326,7 @@ function act(a,el){
     case 'remoteCity':{
       const c=el.dataset.c;if(state.litCities[c]){toast('已守护');break;}
       state.litCities[c]={remote:true};state.merit+=9;save();
-      burst('🏮 遥寄祝福 · 守护 '+c);render();
+      burst('遥寄祝福 · 守护 '+c);render();
       break;
     }
     case 'openBox':{
@@ -338,9 +338,9 @@ function act(a,el){
     }
     case 'lightLamp':{
       if(state.meritLampLit){toast('长明灯已点亮');break;}
-      if(state.merit<30){toast('功德不足，先去积功德 ✦');nav('chart');break;}
+      if(state.merit<30){toast('功德不足，先去积功德 ');nav('chart');break;}
       state.merit-=30;state.meritLampLit=true;save();
-      burst('🪔 长明祈福灯点亮');render();
+      burst('长明祈福灯点亮');render();
       break;
     }
     case 'shareMall':{
@@ -356,7 +356,7 @@ function act(a,el){
       hideLamp();const k=el.dataset.k;
       if(k==='lamp'){act('doDeed',{dataset:{k:'lamp'}});}
       else if(k==='checkin'){toast('已签到 · 连签+1');state.streak++;save();render();}
-      else if(k==='publish'){toast('去发布 ✍️');nav('profile');}
+      else if(k==='publish'){toast('去发布 ');nav('profile');}
       else nav(k);
       break;
     }
@@ -375,9 +375,9 @@ function renderAppbar(){
   if(tab)html+='<div class="arch" data-act="showArch">架构 B2–B6</div>';
   const t=state.theme;
   html+='<div class="toggle">'+
-    '<span class="'+(t==='light'?'on':'')+'" data-act="setTheme" data-theme="light">☀</span>'+
-    '<span class="'+(t==='dark'?'on':'')+'" data-act="setTheme" data-theme="dark">🌙</span>'+
-    '<span class="'+(t==='system'?'on':'')+'" data-act="setTheme" data-theme="system">💻</span></div>';
+    '<span class="'+(t==='light'?'on':'')+'" data-act="setTheme" data-theme="light"></span>'+
+    '<span class="'+(t==='dark'?'on':'')+'" data-act="setTheme" data-theme="dark"></span>'+
+    '<span class="'+(t==='system'?'on':'')+'" data-act="setTheme" data-theme="system"></span></div>';
   ab.innerHTML=html;
 }
 /* ===== 渲染：tabbar ===== */
@@ -394,9 +394,9 @@ function renderTabbar(){
 
 /* ===== 心灯 BottomSheet ===== */
 const LAMP_ITEMS=[
-  {k:'chart',e:'🔭',t:'点亮星图'},{k:'merit',e:'🪔',t:'寄愿一笔'},
-  {k:'daily',e:'🛎',t:'今日三善'},{k:'lamp',e:'✨',t:'点一盏灯'},
-  {k:'checkin',e:'📅',t:'签到'},{k:'publish',e:'✍️',t:'记一笔'}
+  {k:'chart',e:'',t:'点亮星图'},{k:'merit',e:'',t:'寄愿一笔'},
+  {k:'daily',e:'',t:'今日三善'},{k:'lamp',e:'',t:'点一盏灯'},
+  {k:'checkin',e:'',t:'签到'},{k:'publish',e:'',t:'记一笔'}
 ];
 function showLamp(){
   document.getElementById('lampQs').innerHTML=LAMP_ITEMS.map(i=>
@@ -409,11 +409,11 @@ function hideLamp(){document.getElementById('lampSheet').classList.remove('show'
 /* ===== 屏幕渲染 ===== */
 function buildReco(){
   const ALL=[
-    {emoji:'🏮',tag:'寄愿结缘',name:'寄愿·暖月香薰',desc:'为你许下的星愿，配一盏静心灯',cat:'香薰',hit:!!state.wish},
-    {emoji:'📿',tag:'疗愈三善',name:'静心好书 · 抄经',desc:'今日善行已落，配一笔静好',cat:'书籍',hit:didDeed()},
-    {emoji:'💎',tag:'星图系列',name:'二十八宿夜灯',desc:'星图已亮，结缘星夜同款',cat:'水晶',hit:starLit()>0},
-    {emoji:'🪷',tag:'城市守护',name:'星辉结缘 · 念珠',desc:'连签守护，带一份陪伴回家',cat:'文创',hit:state.streak>0},
-    {emoji:'🌙',tag:'节气疗愈',name:'睡前冥想 21 天',desc:'顺时而养，静心陪伴',cat:'课程',hit:true}
+    {emoji:'',tag:'寄愿结缘',name:'寄愿·暖月香薰',desc:'为你许下的星愿，配一盏静心灯',cat:'香薰',hit:!!state.wish},
+    {emoji:'',tag:'疗愈三善',name:'静心好书 · 抄经',desc:'今日善行已落，配一笔静好',cat:'书籍',hit:didDeed()},
+    {emoji:'',tag:'星图系列',name:'二十八宿夜灯',desc:'星图已亮，结缘星夜同款',cat:'水晶',hit:starLit()>0},
+    {emoji:'',tag:'城市守护',name:'星辉结缘 · 念珠',desc:'连签守护，带一份陪伴回家',cat:'文创',hit:state.streak>0},
+    {emoji:'',tag:'节气疗愈',name:'睡前冥想 21 天',desc:'顺时而养，静心陪伴',cat:'课程',hit:true}
   ];
   const hits=ALL.filter(r=>r.hit),rest=ALL.filter(r=>!r.hit);
   const picked=[],seen={};
@@ -426,8 +426,8 @@ function loopChip(items,title){
   ).join('')+'</div></div>';
 }
 const LOOP_DEFAULT=[
-  {k:'chart',e:'🔭',t:'点亮星图'},{k:'merit',e:'🪔',t:'寄愿一笔'},
-  {k:'daily',e:'🛎',t:'今日三善'},{k:'star',e:'✍️',t:'记一笔'}
+  {k:'chart',e:'',t:'点亮星图'},{k:'merit',e:'',t:'寄愿一笔'},
+  {k:'daily',e:'',t:'今日三善'},{k:'star',e:'',t:'记一笔'}
 ];
 
 function render(){
@@ -442,87 +442,87 @@ const VIEWS={
     return `
     <div class="hero"><h1>星野漫游</h1><p>传统文化 × 心理慰藉 · 顺星野，安此心</p></div>
     <div class="card">
-      <h3><span class="pin">✦</span>常驻高频（一步直达）</h3>
+      <h3><span class="pin"></span>常驻高频（一步直达）</h3>
       <div class="chip-row">
-        <div class="chip" data-act="goChart"><div class="ic">🔭</div><div class="t">点亮星图</div><div class="d">二十八宿</div></div>
-        <div class="chip" data-act="goMerit"><div class="ic">🪔</div><div class="t">寄愿一笔</div><div class="d">星愿承诺</div></div>
-        <div class="chip" data-act="goDaily"><div class="ic">🛎</div><div class="t">今日三善</div><div class="d">善行打卡</div></div>
+        <div class="chip" data-act="goChart"><div class="ic"></div><div class="t">点亮星图</div><div class="d">二十八宿</div></div>
+        <div class="chip" data-act="goMerit"><div class="ic"></div><div class="t">寄愿一笔</div><div class="d">星愿承诺</div></div>
+        <div class="chip" data-act="goDaily"><div class="ic"></div><div class="t">今日三善</div><div class="d">善行打卡</div></div>
       </div>
     </div>
     <div class="cluster">
       <div class="ct">识星簇</div>
       <div class="chip-row">
-        <div class="chip" data-act="goStar" data-mode="ziwei"><div class="ic">🌟</div><div class="t">紫微斗数</div><div class="d">命宫主星</div></div>
-        <div class="chip" data-act="goStar" data-mode="bazi"><div class="ic">☯️</div><div class="t">八字命理</div><div class="d">五行排盘</div></div>
-        <div class="chip" data-act="goStar" data-mode="xingzuo"><div class="ic">♒</div><div class="t">星座测试</div><div class="d">今日运势</div></div>
+        <div class="chip" data-act="goStar" data-mode="ziwei"><div class="ic"></div><div class="t">紫微斗数</div><div class="d">命宫主星</div></div>
+        <div class="chip" data-act="goStar" data-mode="bazi"><div class="ic"></div><div class="t">八字命理</div><div class="d">五行排盘</div></div>
+        <div class="chip" data-act="goStar" data-mode="xingzuo"><div class="ic"></div><div class="t">星座测试</div><div class="d">今日运势</div></div>
       </div>
     </div>
     <div class="cluster">
       <div class="ct">安善簇</div>
       <div class="chip-row">
-        <div class="chip" data-act="goTourism"><div class="ic">🗺️</div><div class="t">城市守护</div><div class="d">文旅打卡</div></div>
-        <div class="chip" data-act="goMerit"><div class="ic">💮</div><div class="t">功德中心</div><div class="d">结缘流转</div></div>
+        <div class="chip" data-act="goTourism"><div class="ic"></div><div class="t">城市守护</div><div class="d">文旅打卡</div></div>
+        <div class="chip" data-act="goMerit"><div class="ic"></div><div class="t">功德中心</div><div class="d">结缘流转</div></div>
       </div>
     </div>
     <div class="cluster">
       <div class="ct">表达簇</div>
       <div class="chip-row">
-        <div class="chip" data-act="goDaily"><div class="ic">📝</div><div class="t">记一笔</div><div class="d">感悟随笔</div></div>
-        <div class="chip" data-act="goProfile"><div class="ic">📣</div><div class="t">去发布</div><div class="d">星友共修</div></div>
+        <div class="chip" data-act="goDaily"><div class="ic"></div><div class="t">记一笔</div><div class="d">感悟随笔</div></div>
+        <div class="chip" data-act="goProfile"><div class="ic"></div><div class="t">去发布</div><div class="d">星友共修</div></div>
       </div>
     </div>
     <p class="disclaimer">星野漫游为传统文化与心理慰藉的娱乐参考，内容不构成改运、医疗或付费算命建议。</p>`;
   },
   /* ===== P0-b 每日流（LoopChip 收口） ===== */
   daily(){
-    const deeds=[{k:'lamp',e:'✨',t:'点一盏灯',done:state.deeds.lamp},{k:'bond',e:'🤝',t:'随喜结缘',done:state.deeds.bond},{k:'meditate',e:'🧘',t:'静心冥想',done:state.deeds.meditate}];
+    const deeds=[{k:'lamp',e:'',t:'点一盏灯',done:state.deeds.lamp},{k:'bond',e:'',t:'随喜结缘',done:state.deeds.bond},{k:'meditate',e:'',t:'静心冥想',done:state.deeds.meditate}];
     return `
     <div class="hero"><h1>每日三善</h1><p>顺时而养 · 今日善行已落 ${deeds.filter(d=>d.done).length}/3</p></div>
-    ${deeds.map(d=>`<div class="deed ${d.done?'done':''}" data-act="doDeed" data-k="${d.k}"><div class="de">${d.e}</div><div class="dt">${d.t}</div><div class="chk">${d.done?'✓':''}</div></div>`).join('')}
+    ${deeds.map(d=>`<div class="deed ${d.done?'done':''}" data-act="doDeed" data-k="${d.k}"><div class="de">${d.e}</div><div class="dt">${d.t}</div><div class="chk">${d.done?'':''}</div></div>`).join('')}
     <p class="muted" style="margin:6px 2px 12px">点亮三善，星愿更显、功德渐丰。完成即触发商城「疗愈三善」推荐。</p>
     ${loopChip(LOOP_DEFAULT,'识己之后，顺手安住此刻')}`;
   },
   /* ===== P0-c 文旅（遥寄解 GPS 门槛 + 守护榜） ===== */
   tourism(){
-    const cities=[{id:'宿城',e:'🏯'},{id:'临川',e:'🌉'},{id:'云栖',e:'⛰️'},{id:'海边',e:'🌊'},{id:'古城',e:'🏮'},{id:'山林',e:'🌲'}];
+    const cities=[{id:'宿城',e:''},{id:'临川',e:''},{id:'云栖',e:''},{id:'海边',e:''},{id:'古城',e:''},{id:'山林',e:''}];
     const litN=Object.keys(state.litCities).length;
     const unlit=cities.filter(c=>!state.litCities[c.id]);
     return `
     <div class="hero"><h1>城市守护 · 文旅打卡</h1><p>已守护 ${litN}/6 城 · 解锁全国礼进度 ${Math.floor(litN/6*100)}%</p></div>
     <div class="card">
-      <h3><span class="pin">🏮</span>遥寄祝福（不在当地也能守护）</h3>
+      <h3><span class="pin"></span>遥寄祝福（不在当地也能守护）</h3>
       <div class="city-grid">
         ${cities.map(c=>{const l=state.litCities[c.id];return `<div class="city ${l?'lit':''}" data-act="remoteCity" data-c="${c.id}"><div class="ce">${c.e}</div><div class="cn">${c.id}</div><div class="cs">${l?(l.remote?'遥寄点亮':'已点亮'):'守护'}</div></div>`;}).join('')}
       </div>
-      ${unlit.length?`<button class="btn ghost sm" style="margin-top:10px" data-act="remoteCity" data-c="${unlit[0].id}">遥寄祝福 · 守护「${unlit[0].id}」</button>`:`<p class="muted" style="margin-top:8px">六城皆守护 · 全国礼已解锁 🏆</p>`}
+      ${unlit.length?`<button class="btn ghost sm" style="margin-top:10px" data-act="remoteCity" data-c="${unlit[0].id}">遥寄祝福 · 守护「${unlit[0].id}」</button>`:`<p class="muted" style="margin-top:8px">六城皆守护 · 全国礼已解锁 </p>`}
     </div>
-    <div class="board">🌟 城市守护榜：你已点亮 <b>${litN}</b> 城；星友共建守护 <b>1280+</b> 城次。集满 6 城解锁限定大漆星图杯（全国礼）。</div>
+    <div class="board">城市守护榜：你已点亮 <b>${litN}</b> 城；星友共建守护 <b>1280+</b> 城次。集满 6 城解锁限定大漆星图杯（全国礼）。</div>
     <p class="disclaimer">线下打卡享城市折扣券（7 天）与限定款优先购（24h），遥寄同享守护与折扣，零金钱、纯文化陪伴。</p>`;
   },
-  /* ===== P0-d 星图（点亮 → 峰值 ContextualCta） ===== */
+  /* ===== P0-d 星图（点亮 峰值 ContextualCta） ===== */
   chart(){
     const sl=starLit();
     let stars='';
-    for(let i=0;i<28;i++){stars+=`<div class="st ${i<sl?'lit':''}" data-act="lightStar">${i<sl?'★':'☆'}</div>`;}
-    const reco=sl>0?`<div class="reco-zone"><div class="reco-z-h">✦ 星图已亮 · 为你结缘星夜同款</div>
-      <div class="mj-reco" data-act="recoTap" data-cat="水晶"><div class="ic">💎</div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿夜灯</div><div class="ds">把点亮的星宿带回家</div></div><div class="go">去看看 ›</div></div>
-      <div class="mj-reco" data-act="recoTap" data-cat="丝巾"><div class="ic">🧣</div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿丝巾</div><div class="ds">非遗宋锦 · 星辉纹样</div></div><div class="go">去看看 ›</div></div>
+    for(let i=0;i<28;i++){stars+=`<div class="st ${i<sl?'lit':''}" data-act="lightStar">${i<sl?'':''}</div>`;}
+    const reco=sl>0?`<div class="reco-zone"><div class="reco-z-h">星图已亮 · 为你结缘星夜同款</div>
+      <div class="mj-reco" data-act="recoTap" data-cat="水晶"><div class="ic"></div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿夜灯</div><div class="ds">把点亮的星宿带回家</div></div><div class="go">去看看 ›</div></div>
+      <div class="mj-reco" data-act="recoTap" data-cat="丝巾"><div class="ic"></div><div class="body"><span class="tag">星图系列</span><div class="nm">二十八宿丝巾</div><div class="ds">非遗宋锦 · 星辉纹样</div></div><div class="go">去看看 ›</div></div>
     </div>`:'';
     return `
     <div class="hero"><h1>二十八宿星图</h1><p>已点亮 ${sl}/28 宿 · 功德 ${state.merit}</p></div>
     <div class="starmap">${stars}</div>
     <p class="muted" style="margin:-4px 2px 12px">点一颗星即点亮一宿（演示：星图+1、功德+200）。点亮后触发峰值单件结缘推荐。</p>
     ${reco}
-    ${loopChip([{k:'merit',e:'🪔',t:'寄愿一笔'},{k:'daily',e:'🛎',t:'今日三善'},{k:'mall',e:'🛍️',t:'去商城'}],'点亮之后，顺手安住此刻')}`;
+    ${loopChip([{k:'merit',e:'',t:'寄愿一笔'},{k:'daily',e:'',t:'今日三善'},{k:'mall',e:'',t:'去商城'}],'点亮之后，顺手安住此刻')}`;
   },
-  /* ===== 盲盒（揭晓 → 节气 ContextualCta） ===== */
+  /* ===== 盲盒（揭晓 节气 ContextualCta） ===== */
   surprise(){
     return `
     <div class="hero"><h1>星野盲盒</h1><p>每日惊喜 · 揭晓你的星宿礼</p></div>
     <div class="box" id="surpriseBox" data-act="openBox">
-      <div class="lid">🎁</div>
+      <div class="lid"></div>
       <div class="hint">轻触揭晓</div>
-      <div class="reveal"><div style="font-size:40px">🌿</div><div style="font-weight:700;margin:8px 0">今日 · 大暑节气香</div><div style="font-size:12px">顺时养生，静心一缕。为你的节气，配一款香。</div><button class="btn sm" style="margin-top:12px" data-act="recoTap" data-cat="香薰">去看看 ›</button></div>
+      <div class="reveal"><div style="font-size:40px"></div><div style="font-weight:700;margin:8px 0">今日 · 大暑节气香</div><div style="font-size:12px">顺时养生，静心一缕。为你的节气，配一款香。</div><button class="btn sm" style="margin-top:12px" data-act="recoTap" data-cat="香薰">去看看 ›</button></div>
     </div>
     <p class="muted" style="margin-top:12px">盲盒揭晓峰值接 ContextualCta（按当日节气推荐结缘物），是 B5 转化弱的解法之一。</p>`;
   },
@@ -531,9 +531,9 @@ const VIEWS={
     const mode=state.starMode||'ziwei';
     const tabs=[{k:'ziwei',n:'紫微斗数'},{k:'bazi',n:'八字命理'},{k:'xingzuo',n:'星座测试'}];
     let body='';
-    if(mode==='ziwei')body=`<div class="card"><div class="section-h">命宫主星</div><div style="font-size:30px;text-align:center;color:var(--gold-deep)">★ 太阳星 · 命宫</div><div class="muted" style="text-align:center;margin-top:6px">主星入命，光华外显，宜守正持衡。</div><button class="btn ghost sm" style="margin-top:12px" data-act="goChart">去星图看二十八宿 ›</button></div>`;
+    if(mode==='ziwei')body=`<div class="card"><div class="section-h">命宫主星</div><div style="font-size:30px;text-align:center;color:var(--gold-deep)">太阳星 · 命宫</div><div class="muted" style="text-align:center;margin-top:6px">主星入命，光华外显，宜守正持衡。</div><button class="btn ghost sm" style="margin-top:12px" data-act="goChart">去星图看二十八宿 ›</button></div>`;
     else if(mode==='bazi')body=`<div class="card"><div class="section-h">四柱五行</div><div class="badges" style="grid-template-columns:repeat(4,1fr)"><div class="badge-i have">甲<div class="bl">年</div></div><div class="badge-i have">丙<div class="bl">月</div></div><div class="badge-i have">戊<div class="bl">日</div></div><div class="badge-i have">庚<div class="bl">时</div></div></div><div class="muted" style="margin-top:8px">五行：金2 木1 水1 火2 土2，中和偏暖。</div></div>`;
-    else body=`<div class="card"><div class="section-h">今日运势</div><div style="font-size:26px;text-align:center;color:var(--gold-deep)">♒ 水瓶座</div><div class="kv"><span>综合</span><b>★★★★☆</b></div><div class="kv"><span>爱情</span><b>★★★☆☆</b></div><div class="kv"><span>事业</span><b>★★★★☆</b></div><div class="kv"><span>健康</span><b>★★★☆☆</b></div></div>`;
+    else body=`<div class="card"><div class="section-h">今日运势</div><div style="font-size:26px;text-align:center;color:var(--gold-deep)">水瓶座</div><div class="kv"><span>综合</span><b></b></div><div class="kv"><span>爱情</span><b></b></div><div class="kv"><span>事业</span><b></b></div><div class="kv"><span>健康</span><b></b></div></div>`;
     return `
     <div class="hero"><h1>星盘 · 命理合集</h1><p>识己之后，顺手安住此刻</p></div>
     <div class="seg">${tabs.map(t=>`<div class="s ${mode===t.k?'on':''}" data-act="setStarMode" data-mode="${t.k}">${t.n}</div>`).join('')}</div>
@@ -546,30 +546,30 @@ const VIEWS={
     const reco=buildReco();
     const lamp=state.meritLampLit;
     const goods=[
-      {e:'🕯️',n:'二十八宿夜灯',p:'¥129',c:'水晶'},{e:'🏮',n:'寄愿·暖月香薰',p:'¥89',c:'香薰'},
-      {e:'📿',n:'静心抄经本',p:'¥49',c:'书籍'},{e:'🧣',n:'宋锦星辉丝巾',p:'¥199',c:'丝巾'},
-      {e:'🪷',n:'星辉结缘念珠',p:'¥69',c:'文创'},{e:'🌿',n:'节气香 · 大暑',p:'¥59',c:'香薰'}
+      {e:'',n:'二十八宿夜灯',p:'¥129',c:'水晶'},{e:'',n:'寄愿·暖月香薰',p:'¥89',c:'香薰'},
+      {e:'',n:'静心抄经本',p:'¥49',c:'书籍'},{e:'',n:'宋锦星辉丝巾',p:'¥199',c:'丝巾'},
+      {e:'',n:'星辉结缘念珠',p:'¥69',c:'文创'},{e:'',n:'节气香 · 大暑',p:'¥59',c:'香薰'}
     ];
     const shown=state.recoCat?goods.filter(g=>g.c===state.recoCat):goods;
     return `
     <div class="hero"><h1>星野好物</h1><p>依你的星野足迹，结一份缘</p></div>
-    ${reco.length?`<div class="reco-zone"><div class="reco-z-h">✦ 为你结缘 · 依你的星野足迹</div>
+    ${reco.length?`<div class="reco-zone"><div class="reco-z-h">为你结缘 · 依你的星野足迹</div>
       ${reco.map(r=>`<div class="mj-reco" data-act="recoTap" data-cat="${r.cat}"><div class="ic">${r.emoji}</div><div class="body"><span class="tag">${r.tag}</span><div class="nm">${r.name}</div><div class="ds">${r.desc}</div></div><div class="go">去看看 ›</div></div>`).join('')}
     </div>`:''}
     <div class="merit-lamp ${lamp?'done':''}">
-      <div class="ml-ic">${lamp?'🪔':'🔆'}</div>
+      <div class="ml-ic">${lamp?'':''}</div>
       <div class="ml-body"><div class="ml-t">${lamp?'长明祈福灯 · 已点亮':'点亮长明祈福灯'}</div><div class="ml-s">${lamp?'愿你星途恒明':'消耗功德 '+30+' · 当前余额 '+state.merit}</div></div>
       <button class="ml-btn" data-act="lightLamp">${lamp?'已点亮':'点亮'}</button>
     </div>
     <div class="card">
-      <h3><span class="pin">🛍️</span>星野好物${state.recoCat?' · '+state.recoCat:''}</h3>
+      <h3><span class="pin"></span>星野好物${state.recoCat?' · '+state.recoCat:''}</h3>
       <div class="feed">
         ${shown.map(g=>`<div class="goods"><div class="ph">${g.e}</div><div class="gb"><div class="gn">${g.n}${state.recoCat===g.c?'<span class="badge">推荐</span>':''}</div><div class="gp">${g.p}</div></div></div>`).join('')}
       </div>
       ${state.recoCat?'<button class="btn ghost sm" style="margin-top:12px" data-act="clearReco">查看全部</button>':''}
     </div>
     <div class="card">
-      <h3><span class="pin">💮</span>功德流转</h3>
+      <h3><span class="pin"></span>功德流转</h3>
       <div class="kv"><span>当前功德</span><b>${state.merit}</b></div>
       <div class="kv"><span>连签天数</span><b>${state.streak} 天</b></div>
       <div class="kv"><span>晒单返星屑</span><b>${state.shares}/3 今日</b></div>
@@ -582,14 +582,14 @@ const VIEWS={
     return `
     <div class="hero"><h1>寄愿 · 功德</h1><p>一笔星愿，心有所安</p></div>
     <div class="card">
-      <h3><span class="pin">🪔</span>寄一笔星愿</h3>
+      <h3><span class="pin"></span>寄一笔星愿</h3>
       <div class="fld"><div class="lab">你的星愿（文明寄语，不参与迷信改运）</div><textarea rows="3" placeholder="写下此刻心愿…" data-act="setWish">${state.wish}</textarea></div>
-      <p class="muted">立愿后，商城「寄愿结缘」推荐区将为你出现 🏮</p>
+      <p class="muted">立愿后，商城「寄愿结缘」推荐区将为你出现 </p>
     </div>
     <div class="card">
-      <h3><span class="pin">💮</span>功德中心</h3>
+      <h3><span class="pin"></span>功德中心</h3>
       <div class="kv"><span>功德余额</span><b>${state.merit}</b></div>
-      <div class="kv"><span>今日三善</span><b>${didDeed()?'已落 ✓':'未开始'}</b></div>
+      <div class="kv"><span>今日三善</span><b>${didDeed()?'已落 ':'未开始'}</b></div>
       <div class="kv"><span>连签</span><b>${state.streak} 天</b></div>
       <div class="kv"><span>星图点亮</span><b>${starLit()}/28 宿</b></div>
       <button class="btn sm" style="margin-top:10px" data-act="goDaily">去完成今日三善 ›</button>
@@ -597,13 +597,13 @@ const VIEWS={
   },
   /* ===== 我的（双 Hub + 夜灯模式 + 徽章） ===== */
   profile(){
-    const badges=[{e:'🌟',h:true,t:'启明'},{e:'🪔',h:state.meritLampLit,t:'长明'},{e:'🗺️',h:Object.keys(state.litCities).length>0,t:'守护'},{e:'📿',h:didDeed(),t:'三善'},{e:'🔭',h:starLit()>0,t:'观星'},{e:'🏮',h:!!state.wish,t:'立愿'},{e:'🌿',h:false,t:'节气'},{e:'🪷',h:false,t:'结缘'},{e:'💎',h:false,t:'星图'},{e:'📅',h:state.streak>=7,t:'连签'}];
+    const badges=[{e:'',h:true,t:'启明'},{e:'',h:state.meritLampLit,t:'长明'},{e:'',h:Object.keys(state.litCities).length>0,t:'守护'},{e:'',h:didDeed(),t:'三善'},{e:'',h:starLit()>0,t:'观星'},{e:'',h:!!state.wish,t:'立愿'},{e:'',h:false,t:'节气'},{e:'',h:false,t:'结缘'},{e:'',h:false,t:'星图'},{e:'',h:state.streak>=7,t:'连签'}];
     return `
-    <div class="hero"><h1>我的星野</h1><p>夜灯模式 · ${state.theme==='dark'?'已开 🌙':'浅色 ☀'}</p></div>
-    <div class="card"><h3><span class="pin">🌗</span>夜灯模式</h3><div class="deed ${state.theme==='dark'?'done':''}" data-act="toggleNight"><div class="de">🌙</div><div class="dt">切换夜灯星夜主题</div><div class="chk">${state.theme==='dark'?'✓':''}</div></div></div>
-    <div class="card"><h3><span class="pin">🏅</span>金色成就徽章</h3><div class="badges">${badges.map(b=>`<div class="badge-i ${b.h?'have':''} ${!b.h?'lock':''}">${b.e}<div class="bl">${b.t}</div></div>`).join('')}</div></div>
-    <div class="card"><h3><span class="pin">🔭</span>星图进度</h3><div class="starmap">${Array.from({length:28}).map((_,i)=>`<div class="st ${i<starLit()?'lit':''}">${i<starLit()?'★':'☆'}</div>`).join('')}</div></div>
-    ${loopChip([{k:'space',e:'🌌',t:'回星野'},{k:'mall',e:'🛍️',t:'去商城'},{k:'daily',e:'🛎',t:'今日三善'}],'回到主循环')}`;
+    <div class="hero"><h1>我的星野</h1><p>夜灯模式 · ${state.theme==='dark'?'已开 ':'浅色 '}</p></div>
+    <div class="card"><h3><span class="pin"></span>夜灯模式</h3><div class="deed ${state.theme==='dark'?'done':''}" data-act="toggleNight"><div class="de"></div><div class="dt">切换夜灯星夜主题</div><div class="chk">${state.theme==='dark'?'':''}</div></div></div>
+    <div class="card"><h3><span class="pin"></span>金色成就徽章</h3><div class="badges">${badges.map(b=>`<div class="badge-i ${b.h?'have':''} ${!b.h?'lock':''}">${b.e}<div class="bl">${b.t}</div></div>`).join('')}</div></div>
+    <div class="card"><h3><span class="pin"></span>星图进度</h3><div class="starmap">${Array.from({length:28}).map((_,i)=>`<div class="st ${i<starLit()?'lit':''}">${i<starLit()?'':''}</div>`).join('')}</div></div>
+    ${loopChip([{k:'space',e:'',t:'回星野'},{k:'mall',e:'',t:'去商城'},{k:'daily',e:'',t:'今日三善'}],'回到主循环')}`;
   }
 };
 /* starMode 默认注入 */

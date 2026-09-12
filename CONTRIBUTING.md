@@ -23,7 +23,7 @@ git add -p                                    # 按需暂存，保持原子
 git commit                                    # 走 .gitmessage 模板
 git fetch origin && git rebase origin/main    # 变基到最新 main，保持线性历史
 git push -u origin feat/my-feature
-# 在 GitHub 开 PR → 评审通过 + CI 绿 → squash merge → 删分支
+# 在 GitHub 开 PR 评审通过 + CI 绿 squash merge 删分支
 ```
 - 合并方式：**Squash merge**（特性分支多个提交压成 main 上一个干净提交）或 **rebase + merge --no-ff**，保持 `main` 线性、可读。
 - 解决冲突：**rebase 到 main**（不要在特性分支里 `merge main`），避免历史分叉。
@@ -31,10 +31,10 @@ git push -u origin feat/my-feature
 ## 4. PR 与评审门禁
 - PR 必须关联意图说明（用 PR 模板）。
 - 至少 1 人评审通过；CI（见 §7）必须通过。
-- `main` 分支保护（GitHub → Settings → Branches）：
-  - ✅ Require a pull request before merging
-  - ✅ Require status checks to pass → 勾选 **validate**（CI 的 `语法与安全校验` job），若启用小程序编译则再勾 **miniprogram-build**
-  - ❌ 取消 "Allow force pushes" / "Allow deletions"
+- `main` 分支保护（GitHub Settings Branches）：
+  - [OK] Require a pull request before merging
+  - [OK] Require status checks to pass 勾选 **validate**（CI 的 `语法与安全校验` job），若启用小程序编译则再勾 **miniprogram-build**
+  - [FAIL] 取消 "Allow force pushes" / "Allow deletions"
 
 ## 5. 回滚与恢复
 - 已合并的问题用 `git revert <commit>`（生成反向提交），**不要** `reset --hard` 已推送历史。
@@ -64,8 +64,8 @@ git switch -c feat/x origin/main        # 新建特性分支
 
 ## 8. 小程序编译校验（可选）
 `miniprogram-build` job 用官方 `miniprogram-ci` 对工程做真实编译预览校验，比单纯语法检查更权威。它通过 **GitHub Secrets** 驱动，不把敏感信息入库：
-1. 微信公众平台 → 开发管理 → 开发设置 → 生成「上传代码密钥」（private key 文件）。
-2. 仓库 **Settings → Secrets and variables → Actions → New repository secret**：
+1. 微信公众平台 开发管理 开发设置 生成「上传代码密钥」（private key 文件）。
+2. 仓库 **Settings Secrets and variables Actions New repository secret**：
    - `WX_APPID` = 小程序 appid
    - `WX_PRIVATE_KEY` = private key 文件全文
 3. 配置后，PR / 推送会自动跑 `miniprogram-ci preview`；**未配置则 job 自动跳过**，不影响合并。

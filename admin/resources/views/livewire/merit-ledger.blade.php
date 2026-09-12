@@ -2,7 +2,7 @@
 
 @if ($anomalies->isNotEmpty())
     <div class="apple-card" style="border-color:rgba(224,121,111,.4);margin-bottom:24rpx">
-        <p class="section-sub" style="color:#c0564c;margin-top:0">⚠ 异常预警：{{ $anomalies->count() }} 笔短时功德暴涨（疑似刷分）</p>
+        <p class="section-sub" style="color:#c0564c;margin-top:0">[WARN] 异常预警：{{ $anomalies->count() }} 笔短时功德暴涨（疑似刷分）</p>
         <table class="tbl">
             <thead><tr><th>用户</th><th>变动</th><th>时间</th></tr></thead>
             <tbody>

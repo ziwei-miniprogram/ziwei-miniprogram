@@ -53,16 +53,16 @@
 <body>
 <div class="phone">
   <div class="screen" id="screen">
-    <div class="search" onclick="openSearch()">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+    <div class="search" onclick="openSearch()">搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
     <div class="hero">
       <div class="l1">丙午年 · 六月初十 · 大暑</div>
       <div class="l2">愿你所行皆坦途，所念皆如愿</div>
     </div>
     <div class="quick">
-      <div class="q" onclick="openSpace()"><div class="q-i">✨</div>星野</div>
-      <div class="q" onclick="toast('进入 文旅')"><div class="q-i">🏯</div>文旅</div>
-      <div class="q" onclick="toast('进入 寄愿墙')"><div class="q-i">🏮</div>寄愿</div>
-      <div class="q" onclick="toast('进入 功德林')"><div class="q-i">🪔</div>功德</div>
+      <div class="q" onclick="openSpace()"><div class="q-i"></div>星野</div>
+      <div class="q" onclick="toast('进入 文旅')"><div class="q-i"></div>文旅</div>
+      <div class="q" onclick="toast('进入 寄愿墙')"><div class="q-i"></div>寄愿</div>
+      <div class="q" onclick="toast('进入 功德林')"><div class="q-i"></div>功德</div>
     </div>
     <div class="tabs">
       <div class="t" id="tab0" onclick="setTab(0)">关注</div>
@@ -93,7 +93,7 @@
 
   <div class="tabbar">
     <div class="tb on">发现</div><div class="tb">文旅</div>
-    <div class="tb-c"><div class="plus">✚</div></div>
+    <div class="tb-c"><div class="plus"></div></div>
     <div class="tb">消息</div><div class="tb">我的</div>
   </div>
   <div class="toast" id="toast"></div>
@@ -103,24 +103,24 @@
   var follow = {};
   try { follow = JSON.parse(localStorage.getItem('p0_follow') || '{}'); } catch(e) {}
   var recommend = [
-    { id: 1, name: '苍山集', avatar: '🏔' },
-    { id: 2, name: '拾光小野', avatar: '🌿' },
-    { id: 3, name: '星野阿哲', avatar: '🔭' },
-    { id: 4, name: '云水禅', avatar: '🪷' }
+    { id: 1, name: '苍山集', avatar: '' },
+    { id: 2, name: '拾光小野', avatar: '' },
+    { id: 3, name: '星野阿哲', avatar: '' },
+    { id: 4, name: '云水禅', avatar: '' }
   ];
   var feedNotes = [
-    { id: 101, title: '苍山脚下的星空帐篷', author: '苍山集', emoji: '🌌', bg: 'linear-gradient(140deg,#2b2b4e,#4a4a7a)' },
-    { id: 102, title: '用星图规划一次治愈旅行', author: '星野阿哲', emoji: '🔮', bg: 'linear-gradient(140deg,#3a3660,#6a5f96)' },
-    { id: 103, title: '正念行走 · 把心事交给风', author: '云水禅', emoji: '🍃', bg: 'linear-gradient(140deg,#7fb7a3,#a9d4c5)' },
-    { id: 104, title: '今晚的寄愿 · 愿父母安康', author: '拾光小野', emoji: '🏮', bg: 'linear-gradient(140deg,#c8a35a,#e0c489)' }
+    { id: 101, title: '苍山脚下的星空帐篷', author: '苍山集', emoji: '', bg: 'linear-gradient(140deg,#2b2b4e,#4a4a7a)' },
+    { id: 102, title: '用星图规划一次治愈旅行', author: '星野阿哲', emoji: '', bg: 'linear-gradient(140deg,#3a3660,#6a5f96)' },
+    { id: 103, title: '正念行走 · 把心事交给风', author: '云水禅', emoji: '', bg: 'linear-gradient(140deg,#7fb7a3,#a9d4c5)' },
+    { id: 104, title: '今晚的寄愿 · 愿父母安康', author: '拾光小野', emoji: '', bg: 'linear-gradient(140deg,#c8a35a,#e0c489)' }
   ];
   var starTools = [
-    { key: 'chart', icon: '🔮', name: '星图', desc: '深度星象解读', url: 'chart' },
-    { key: 'healing', icon: '🍃', name: '疗愈', desc: '呼吸与冥想', url: 'healing' },
-    { key: 'journey', icon: '🌿', name: '心灵之旅', desc: '正念行走', url: 'journey' },
-    { key: 'wish', icon: '🏮', name: '寄愿墙', desc: '心愿与灯', url: 'wish' },
-    { key: 'blessing', icon: '🌟', name: '祝福视频', desc: '星夜祝福', url: 'blessing' },
-    { key: 'merit', icon: '🪔', name: '功德林', desc: '日行一善', url: 'merit' }
+    { key: 'chart', icon: '', name: '星图', desc: '深度星象解读', url: 'chart' },
+    { key: 'healing', icon: '', name: '疗愈', desc: '呼吸与冥想', url: 'healing' },
+    { key: 'journey', icon: '', name: '心灵之旅', desc: '正念行走', url: 'journey' },
+    { key: 'wish', icon: '', name: '寄愿墙', desc: '心愿与灯', url: 'wish' },
+    { key: 'blessing', icon: '', name: '祝福视频', desc: '星夜祝福', url: 'blessing' },
+    { key: 'merit', icon: '', name: '功德林', desc: '日行一善', url: 'merit' }
   ];
 
   function toast(msg) {

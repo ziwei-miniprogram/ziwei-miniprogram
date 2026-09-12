@@ -38,5 +38,12 @@ module.exports = {
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-constant-condition': ['error', { checkLoops: false }],
     'no-prototype-builtins': 'off'
-  }
+  },
+  overrides: [
+    {
+      // 工具脚本（scripts/**）与单测运行于 Node，需 Node 全局变量
+      files: ['scripts/**/*.js', 'tests/**/*.js'],
+      env: { node: true, es2021: true, jest: true }
+    }
+  ]
 };

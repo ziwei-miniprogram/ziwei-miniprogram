@@ -89,7 +89,7 @@
 <div class="phone">
   <div class="statusbar"><span>9:41</span><span>拾光驿 · 预览</span><span>◇ ○ ▮</span></div>
   <div class="screen">
-    <div class="search">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+    <div class="search">搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
 
     <!-- Hero -->
     <div class="hero">
@@ -100,7 +100,7 @@
           <div class="b-line">所念皆如愿</div>
         </div>
         <div class="weather" onclick="refreshWeather()">
-          <div class="w-icon" id="wIcon">🌙</div>
+          <div class="w-icon" id="wIcon"></div>
           <div class="w-city" id="wCity">杭州</div>
           <div class="w-temp" id="wTemp">23°</div>
           <div class="w-cond" id="wCond">晴夜</div>
@@ -111,7 +111,7 @@
           <span class="l-solar" id="solar">7月23日 周四</span>
           <span class="l-lunar" id="lunar">丙午年 六月初十</span>
         </div>
-        <div class="tip" id="starTip">✦ 今日星象 · 心静则明</div>
+        <div class="tip" id="starTip">今日星象 · 心静则明</div>
       </div>
       <div class="mini-cal">
         <div class="mc-head" id="calHead">2026 年 7 月</div>
@@ -119,15 +119,15 @@
         <div class="mc-grid" id="calGrid"></div>
         <div class="mc-yiji" id="yiji"></div>
       </div>
-      <div class="lamp" onclick="lightLamp()">🪔 点亮今日心灯 · +1 功德</div>
+      <div class="lamp" onclick="lightLamp()">点亮今日心灯 · +1 功德</div>
     </div>
 
     <!-- 快捷入口 -->
     <div class="quick">
-      <div class="q"><div class="q-i">🔮</div>星图</div>
-      <div class="q"><div class="q-i">🏯</div>文旅</div>
-      <div class="q"><div class="q-i">🍃</div>疗愈</div>
-      <div class="q"><div class="q-i">🏮</div>寄愿</div>
+      <div class="q"><div class="q-i"></div>星图</div>
+      <div class="q"><div class="q-i"></div>文旅</div>
+      <div class="q"><div class="q-i"></div>疗愈</div>
+      <div class="q"><div class="q-i"></div>寄愿</div>
     </div>
 
     <!-- Tabs -->
@@ -180,32 +180,32 @@ function getLunar(y,m,d){const L=toLunar(y,m,d);const yg=GAN[(L.year-4)%10],yz=Z
 
 /* ===== 数据（与 utils/mock.js 同源） ===== */
 const feed=[
- {id:1,emoji:'🌌',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'在苍山脚下看银河，那一刻我懂了「命宫」',author:'野山星野',likes:'1.2w',topic:'星图',h:230},
- {id:2,emoji:'🔮',bg:'linear-gradient(140deg,#3a3660,#6a5f96)',title:'我的紫微星图：事业宫太阳旺，但迁移宫…',author:'星图笔记',likes:'3621',topic:'星图',h:200},
- {id:3,emoji:'🍃',bg:'linear-gradient(140deg,#7fb7a3,#a9d4c5)',title:'焦虑时我会做的 4-7-8 呼吸法，亲测有效',author:'疗愈所',likes:'8033',topic:'疗愈',h:250},
- {id:4,emoji:'🏮',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'普陀山寄愿墙，为妈妈点了一盏灯',author:'寄愿',likes:'5210',topic:'寄愿',h:210},
- {id:5,emoji:'🏜️',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'十二宫游学·第③站 敦煌星图与壁画',author:'文旅',likes:'2880',topic:'文旅',h:240},
- {id:6,emoji:'🌙',bg:'linear-gradient(140deg,#3b3a5c,#5b5a82)',title:'睡前冥想 10 分钟，这周终于睡好了',author:'疗愈所',likes:'6742',topic:'疗愈',h:190},
- {id:7,emoji:'🏆',bg:'linear-gradient(140deg,#c8a35a,#b8945a)',title:'功德林周榜第一的姐妹，每天做了什么？',author:'功德林',likes:'9910',topic:'功德',h:220},
- {id:8,emoji:'♌',bg:'linear-gradient(140deg,#d99a4e,#e8b96b)',title:'狮子座本周状态：宜专注，忌内耗',author:'星座',likes:'4155',topic:'星座',h:200},
- {id:9,emoji:'🌿',bg:'linear-gradient(140deg,#7fb7a3,#bfe0d2)',title:'终南山闭关 5 天，我把手机戒了',author:'文旅',likes:'3320',topic:'文旅',h:230},
- {id:10,emoji:'🪔',bg:'linear-gradient(140deg,#b9544a,#f0a89c)',title:'给陌生人的一盏灯：匿名善意的循环',author:'寄愿',likes:'7180',topic:'寄愿',h:210}
+ {id:1,emoji:'',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'在苍山脚下看银河，那一刻我懂了「命宫」',author:'野山星野',likes:'1.2w',topic:'星图',h:230},
+ {id:2,emoji:'',bg:'linear-gradient(140deg,#3a3660,#6a5f96)',title:'我的紫微星图：事业宫太阳旺，但迁移宫…',author:'星图笔记',likes:'3621',topic:'星图',h:200},
+ {id:3,emoji:'',bg:'linear-gradient(140deg,#7fb7a3,#a9d4c5)',title:'焦虑时我会做的 4-7-8 呼吸法，亲测有效',author:'疗愈所',likes:'8033',topic:'疗愈',h:250},
+ {id:4,emoji:'',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'普陀山寄愿墙，为妈妈点了一盏灯',author:'寄愿',likes:'5210',topic:'寄愿',h:210},
+ {id:5,emoji:'',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'十二宫游学·第③站 敦煌星图与壁画',author:'文旅',likes:'2880',topic:'文旅',h:240},
+ {id:6,emoji:'',bg:'linear-gradient(140deg,#3b3a5c,#5b5a82)',title:'睡前冥想 10 分钟，这周终于睡好了',author:'疗愈所',likes:'6742',topic:'疗愈',h:190},
+ {id:7,emoji:'',bg:'linear-gradient(140deg,#c8a35a,#b8945a)',title:'功德林周榜第一的姐妹，每天做了什么？',author:'功德林',likes:'9910',topic:'功德',h:220},
+ {id:8,emoji:'',bg:'linear-gradient(140deg,#d99a4e,#e8b96b)',title:'狮子座本周状态：宜专注，忌内耗',author:'星座',likes:'4155',topic:'星座',h:200},
+ {id:9,emoji:'',bg:'linear-gradient(140deg,#7fb7a3,#bfe0d2)',title:'终南山闭关 5 天，我把手机戒了',author:'文旅',likes:'3320',topic:'文旅',h:230},
+ {id:10,emoji:'',bg:'linear-gradient(140deg,#b9544a,#f0a89c)',title:'给陌生人的一盏灯：匿名善意的循环',author:'寄愿',likes:'7180',topic:'寄愿',h:210}
 ];
 const followingFeed=[
- {id:21,emoji:'🌌',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'今天的银河很亮，命宫在寅的人宜动中求静',author:'野山星野',likes:'3201',topic:'星图',h:230},
- {id:22,emoji:'🍃',bg:'linear-gradient(140deg,#7fb7a3,#a9d4c5)',title:'今晚的冥想引导更新了，焦虑时来听',author:'疗愈所',likes:'5620',topic:'疗愈',h:200},
- {id:23,emoji:'🏮',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'寄愿墙今晚很暖，替陌生人也点一盏',author:'寄愿',likes:'4180',topic:'寄愿',h:210},
- {id:24,emoji:'🏜️',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'敦煌站报名过半，星图同好速来',author:'文旅',likes:'2390',topic:'文旅',h:240},
- {id:25,emoji:'🌙',bg:'linear-gradient(140deg,#3b3a5c,#5b5a82)',title:'睡前 10 分钟，这周终于睡好了',author:'疗愈所',likes:'6742',topic:'疗愈',h:190}
+ {id:21,emoji:'',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'今天的银河很亮，命宫在寅的人宜动中求静',author:'野山星野',likes:'3201',topic:'星图',h:230},
+ {id:22,emoji:'',bg:'linear-gradient(140deg,#7fb7a3,#a9d4c5)',title:'今晚的冥想引导更新了，焦虑时来听',author:'疗愈所',likes:'5620',topic:'疗愈',h:200},
+ {id:23,emoji:'',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'寄愿墙今晚很暖，替陌生人也点一盏',author:'寄愿',likes:'4180',topic:'寄愿',h:210},
+ {id:24,emoji:'',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'敦煌站报名过半，星图同好速来',author:'文旅',likes:'2390',topic:'文旅',h:240},
+ {id:25,emoji:'',bg:'linear-gradient(140deg,#3b3a5c,#5b5a82)',title:'睡前 10 分钟，这周终于睡好了',author:'疗愈所',likes:'6742',topic:'疗愈',h:190}
 ];
 const following=[{name:'野山星野',avatar:'野'},{name:'疗愈所',avatar:'疗'},{name:'寄愿',avatar:'愿'},{name:'文旅',avatar:'旅'}];
 const videos=[
- {id:1,cover:'🌌',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'10 分钟睡前冥想引导｜焦虑舒缓',author:'疗愈所',dur:'10:24',plays:'8.2w',topic:'疗愈'},
- {id:2,cover:'🏮',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'普陀山寄愿 · 一步一灯',author:'寄愿',dur:'03:48',plays:'2.1w',topic:'寄愿'},
- {id:3,cover:'🌠',bg:'linear-gradient(140deg,#3a3660,#6a5f96)',title:'苍山银河延时 · 命宫与远方',author:'野山星野',dur:'01:12',plays:'12w',topic:'星图'},
- {id:4,cover:'🏜️',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'敦煌星图漫游 Vlog',author:'文旅',dur:'06:30',plays:'4.5w',topic:'文旅'},
- {id:5,cover:'🪔',bg:'linear-gradient(140deg,#b9544a,#f0a89c)',title:'给陌生人的一盏灯：善意循环',author:'寄愿',dur:'02:05',plays:'7.1w',topic:'寄愿'},
- {id:6,cover:'♌',bg:'linear-gradient(140deg,#d99a4e,#e8b96b)',title:'狮子座本周状态｜宜专注忌内耗',author:'星座',dur:'04:33',plays:'5.6w',topic:'星座'}
+ {id:1,cover:'',bg:'linear-gradient(140deg,#2b2b4e,#4a4a7a)',title:'10 分钟睡前冥想引导｜焦虑舒缓',author:'疗愈所',dur:'10:24',plays:'8.2w',topic:'疗愈'},
+ {id:2,cover:'',bg:'linear-gradient(140deg,#b9544a,#e0796f)',title:'普陀山寄愿 · 一步一灯',author:'寄愿',dur:'03:48',plays:'2.1w',topic:'寄愿'},
+ {id:3,cover:'',bg:'linear-gradient(140deg,#3a3660,#6a5f96)',title:'苍山银河延时 · 命宫与远方',author:'野山星野',dur:'01:12',plays:'12w',topic:'星图'},
+ {id:4,cover:'',bg:'linear-gradient(140deg,#c8a35a,#e0c489)',title:'敦煌星图漫游 Vlog',author:'文旅',dur:'06:30',plays:'4.5w',topic:'文旅'},
+ {id:5,cover:'',bg:'linear-gradient(140deg,#b9544a,#f0a89c)',title:'给陌生人的一盏灯：善意循环',author:'寄愿',dur:'02:05',plays:'7.1w',topic:'寄愿'},
+ {id:6,cover:'',bg:'linear-gradient(140deg,#d99a4e,#e8b96b)',title:'狮子座本周状态｜宜专注忌内耗',author:'星座',dur:'04:33',plays:'5.6w',topic:'星座'}
 ];
 function splitColumns(list){const l=[],r=[];list.forEach((it,i)=>(i%2===0?l:r).push(it));return{l,r};}
 
@@ -218,13 +218,13 @@ function buildCalendar(year,month,today){
     cells.push({d,dm,today:!dm&&d===today,lu});}
   return cells;
 }
-function weatherFor(date){const seed=date.getFullYear()*372+date.getMonth()*31+date.getDate();const pool=[{temp:'22°',cond:'晴夜',icon:'🌙'},{temp:'24°',cond:'多云',icon:'⛅'},{temp:'19°',cond:'小雨',icon:'🌧'},{temp:'26°',cond:'晴',icon:'☀'},{temp:'21°',cond:'微风',icon:'🍃'},{temp:'18°',cond:'阵雨',icon:'🌦'},{temp:'23°',cond:'阴',icon:'☁'}];return pool[seed%pool.length];}
+function weatherFor(date){const seed=date.getFullYear()*372+date.getMonth()*31+date.getDate();const pool=[{temp:'22°',cond:'晴夜',icon:''},{temp:'24°',cond:'多云',icon:''},{temp:'19°',cond:'小雨',icon:''},{temp:'26°',cond:'晴',icon:''},{temp:'21°',cond:'微风',icon:''},{temp:'18°',cond:'阵雨',icon:''},{temp:'23°',cond:'阴',icon:''}];return pool[seed%pool.length];}
 function renderHero(){
   const now=new Date();const y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();calYear=y;calMonth=m;calToday=d;
   const L=getLunar(y,m,d);const wn=['日','一','二','三','四','五','六'];
   document.getElementById('solar').textContent=`${m}月${d}日 周${wn[now.getDay()]}`;
   document.getElementById('lunar').textContent=L.fullCn;
-  document.getElementById('starTip').textContent=L.term?`✦ 今日节气 · ${L.term}`:'✦ 今日星象 · 心静则明';
+  document.getElementById('starTip').textContent=L.term?`今日节气 · ${L.term}`:'今日星象 · 心静则明';
   document.getElementById('calHead').textContent=`${y} 年 ${m} 月`;
   const w=weatherFor(now);document.getElementById('wIcon').textContent=w.icon;document.getElementById('wTemp').textContent=w.temp;document.getElementById('wCond').textContent=w.cond;
   renderCal();renderYiJi(y,m,d);
@@ -248,7 +248,7 @@ function switchTab(i){
   document.getElementById('pFind').classList.toggle('hidden',i!==1);
   document.getElementById('pVideo').classList.toggle('hidden',i!==2);
 }
-function lightLamp(){const el=document.querySelector('.lamp');el.textContent='🪔 心灯已亮 · 今日已 +1 功德';}
+function lightLamp(){const el=document.querySelector('.lamp');el.textContent='心灯已亮 · 今日已 +1 功德';}
 function refreshWeather(){const w=document.querySelector('.weather');w.style.opacity=.6;setTimeout(()=>{w.style.opacity=1;},400);}
 renderHero();
 </script>

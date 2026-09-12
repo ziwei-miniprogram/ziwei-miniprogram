@@ -50,10 +50,10 @@ cd "$TARGET"
 ABSPATH="$(pwd)"
 
 if [ -d .git ]; then
-  echo "❌ $ABSPATH 已存在 .git，跳过以免破坏现有仓库。"; exit 1
+  echo "[FAIL] $ABSPATH 已存在 .git，跳过以免破坏现有仓库。"; exit 1
 fi
 
-echo "🚀 在 $ABSPATH 初始化小程序仓库..."
+echo "在 $ABSPATH 初始化小程序仓库..."
 
 # ---------- .gitignore ----------
 cat > .gitignore <<'GITIGNORE_EOF'
@@ -164,7 +164,7 @@ jobs:
               const r = cp.spawnSync("node", ["--check", f]);
               if (r.status !== 0) { console.log("::error file=" + f + "::JS 语法错误\n" + r.stderr.toString()); jsErr++; }
             }
-            console.log(jsErr ? ("❌ " + jsErr + " 个 JS 语法错误") : ("✅ JS 语法通过 (" + (byExt[".js"] || []).length + " 个)"));
+            console.log(jsErr ? ("[FAIL] " + jsErr + " 个 JS 语法错误") : ("[OK] JS 语法通过 (" + (byExt[".js"] || []).length + " 个)"));
 
             // 2) JSON 合法性校验
             let jsonBad = 0;
@@ -172,7 +172,7 @@ jobs:
               try { JSON.parse(fs.readFileSync(f, "utf8")); }
               catch (e) { console.log("::error file=" + f + "::JSON 非法: " + e.message); jsonBad++; }
             }
-            console.log(jsonBad ? ("❌ " + jsonBad + " 个非法 JSON") : ("✅ JSON 合法 (" + (byExt[".json"] || []).length + " 个)"));
+            console.log(jsonBad ? ("[FAIL] " + jsonBad + " 个非法 JSON") : ("[OK] JSON 合法 (" + (byExt[".json"] || []).length + " 个)"));
 
             // 3) Python 编译校验
             let pyErr = 0;
@@ -180,7 +180,7 @@ jobs:
               const r = cp.spawnSync("python3", ["-m", "py_compile", f]);
               if (r.status !== 0) { console.log("::error file=" + f + "::Python 编译失败\n" + r.stderr.toString()); pyErr++; }
             }
-            console.log(pyErr ? ("❌ " + pyErr + " 个 Python 编译失败") : ("✅ Python 编译通过 (" + (byExt[".py"] || []).length + " 个)"));
+            console.log(pyErr ? ("[FAIL] " + pyErr + " 个 Python 编译失败") : ("[OK] Python 编译通过 (" + (byExt[".py"] || []).length + " 个)"));
 
             // 4) 密钥/敏感信息扫描 (仅源码扩展名, 值需 >=12 字符引号串)
             const Q = "[\"\x27]";
@@ -190,7 +190,7 @@ jobs:
               const m = fs.readFileSync(f, "utf8").match(re);
               if (m) { console.log("::error file=" + f + "::疑似硬编码密钥: " + m[0].slice(0, 40)); hit++; }
             }
-            console.log(hit ? ("❌ " + hit + " 处疑似硬编码密钥") : "✅ 未检测到硬编码密钥");
+            console.log(hit ? ("[FAIL] " + hit + " 处疑似硬编码密钥") : "[OK] 未检测到硬编码密钥");
 
             code = (jsErr || jsonBad || pyErr || hit) ? 1 : 0;
             process.exit(code);
@@ -238,10 +238,10 @@ cat > CONTRIBUTING.md <<'CONTRIB_EOF'
 ```bash
 git fetch origin
 git checkout -b feat/x origin/main
-# 编码 → git add -p → git commit（走 .gitmessage）
+# 编码 git add -p git commit（走 .gitmessage）
 git fetch origin && git rebase origin/main
 git push -u origin feat/x
-# 开 PR → 评审 + CI 绿 → squash merge → 删分支
+# 开 PR 评审 + CI 绿 squash merge 删分支
 ```
 
 ## 4. PR 与分支保护
@@ -249,7 +249,7 @@ git push -u origin feat/x
 - `main` 保护：禁直接 push、要求 PR、要求 status check `validate`（及可选 `miniprogram-build`）。
 
 ## 5. CI
-`.github/workflows/ci.yml`：`push/PR → main` 触发。
+`.github/workflows/ci.yml`：`push/PR main` 触发。
 - `validate`：JS 语法 / JSON 合法 / Python 编译 / 密钥扫描（始终运行）。
 - `miniprogram-build`：仅当配置了 `secrets.WX_APPID` 与 `secrets.WX_PRIVATE_KEY` 时运行，用 `miniprogram-ci` 做编译预览校验；未配置则自动跳过。
 - 本地预演：`node -e 'const cp=require("child_process");for(const f of cp.execSync("git ls-files -- \*.js \*.json").toString().trim().split("\n")){cp.spawnSync("node",["--check",f])}'`
@@ -264,7 +264,7 @@ git config commit.template .gitmessage
 if [ -z "$(git config user.name)" ]; then
   git config user.name "fanyunjian"
   git config user.email "fanyunjian@local"
-  echo "⚠️  提交身份暂用占位符 fanyunjian@local；push 前请改真实 GitHub 账号："
+  echo "[WARN]  提交身份暂用占位符 fanyunjian@local；push 前请改真实 GitHub 账号："
   echo "    git config user.name '你的名' && git config user.email 'you@example.com'"
   echo "    git rebase --root --exec 'git commit --amend --reset-author --no-edit'"
 fi
@@ -280,34 +280,34 @@ connect_remote() {
 
   case "$host" in
     github|GitHub|gh|GH)
-      echo "🌐 连接 GitHub（gh 接法优先，git remote 兜底）..."
+      echo "连接 GitHub（gh 接法优先，git remote 兜底）..."
       if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
         owner="$(gh api user --jq .login 2>/dev/null || true)"
         if [ -n "$owner" ]; then
           echo "   gh 已登录（$owner），创建并推送仓库..."
           if gh repo create "$repo" --"$REMOTE_VISIBILITY" --source . --remote origin --push 2>/dev/null; then
-            echo "✅ GitHub 仓库已创建并推送（$(git remote get-url origin)）。"
+            echo "[OK] GitHub 仓库已创建并推送（$(git remote get-url origin)）。"
             return 0
           fi
-          echo "   ⚠️  gh 建仓/推送失败（可能已存在或权限不足），转 git remote 兜底。"
+          echo "   [WARN]  gh 建仓/推送失败（可能已存在或权限不足），转 git remote 兜底。"
         fi
       elif command -v gh >/dev/null 2>&1; then
-        echo "   ⚠️  检测到 gh 但未登录；请先 'gh auth login'，下面用 git remote 兜底。"
+        echo "   [WARN]  检测到 gh 但未登录；请先 'gh auth login'，下面用 git remote 兜底。"
       else
-        echo "   ℹ️  未检测到 gh CLI，使用 git remote 接法（SSH）。"
+        echo "   [INFO]  未检测到 gh CLI，使用 git remote 接法（SSH）。"
       fi
       # 兜底：git remote add origin（若尚不存在）
       if git remote get-url origin >/dev/null 2>&1; then
-        echo "   ℹ️  origin 已存在：$(git remote get-url origin)"
+        echo "   [INFO]  origin 已存在：$(git remote get-url origin)"
       else
         read -r -p "   请输入 GitHub 用户名（用于 git@github.com:<用户>/$repo.git）: " owner
         git remote add origin "git@github.com:$owner/$repo.git"
-        echo "✅ 已添加 origin（SSH）。推送：git push -u origin main"
+        echo "[OK] 已添加 origin（SSH）。推送：git push -u origin main"
       fi
       ;;
 
     gitee|Gitee|gt|GT)
-      echo "🌐 连接 Gitee（git remote 接法；Gitee 无官方 gh 类 CLI）..."
+      echo "连接 Gitee（git remote 接法；Gitee 无官方 gh 类 CLI）..."
       # 若提供 GITEE_TOKEN（开放 API），尝试自动建仓
       if [ -n "${GITEE_TOKEN:-}" ]; then
         echo "   检测到 GITEE_TOKEN，尝试通过 API 创建仓库..."
@@ -315,25 +315,25 @@ connect_remote() {
             -H "Content-Type: application/json" \
             -d "{\"access_token\":\"$GITEE_TOKEN\",\"name\":\"$repo\",\"private\":$([ "$REMOTE_VISIBILITY" = private ] && echo true || echo false)}" \
             >/dev/null 2>&1; then
-          echo "✅ Gitee 仓库已通过 API 创建。"
+          echo "[OK] Gitee 仓库已通过 API 创建。"
         else
-          echo "   ⚠️  API 建仓失败（可能重名/无权限），请在网页端手动建仓。"
+          echo "   [WARN]  API 建仓失败（可能重名/无权限），请在网页端手动建仓。"
         fi
       fi
       if git remote get-url origin >/dev/null 2>&1; then
-        echo "   ℹ️  origin 已存在：$(git remote get-url origin)"
+        echo "   [INFO]  origin 已存在：$(git remote get-url origin)"
       else
         read -r -p "   请输入 Gitee 用户名（用于 git@gitee.com:<用户>/$repo.git）: " owner
         git remote add origin "git@gitee.com:$owner/$repo.git"
-        echo "✅ 已添加 origin（SSH）。推送：git push -u origin main"
+        echo "[OK] 已添加 origin（SSH）。推送：git push -u origin main"
       fi
       ;;
 
     skip|none|"")
-      echo "⏭️  跳过远程连接。"
+      echo "⏭ 跳过远程连接。"
       ;;
     *)
-      echo "⚠️  未知托管类型：$host，跳过。"
+      echo "[WARN]  未知托管类型：$host，跳过。"
       ;;
   esac
 }
@@ -343,27 +343,27 @@ if [ -n "$REMOTE_HOST" ]; then
   connect_remote "$REMOTE_HOST"
 elif [ -t 0 ]; then
   echo
-  read -r -p "🌐 连接远程托管？输入 github / gitee / 直接回车跳过: " REMOTE_HOST_INPUT
+  read -r -p "连接远程托管？输入 github / gitee / 直接回车跳过: " REMOTE_HOST_INPUT
   connect_remote "$REMOTE_HOST_INPUT"
 else
-  echo "ℹ️  非交互环境且未指定 --remote，跳过远程连接（可后续手动 git remote add）。"
+  echo "[INFO]  非交互环境且未指定 --remote，跳过远程连接（可后续手动 git remote add）。"
 fi
 
 echo
-echo "✅ 初始化完成。已生成："
+echo "[OK] 初始化完成。已生成："
 echo "   .gitignore  .gitmessage  CONTRIBUTING.md"
 echo "   .github/PULL_REQUEST_TEMPLATE.md  .github/workflows/ci.yml"
 echo
 if git remote get-url origin >/dev/null 2>&1; then
-  echo "🔗 远程已连接：$(git remote get-url origin)"
-  echo "📌 下一步："
+  echo "远程已连接：$(git remote get-url origin)"
+  echo "下一步："
   echo "   1) 改真实提交身份（若仍是占位符）"
   echo "   2) 分支保护勾选 status check：validate（+ miniprogram-build 若启用）"
-  echo "   3) 启用小程序编译校验：仓库 Settings → Secrets 添加 WX_APPID / WX_PRIVATE_KEY"
+  echo "   3) 启用小程序编译校验：仓库 Settings Secrets 添加 WX_APPID / WX_PRIVATE_KEY"
 else
-  echo "📌 下一步："
+  echo "下一步："
   echo "   1) 改真实提交身份（若仍是占位符）"
   echo "   2) 连远程（--remote github/gitee 或手动）：git remote add origin <url> && git push -u origin main"
   echo "   3) 分支保护勾选 status check：validate（+ miniprogram-build 若启用）"
-  echo "   4) 启用小程序编译校验：仓库 Settings → Secrets 添加 WX_APPID / WX_PRIVATE_KEY"
+  echo "   4) 启用小程序编译校验：仓库 Settings Secrets 添加 WX_APPID / WX_PRIVATE_KEY"
 fi

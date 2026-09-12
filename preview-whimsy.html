@@ -137,17 +137,17 @@
           <div id="b1">愿你所行皆坦途</div>
           <div id="b2">所念皆如愿</div>
         </div>
-        <div class="lamp-btn" id="lampBtn">🪔 点亮心灯 · +1 功德</div>
+        <div class="lamp-btn" id="lampBtn">点亮心灯 · +1 功德</div>
       </div>
 
       <div class="palaces" id="palaces"></div>
-      <div class="hint">✦ 连点上方星空 5 次，唤醒「星河贯通」彩蛋</div>
+      <div class="hint">连点上方星空 5 次，唤醒「星河贯通」彩蛋</div>
     </div>
 
     <!-- 控制与文案 -->
     <div class="panel">
       <h2>体验这四种愉悦</h2>
-      <p>① 点「🪔 点亮心灯」看<strong>功德星光</strong>浮起；② 宫位载入时<strong>依次点亮</strong>；③ 连点星空触发<strong>彩虹星彩蛋</strong>；④ 点「晋阶庆祝」看升级卡。所有动效尊重系统「减少动态」偏好。</p>
+      <p>① 点「点亮心灯」看<strong>功德星光</strong>浮起；② 宫位载入时<strong>依次点亮</strong>；③ 连点星空触发<strong>彩虹星彩蛋</strong>；④ 点「晋阶庆祝」看升级卡。所有动效尊重系统「减少动态」偏好。</p>
       <div class="ctrls">
         <div class="btn gold" id="relight">重放宫位点亮</div>
         <div class="btn gold" id="levelup">触发晋阶庆祝</div>
@@ -168,7 +168,7 @@
   <div class="fx-layer" id="fxLayer"></div>
   <div class="lu-mask" id="luMask">
     <div class="lu-card">
-      <div class="lu-emoji">🏅</div>
+      <div class="lu-emoji"></div>
       <div class="lu-title">功德圆满 · 晋阶</div>
       <div class="lu-name">月白莲灯</div>
       <div class="lu-sub">星野因你，又明亮一分</div>
@@ -212,14 +212,14 @@
     const item = document.createElement('div');
     item.className = 'fx-item';
     item.style.left = (38 + Math.random() * 24) + '%';
-    item.innerHTML = '<div class="fx-emoji">' + (emoji || '🌟') + '</div><div class="fx-text">' + text + '</div>';
+    item.innerHTML = '<div class="fx-emoji">' + (emoji || '') + '</div><div class="fx-text">' + text + '</div>';
     fxLayer.appendChild(item);
     setTimeout(() => item.remove(), 1800);
   }
 
   // ---- 点灯 ----
   document.getElementById('lampBtn').addEventListener('click', () => {
-    burst(MERIT[Math.floor(Math.random() * MERIT.length)], '🌟');
+    burst(MERIT[Math.floor(Math.random() * MERIT.length)], '');
   });
 
   // ---- 彩蛋：连点星空 5 次 ----
@@ -232,7 +232,7 @@
       taps = 0;
       const rb = document.getElementById('rainbow');
       rb.classList.add('show');
-      burst('星河贯通 · 你唤醒了星图', '🌈');
+      burst('星河贯通 · 你唤醒了星图', '');
       setTimeout(() => rb.classList.remove('show'), 6000);
       return;
     }

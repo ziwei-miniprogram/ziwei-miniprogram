@@ -12,14 +12,14 @@
 
 | 维度 | 结果 |
 |---|---|
-| 页面落地 | 16/16 ✅ |
-| 暗色双主题就绪 | 16/16 ✅（themeable + 根节点令牌 + app.wxss 全局） |
-| 行为降级（reduced-motion） | 全局 @media 处理 ✅ |
-| UGC 内容安全预检 | 覆盖全部 3 个输入口（index / note / publish）✅ |
-| 心灯浮标 / LoopChip / 星图 / 推荐组件 | 均已接入 ✅ |
-| 合规免责声明 | 12/16 显式（其余为纯功能页）✅ |
-| 质量门禁 validate-mp | 42/0 ✅ |
-| P0 / P1 / P2 体验闭环 | 全闭环 ✅ |
+| 页面落地 | 16/16 [OK] |
+| 暗色双主题就绪 | 16/16 [OK]（themeable + 根节点令牌 + app.wxss 全局） |
+| 行为降级（reduced-motion） | 全局 @media 处理 [OK] |
+| UGC 内容安全预检 | 覆盖全部 3 个输入口（index / note / publish）[OK] |
+| 心灯浮标 / LoopChip / 星图 / 推荐组件 | 均已接入 [OK] |
+| 合规免责声明 | 12/16 显式（其余为纯功能页）[OK] |
+| 质量门禁 validate-mp | 42/0 [OK] |
+| P0 / P1 / P2 体验闭环 | 全闭环 [OK] |
 
 ---
 
@@ -29,22 +29,22 @@
 
 | 页面 | 类型 | tab 归属 | 暗色就绪 | 关键组件 | UGC censor | 关联体验需求 | 状态 |
 |---|---|---|---|---|---|---|---|
-| index 发现 | 首页 | 发现 | ✅ | story-card, heart-lamp(tabBar) | ✅ quickPost | P0-a 压平 / 盲盒 / 峰值推荐 | 完整 |
-| chart 星图 | 内容 | 星野内 | ✅ | star-map, heart-lamp, contextual-reco | — | P0-d 峰值推荐 / 星图点亮 | 完整 |
-| tourism 文旅 | 内容 | 文旅 | ✅ | contextual-reco | — | P0-c 遥寄 / P2 守护榜 | 完整 |
-| journey 心灵之旅 | 内容 | 我的内 | ✅ | — | — | 疗愈 | 完整 |
-| healing 疗愈 | 内容 | 我的内 | ✅ | disclaimer | — | 疗愈 | 完整 |
-| blessing 祝福视频 | 工具 | 发现内 | ✅ | disclaimer | — | 分享裂变 | 完整 |
-| mall 商城 | 商城 | 商城 | ✅ | — | — | P2 内容推荐 + 功德 sink | 完整 |
-| merit 功德中心 | 经济 | 我的内 | ✅ | heart-lamp | — | 功德经济 / 寄愿 | 完整 |
-| note 随手记 | UGC | 分享内 | ✅ | — | ✅ 评论 | P1 技术债补完 / 合规 | 完整（本次新接 censor） |
-| message 消息 | 社交 | 我的内 | ✅ | — | — | 社交 | 完整 |
-| profile 我的 | 个人 | 我的 | ✅ | disclaimer | — | 徽章墙 / 星签 | 完整 |
-| publish 发布 | UGC | 分享内 | ✅ | — | ✅ 发布框 | 合规 | 完整 |
-| space 星野 | 中枢 | 星野 | ✅ | — | — | P0-a 压平 / 心灯 FAB | 完整 |
-| star-panel 星盘 | 命理合集 | 星野内 | ✅ | heart-lamp, loop-chip | — | P1 三件套合并 | 完整 |
-| daily 每日流 | 序列化 | 发现内 | ✅ | story-card, loop-chip | — | 24 节气 × 28 宿引擎 | 完整 |
-| search 搜索 | 工具 | 独立 | ✅ | — | — | 检索 | 完整 |
+| index 发现 | 首页 | 发现 | [OK] | story-card, heart-lamp(tabBar) | [OK] quickPost | P0-a 压平 / 盲盒 / 峰值推荐 | 完整 |
+| chart 星图 | 内容 | 星野内 | [OK] | star-map, heart-lamp, contextual-reco | — | P0-d 峰值推荐 / 星图点亮 | 完整 |
+| tourism 文旅 | 内容 | 文旅 | [OK] | contextual-reco | — | P0-c 遥寄 / P2 守护榜 | 完整 |
+| journey 心灵之旅 | 内容 | 我的内 | [OK] | — | — | 疗愈 | 完整 |
+| healing 疗愈 | 内容 | 我的内 | [OK] | disclaimer | — | 疗愈 | 完整 |
+| blessing 祝福视频 | 工具 | 发现内 | [OK] | disclaimer | — | 分享裂变 | 完整 |
+| mall 商城 | 商城 | 商城 | [OK] | — | — | P2 内容推荐 + 功德 sink | 完整 |
+| merit 功德中心 | 经济 | 我的内 | [OK] | heart-lamp | — | 功德经济 / 寄愿 | 完整 |
+| note 随手记 | UGC | 分享内 | [OK] | — | [OK] 评论 | P1 技术债补完 / 合规 | 完整（本次新接 censor） |
+| message 消息 | 社交 | 我的内 | [OK] | — | — | 社交 | 完整 |
+| profile 我的 | 个人 | 我的 | [OK] | disclaimer | — | 徽章墙 / 星签 | 完整 |
+| publish 发布 | UGC | 分享内 | [OK] | — | [OK] 发布框 | 合规 | 完整 |
+| space 星野 | 中枢 | 星野 | [OK] | — | — | P0-a 压平 / 心灯 FAB | 完整 |
+| star-panel 星盘 | 命理合集 | 星野内 | [OK] | heart-lamp, loop-chip | — | P1 三件套合并 | 完整 |
+| daily 每日流 | 序列化 | 发现内 | [OK] | story-card, loop-chip | — | 24 节气 × 28 宿引擎 | 完整 |
+| search 搜索 | 工具 | 独立 | [OK] | — | — | 检索 | 完整 |
 
 > 说明：heart-lamp 在 5 个 tab 页通过自定义 tabBar 常驻挂载；chart / merit / star-panel 为显式引入。UGC censor 仅统计「有文本输入口的页」，其余页面无用户输入，无需预检。
 
@@ -63,11 +63,11 @@
 
 | 断点 | 方案 | 落地页 | 状态 |
 |---|---|---|---|
-| B2 星野入口过深 | 9 宫格压平 + PINNED + 三簇 | space | ✅ |
-| B3 命理孤儿页无回灌 | 紫微/八字/星座合并为「星盘」内部 tab + LoopChip | star-panel | ✅ |
-| B4 主循环断点 | 各页底部 LoopChip 回灌（点亮/寄愿/三善/记感） | 多页 | ✅ |
-| B5 转化弱 + 留存缺口 | P0 峰值 ContextualCta + P2 内容驱动推荐 + 功德 sink 多样 | chart/mall/tourism | ✅ |
-| B6 文旅 GPS 门槛 | 「遥寄祝福」解 GPS + 守护榜 + 全国礼 | tourism | ✅ |
+| B2 星野入口过深 | 9 宫格压平 + PINNED + 三簇 | space | [OK] |
+| B3 命理孤儿页无回灌 | 紫微/八字/星座合并为「星盘」内部 tab + LoopChip | star-panel | [OK] |
+| B4 主循环断点 | 各页底部 LoopChip 回灌（点亮/寄愿/三善/记感） | 多页 | [OK] |
+| B5 转化弱 + 留存缺口 | P0 峰值 ContextualCta + P2 内容驱动推荐 + 功德 sink 多样 | chart/mall/tourism | [OK] |
+| B6 文旅 GPS 门槛 | 「遥寄祝福」解 GPS + 守护榜 + 全国礼 | tourism | [OK] |
 
 **行为信号联动**（P2 核心）：星图点亮数（由 `merit` 推导）/ 寄愿 `my_wish` / 今日三善 `getDailyDeeds()` / 连签 `streak` 四类信号实时驱动商城 `buildReco` 推荐（命中优先 + 类目去重，最多 3 件）。
 
@@ -87,7 +87,7 @@
 
 - **导航契约**：`scripts/validate-mp.js` 全仓 **42/0**（所有事件处理器已定义、页面引用合法）。
 - **语法**：`node --check` 全 JS 通过；JSON 合法。
-- **CI**：仓库含 `.github/workflows/ci.yml`（GitHub Actions，push/PR → main 触发：JS 语法 / JSON 合法 / Python 编译 / 密钥扫描）。**待你在 GitHub → Actions 网页确认首次自动跑通。**
+- **CI**：仓库含 `.github/workflows/ci.yml`（GitHub Actions，push/PR main 触发：JS 语法 / JSON 合法 / Python 编译 / 密钥扫描）。**待你在 GitHub Actions 网页确认首次自动跑通。**
 - **Git 流程**：Trunk-Based + Conventional Commits，特性分支 squash 合入 main，main 受保护。本地特性分支已 prune，仅留 `main`。
 
 ---
@@ -97,7 +97,7 @@
 | 优先级 | 事项 | 说明 |
 |---|---|---|
 | P1 | 真机验证 | 用微信开发者工具导入 `ziwei-miniprogram/` 跑一遍，确认组件渲染 / 主题切换 / 地理权限真机表现（HTML 原型仅为体验演示，非真机）。 |
-| P1 | 确认 CI 跑通 | GitHub → Actions 看 `ci.yml` 是否绿。 |
+| P1 | 确认 CI 跑通 | GitHub Actions 看 `ci.yml` 是否绿。 |
 | P2 | disclaimer 补 space / publish | 低风险增强，统一全站合规露出。 |
 | P2 | 国内三平台电商发布 | 项目上线后推进小红书/抖音/视频号适配（carousel/ 管线已留位）。 |
 | P3 | P3 守护榜接真实社交 | 当前社会证明为占位数据（social.js 接真实）。 |

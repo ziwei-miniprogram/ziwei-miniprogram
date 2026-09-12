@@ -117,8 +117,8 @@
 <body>
 <div class="app">
   <div class="top">
-    <div class="search">🔍 搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
-    <button class="merit-badge" id="meritBadge">✦ <span id="meritNum">0</span> 功德</button>
+    <div class="search">搜索 星图 · 旅行 · 疗愈 · 寄愿</div>
+    <button class="merit-badge" id="meritBadge"><span id="meritNum">0</span> 功德</button>
     <button class="checkin" id="checkinBtn">签到+3</button>
   </div>
 
@@ -127,7 +127,7 @@
     <div class="hero-top">
       <div class="bless"><div class="b">愿你所行皆坦途</div><div class="b">所念皆如愿</div></div>
       <div class="weather">
-        <div class="ic">🌙</div>
+        <div class="ic"></div>
         <div class="ct">杭州</div>
         <div class="tp">23°</div>
         <div class="cd">晴夜</div>
@@ -135,7 +135,7 @@
     </div>
     <div class="hero-mid">
       <div class="lunar"><span class="s">7月23日 周四</span><span class="l">丙午年 · 六月初十 · 大暑</span></div>
-      <div class="tip">✦ 今日节气 · 大暑</div>
+      <div class="tip">今日节气 · 大暑</div>
     </div>
     <div class="mini-cal">
       <div class="mc-head">2026 年 7 月</div>
@@ -143,14 +143,14 @@
       <div class="mc-grid" id="calGrid"></div>
       <div class="mc-yi" id="yiBox">点击日期查看宜忌 · 今日宜：祈福、出行；忌：动土、安葬</div>
     </div>
-    <div class="lamp" id="lampBtn">🪔 点亮今日心灯 · +1 功德</div>
+    <div class="lamp" id="lampBtn">点亮今日心灯 · +1 功德</div>
   </div>
 
   <div class="quick">
-    <div class="q"><div class="q-i">🔮</div>星图</div>
-    <div class="q"><div class="q-i">🏯</div>文旅</div>
-    <div class="q"><div class="q-i">🍃</div>疗愈</div>
-    <div class="q"><div class="q-i">🏮</div>寄愿</div>
+    <div class="q"><div class="q-i"></div>星图</div>
+    <div class="q"><div class="q-i"></div>文旅</div>
+    <div class="q"><div class="q-i"></div>疗愈</div>
+    <div class="q"><div class="q-i"></div>寄愿</div>
   </div>
 
   <div class="tabs">
@@ -162,7 +162,7 @@
   <div id="feedArea"></div>
 
   <div class="log">
-    <div class="log-h">✦ 今日功德动态（活）</div>
+    <div class="log-h">今日功德动态（活）</div>
     <div id="logList"></div>
   </div>
 
@@ -184,25 +184,25 @@
 <script>
 // ===== 模拟数据（与小程序 mock 对齐） =====
 const feed = [
-  { id:1, emoji:"🌌", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"在苍山脚下看银河，那一刻我懂了「命宫」", author:"野山星野", likes:"1.2w", topic:"星图", h:230, noteId:101 },
-  { id:2, emoji:"🔮", bg:"linear-gradient(140deg,#3a3660,#6a5f96)", title:"我的紫微星图：事业宫太阳旺，但迁移宫…", author:"星图笔记", likes:"3621", topic:"星图", h:200, noteId:102 },
-  { id:3, emoji:"🍃", bg:"linear-gradient(140deg,#7fb7a3,#a9d4c5)", title:"焦虑时我会做的 4-7-8 呼吸法，亲测有效", author:"疗愈所", likes:"8033", topic:"疗愈", h:250, noteId:103 },
-  { id:4, emoji:"🏮", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"普陀山寄愿墙，为妈妈点了一盏灯", author:"寄愿", likes:"5210", topic:"寄愿", h:210, noteId:104 },
-  { id:5, emoji:"🏜️", bg:"linear-gradient(140deg,#c8a35a,#e0c489)", title:"十二宫游学·第③站 敦煌星图与壁画", author:"文旅", likes:"2880", topic:"文旅", h:240, noteId:105 },
-  { id:6, emoji:"🌙", bg:"linear-gradient(140deg,#3b3a5c,#5b5a82)", title:"睡前冥想 10 分钟，这周终于睡好了", author:"疗愈所", likes:"6742", topic:"疗愈", h:190, noteId:103 },
-  { id:7, emoji:"🏆", bg:"linear-gradient(140deg,#c8a35a,#b8945a)", title:"功德林周榜第一的姐妹，每天做了什么？", author:"功德林", likes:"9910", topic:"功德", h:220, noteId:106 },
-  { id:8, emoji:"♌", bg:"linear-gradient(140deg,#d99a4e,#e8b96b)", title:"狮子座本周状态：宜专注，忌内耗", author:"星座", likes:"4155", topic:"星座", h:200, noteId:107 }
+  { id:1, emoji:"", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"在苍山脚下看银河，那一刻我懂了「命宫」", author:"野山星野", likes:"1.2w", topic:"星图", h:230, noteId:101 },
+  { id:2, emoji:"", bg:"linear-gradient(140deg,#3a3660,#6a5f96)", title:"我的紫微星图：事业宫太阳旺，但迁移宫…", author:"星图笔记", likes:"3621", topic:"星图", h:200, noteId:102 },
+  { id:3, emoji:"", bg:"linear-gradient(140deg,#7fb7a3,#a9d4c5)", title:"焦虑时我会做的 4-7-8 呼吸法，亲测有效", author:"疗愈所", likes:"8033", topic:"疗愈", h:250, noteId:103 },
+  { id:4, emoji:"", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"普陀山寄愿墙，为妈妈点了一盏灯", author:"寄愿", likes:"5210", topic:"寄愿", h:210, noteId:104 },
+  { id:5, emoji:"", bg:"linear-gradient(140deg,#c8a35a,#e0c489)", title:"十二宫游学·第③站 敦煌星图与壁画", author:"文旅", likes:"2880", topic:"文旅", h:240, noteId:105 },
+  { id:6, emoji:"", bg:"linear-gradient(140deg,#3b3a5c,#5b5a82)", title:"睡前冥想 10 分钟，这周终于睡好了", author:"疗愈所", likes:"6742", topic:"疗愈", h:190, noteId:103 },
+  { id:7, emoji:"", bg:"linear-gradient(140deg,#c8a35a,#b8945a)", title:"功德林周榜第一的姐妹，每天做了什么？", author:"功德林", likes:"9910", topic:"功德", h:220, noteId:106 },
+  { id:8, emoji:"", bg:"linear-gradient(140deg,#d99a4e,#e8b96b)", title:"狮子座本周状态：宜专注，忌内耗", author:"星座", likes:"4155", topic:"星座", h:200, noteId:107 }
 ];
 const followingFeed = [
-  { id:21, emoji:"🌌", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"今天的银河很亮，命宫在寅的人宜动中求静", author:"野山星野", likes:"3201", topic:"星图", h:230, noteId:101 },
-  { id:22, emoji:"🍃", bg:"linear-gradient(140deg,#7fb7a3,#a9d4c5)", title:"今晚的冥想引导更新了，焦虑时来听", author:"疗愈所", likes:"5620", topic:"疗愈", h:200, noteId:103 },
-  { id:23, emoji:"🏮", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"寄愿墙今晚很暖，替陌生人也点一盏", author:"寄愿", likes:"4180", topic:"寄愿", h:210, noteId:104 },
-  { id:24, emoji:"🏜️", bg:"linear-gradient(140deg,#c8a35a,#e0c489)", title:"敦煌站报名过半，星图同好速来", author:"文旅", likes:"2390", topic:"文旅", h:240, noteId:105 }
+  { id:21, emoji:"", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"今天的银河很亮，命宫在寅的人宜动中求静", author:"野山星野", likes:"3201", topic:"星图", h:230, noteId:101 },
+  { id:22, emoji:"", bg:"linear-gradient(140deg,#7fb7a3,#a9d4c5)", title:"今晚的冥想引导更新了，焦虑时来听", author:"疗愈所", likes:"5620", topic:"疗愈", h:200, noteId:103 },
+  { id:23, emoji:"", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"寄愿墙今晚很暖，替陌生人也点一盏", author:"寄愿", likes:"4180", topic:"寄愿", h:210, noteId:104 },
+  { id:24, emoji:"", bg:"linear-gradient(140deg,#c8a35a,#e0c489)", title:"敦煌站报名过半，星图同好速来", author:"文旅", likes:"2390", topic:"文旅", h:240, noteId:105 }
 ];
 const videos = [
-  { id:1, cover:"🌌", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"10 分钟睡前冥想引导｜焦虑舒缓", author:"疗愈所", dur:"10:24", plays:"8.2w", topic:"疗愈" },
-  { id:2, cover:"🏮", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"普陀山寄愿 · 一步一灯", author:"寄愿", dur:"03:48", plays:"2.1w", topic:"寄愿" },
-  { id:3, cover:"🌠", bg:"linear-gradient(140deg,#3a3660,#6a5f96)", title:"苍山银河延时 · 命宫与远方", author:"野山星野", dur:"01:12", plays:"12w", topic:"星图" }
+  { id:1, cover:"", bg:"linear-gradient(140deg,#2b2b4e,#4a4a7a)", title:"10 分钟睡前冥想引导｜焦虑舒缓", author:"疗愈所", dur:"10:24", plays:"8.2w", topic:"疗愈" },
+  { id:2, cover:"", bg:"linear-gradient(140deg,#b9544a,#e0796f)", title:"普陀山寄愿 · 一步一灯", author:"寄愿", dur:"03:48", plays:"2.1w", topic:"寄愿" },
+  { id:3, cover:"", bg:"linear-gradient(140deg,#3a3660,#6a5f96)", title:"苍山银河延时 · 命宫与远方", author:"野山星野", dur:"01:12", plays:"12w", topic:"星图" }
 ];
 const following = [
   { id:1, name:"野山星野", avatar:"野", bio:"星图旅行家" },
@@ -248,8 +248,8 @@ function cardHTML(it){
       <div class="meta">
         <div class="av">${it.author[0]}</div><span class="nm">${it.author}</span>
         <div class="acts">
-          <span class="act ${collected?'on':''}" onclick="event.stopPropagation();doCollect(${it.noteId})">★ ${collected?'已藏':'收藏'}</span>
-          <span class="act ${liked?'on':''}" onclick="event.stopPropagation();doLike(${it.noteId})">♥ ${liked?'已赞':'赞'}</span>
+          <span class="act ${collected?'on':''}" onclick="event.stopPropagation();doCollect(${it.noteId})">${collected?'已藏':'收藏'}</span>
+          <span class="act ${liked?'on':''}" onclick="event.stopPropagation();doLike(${it.noteId})">${liked?'已赞':'赞'}</span>
         </div>
       </div>
     </div>
@@ -271,14 +271,14 @@ function renderFeed(){
       const liked = !!social.liked['v'+v.id];
       return `<div class="vcard"><div class="v-cover" style="background:${v.bg}"><span class="v-emoji">${v.cover}</span><div class="v-play">▶</div><div class="v-dur">${v.dur}</div><div class="v-topic">${v.topic}</div></div>
       <div class="v-body"><div class="v-tt">${v.title}</div><div class="v-meta"><span>${v.author}</span>
-      <div class="acts"><span class="act ${liked?'on':''}" onclick="doLike('v${v.id}')">♥ ${liked?'已赞':'赞'}</span><span>▶ ${v.plays}</span></div></div></div></div>`;
+      <div class="acts"><span class="act ${liked?'on':''}" onclick="doLike('v${v.id}')">${liked?'已赞':'赞'}</span><span>▶ ${v.plays}</span></div></div></div></div>`;
     }).join('')}</div>`;
   }
 }
 
 function renderLog(){
   const el = document.getElementById('logList');
-  if(!meritLog.length){ el.innerHTML = '<div class="log-item"><span>暂无动态，去点赞 / 关注 / 发布试试 ✦</span></div>'; return; }
+  if(!meritLog.length){ el.innerHTML = '<div class="log-item"><span>暂无动态，去点赞 / 关注 / 发布试试 </span></div>'; return; }
   el.innerHTML = meritLog.slice(0,12).map(x => `<div class="log-item"><span>${x.text}</span><span class="t">${x.time}</span></div>`).join('');
 }
 
@@ -335,7 +335,7 @@ document.getElementById('pPub').onclick = ()=>{
   const hit = BLOCK_WORDS.filter(w => (title+' '+body).indexOf(w)!==-1);
   if(hit.length){ toast('含不适宜内容：'+hit.join('、')); return; }
   const id = 900000 + Math.floor(Math.random()*90000);
-  const emo = ['🌌','🔮','🍃','🏮','🏜️','🌙','🌿'][Math.floor(Math.random()*7)];
+  const emo = ['','','','','','',''][Math.floor(Math.random()*7)];
   const bg = ['linear-gradient(140deg,#2b2b4e,#4a4a7a)','linear-gradient(140deg,#3a3660,#6a5f96)','linear-gradient(140deg,#7fb7a3,#a9d4c5)','linear-gradient(140deg,#b9544a,#e0796f)','linear-gradient(140deg,#c8a35a,#e0c489)'][Math.floor(Math.random()*5)];
   const topic = Object.keys(picked)[0] || '星图旅行';
   published.unshift({ id, title: title||body.slice(0,12), body, author:'拾光的小野', likes:0, collects:0, topic, h:200+Math.floor(Math.random()*60), emoji:emo, bg, mine:true });

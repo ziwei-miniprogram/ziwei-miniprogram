@@ -60,7 +60,7 @@
   <p class="lead">下面 6 个轻轻一推，全部基于现有产品机制（功德经济 / 签到 / 解锁 / 社交 / 首启）。点一点，感受「良性助推」而非「暗黑模式」的差别。</p>
 
   <div class="guard">
-    🛡️ <b>护栏</b>：所有助推服务于用户自身的正向意图；不制造假紧迫、不隐藏退订、不诱导付费、抽奖公示概率且零金钱。功德不可提现/交易/购买；不出现算命改运/医疗承诺文案；全部提醒可一键关闭。
+    <b>护栏</b>：所有助推服务于用户自身的正向意图；不制造假紧迫、不隐藏退订、不诱导付费、抽奖公示概率且零金钱。功德不可提现/交易/购买；不出现算命改运/医疗承诺文案；全部提醒可一键关闭。
   </div>
 
   <div class="grid">
@@ -94,7 +94,7 @@
       <span class="tag c">A1 · 护火</span>
       <h3>心灯别熄：断签挽回</h3>
       <div class="pr">损失厌恶 + 沉没成本</div>
-      <div class="flames" id="flame">🔥🔥🔥</div>
+      <div class="flames" id="flame"></div>
       <p id="flametxt">连续 3 天签到。火苗是「可失去之物」——断了会收到温和「续火」提醒，回归赠 +2。</p>
       <button class="btn ghost" onclick="breakStreak()">模拟断签 1 天</button>
       <button class="btn" onclick="returnStreak()" style="margin-left:8px">回来续火</button>
@@ -107,10 +107,10 @@
       <div class="pr">承诺一致 + 蔡格尼克</div>
       <p>首启引导加一步「立星愿」。写下的承诺产生自我一致张力，驱动你回来完成它。</p>
       <div class="wishes" id="wishes">
-        <div class="wish" data-w="平静">🌿 内心平静</div>
-        <div class="wish" data-w="连接">🤝 与人连接</div>
-        <div class="wish" data-w="成长">🌱 持续成长</div>
-        <div class="wish" data-w="善行">🪔 日行一善</div>
+        <div class="wish" data-w="平静">内心平静</div>
+        <div class="wish" data-w="连接">与人连接</div>
+        <div class="wish" data-w="成长">持续成长</div>
+        <div class="wish" data-w="善行">日行一善</div>
       </div>
       <div class="note" id="wishnote">（可选，可跳过）</div>
     </div>
@@ -123,8 +123,8 @@
       <p>首次进发现流预置 3 位「星野引路人」默认关注，并展示动态人数——社会证明打破「空荡感」。</p>
       <div class="proof">已有 <b id="ppl">12,800</b> 位旅人正在星野日行一善</div>
       <div class="stat">
-        <span class="chip">✅ 已为你关注 3 位引路人</span>
-        <span class="chip">🔥 本周 +1,240 人签到</span>
+        <span class="chip">[OK] 已为你关注 3 位引路人</span>
+        <span class="chip">本周 +1,240 人签到</span>
       </div>
       <button class="btn ghost" onclick="more()">看看大家都在做什么</button>
     </div>
@@ -163,18 +163,18 @@
     document.getElementById('b5fill').style.width=pct+'%';
     const d=document.getElementById('b5desc'), l=document.getElementById('b5l'), r=document.getElementById('b5r');
     l.textContent='已攒 '+m5+' / 30'; r.textContent=pct+'%';
-    if(pct>=70){ d.innerHTML='🔆 <b>再攒 '+(30-m5)+' 即点亮深度解读</b>——看见终点，行动加速。'; }
+    if(pct>=70){ d.innerHTML='<b>再攒 '+(30-m5)+' 即点亮深度解读</b>——看见终点，行动加速。'; }
     else { d.textContent='进度低时说「已攒 X」；≥70% 时切为「再攒 Y 即点亮深度解读」。'; }
   }
   // A1
   let streak=3;
-  function renderFlame(){document.getElementById('flame').textContent='🔥'.repeat(Math.max(0,streak))||'💨';}
+  function renderFlame(){document.getElementById('flame').textContent=''.repeat(Math.max(0,streak))||'';}
   function breakStreak(){
     streak=0; renderFlame();
-    document.getElementById('flametxt').innerHTML='💨 心灯熄灭了 1 天……「回来续火🔥，赠你 +2 功德」——温和提醒，不恐吓。';
+    document.getElementById('flametxt').innerHTML='心灯熄灭了 1 天……「回来续火，赠你 +2 功德」——温和提醒，不恐吓。';
   }
   function returnStreak(){
-    if(streak===0){streak=1; document.getElementById('flametxt').innerHTML='🔥 续火成功！回归首签 +2（虚拟赠送）。明天再来，火苗复燃。';}
+    if(streak===0){streak=1; document.getElementById('flametxt').innerHTML='续火成功！回归首签 +2（虚拟赠送）。明天再来，火苗复燃。';}
     else {streak++; document.getElementById('flametxt').textContent='连续 '+streak+' 天签到，火苗稳了。';}
     renderFlame();
   }
@@ -189,16 +189,16 @@
   // C9
   function more(){const e=document.getElementById('ppl');let v=parseInt(e.textContent.replace(/,/g,''))+Math.floor(Math.random()*40+10);e.textContent=v.toLocaleString();}
   // D10
-  let cnt=0; const pool=['平安喜乐 ✨','心之所向 🌟','静水流深 💫','隐藏星辉签！额外 +2 🌠'];
+  let cnt=0; const pool=['平安喜乐 ','心之所向 ','静水流深 ','隐藏星辉签！额外 +2 '];
   function draw(){
     if(cnt>=3){document.getElementById('drawcnt').textContent='今日已达上限 3 次（防沉迷护栏）';return;}
     cnt++; document.getElementById('drawcnt').textContent='今日已抽 '+cnt+' / 3';
     const hidden=Math.random()<0.3; // 公示概率 30%
     const txt=hidden?pool[3]:pool[Math.floor(Math.random()*3)];
     const b=document.getElementById('burst'); const s=document.createElement('div');
-    s.className='star'; s.textContent=hidden?'🌠':'✨'; b.appendChild(s);
+    s.className='star'; s.textContent=hidden?'':''; b.appendChild(s);
     setTimeout(()=>s.remove(),1500);
-    document.getElementById('drawcnt').textContent=(hidden?'🎉 抽到'+txt:'抽到 '+txt)+'　（今日 '+cnt+'/3）';
+    document.getElementById('drawcnt').textContent=(hidden?'抽到'+txt:'抽到 '+txt)+'　（今日 '+cnt+'/3）';
   }
 </script>
 </body>

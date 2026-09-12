@@ -23,6 +23,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: 图标语言门禁（禁 emoji）
+        run: node scripts/check-emoji.js
+
       - name: JSON / Python / 密钥扫描
         run: |
           node -e '
@@ -41,7 +44,7 @@ jobs:
               try { JSON.parse(fs.readFileSync(f, "utf8")); }
               catch (e) { console.log("::error file=" + f + "::JSON 非法: " + e.message); jsonBad++; }
             }
-            console.log(jsonBad ? ("❌ " + jsonBad + " 个非法 JSON") : ("✅ JSON 合法 (" + (byExt[".json"] || []).length + " 个)"));
+            console.log(jsonBad ? ("[FAIL] " + jsonBad + " 个非法 JSON") : ("[OK] JSON 合法 (" + (byExt[".json"] || []).length + " 个)"));
 
             // 2) Python 编译校验
             let pyErr = 0;
@@ -49,7 +52,7 @@ jobs:
               const r = cp.spawnSync("python3", ["-m", "py_compile", f]);
               if (r.status !== 0) { console.log("::error file=" + f + "::Python 编译失败\n" + r.stderr.toString()); pyErr++; }
             }
-            console.log(pyErr ? ("❌ " + pyErr + " 个 Python 编译失败") : ("✅ Python 编译通过 (" + (byExt[".py"] || []).length + " 个)"));
+            console.log(pyErr ? ("[FAIL] " + pyErr + " 个 Python 编译失败") : ("[OK] Python 编译通过 (" + (byExt[".py"] || []).length + " 个)"));
 
             // 3) 密钥/敏感信息扫描
             const Q = "[\"\x27]";
@@ -59,7 +62,7 @@ jobs:
               const m = fs.readFileSync(f, "utf8").match(re);
               if (m) { console.log("::error file=" + f + "::疑似硬编码密钥: " + m[0].slice(0, 40)); hit++; }
             }
-            console.log(hit ? ("❌ " + hit + " 处疑似硬编码密钥") : "✅ 未检测到硬编码密钥");
+            console.log(hit ? ("[FAIL] " + hit + " 处疑似硬编码密钥") : "[OK] 未检测到硬编码密钥");
 
             code = (jsonBad || pyErr || hit) ? 1 : 0;
             process.exit(code);
@@ -83,7 +86,7 @@ jobs:
         run: npm ci
 
       - name: ESLint 静态检查（未声明变量 / TDZ / 死代码）
-        run: npx eslint "pages/**/*.js" "utils/**/*.js" "custom-tab-bar/**/*.js" "components/**/*.js"
+        run: npx eslint "pages/**/*.js" "utils/**/*.js" "custom-tab-bar/**/*.js" "components/**/*.js" "scripts/**/*.js" "tests/**/*.js"
 
       - name: Jest 单元测试 + 覆盖率
         run: npx jest --coverage

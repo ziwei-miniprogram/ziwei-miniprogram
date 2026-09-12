@@ -4,9 +4,11 @@
   "private": true,
   "description": "星野漫游小程序 — 代码质量门禁（ESLint 静态检查 + Jest 单元测试 + 静态编译校验）",
   "scripts": {
-    "lint": "eslint \"pages/**/*.js\" \"utils/**/*.js\" \"custom-tab-bar/**/*.js\" \"components/**/*.js\"",
+    "lint": "eslint \"pages/**/*.js\" \"utils/**/*.js\" \"custom-tab-bar/**/*.js\" \"components/**/*.js\" \"scripts/**/*.js\" \"tests/**/*.js\"",
+    "lint:emoji": "node scripts/check-emoji.js",
     "test": "jest",
     "validate": "node scripts/validate-mp.js",
+    "qa": "npm run lint:emoji && npm run lint && npm run validate && npm test",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -29,7 +31,7 @@
   "lint-staged": {
     "*.js": [
       "eslint --fix",
-      "jest --bail --findRelatedTests"
+      "jest --bail --findRelatedTests --passWithNoTests"
     ]
   }
 }

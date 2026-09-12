@@ -78,11 +78,11 @@
 - `components/heart-lamp/*`（**三善成金色呼吸** + 点灯计入三善）
 - 暗色扩展到**全部 14 页**：`pages/blessing`、`pages/healing`、`pages/journey`、`pages/note`、`pages/space`、`pages/search`、`pages/publish`、`pages/mall`（根 `page {{theme}}` + `onShow` 主题 + wxss 令牌化）
 
-## 7. 本轮交付（✅ 已全部完成）
+## 7. 本轮交付（[OK] 已全部完成）
 
 ### 7.1 入场「开窗」动画（愉悦客户情绪）
 - 位置：首页 `pages/index` 顶层遮罩 `.win-open`（z-index 950）。
-- 表现：两扇窗扉（带窗棂竖向格栅）自中缝向两侧滑开（`woOpenL`/`woOpenR`，1s `cubic-bezier`），背后金光透入 + 16 颗星光渐显闪烁，中轴浮现「✦ 拾光驿·星野漫游」；窗扉滑尽后遮罩撤掉，Hero 星爆接力放射。
+- 表现：两扇窗扉（带窗棂竖向格栅）自中缝向两侧滑开（`woOpenL`/`woOpenR`，1s `cubic-bezier`），背后金光透入 + 16 颗星光渐显闪烁，中轴浮现「拾光驿·星野漫游」；窗扉滑尽后遮罩撤掉，Hero 星爆接力放射。
 - 节奏：仅**小程序冷启动**播放一次（`onLoad` 触发；切 tab 不重播）；`winOpen` 在 1.2s 后移除。
 - 暗色：`.page.dark` 下窗扉转深蓝描金，风格统一。
 - 无障碍：`prefers-reduced-motion` 直接隐藏遮罩、秒显内容。
