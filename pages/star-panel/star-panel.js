@@ -70,7 +70,7 @@ Page({
     wx.navigateTo({ url: '/pages/chart/chart' });
   },
   onShareAppMessage() {
-    const titles = { ziwei: '紫微斗数 · 命宫主星', bazi: '八字命理 · 五行排盘', xingzuo: '星座测试 · 今日运势' };
+    const titles = { ziwei: '紫微斗数 · 命宫主星', bazi: '四柱八字 · 五行排盘', xingzuo: '星座 · 今日星语' };
     return { title: titles[this.data.mode], path: '/pages/star-panel/star-panel?mode=' + this.data.mode };
   }
 });

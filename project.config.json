@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "./",
   "projectname": "ziwei-wenlv",
-  "description": "拾光驿·星野漫游小程序 MVP 骨架",
+  "description": "星野漫游 · 中国传统星象文化与情绪价值的文旅数字产品（MVP）",
   "appid": "touristappid",
   "setting": {
     "urlCheck": true,
