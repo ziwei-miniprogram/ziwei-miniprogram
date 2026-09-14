@@ -55,6 +55,62 @@
     <view class="cg-reward" wx:if="{{hasReward}}">已解锁城市守护折扣 + 限定优先购资格（24h）</view>
   </view>
 
+  <!-- 福建官方线路 · 星图巡礼（静态线路模板，对应省规划「三带 / 五圈」）-->
+  <view class="fr">
+    <view class="fr-head">
+      <view class="fr-t">福建线路 · 星图巡礼</view>
+      <view class="fr-s">按「三带 / 五圈」预置的官方线路，走完一条解开一颗线路星</view>
+    </view>
+
+    <view class="fr-sum">
+      <text class="fr-sum-n">{{routeOverall.spotsDone}}</text>
+      <text class="fr-sum-t">/ {{routeOverall.spotsTotal}} 站已打卡 · 线路星 {{routeOverall.shardCount}} / {{routeOverall.routesTotal}}</text>
+    </view>
+
+    <!-- 目标梯度：推荐「最容易走完的那条」并直接给出下一站 -->
+    <view class="fr-reco" wx:if="{{routeOverall.recommend}}">
+      <astro name="{{routeOverall.recommend.star}}" size="32" theme="{{theme}}"/>
+      <view class="fr-reco-b">
+        <view class="fr-reco-t">建议先走 · {{routeOverall.recommend.name}}</view>
+        <view class="fr-reco-d">下一站 {{routeOverall.recommend.next.name}}</view>
+      </view>
+      <view class="fr-reco-go" data-route="{{routeOverall.recommend.id}}" bindtap="checkInNext">打卡</view>
+    </view>
+    <view class="fr-reco all" wx:else>
+      <astro name="award" size="32" theme="{{theme}}"/>
+      <view class="fr-reco-b">
+        <view class="fr-reco-t">五条线路已全部走完</view>
+        <view class="fr-reco-d">线路星已全部汇入星图碎片</view>
+      </view>
+    </view>
+
+    <view class="fr-card {{item.complete ? 'on' : ''}}" wx:for="{{routes}}" wx:key="id">
+      <view class="fr-c-head">
+        <astro name="{{item.star}}" size="34" theme="{{theme}}"/>
+        <view class="fr-c-b">
+          <view class="fr-c-t">{{item.name}}</view>
+          <view class="fr-c-band">{{item.band}}</view>
+        </view>
+        <view class="fr-c-n">{{item.done}}/{{item.total}}</view>
+      </view>
+      <view class="fr-c-desc">{{item.desc}}</view>
+      <view class="fr-bar"><view class="fr-fill" style="width:{{item.pct}}%"></view></view>
+      <view class="fr-spots">
+        <view class="fr-spot {{s.checked ? 'on' : ''}}" wx:for="{{item.spots}}" wx:for-item="s" wx:key="id"
+          data-spot="{{s.id}}" bindtap="checkInRouteSpot">
+          <astro name="{{s.star}}" size="26" theme="{{theme}}"/>
+          <text class="fr-spot-n">{{s.name}}</text>
+        </view>
+      </view>
+      <view class="fr-c-foot">
+        <text class="fr-shard" wx:if="{{item.complete}}">已集齐 · 解锁「{{item.shard.name}}」</text>
+        <text class="fr-next" wx:else>下一站 · {{item.next.name}}</text>
+      </view>
+    </view>
+
+    <view class="fr-tip">线路模板为静态配置，依据《福建省"十五五"文化和旅游发展规划》「三带 / 五圈」整理，非官方运营产品。</view>
+  </view>
+
   <!-- 峰值 ContextualCta（UX 架构 P0-d，解 B5）：点亮城市后顺手结缘 -->
   <contextual-reco icon="tourism" tag="点亮城市后 · 顺手结缘" name="城市守护 · 星空冰箱贴" desc="把点亮的城市星图，贴在冰箱上日日相伴" url="/pages/mall/mall" cta="去结缘" />
 

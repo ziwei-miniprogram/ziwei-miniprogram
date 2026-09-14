@@ -1,5 +1,6 @@
 const { tours } = require('../../utils/mock.js');
 const checkin = require('../../utils/checkin.js');
+const fujian = require('../../utils/fujian-routes.js');
 const whimsy = require('../../utils/whimsy.js');
 
 // 演示：为每条线路补充视觉梯度与「适合星象」标签
@@ -37,7 +38,14 @@ Page({
     // —— 文旅打卡 P1：GPS 地图 ——
     markers: [],
     mapLat: checkin.CITIES[0].lat,
-    mapLng: checkin.CITIES[0].lng
+    mapLng: checkin.CITIES[0].lng,
+    // —— 福建官方线路（静态线路模板，对应省规划「三带 / 五圈」）——
+    routes: [],
+    routeOverall: {
+      spotsDone: 0, spotsTotal: fujian.SPOT_TOTAL,
+      routesDone: 0, routesTotal: fujian.ROUTE_TOTAL,
+      shardCount: 0, shards: [], recommend: null
+    }
   },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
@@ -46,6 +54,44 @@ Page({
     this.refreshCheckin();
     this.buildMarkers();
     this.buildGuardBoard();
+    this.refreshRoutes();
+  },
+  // 福建线路：同步线路完成度与汇总（真实进度，不做虚高起点）
+  refreshRoutes() {
+    this.setData({
+      routes: fujian.allRouteProgress(),
+      routeOverall: fujian.overallProgress()
+    });
+  },
+  // 线路站点打卡：记录 + 星屑 + 走完一条线解锁线路星（虚拟收集物，零金钱）
+  checkInRouteSpot(e) {
+    const spotId = e.currentTarget.dataset.spot;
+    const r = fujian.checkInSpot(spotId);
+    if (!r.ok) {
+      wx.showToast({ title: r.reason === 'already' ? '这一站已打卡过啦' : '暂不可打卡', icon: 'none' });
+      return;
+    }
+    this.refreshRoutes();
+    whimsy.burst(this, { text: '巡礼打卡 · ' + r.spot.name, emoji: '✦' });
+    if (r.newlyCompleted.length) {
+      const names = r.newlyCompleted.map(c => c.name).join('、');
+      const shards = r.newlyCompleted.map(c => c.shard.name).join('、');
+      wx.showModal({
+        title: '一条线路走完了',
+        content: '「' + names + '」已走完，解锁线路星：' + shards + '。\n线路星会汇入星图碎片，集齐可点亮一张主题星图。',
+        showCancel: false,
+        confirmText: '知道了'
+      });
+      return;
+    }
+    wx.showToast({ title: '巡礼 +1 · 星屑 +' + r.shards, icon: 'none' });
+  },
+  // 推荐线路卡上的「打卡」：一键点亮该线的下一站（省掉找点的动作）
+  checkInNext(e) {
+    const routeId = e.currentTarget.dataset.route;
+    const p = fujian.routeProgress(routeId);
+    if (!p || !p.next) { wx.showToast({ title: '这条线已走完', icon: 'none' }); return; }
+    this.checkInRouteSpot({ currentTarget: { dataset: { spot: p.next.id } } });
   },
   // P2：全国守护礼状态 + 城市守护榜（本地社会证明，驱动复访打卡）
   buildGuardBoard() {
@@ -113,6 +159,15 @@ Page({
     wx.getLocation({
       type: 'gcj02',
       success(res) {
+        // 福建线路站点优先判定：景区级坐标比城市中心更精细。命中即记一次巡礼并结束本次检测，
+        // 避免「线路提示 + 城市提示」双重弹窗。
+        const rs = fujian.autoCheckInByLocation(res.latitude, res.longitude);
+        if (rs.status === 'checked') {
+          self.refreshRoutes();
+          whimsy.burst(self, { text: '到访已记录 · ' + rs.spot.name, emoji: '✦' });
+          wx.showToast({ title: '到访「' + rs.spot.name + '」· 巡礼已记', icon: 'none' });
+          return;
+        }
         const r = checkin.autoCheckInByLocation(res.latitude, res.longitude);
         if (r.status === 'none') {
           wx.showToast({ title: '附近暂无可点亮城市', icon: 'none' });
