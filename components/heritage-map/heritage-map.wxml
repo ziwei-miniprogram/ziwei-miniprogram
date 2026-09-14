@@ -1,0 +1,50 @@
+<!-- 非遗主题星图：四方分组，每颗星需 3 枚碎片（行迹 / 善行 / 知见）点亮 -->
+<view class="hm {{theme}}">
+  <view class="hm-head">
+    <view class="hm-hb">
+      <text class="hm-t">闽南文化生态保护区 · 星图</text>
+      <text class="hm-s">{{lit}}/{{total}} 已点亮</text>
+    </view>
+    <view class="hm-legend">
+      <text class="hm-lg" wx:for="{{kinds}}" wx:key="key">{{item.name}}</text>
+    </view>
+  </view>
+
+  <view class="hm-groups">
+    <view class="hm-group" wx:for="{{groups}}" wx:for-item="g" wx:key="key">
+      <view class="hm-ghead">
+        <text class="hm-gname">{{g.name}}</text>
+        <text class="hm-gal">{{g.alias}}</text>
+        <text class="hm-gn">{{g.lit}}/{{g.total}}</text>
+      </view>
+      <view class="hm-nodes">
+        <view
+          class="hm-node {{n.lit ? 'on' : ''}} {{selected && selected.name === n.name ? 'sel' : ''}}"
+          wx:for="{{g.nodes}}" wx:for-item="n" wx:key="id"
+          data-id="{{n.id}}" bindtap="onTap"
+        >
+          <view class="hm-star">
+            <text class="hm-char">{{n.name}}</text>
+          </view>
+          <view class="hm-frags">
+            <view class="hm-frag {{n.frags.trace ? 'on' : ''}}"></view>
+            <view class="hm-frag {{n.frags.deed ? 'on' : ''}}"></view>
+            <view class="hm-frag {{n.frags.lore ? 'on' : ''}}"></view>
+          </view>
+        </view>
+      </view>
+      <view class="hm-gdesc">{{g.desc}}</view>
+    </view>
+  </view>
+
+  <view class="hm-cap" wx:if="{{selected}}" bindtap="closeCap">
+    <view class="hm-cap-t">{{selected.name}} · {{selected.count}}/3 碎片</view>
+    <view class="hm-cap-m">{{selected.meta}}</view>
+    <view class="hm-cap-d">{{selected.desc}}</view>
+    <view class="hm-cap-f">
+      <text class="hm-cap-tag {{selected.frags.trace ? 'on' : ''}}">行迹</text>
+      <text class="hm-cap-tag {{selected.frags.deed ? 'on' : ''}}">善行</text>
+      <text class="hm-cap-tag {{selected.frags.lore ? 'on' : ''}}">知见</text>
+    </view>
+  </view>
+</view>

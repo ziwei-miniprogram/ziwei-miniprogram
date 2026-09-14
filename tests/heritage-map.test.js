@@ -1,0 +1,187 @@
+// 单元测试：非遗主题星图（闽南文化生态保护区）收集机制
+function makeStorage() {
+  const m = {};
+  global.wx = {
+    getStorageSync: (k) => (k in m ? m[k] : ''),
+    setStorageSync: (k, v) => { m[k] = v; }
+  };
+  return m;
+}
+
+const H = require('../utils/heritage-map.js');
+const fujian = require('../utils/fujian-routes.js');
+
+describe('heritage-map 数据结构', () => {
+  beforeEach(() => { makeStorage(); });
+
+  test('20 个节点，4 组各 5 个，无重复 id', () => {
+    expect(H.TOTAL).toBe(20);
+    expect(H.GROUPS.length).toBe(4);
+    const seen = {};
+    H.NODES.forEach(n => {
+      expect(seen[n.id]).toBeUndefined();
+      seen[n.id] = true;
+    });
+    H.GROUPS.forEach(g => {
+      expect(H.nodesByGroup(g.key).length).toBe(5);
+    });
+  });
+
+  test('每个节点的地市都在线路站点覆盖范围内（否则行迹碎片永远拿不到）', () => {
+    const spotCities = {};
+    fujian.SPOTS.forEach(s => { spotCities[s.city] = true; });
+    H.NODES.forEach(n => {
+      expect(spotCities[n.city]).toBe(true);
+    });
+  });
+
+  test('级别取值受控，避免出现未经核校的表述', () => {
+    const allowed = ['世界级', '国家级', '省级'];
+    H.NODES.forEach(n => { expect(allowed).toContain(n.level); });
+  });
+});
+
+describe('heritage-map 收集机制', () => {
+  beforeEach(() => { makeStorage(); });
+
+  test('单一行为无法点亮任何一颗星（必须三类碎片齐备）', () => {
+    H.NODES.forEach(n => H.addFragment(n.id, 'trace'));
+    const st = H.state();
+    expect(st.lit).toBe(0);
+    expect(st.fragmentsTotal).toBe(20);
+  });
+
+  test('集齐三类碎片才点亮该节点', () => {
+    expect(H.addFragment('nanyin', 'trace').nodeLit).toBe(false);
+    expect(H.addFragment('nanyin', 'deed').nodeLit).toBe(false);
+    const last = H.addFragment('nanyin', 'lore');
+    expect(last.nodeLit).toBe(true);
+    expect(last.count).toBe(3);
+    expect(H.state().lit).toBe(1);
+  });
+
+  test('同类碎片重复加幂等，不叠加计数', () => {
+    H.addFragment('nanyin', 'trace');
+    const again = H.addFragment('nanyin', 'trace');
+    expect(again.ok).toBe(false);
+    expect(again.reason).toBe('dup');
+    expect(H.fragmentsOf('nanyin').count).toBe(1);
+  });
+
+  test('未知节点 / 未知碎片类型被拒', () => {
+    expect(H.addFragment('nope', 'trace').reason).toBe('unknown');
+    expect(H.addFragment('nanyin', 'nope').reason).toBe('bad-kind');
+  });
+
+  test('一组 5 星全亮 → 该象成组', () => {
+    const dy = H.nodesByGroup('dy');
+    dy.forEach(n => {
+      H.addFragment(n.id, 'trace');
+      H.addFragment(n.id, 'deed');
+      H.addFragment(n.id, 'lore');
+    });
+    const st = H.state();
+    const g = st.groups.filter(x => x.key === 'dy')[0];
+    expect(g.complete).toBe(true);
+    expect(st.groupLit).toBe(1);
+    expect(st.complete).toBe(false);
+  });
+
+  test('20 星全亮 → 星图整体点亮', () => {
+    H.NODES.forEach(n => {
+      H.addFragment(n.id, 'trace');
+      H.addFragment(n.id, 'deed');
+      H.addFragment(n.id, 'lore');
+    });
+    const st = H.state();
+    expect(st.lit).toBe(20);
+    expect(st.groupLit).toBe(4);
+    expect(st.complete).toBe(true);
+    expect(st.next).toBeNull();
+    expect(st.fragmentsTotal).toBe(60);
+  });
+
+  test('未点亮时给出下一颗最接近点亮的星（目标梯度）', () => {
+    H.addFragment('nanyin', 'trace');
+    H.addFragment('nanyin', 'deed');
+    H.addFragment('huian', 'trace');
+    const st = H.state();
+    expect(st.next.id).toBe('nanyin');
+    expect(st.next.remain).toBe(1);
+  });
+});
+
+describe('heritage-map 与线路打卡联动', () => {
+  beforeEach(() => { makeStorage(); });
+
+  test('打卡泉州站点，给全部泉州非遗节点发行迹碎片', () => {
+    const quanzhouNodes = H.nodesByCity('泉州');
+    expect(quanzhouNodes.length).toBeGreaterThan(0);
+    const r = H.grantSpotFragments('kaiyuan');
+    expect(r.ok).toBe(true);
+    expect(r.city).toBe('泉州');
+    expect(r.granted.length).toBe(quanzhouNodes.length);
+    quanzhouNodes.forEach(n => {
+      expect(H.fragmentsOf(n.id).frags.trace).toBe(true);
+    });
+  });
+
+  test('nodesBySpot 按站点所属地市匹配节点', () => {
+    expect(H.nodesBySpot('gulangyu').map(n => n.city)).toEqual(
+      H.nodesBySpot('gulangyu').map(() => '厦门')
+    );
+    expect(H.nodesBySpot('not-a-spot')).toEqual([]);
+  });
+
+  test('重复打卡同一站点不再发碎片（幂等）', () => {
+    H.grantSpotFragments('kaiyuan');
+    const again = H.grantSpotFragments('kaiyuan');
+    expect(again.ok).toBe(false);
+    expect(again.reason).toBe('all-dup');
+  });
+
+  test('打卡 + 善行 + 知见三条线走通 → 首颗星点亮', () => {
+    H.grantSpotFragments('kaiyuan');            // 泉州 → 行迹
+    H.addFragment('nanyin', 'deed');            // 善行
+    const last = H.addFragment('nanyin', 'lore');
+    expect(last.nodeLit).toBe(true);
+  });
+
+  test('未知站点被拒', () => {
+    const r = H.grantSpotFragments('nope');
+    expect(r.ok).toBe(false);
+    expect(r.reason).toBe('unknown-spot');
+  });
+
+  test('resetAll 清空星图存储', () => {
+    H.addFragment('nanyin', 'trace');
+    H.resetAll();
+    expect(H.state().fragmentsTotal).toBe(0);
+    expect(H.fragmentsOf('nanyin').count).toBe(0);
+  });
+});
+
+describe('heritage-map 其他契约', () => {
+  beforeEach(() => { makeStorage(); });
+
+  test('存储键独立，不与线路层 / 城市层混用', () => {
+    const m = makeStorage();
+    H.addFragment('nanyin', 'trace');
+    expect(Object.keys(m)).toEqual([H.KEY]);
+    expect(H.KEY).not.toBe(fujian.KEY);
+  });
+
+  test('nodeById / groupOf 对未知 id 返回 null', () => {
+    expect(H.nodeById('nope')).toBeNull();
+    expect(H.groupOf('nope')).toBeNull();
+    expect(H.groupOf('nanyin').key).toBe('dy');
+  });
+
+  test('初始状态为空星图', () => {
+    const st = H.state();
+    expect(st.lit).toBe(0);
+    expect(st.fragmentsTotal).toBe(0);
+    expect(st.groupLit).toBe(0);
+    expect(st.next).toBeTruthy();
+  });
+});

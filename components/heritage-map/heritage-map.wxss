@@ -1,0 +1,77 @@
+/* 非遗主题星图（闽南文化生态保护区）—— 与 components/star-map 同一套视觉语言 */
+.hm {
+  margin: 20rpx 0;
+  background: var(--card, #fff);
+  border: 1rpx solid var(--border, rgba(138, 127, 109, .18));
+  border-radius: 24rpx;
+  padding: 24rpx 22rpx;
+  box-shadow: 0 4rpx 18rpx rgba(40, 33, 20, .05);
+}
+.hm-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16rpx; margin-bottom: 20rpx; }
+.hm-hb { display: flex; flex-direction: column; gap: 4rpx; }
+.hm-t { font-size: 28rpx; font-weight: 700; color: var(--gold-deep, #8a6a2a); }
+.hm-s { font-size: 22rpx; color: var(--fg-2, #998f80); }
+.hm-legend { display: flex; gap: 10rpx; flex-wrap: wrap; justify-content: flex-end; }
+.hm-lg { font-size: 20rpx; color: var(--fg-2, #998f80);
+  background: var(--gold-soft, rgba(200, 163, 90, .12)); border-radius: 999rpx; padding: 4rpx 14rpx; }
+
+.hm-groups { display: flex; flex-direction: column; gap: 24rpx; }
+.hm-group { display: flex; flex-direction: column; gap: 12rpx; }
+.hm-ghead { display: flex; align-items: baseline; gap: 12rpx; }
+.hm-gname { font-size: 24rpx; font-weight: 600; color: var(--fg-3, #6b6457); }
+.hm-gal { font-size: 20rpx; color: var(--fg-2, #998f80); }
+.hm-gn { margin-left: auto; font-size: 20rpx; color: var(--gold-deep, #8a6a2a); font-variant-numeric: tabular-nums; }
+
+.hm-nodes { display: flex; flex-wrap: wrap; gap: 14rpx; }
+.hm-node { width: calc((100% - 56rpx) / 5); box-sizing: border-box; display: flex;
+  flex-direction: column; align-items: center; gap: 8rpx; }
+.hm-star {
+  width: 100%; height: 96rpx; border-radius: 16rpx;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-elev, #fffdf8);
+  border: 1rpx solid var(--border, rgba(138, 127, 109, .18));
+  color: var(--fg-2, #998f80);
+  transition: all .3s ease;
+}
+.hm-char { font-size: 20rpx; line-height: 1.2; text-align: center; padding: 0 6rpx;
+  font-family: "Songti SC", "Source Han Serif SC", serif; }
+.hm-node.on .hm-star {
+  background: radial-gradient(circle at 50% 40%, #f6e3b0, #c8a35a 70%);
+  color: #3a2c10;
+  border-color: #e0c489;
+  box-shadow: 0 0 16rpx rgba(200, 163, 90, .6);
+}
+.hm-node.sel .hm-star { transform: scale(1.06); border-color: #c8a35a; }
+
+.hm-frags { display: flex; gap: 6rpx; }
+.hm-frag { width: 12rpx; height: 12rpx; border-radius: 50%;
+  background: rgba(138, 127, 109, .2); border: 1rpx solid transparent; }
+.hm-frag.on { background: #c8a35a; border-color: #e0c489; }
+
+.hm-gdesc { font-size: 20rpx; color: var(--fg-2, #998f80); line-height: 1.6; }
+
+.hm-cap {
+  margin-top: 20rpx; padding: 18rpx 20rpx; border-radius: 16rpx;
+  background: var(--gold-soft, rgba(200, 163, 90, .12));
+  border: 1rpx solid rgba(200, 163, 90, .28);
+}
+.hm-cap-t { font-size: 26rpx; font-weight: 700; color: var(--gold-deep, #8a6a2a); }
+.hm-cap-m { font-size: 20rpx; color: var(--fg-2, #998f80); margin-top: 4rpx; }
+.hm-cap-d { font-size: 22rpx; color: var(--fg-3, #6b6457); margin-top: 10rpx; line-height: 1.6; }
+.hm-cap-f { display: flex; gap: 10rpx; margin-top: 12rpx; }
+.hm-cap-tag { font-size: 20rpx; padding: 4rpx 14rpx; border-radius: 999rpx;
+  border: 1rpx solid var(--border, rgba(138, 127, 109, .18)); color: var(--fg-2, #998f80); }
+.hm-cap-tag.on { background: #c8a35a; border-color: #e0c489; color: #3a2c10; font-weight: 600; }
+
+/* 暗色夜灯 */
+.hm.dark .hm-star { background: #16223c; border-color: rgba(200, 180, 140, .18); color: #7e8aa0; }
+.hm.dark .hm-node.on .hm-star {
+  background: radial-gradient(circle at 50% 40%, #f0d49a, #d9b66a 70%);
+  color: #2a200a;
+  box-shadow: 0 0 18rpx rgba(217, 182, 106, .55);
+}
+.hm.dark .hm-frag { background: rgba(200, 180, 140, .2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-star { transition: none !important; }
+}
