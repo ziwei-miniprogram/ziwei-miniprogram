@@ -1,5 +1,6 @@
 const { meritBoard, meritGroups, wishWall, myBonds, cityLights } = require('../../utils/mock.js');
 const merit = require('../../utils/merit.js');
+const heritage = require('../../utils/heritage-map.js');
 const whimsy = require('../../utils/whimsy.js');
 const { check, advice } = require('../../utils/censor.js');
 
@@ -145,9 +146,19 @@ Page({
     this.setData({ merit: app.globalData.merit, level: after, dailyDone: nowDone, deedCount: count });
     whimsy.afterMerit(this, before, after, deed.merit, 'good');
     if (count >= 3) {
+      // 非遗星图的「善行」碎片：一天一枚，发给愿星（未立愿则自动落到最接近点亮的那颗）
+      const hg = heritage.grantDeed();
+      let tail = '';
+      if (hg.ok) {
+        tail = '\n\n星图回响：「' + hg.node.name + '」得一枚「善行」碎片';
+        if (hg.nodeLit) tail += '，这颗星点亮了。';
+        else if (hg.pledgedTo) tail += '。明日的善行将归「' + (heritage.nodeById(hg.pledgedTo) || {}).name + '」。';
+        else tail += '。';
+        if (hg.groupComplete) tail += '\n这一象的五颗星已连成星线。';
+      }
       wx.showModal({
         title: '今日三善已成 ✦',
-        content: '心灯、随喜、冥想皆已落定。日行三善，福虽未至，祸已远矣。',
+        content: '心灯、随喜、冥想皆已落定。日行三善，福虽未至，祸已远矣。' + tail,
         confirmText: '善哉',
         showCancel: false
       });

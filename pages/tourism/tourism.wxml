@@ -111,6 +111,20 @@
     <view class="fr-tip">线路模板为静态配置，依据《福建省"十五五"文化和旅游发展规划》「三带 / 五圈」整理，非官方运营产品。</view>
   </view>
 
+  <!-- 非遗星图 · 闽南文化生态保护区（碎片来自「走到 · 做善 · 答题」，单一行为点不亮任何一颗星）-->
+  <view class="hmw">
+    <view class="hmw-head">
+      <view class="hmw-t">非遗星图 · 走完之后的落点</view>
+      <view class="hmw-s">已点亮 {{heritageOverall.lit}} / {{heritageOverall.total}} 星 · 碎片 {{heritageOverall.fragmentsTotal}} / {{heritageOverall.fragmentsCap}}</view>
+    </view>
+    <view class="hmw-note" wx:if="{{heritageOverall.next}}">
+      最接近点亮的是「{{heritageOverall.next.name}}」，还差 {{heritageOverall.next.remain}} 枚碎片
+    </view>
+    <view class="hmw-note done" wx:else>二十颗星全部点亮，这一片的文化生态你都走过、做过、也答过了。</view>
+    <heritage-map frags="{{heritageFrags}}" theme="{{theme}}" bind:change="onHeritageChange" />
+    <view class="hmw-tip">依据省规划「深化闽南文化、客家文化（闽西）、朱子文化、妈祖文化等文化生态保护区建设」，本次先做闽南一处；非遗级别与名称待逐条核校。</view>
+  </view>
+
   <!-- 峰值 ContextualCta（UX 架构 P0-d，解 B5）：点亮城市后顺手结缘 -->
   <contextual-reco icon="tourism" tag="点亮城市后 · 顺手结缘" name="城市守护 · 星空冰箱贴" desc="把点亮的城市星图，贴在冰箱上日日相伴" url="/pages/mall/mall" cta="去结缘" />
 

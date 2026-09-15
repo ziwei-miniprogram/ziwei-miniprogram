@@ -185,3 +185,140 @@ describe('heritage-map 其他契约', () => {
     expect(st.next).toBeTruthy();
   });
 });
+
+describe('heritage-map 知见（文化小问）', () => {
+  beforeEach(() => { makeStorage(); });
+
+  test('20 个节点每题配套，选项齐备且不重复', () => {
+    H.NODES.forEach(n => {
+      const z = H.quizOf(n.id);
+      expect(z).toBeTruthy();
+      expect(typeof z.q).toBe('string');
+      expect(z.q.length).toBeGreaterThan(4);
+      expect(z.opts.length).toBe(4);
+      expect(new Set(z.opts).size).toBe(4);
+    });
+  });
+
+  test('quizOf 不下发正确项（视图层看不出答案）', () => {
+    const z = H.quizOf('nanyin');
+    expect(z.a).toBeUndefined();
+    expect(Object.keys(z).sort()).toEqual(['nodeId', 'opts', 'q']);
+  });
+
+  test('答错不发碎片，也不回正确项', () => {
+    const r = H.answerQuiz('nanyin', 2);
+    expect(r.ok).toBe(false);
+    expect(r.reason).toBe('wrong');
+    expect(r.correct).toBe(false);
+    expect(H.fragmentsOf('nanyin').count).toBe(0);
+  });
+
+  test('答对得「知见」碎片', () => {
+    const r = H.answerQuiz('nanyin', 0);
+    expect(r.ok).toBe(true);
+    expect(r.correct).toBe(true);
+    expect(H.fragmentsOf('nanyin').frags.lore).toBe(true);
+  });
+
+  test('答错不锁题，可重答直至答对', () => {
+    H.answerQuiz('nanyin', 1);
+    expect(H.fragmentsOf('nanyin').count).toBe(0);
+    expect(H.answerQuiz('nanyin', 0).ok).toBe(true);
+  });
+
+  test('重复答对同一题不叠加碎片', () => {
+    H.answerQuiz('nanyin', 0);
+    const again = H.answerQuiz('nanyin', 0);
+    expect(again.ok).toBe(false);
+    expect(again.reason).toBe('dup');
+    expect(again.correct).toBe(true);
+    expect(H.fragmentsOf('nanyin').count).toBe(1);
+  });
+
+  test('未知节点 / 越界选项被拒', () => {
+    expect(H.answerQuiz('nope', 0).reason).toBe('unknown');
+    expect(H.answerQuiz('nanyin', 99).reason).toBe('wrong');
+  });
+
+  test('答对最后一枚碎片时回报节点点亮', () => {
+    H.addFragment('nanyin', 'trace');
+    H.addFragment('nanyin', 'deed');
+    const r = H.answerQuiz('nanyin', 0);
+    expect(r.nodeLit).toBe(true);
+  });
+});
+
+describe('heritage-map 善行（愿星机制）', () => {
+  beforeEach(() => { makeStorage(); });
+
+  test('未立愿星时，善行归给最接近点亮的那颗', () => {
+    H.addFragment('nanyin', 'trace');
+    H.addFragment('nanyin', 'lore');          // nanyin 2/3，最接近
+    H.addFragment('huian', 'trace');          // huian 1/3
+    const r = H.grantDeed();
+    expect(r.ok).toBe(true);
+    expect(r.node.id).toBe('nanyin');
+    expect(r.nodeLit).toBe(true);
+  });
+
+  test('立愿星后，善行优先归愿星（即使它不是最接近点亮的）', () => {
+    H.addFragment('huian', 'trace');
+    H.addFragment('huian', 'lore');           // huian 2/3，本该是默认目标
+    H.addFragment('nanyin', 'trace');         // nanyin 1/3
+    expect(H.setPledge('nanyin').ok).toBe(true);
+    expect(H.pledgeOf()).toBe('nanyin');
+    expect(H.grantDeed().node.id).toBe('nanyin');
+  });
+
+  test('一天一枚：连发两次落在不同的星上（发完自动轮换）', () => {
+    const a = H.grantDeed();
+    const b = H.grantDeed();
+    expect(a.ok).toBe(true);
+    expect(b.ok).toBe(true);
+    expect(a.node.id).not.toBe(b.node.id);
+    expect(H.state().fragmentsTotal).toBe(2);
+  });
+
+  test('善行碎片不会叠加在同一颗星上', () => {
+    H.grantDeed(); H.grantDeed(); H.grantDeed();
+    const withDeed = H.NODES.filter(n => H.fragmentsOf(n.id).frags.deed);
+    expect(withDeed.length).toBe(3);
+  });
+
+  test('单靠善行永远点不亮任何一颗星', () => {
+    for (let i = 0; i < 20; i++) H.grantDeed();
+    const st = H.state();
+    expect(st.lit).toBe(0);
+    expect(st.fragmentsTotal).toBe(20);
+  });
+
+  test('20 星都拿到善行碎片后不再重复发放', () => {
+    for (let i = 0; i < 20; i++) H.grantDeed();
+    const r = H.grantDeed();
+    expect(r.ok).toBe(false);
+    expect(r.reason).toBe('no-target');
+  });
+
+  test('setPledge 拒绝未知节点', () => {
+    expect(H.setPledge('nope').reason).toBe('unknown');
+    expect(H.pledgeOf()).toBeNull();
+  });
+
+  test('resetAll 同时清掉愿星', () => {
+    H.setPledge('nanyin');
+    H.grantDeed();
+    expect(H.pledgeOf()).toBeTruthy();
+    H.resetAll();
+    expect(H.pledgeOf()).toBeNull();
+    expect(H.state().fragmentsTotal).toBe(0);
+  });
+
+  test('rawFrags 与 computeState 输入一致', () => {
+    H.grantDeed();
+    const f = H.rawFrags();
+    expect(Object.keys(f).length).toBe(1);
+    expect(H.computeState(f).fragmentsTotal).toBe(1);
+    expect(H.state().fragmentsTotal).toBe(H.computeState(H.rawFrags()).fragmentsTotal);
+  });
+});

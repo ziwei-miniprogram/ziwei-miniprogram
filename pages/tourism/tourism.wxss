@@ -172,3 +172,13 @@
   border-top: 1rpx solid var(--border); padding-top: 16rpx; }
 
 .page.dark .fr { box-shadow: var(--shadow-md); }
+
+/* ===== 非遗星图容器（碎片来自「走到 · 做善 · 答题」）===== */
+.hmw { margin: 24rpx 28rpx 0; }
+.hmw-head { display: flex; align-items: baseline; gap: 14rpx; flex-wrap: wrap; }
+.hmw-t { font-family: "Source Han Serif SC", "Songti SC", serif; font-size: 32rpx; font-weight: 700; color: var(--fg); }
+.hmw-s { font-size: 22rpx; color: var(--fg-2); font-variant-numeric: tabular-nums; }
+.hmw-note { font-size: 22rpx; color: var(--fg-2); margin-top: 10rpx; line-height: 1.6; }
+.hmw-note.done { color: var(--gold-deep); font-weight: 600; }
+.hmw-tip { font-size: 20rpx; color: var(--fg-3); line-height: 1.6; margin-top: 4rpx;
+  border-top: 1rpx solid var(--border); padding-top: 14rpx; }

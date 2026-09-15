@@ -1,4 +1,5 @@
 <!-- 非遗主题星图：四方分组，每颗星需 3 枚碎片（行迹 / 善行 / 知见）点亮 -->
+<!-- 机制红线：单一行为无法点亮任何一颗星；三类碎片都不能用钱买到 -->
 <view class="hm {{theme}}">
   <view class="hm-head">
     <view class="hm-hb">
@@ -10,6 +11,12 @@
     </view>
   </view>
 
+  <view class="hm-pledge" wx:if="{{pledgeName}}">
+    <text class="hm-pledge-k">愿星</text>
+    <text class="hm-pledge-n">{{pledgeName}}</text>
+    <text class="hm-pledge-d">今日三善完成后，善行碎片优先归它</text>
+  </view>
+
   <view class="hm-groups">
     <view class="hm-group" wx:for="{{groups}}" wx:for-item="g" wx:key="key">
       <view class="hm-ghead">
@@ -19,7 +26,7 @@
       </view>
       <view class="hm-nodes">
         <view
-          class="hm-node {{n.lit ? 'on' : ''}} {{selected && selected.name === n.name ? 'sel' : ''}}"
+          class="hm-node {{n.lit ? 'on' : ''}} {{selected && selected.id === n.id ? 'sel' : ''}} {{pledge === n.id ? 'pledge' : ''}}"
           wx:for="{{g.nodes}}" wx:for-item="n" wx:key="id"
           data-id="{{n.id}}" bindtap="onTap"
         >
@@ -37,8 +44,12 @@
     </view>
   </view>
 
-  <view class="hm-cap" wx:if="{{selected}}" bindtap="closeCap">
-    <view class="hm-cap-t">{{selected.name}} · {{selected.count}}/3 碎片</view>
+  <!-- 释义卡：整卡不再点击关闭，关闭走右上角独立按钮 -->
+  <view class="hm-cap" wx:if="{{selected}}">
+    <view class="hm-cap-h">
+      <view class="hm-cap-t">{{selected.name}} · {{selected.count}}/3 碎片</view>
+      <view class="hm-cap-x" catchtap="closeCap">✕</view>
+    </view>
     <view class="hm-cap-m">{{selected.meta}}</view>
     <view class="hm-cap-d">{{selected.desc}}</view>
     <view class="hm-cap-f">
@@ -46,5 +57,39 @@
       <text class="hm-cap-tag {{selected.frags.deed ? 'on' : ''}}">善行</text>
       <text class="hm-cap-tag {{selected.frags.lore ? 'on' : ''}}">知见</text>
     </view>
+
+    <!-- 还缺什么，就在这里直接补 -->
+    <view class="hm-need" wx:if="{{!selected.lit}}">
+      <view class="hm-need-row" wx:if="{{!selected.frags.trace}}">
+        <text class="hm-need-k">差「行迹」</text>
+        <text class="hm-need-d">走到该地市的任一线路站点打卡</text>
+        <text class="hm-need-go" catchtap="takeTrace">怎么走</text>
+      </view>
+      <view class="hm-need-row" wx:if="{{!selected.frags.deed}}">
+        <text class="hm-need-k">差「善行」</text>
+        <text class="hm-need-d" wx:if="{{pledge === selected.id}}">完成一次今日三善即可归入此星</text>
+        <text class="hm-need-d" wx:else>完成今日三善可得，或先把它立为愿星</text>
+        <text class="hm-need-go" wx:if="{{pledge !== selected.id}}" catchtap="pledgeStar">立为愿星</text>
+      </view>
+      <view class="hm-need-row" wx:if="{{!selected.frags.lore}}">
+        <text class="hm-need-k">差「知见」</text>
+        <text class="hm-need-d">答对下面这一题即可得</text>
+      </view>
+    </view>
+    <view class="hm-cap-done" wx:else>三枚碎片齐备，这颗星已经点亮。</view>
+
+    <!-- 文化小问（知见碎片入口） -->
+    <view class="hm-quiz" wx:if="{{quiz}}">
+      <view class="hm-quiz-t">答一题 · 得「知见」</view>
+      <view class="hm-quiz-q">{{quiz.q}}</view>
+      <view class="hm-opts">
+        <view class="hm-opt {{wrongPick === index ? 'wrong' : ''}}"
+          wx:for="{{quiz.opts}}" wx:key="*this" data-i="{{index}}" bindtap="pickOpt">{{item}}</view>
+      </view>
+      <view class="hm-quiz-h" wx:if="{{wrongPick >= 0}}">再想想，答错可以重答</view>
+    </view>
+    <view class="hm-quiz-done" wx:if="{{selected.frags.lore}}">「知见」已得 · 这一题你答过了</view>
   </view>
+
+  <view class="hm-foot">碎片来自「走到 · 做善 · 答题」，都不能用钱买到。</view>
 </view>

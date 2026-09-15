@@ -1,6 +1,7 @@
 const { tours } = require('../../utils/mock.js');
 const checkin = require('../../utils/checkin.js');
 const fujian = require('../../utils/fujian-routes.js');
+const heritage = require('../../utils/heritage-map.js');
 const whimsy = require('../../utils/whimsy.js');
 
 // 演示：为每条线路补充视觉梯度与「适合星象」标签
@@ -45,6 +46,14 @@ Page({
       spotsDone: 0, spotsTotal: fujian.SPOT_TOTAL,
       routesDone: 0, routesTotal: fujian.ROUTE_TOTAL,
       shardCount: 0, shards: [], recommend: null
+    },
+    // —— 非遗星图（闽南文化生态保护区；碎片来自「走到 · 做善 · 答题」）——
+    heritageFrags: {},
+    heritageOverall: {
+      lit: 0, total: heritage.TOTAL,
+      groupLit: 0, groupTotal: 4,
+      fragmentsTotal: 0, fragmentsCap: heritage.TOTAL * 3,
+      next: null
     }
   },
   onShow() {
@@ -55,6 +64,24 @@ Page({
     this.buildMarkers();
     this.buildGuardBoard();
     this.refreshRoutes();
+    this.refreshHeritage();
+  },
+  // 非遗星图：从数据层同步碎片与总进度（三条碎片来源的写入都在别处，这里只读）
+  refreshHeritage() {
+    this.setData({
+      heritageFrags: heritage.rawFrags(),
+      heritageOverall: heritage.state()
+    });
+  },
+  // 星图组件内部变动（答题得「知见」/ 立愿星）→ 重算
+  onHeritageChange() {
+    this.refreshHeritage();
+  },
+  // 走到线路站点 → 给该地市全部非遗星发行迹碎片；返回本次新得的碎片用于提示
+  grantHeritageTrace(spotId) {
+    const hg = heritage.grantSpotFragments(spotId);
+    if (hg.ok) this.refreshHeritage();
+    return hg;
   },
   // 福建线路：同步线路完成度与汇总（真实进度，不做虚高起点）
   refreshRoutes() {
@@ -164,8 +191,12 @@ Page({
         const rs = fujian.autoCheckInByLocation(res.latitude, res.longitude);
         if (rs.status === 'checked') {
           self.refreshRoutes();
+          const hg = self.grantHeritageTrace(rs.spot.id);
           whimsy.burst(self, { text: '到访已记录 · ' + rs.spot.name, emoji: '✦' });
-          wx.showToast({ title: '到访「' + rs.spot.name + '」· 巡礼已记', icon: 'none' });
+          wx.showToast({
+            title: '到访「' + rs.spot.name + '」· 巡礼已记' + (hg.ok ? ' · 行迹 +' + hg.granted.length : ''),
+            icon: 'none'
+          });
           return;
         }
         const r = checkin.autoCheckInByLocation(res.latitude, res.longitude);
