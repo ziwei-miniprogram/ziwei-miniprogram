@@ -74,10 +74,6 @@ function extractNav(js) {
   return out;
 }
 
-function pagePathOf(abs) {
-  return '/' + path.relative(ROOT, abs).replace(/\\/g, '/').replace(/\.js$/, '');
-}
-
 console.log('▶ 星野漫游 · 静态编译校验\n');
 
 // 1) app.json
