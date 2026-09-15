@@ -322,3 +322,47 @@ describe('heritage-map 善行（愿星机制）', () => {
     expect(H.state().fragmentsTotal).toBe(H.computeState(H.rawFrags()).fragmentsTotal);
   });
 });
+
+// 这一组是「接线契约」测试：数据层推绿 ≠ 页面接上了。
+// 起因是一次真实事故——手动打卡与 GPS 打卡两处接线并发修改，
+// 其中一处被另一处覆盖，数据层 36 例全绿但用户手动打卡拿不到行迹碎片。
+// 所以这里直接对页面源码断言三处接线存在，宁可断言弱，也不让接线悄悄消失。
+describe('heritage-map 三条碎片来源的页面接线契约', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const read = (p) => fs.readFileSync(path.join(__dirname, '..', p), 'utf8');
+
+  test('行迹：文旅页的手动打卡与 GPS 自动打卡都发碎片', () => {
+    const src = read('pages/tourism/tourism.js');
+    expect(src).toContain("require('../../utils/heritage-map.js')");
+    expect(src).toContain('grantHeritageTrace(');
+    // 两处入口都要接：手动点站点 + GPS 到访
+    const calls = src.match(/grantHeritageTrace\(/g) || [];
+    expect(calls.length).toBeGreaterThanOrEqual(3);   // 定义 1 次 + 调用 2 次
+  });
+
+  test('行迹：首次进入与打卡后都会重算星图（父页面把 frags 递给组件）', () => {
+    const src = read('pages/tourism/tourism.js');
+    expect(src).toContain('refreshHeritage()');
+    expect(src).toContain('heritageFrags: heritage.rawFrags()');
+    const wxml = read('pages/tourism/tourism.wxml');
+    expect(wxml).toContain('<heritage-map');
+    expect(wxml).toContain('frags="{{heritageFrags}}"');
+    expect(wxml).toContain('bind:change="onHeritageChange"');
+  });
+
+  test('善行：今日三善完成时发碎片（接在已存在的三善判定上，不新增入口）', () => {
+    const src = read('pages/merit/merit.js');
+    expect(src).toContain("require('../../utils/heritage-map.js')");
+    expect(src).toContain('heritage.grantDeed()');
+    expect(src).toContain('count >= 3');
+  });
+
+  test('知见：答题走组件内的 answerQuiz，并且不下发正确项', () => {
+    const js = read('components/heritage-map/heritage-map.js');
+    expect(js).toContain('hm.answerQuiz(');
+    expect(js).toContain('hm.quizOf(');
+    const wxml = read('components/heritage-map/heritage-map.wxml');
+    expect(wxml).toContain('bindtap="pickOpt"');
+  });
+});

@@ -100,18 +100,30 @@ Page({
     }
     this.refreshRoutes();
     whimsy.burst(this, { text: '巡礼打卡 · ' + r.spot.name, emoji: '✦' });
+
+    // 行迹碎片：一次站点打卡同时给该地市所有非遗星发行人迹碎片（走一座城，一片星都亮一格）
+    const hg = this.grantHeritageTrace(spotId);
+    const traceLine = hg.ok
+      ? '\n星图回响：' + hg.city + ' 的 ' + hg.granted.length + ' 颗非遗星各得一枚「行迹」碎片'
+        + (hg.newlyLit.length ? '，其中「' + hg.newlyLit.map(n => n.name).join('、') + '」已点亮' : '')
+        + (hg.groupLit.length ? '，「' + hg.groupLit.join('、') + '」这一象连成了星线' : '') + '。'
+      : '';
+
     if (r.newlyCompleted.length) {
       const names = r.newlyCompleted.map(c => c.name).join('、');
       const shards = r.newlyCompleted.map(c => c.shard.name).join('、');
       wx.showModal({
         title: '一条线路走完了',
-        content: '「' + names + '」已走完，解锁线路星：' + shards + '。\n线路星会汇入星图碎片，集齐可点亮一张主题星图。',
+        content: '「' + names + '」已走完，解锁线路星：' + shards + '。\n线路星会汇入星图碎片，集齐可点亮一张主题星图。' + traceLine,
         showCancel: false,
         confirmText: '知道了'
       });
       return;
     }
-    wx.showToast({ title: '巡礼 +1 · 星屑 +' + r.shards, icon: 'none' });
+    wx.showToast({
+      title: '巡礼 +1 · 星屑 +' + r.shards + (hg.ok ? ' · 行迹 +' + hg.granted.length : ''),
+      icon: 'none'
+    });
   },
   // 推荐线路卡上的「打卡」：一键点亮该线的下一站（省掉找点的动作）
   checkInNext(e) {
