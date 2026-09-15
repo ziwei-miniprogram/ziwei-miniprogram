@@ -13,8 +13,8 @@ const PINNED = [
 const CLUSTERS = [
   { name: '识星', items: [
     { key: 'ziwei', icon: 'star', name: '紫微斗数', desc: '命宫主星', url: '/pages/star-panel/star-panel?mode=ziwei' },
-    { key: 'bazi', icon: 'solar', name: '八字命理', desc: '五行排盘', url: '/pages/star-panel/star-panel?mode=bazi' },
-    { key: 'xingzuo', icon: 'chart', name: '星座测试', desc: '今日运势', url: '/pages/star-panel/star-panel?mode=xingzuo' }
+    { key: 'bazi', icon: 'solar', name: '四柱八字', desc: '五行排盘', url: '/pages/star-panel/star-panel?mode=bazi' },
+    { key: 'xingzuo', icon: 'chart', name: '星座测试', desc: '今日星语', url: '/pages/star-panel/star-panel?mode=xingzuo' }
   ] },
   { name: '安善', items: [
     { key: 'healing', icon: 'calm', name: '疗愈', desc: '呼吸与冥想', url: '/pages/healing/healing' },

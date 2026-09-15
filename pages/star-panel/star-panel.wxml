@@ -1,12 +1,12 @@
 <view class="page {{theme}} container">
   <view class="b-head">
-    <view class="u-eyebrow">识己 · 星象命理</view>
+    <view class="u-eyebrow">识己 · 星象文化</view>
     <view class="u-h2 serif">星盘</view>
     <view class="u-lede">紫微、八字、星座三册合一，皆为传统文化的娱乐参考。</view>
   </view>
   <view class="hair"></view>
 
-  <!-- 内部 tab：三命理模式合一（解 B3 孤儿页合并） -->
+  <!-- 内部 tab：三种星象模式合一（解 B3 孤儿页合并） -->
   <view class="seg">
     <view class="s {{mode === item.key ? 'on' : ''}}" wx:for="{{modes}}" wx:key="key" data-mode="{{item.key}}" bindtap="switchMode">{{item.name}}</view>
   </view>
@@ -35,7 +35,7 @@
     <view class="disclaimer">紫微斗数内容由简化模型生成，为传统文化娱乐参考，非真实命理推算，不预示吉凶、不构成专业建议。</view>
   </block>
 
-  <!-- 八字命理 -->
+  <!-- 四柱八字 -->
   <block wx:if="{{mode === 'bazi'}}">
     <view class="card">
       <view class="d-form">
@@ -68,7 +68,7 @@
     <view class="card">
       <view class="d-form">
         <view class="fld"><text class="lab">你的星座</text><picker class="fi" mode="selector" range="{{signs}}" value="{{sIndex}}" bindchange="onS"><view class="fi-txt">{{signs[sIndex]}}</view></picker></view>
-        <view class="btn" bindtap="run">抽取今日运势</view>
+        <view class="btn" bindtap="run">点亮今日星语</view>
       </view>
     </view>
     <block wx:if="{{xz}}">
@@ -77,7 +77,7 @@
           <view class="sh-t serif">{{xz.sign}}座</view>
           <view class="sh-s">今日星象 · 娱乐参考</view>
         </view>
-        <view class="xz-rate"><text>综合运势</text><text class="stars">{{xz.starsAll}}</text></view>
+        <view class="xz-rate"><text>综合星语</text><text class="stars">{{xz.starsAll}}</text></view>
         <view class="xz-rate"><text>爱情</text><text class="stars">{{xz.starsLove}}</text></view>
         <view class="xz-rate"><text>事业</text><text class="stars">{{xz.starsCareer}}</text></view>
         <view class="xz-rate"><text>健康</text><text class="stars">{{xz.starsHealth}}</text></view>
@@ -87,7 +87,7 @@
     <view class="disclaimer">星座运势为娱乐化内容，由程序随机生成，不预示吉凶、不构成任何专业建议。</view>
   </block>
 
-  <!-- 回灌闭环：看完命理顺手做一件，送回主循环（解 B3） -->
+  <!-- 回灌闭环：观己之后顺手做一件，送回主循环（解 B3） -->
   <loop-chip items="{{loopItems}}" title="识己之后，顺手安住此刻" theme="{{theme}}" />
 </view>
 <heart-lamp theme="{{theme}}" />

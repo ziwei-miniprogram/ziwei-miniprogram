@@ -1,4 +1,4 @@
-// 星盘 · 命理合集（紫微斗数 / 八字命理 / 星座测试 三合一内部 tab，解 B3 孤儿页）
+// 星盘 · 星象合集（紫微斗数 / 四柱八字 / 星座测试 三合一内部 tab，解 B3 孤儿页）
 // UX 架构 P1：把 ziwei/bazi/xingzuo 三个孤儿页合并为单一星盘中枢，内部 segmented tab 切换；
 // 底部 LoopChip 把用户送回主循环（点亮星图/寄愿/三善/记笔记），消除「读完无回灌」断点。
 const { HOURS, XZ, computeZiwei, computeBazi, computeXz } = require('../../utils/divine.js');
@@ -14,7 +14,7 @@ Page({
     mode: 'ziwei',
     modes: [
       { key: 'ziwei', name: '紫微斗数' },
-      { key: 'bazi', name: '八字命理' },
+      { key: 'bazi', name: '四柱八字' },
       { key: 'xingzuo', name: '星座测试' }
     ],
     // 共享输入
@@ -63,7 +63,7 @@ Page({
           starsCareer: starStr(r.career), starsHealth: starStr(r.health)
         }
       });
-      wx.showToast({ title: '今日运势已抽取', icon: 'none' });
+      wx.showToast({ title: '今日星语已点亮', icon: 'none' });
     }
   },
   goChart() {
